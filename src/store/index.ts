@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { createUserDetails, UserSlice } from "./createUserDetails";
+import { createUserConfig, UserConfigSlice } from "./createUserConfig";
 
-type StoreState = UserSlice; // & OrderSlice;
+type StoreState = UserConfigSlice; // & OrderSlice;
 
 export const useAppStore = create<StoreState>()(
   persist(
     (...a) => ({
-      ...createUserDetails(...a),
+      ...createUserConfig(...a),
       // ...createOrderSlice(...a),
     }),
     {

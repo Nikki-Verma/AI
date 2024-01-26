@@ -1,8 +1,10 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import useAuthorization from "@/Hooks/useAuthorization";
+import { useAppStore } from "@/store";
 import { EditOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Divider, Layout, Menu, Typography } from "antd";
+import useToken from "antd/es/theme/useToken";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -10,7 +12,7 @@ import uiStyles from "../UIComponents/ui.module.scss";
 import styles from "./MasterLayout.module.scss";
 import { getItemByKey, items } from "./util";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 // import RechargeWalletModal from '../Dashboard/RechargeWalletModal';
 // import ResetPassword from '../Dashboard/ResetPassword';
 // import DownloadDrawer from '../DownloadDrawer';
@@ -20,11 +22,15 @@ const { Header, Sider, Content } = Layout;
 const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: userSessionDetails }: any = useSession();
   console.log("🚀 ~ MasterLayout ~ userSessionDetails:", userSessionDetails);
-
-  const [collapsed, setCollapsed] = useState(true);
+  const { userConfig, updateUserConfig } = useAppStore();
+  console.log("🚀 ~ MasterLayout ~ userConfig:", userConfig);
+  const [collapsed, setCollapsed] = useState(false);
+  console.log("🚀 ~ MasterLayout ~ collapsed:", collapsed);
   const [menuItems, setMenuItems] = useState([]);
   const [isAuthorized, permissions] = useAuthorization();
   const pathname = usePathname();
+  const [theme, token] = useToken();
+
   // const [drawerVisible, setDrawerVisible] = useState(false);
   const [defaultSelectedKey, setDefaultSelectedKey] = useState("");
   const [currentItemKey, setCurrentItemKey] = useState(["overview"]);
@@ -55,6 +61,9 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
       setCurrentItemKey(navItem.keyPath);
     }
   }, [pathname]);
+  useEffect(() => {
+    updateUserConfig({ siderLocked: true });
+  }, []);
 
   const filterListData = (items: any) => {
     const newItems = items.map((list: any) => {
@@ -133,46 +142,59 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
 
       <Layout
         style={{
-          marginLeft: collapsed ? "80px" : "150px",
-          transition: "all 0.5s",
+          marginLeft: userConfig.siderLocked ? "195px" : "65px",
+          transition: "all 0.2s",
         }}
       >
         <Sider
+          theme="light"
           trigger={null}
           collapsible
           collapsed={collapsed}
-          onMouseEnter={() => (collapsed ? setCollapsed(false) : null)}
-          onMouseLeave={() => (!collapsed ? setCollapsed(true) : null)}
-          width={150}
+          id="layout-sider"
+          onMouseEnter={() => {
+            if (!userConfig.siderLocked) {
+              console.log("config check enter", userConfig);
+              setCollapsed(false);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!userConfig.siderLocked) {
+              console.log("config check out", userConfig);
+              setCollapsed(true);
+            }
+          }}
+          width={195}
+          collapsedWidth={65}
           style={{
-            backgroundColor: "#fff",
             overflow: "auto",
             height: "calc(100vh - 64px)",
             position: "fixed",
             left: 0,
             top: "64px",
+            scrollbarWidth: "thin",
             boxShadow: "6px 0 6px -2px rgba(0, 0, 0, 0.06)",
-            transition: "all .5s",
-            // borderRight: "1px solid red",
           }}
         >
           <div className={styles.logo_container}>
             <Image
-              src="/assets/productLogos/simplaiLogo.svg"
-              width={42}
-              height={42}
+              src="/assets/Logos/simplaiLogo.svg"
+              width={38}
+              height={38}
               style={{
-                // height: "32px",
-                margin: "18px 10px 6px",
+                margin: "16px 10px",
               }}
-              alt="logo"
+              alt="SimplAi"
             />
+            <Title level={3} style={{ color: token.colorPrimary }}>
+              Simplai.ai
+            </Title>
 
             {/* <Text style={{ overflow: "hidden", textWrap: "nowrap" }}>
               Simplai
             </Text> */}
           </div>
-          <Divider style={{ margin: "12px 0" }} />
+          <Divider style={{ margin: "0 0 10px" }} />
           <Menu
             // theme="light"
             mode="inline"

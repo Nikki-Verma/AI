@@ -1,6 +1,5 @@
 import { Permissions_Types, PERMISSION_TYPE } from "@/utils/constants";
-import { PlusOutlined } from "@ant-design/icons";
-import Link from "next/link";
+import HomeIcon from "../Icons/HomeIcon";
 interface NavItem {
   id: number;
   label: React.ReactNode;
@@ -62,77 +61,29 @@ export const getItemByKey = (
 export const items: any = [
   {
     id: 0,
-    label: <Link href={"/dashboard"}>Dashboard</Link>,
-    icon: <PlusOutlined />,
-    key: "home",
-    keyPath: ["home"],
-    url: "/dashboard",
-    // icon: ,
+    label: "PlayGround",
+    icon: <HomeIcon />,
+    key: "playground",
+    keyPath: ["playground"],
+    url: "/playground",
     permissions: [],
     permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
-    label: <Link href={"/"}>Home</Link>,
+    label: "Home",
     key: "overview",
     keyPath: ["overview"],
     url: "/overview",
-    // icon: <OverviewIcon />,
+    icon: <HomeIcon />,
   },
-  {
-    id: 200,
-    label: "Master",
-    key: "master",
-    keyPath: ["master"],
-    url: "/master",
-    // icon: <MasterIcon />,
-    children: [
-      {
-        id: 201,
-        label: "Sellers",
-        key: "master-seller",
-        keyPath: ["master", "master-seller"],
-        url: "/master/seller",
-        permissions: [],
-      },
-      {
-        id: 202,
-        label: "Vendors",
-        key: "master-vendor",
-        keyPath: ["master", "master-vendor"],
-        url: "/master/vendor",
-        permissions: [],
-      },
-      {
-        id: 203,
-        label: "Warehouse",
-        key: "master-warehouse",
-        keyPath: ["master", "master-warehouse"],
-        url: "/master/warehouse",
-      },
-      {
-        id: 204,
-        label: "Layout Templates",
-        key: "master-layout",
-        keyPath: ["master", "master-layout"],
-        url: "/master/layout",
-      },
-      {
-        id: 205,
-        label: "Customers",
-        key: "master-customer",
-        keyPath: ["master", "master-customer"],
-        url: "/master/customers",
-      },
-    ],
-  },
-  {
-    id: 303,
-    label: "Gate In",
-    key: "gate-in",
-    keyPath: ["gate-in"],
-    url: "/gate-in",
-    // icon: <GateInIcon />,
-    permissions: [],
-  },
+  // {
+  //   id: 303,
+  //   label: "Gate In",
+  //   key: "gate-in",
+  //   keyPath: ["gate-in"],
+  //   url: "/gate-in",
+  //   // icon: <GateInIcon />,
+  //   permissions: [],
+  // },
 ];

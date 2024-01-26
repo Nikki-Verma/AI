@@ -6,8 +6,19 @@
 
 .logo_container {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  margin: 0px 2px;
+  overflow: hidden !important;
+  h3 {
+    // font-size: 1.6rem !important;
+    // font-weight: 600 !important;
+    overflow: hidden;
+    word-break: normal;
+    text-align: center;
+    margin-top: 16px;
+    margin-left: 10px;
+  }
 }
 
 .nav_links {
