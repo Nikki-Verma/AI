@@ -68,17 +68,12 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   }, [pathname]);
 
   useEffect(() => {
-<<<<<<< HEAD
-    updateUserConfig({ siderLocked: false });
-  }, []);
-=======
     if (userConfig?.siderLocked) {
       setCollapsed(false);
     } else {
       setCollapsed(true);
     }
   }, [userConfig.siderLocked]);
->>>>>>> main
 
   const filterListData = (items: any) => {
     const newItems = items.map((list: any) => {
@@ -110,10 +105,6 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setDefaultSelectedKey(pathname);
   }, [pathname]);
-<<<<<<< HEAD
-=======
-
->>>>>>> main
   const { SubMenu } = Menu;
 
   const handleOpenChange = (openKeys: string[]) => {
