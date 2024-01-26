@@ -21,7 +21,7 @@ const Home = (props: any) => {
       url: "http://192.168.1.61:8090/api/v1/intract/data/flux",
       method: "GET",
     },
-    // This means that the user input will be sent as the body of the request with the key 'prompt'.
+    // This means that the user input will be sent as the body of the request with the key 'prompt' add.
     method: {
       type: "body",
       key: "prompt",
