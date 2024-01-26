@@ -105,7 +105,6 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setDefaultSelectedKey(pathname);
   }, [pathname]);
-
   const { SubMenu } = Menu;
 
   const handleOpenChange = (openKeys: string[]) => {
