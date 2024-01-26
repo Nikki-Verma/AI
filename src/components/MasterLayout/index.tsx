@@ -8,8 +8,8 @@ import useToken from "antd/es/theme/useToken";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import uiStyles from "../UIComponents/ui.module.scss";
 import styles from "./MasterLayout.module.scss";
+import Topbar from "./Topbar";
 import { getItemByKey, items } from "./util";
 
 const { Text, Title } = Typography;
@@ -22,7 +22,7 @@ const { Header, Sider, Content } = Layout;
 const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: userSessionDetails }: any = useSession();
   console.log("🚀 ~ MasterLayout ~ userSessionDetails:", userSessionDetails);
-  const { userConfig, updateUserConfig } = useAppStore();
+  const { userConfig, updatePageConfig } = useAppStore();
   console.log("🚀 ~ MasterLayout ~ userConfig:", userConfig);
   const [collapsed, setCollapsed] = useState(false);
   console.log("🚀 ~ MasterLayout ~ collapsed:", collapsed);
@@ -52,18 +52,28 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   }, [permissions]);
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ pathname:", pathname);
+    updatePageConfig({
+      pageTitle: "Dashboard",
+      pageDescription: " Dashboard description",
+    });
+  }, []);
+
+  useEffect(() => {
     const navItem = getItemByKey(pathname, "url", items);
-    console.log("🚀 ~ useEffect ~ navItem:", navItem);
 
     if (navItem?.keyPath?.length) {
       setOpenItemKey(navItem.keyPath);
       setCurrentItemKey(navItem.keyPath);
     }
   }, [pathname]);
+
   useEffect(() => {
-    updateUserConfig({ siderLocked: true });
-  }, []);
+    if (userConfig?.siderLocked) {
+      setCollapsed(false);
+    } else {
+      setCollapsed(true);
+    }
+  }, [userConfig.siderLocked]);
 
   const filterListData = (items: any) => {
     const newItems = items.map((list: any) => {
@@ -93,12 +103,12 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    setDefaultSelectedKey(location.pathname);
-  }, [location.pathname]);
+    setDefaultSelectedKey(pathname);
+  }, [pathname]);
+
   const { SubMenu } = Menu;
 
   const handleOpenChange = (openKeys: string[]) => {
-    console.log("🚀 ~ handleOpenChange ~ openKeys:", openKeys);
     setOpenItemKey(openKeys?.slice(-1));
   };
 
@@ -106,43 +116,19 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
     <Menu style={{ padding: 4 }}>
       <Menu.Item icon={<EditOutlined />}>Change Password</Menu.Item>
       <Menu.Item icon={<LogoutOutlined />}>Logout</Menu.Item>
-      {/* <ResetPassword setVisible={setChangePasswordModalVisible} /> */}
     </Menu>
   );
 
   return (
     <Layout>
-      <Header
-        style={{
-          padding: "0 24px",
-          background: "#fff",
-          boxShadow: "0 3px 6px 0 rgba(0, 0, 0, 0.06)",
-          position: "fixed",
-          top: 0,
-          width: "100vw",
-          zIndex: 1,
-        }}
-      >
-        <div
-          className={uiStyles.space_between_container}
-          style={{ height: "64px" }}
-        >
-          <div className={uiStyles.flex_container}>
-            {true && (
-              <span
-                className={styles.nav_links}
-                style={{ marginRight: "48px" }}
-              >
-                0
-              </span>
-            )}
-          </div>
-        </div>
-      </Header>
-
+      <Topbar />
       <Layout
         style={{
-          marginLeft: userConfig.siderLocked ? "195px" : "65px",
+          marginLeft: collapsed
+            ? "65px"
+            : userConfig?.siderLocked
+              ? "195px"
+              : "65px",
           transition: "all 0.2s",
         }}
       >
@@ -174,6 +160,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
             top: "64px",
             scrollbarWidth: "thin",
             boxShadow: "6px 0 6px -2px rgba(0, 0, 0, 0.06)",
+            zIndex: 1,
           }}
         >
           <div className={styles.logo_container}>
@@ -189,10 +176,6 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
             <Title level={3} style={{ color: token.colorPrimary }}>
               Simplai.ai
             </Title>
-
-            {/* <Text style={{ overflow: "hidden", textWrap: "nowrap" }}>
-              Simplai
-            </Text> */}
           </div>
           <Divider style={{ margin: "0 0 10px" }} />
           <Menu
