@@ -1,0 +1,16 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.ant-form-item-explain-error {
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 500;
+}
