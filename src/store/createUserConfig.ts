@@ -10,7 +10,7 @@ export const INITIAL_USER_STATE = {
 
 export interface UserConfigSlice {
   userConfig: UserConfigType;
-  updateUserConfig: (updateConfigParams: any) => void;
+  updateUserConfig: (updateConfigParams: UserConfigType) => void;
   resetUserConfig: () => void;
 }
 
