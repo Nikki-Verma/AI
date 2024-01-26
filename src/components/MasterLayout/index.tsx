@@ -62,7 +62,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [pathname]);
   useEffect(() => {
-    updateUserConfig({ siderLocked: true });
+    updateUserConfig({ siderLocked: false });
   }, []);
 
   const filterListData = (items: any) => {
@@ -93,8 +93,8 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    setDefaultSelectedKey(location.pathname);
-  }, [location.pathname]);
+    setDefaultSelectedKey(pathname);
+  }, [pathname]);
   const { SubMenu } = Menu;
 
   const handleOpenChange = (openKeys: string[]) => {
@@ -142,7 +142,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
 
       <Layout
         style={{
-          marginLeft: userConfig.siderLocked ? "195px" : "65px",
+          marginLeft: collapsed ?   "65px" :"195px",
           transition: "all 0.2s",
         }}
       >

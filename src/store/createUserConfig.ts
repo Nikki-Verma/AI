@@ -5,7 +5,7 @@ type UserConfigType = {
 };
 
 export const INITIAL_USER_STATE = {
-  siderLocked: true,
+  siderLocked: false,
 };
 
 export interface UserConfigSlice {

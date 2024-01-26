@@ -11,7 +11,6 @@ const AuthLayout = ({ children }: Props) => {
   return (
     <>
       <MasterLayout>
-        <div>AuthLayout</div>
         {children}
       </MasterLayout>
     </>

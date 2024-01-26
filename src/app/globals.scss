@@ -14,3 +14,13 @@ body {
   font-size: 12px;
   font-weight: 500;
 }
+
+h1.ant-typography{
+  color: var(--Text-Color-900, #171717) !important;
+  font-family: var(--font-dm-sans) !important;
+  font-size: 32px !important;
+  font-style: normal;
+  font-weight: 700 !important;
+  line-height: normal !important;
+  margin: 0 !important;
+}
