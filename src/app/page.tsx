@@ -29,7 +29,6 @@ const Home = (props: any) => {
       key: "prompt",
     },
   });
-  console.log("🚀 ~ Home ~ messages:", messages);
 
   return (
     <div>

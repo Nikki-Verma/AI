@@ -1,5 +1,15 @@
 import { Permissions_Types, PERMISSION_TYPE } from "@/utils/constants";
+import { Typography } from "antd";
+import Link from "next/link";
+import AgentsIcon from "../Icons/AgentsIcon";
+import BillingIcon from "../Icons/BillingIcon";
+import DatasetIcon from "../Icons/DatasetIcon";
 import HomeIcon from "../Icons/HomeIcon";
+import IntegrationIcon from "../Icons/IntegrationIcon";
+import ModelsIcon from "../Icons/ModelsIcon";
+import PlaygroundIcon from "../Icons/PlaygroundIcon";
+import SettingsIcon from "../Icons/Settings";
+const { Text } = Typography;
 interface NavItem {
   id: number;
   label: React.ReactNode;
@@ -61,29 +71,128 @@ export const getItemByKey = (
 export const items: any = [
   {
     id: 0,
-    label: "PlayGround",
+    label: (
+      <Link href="/dashboard">
+        <Text style={{ color: "inherit" }}>Home</Text>
+      </Link>
+    ),
     icon: <HomeIcon />,
-    key: "playground",
-    keyPath: ["playground"],
-    url: "/playground",
+    key: "dashboard",
+    keyPath: ["dashboard"],
+    url: "/dashboard",
     permissions: [],
     permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
-    label: "Home",
-    key: "overview",
-    keyPath: ["overview"],
-    url: "/overview",
-    icon: <HomeIcon />,
+    label: (
+      <Link href="/playground">
+        <Text style={{ color: "inherit" }}>Playground</Text>
+      </Link>
+    ),
+    key: "playground",
+    keyPath: ["playground"],
+    url: "/playground",
+    icon: <PlaygroundIcon />,
   },
-  // {
-  //   id: 303,
-  //   label: "Gate In",
-  //   key: "gate-in",
-  //   keyPath: ["gate-in"],
-  //   url: "/gate-in",
-  //   // icon: <GateInIcon />,
-  //   permissions: [],
-  // },
+  {
+    id: 100,
+    label: (
+      <Link href="/workspace">
+        <Text style={{ color: "inherit" }}>Workspace</Text>
+      </Link>
+    ),
+    key: "workspace",
+    keyPath: ["workspace"],
+    url: "/workspace",
+    icon: <AgentsIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link href="/models">
+        <Text style={{ color: "inherit" }}>Models</Text>
+      </Link>
+    ),
+    key: "models",
+    keyPath: ["models"],
+    url: "/models",
+    icon: <ModelsIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link href="/dataset">
+        <Text style={{ color: "inherit" }}>Dataset</Text>
+      </Link>
+    ),
+    key: "dataset",
+    keyPath: ["dataset"],
+    url: "/dataset",
+    icon: <DatasetIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link href="/integration">
+        <Text style={{ color: "inherit" }}>Integration</Text>
+      </Link>
+    ),
+    key: "integration",
+    keyPath: ["integration"],
+    url: "/Integration",
+    icon: <IntegrationIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link href="/billing_usage">
+        <Text style={{ color: "inherit" }}>Billing & Usage</Text>
+      </Link>
+    ),
+    key: "billing_usage",
+    keyPath: ["billing_usage"],
+    url: "/billing_usage",
+    icon: <BillingIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link href="/settings">
+        <Text style={{ color: "inherit" }}>Settings</Text>
+      </Link>
+    ),
+    key: "settings",
+    keyPath: ["settings"],
+    url: "/settings",
+    icon: <SettingsIcon />,
+  },
 ];
+
+export const getMenuItems = (
+  isAuthorized: (
+    userPermissions: string[] | string | undefined | null,
+    permissionType: Permissions_Types
+  ) => boolean
+) => {
+  const newItems = items.map((list: any) => {
+    if (
+      list.permissions &&
+      !isAuthorized(list.permissions, list.permissionType)
+    ) {
+      return null;
+    }
+    const filteredList =
+      list?.children?.filter((route: any) => {
+        return isAuthorized(route.permissions, route.permissionType);
+      }) || [];
+    if (filteredList?.length > 0 && list?.children?.length > 0) {
+      return { ...list, children: [...filteredList] };
+    } else if (filteredList?.length === 0 && !list?.children?.length) {
+      return { ...list };
+    } else {
+      return null;
+    }
+  });
+  return newItems || [];
+};

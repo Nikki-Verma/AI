@@ -28,9 +28,6 @@ export const getStream = async (
   options = mergeInputInOptions(input, options, method);
 
   const params = "?" + new URLSearchParams(options.query).toString();
-  // console.log(
-  //   JSON.stringify(options.body, (_k, v) => (v === null ? undefined : v))
-  // );
 
   const response = await fetch(options.url + params, {
     method: options.method,
