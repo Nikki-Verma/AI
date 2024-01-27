@@ -24,7 +24,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   console.log("🚀 ~ MasterLayout ~ userSessionDetails:", userSessionDetails);
   const { userConfig, updatePageConfig } = useAppStore();
   console.log("🚀 ~ MasterLayout ~ userConfig:", userConfig);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   console.log("🚀 ~ MasterLayout ~ collapsed:", collapsed);
   const [menuItems, setMenuItems] = useState([]);
   const [isAuthorized, permissions] = useAuthorization();
