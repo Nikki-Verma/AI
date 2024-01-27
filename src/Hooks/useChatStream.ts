@@ -1,0 +1,106 @@
+import { decodeStreamToJson, getStream } from "@/utils/stream";
+import { ChangeEvent, FormEvent, useState } from "react";
+
+import { v4 as uuidv4 } from "uuid";
+
+const BOT_ERROR_MESSAGE = "Something went wrong fetching AI response.";
+
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
+type ChatMessage = {
+  role: "bot" | "user";
+  content: string;
+  id: string;
+};
+
+export type UseChatStreamOptions = {
+  url: string;
+  method: HttpMethod;
+  query?: Record<string, string>;
+  headers?: HeadersInit;
+  body?: Record<string, string>;
+};
+
+export type UseChatStreamInputMethod = {
+  type: "body" | "query";
+  key: string;
+};
+
+type UseChatStreamInput = {
+  options: UseChatStreamOptions;
+  method: UseChatStreamInputMethod;
+};
+
+const useChatStream = (input: UseChatStreamInput) => {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setMessage(e.target.value);
+  };
+
+  const addMessageToChat = (
+    message: string,
+    role: ChatMessage["role"] = "user"
+  ) => {
+    setMessages((messages) => [
+      ...messages,
+      { role, content: message, id: uuidv4() },
+    ]);
+  };
+
+  const appendMessageToChat = (message: string) => {
+    setMessages((messages) => {
+      const latestMessage = messages[messages.length - 1];
+
+      return [
+        ...messages.slice(0, -1),
+        { ...latestMessage, content: latestMessage.content + message },
+      ];
+    });
+  };
+
+  const fetchAndUpdateAIResponse = async (message: string) => {
+    const stream = await getStream(message, input.options, input.method);
+    if (!stream) throw new Error();
+
+    addMessageToChat("", "bot");
+
+    for await (const message of decodeStreamToJson(stream)) {
+      appendMessageToChat(message);
+    }
+  };
+
+  const handleSubmit = async (
+    e?: FormEvent<HTMLFormElement>,
+    newMessage?: string
+  ) => {
+    setIsLoading(true);
+    e?.preventDefault();
+    addMessageToChat(newMessage ?? message);
+    setMessage("");
+
+    try {
+      await fetchAndUpdateAIResponse(newMessage ?? message);
+    } catch {
+      addMessageToChat(BOT_ERROR_MESSAGE, "bot");
+    }
+
+    setIsLoading(false);
+  };
+
+  return {
+    messages,
+    setMessages,
+    input: message,
+    setInput: setMessage,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+  };
+};
+
+export default useChatStream;

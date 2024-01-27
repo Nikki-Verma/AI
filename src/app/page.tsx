@@ -1,7 +1,8 @@
 "use client";
 
 import { AuthHoc } from "@/HOC/AuthHoc";
-import useChatStream from "@magicul/react-chat-stream";
+import useChatStream from "@/Hooks/useChatStream";
+
 import { Typography } from "antd";
 import Link from "next/link";
 
@@ -19,7 +20,7 @@ const Home = (props: any) => {
   } = useChatStream({
     options: {
       url: "http://192.168.1.61:8090/api/v1/intract/data/flux",
-      method: "GET",
+      method: "POST",
     },
     // This means that the user input will be sent as the body of the request with the key 'prompt' add.
     method: {
@@ -27,7 +28,6 @@ const Home = (props: any) => {
       key: "prompt",
     },
   });
-  console.log("🚀 ~ Home ~ messages:", messages);
 
   return (
     <div>

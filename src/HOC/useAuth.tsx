@@ -51,13 +51,13 @@ function useAuth() {
   //     // const isAuthenticated = false;
   //     // const isLoading = true;
   //     // const login = (loginParams: any) => {
-  //     //   //   console.log("login called", loginParams);
+  //     //   //
   //     // };
   //     // const logout = () => {
-  //     //   //   console.log("logout called");
+  //     //   //
   //     // };
   //     // const stopLoading = () => {
-  //     //   //   console.log("stop loading called");
+  //     //   //
   //     // };
   //     // const user = {
   //     //   name: "Nikhil",

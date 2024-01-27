@@ -21,11 +21,11 @@ const { Header, Sider, Content } = Layout;
 
 const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: userSessionDetails }: any = useSession();
-  console.log("🚀 ~ MasterLayout ~ userSessionDetails:", userSessionDetails);
+
   const { userConfig, updatePageConfig } = useAppStore();
-  console.log("🚀 ~ MasterLayout ~ userConfig:", userConfig);
+
   const [collapsed, setCollapsed] = useState(true);
-  console.log("🚀 ~ MasterLayout ~ collapsed:", collapsed);
+
   const [menuItems, setMenuItems] = useState([]);
   const [isAuthorized, permissions] = useAuthorization();
   const pathname = usePathname();
@@ -35,7 +35,6 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   const [defaultSelectedKey, setDefaultSelectedKey] = useState("");
   const [currentItemKey, setCurrentItemKey] = useState(["overview"]);
   const [openItemKey, setOpenItemKey] = useState<string[]>([]);
-  console.log("🚀 ~ MasterLayout ~ openItemKey:", openItemKey);
 
   useLayoutEffect(() => {
     if (permissions) {
@@ -139,13 +138,11 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
           id="layout-sider"
           onMouseEnter={() => {
             if (!userConfig.siderLocked) {
-              console.log("config check enter", userConfig);
               setCollapsed(false);
             }
           }}
           onMouseLeave={() => {
             if (!userConfig.siderLocked) {
-              console.log("config check out", userConfig);
               setCollapsed(true);
             }
           }}

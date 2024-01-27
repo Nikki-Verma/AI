@@ -7,7 +7,6 @@ import Link from "next/link";
 type Props = {};
 
 const Dashboard = (props: Props) => {
-  console.log("hello");
   return (
     <div style={{ height: "200vh" }}>
       Dashboard
