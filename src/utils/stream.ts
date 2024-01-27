@@ -12,8 +12,10 @@ const mergeInputInOptions = (
   options: UseChatStreamOptions,
   method: UseChatStreamInputMethod
 ) => {
-  options.query = options.query ?? {};
-  (options[method.type] as Record<string, unknown>)[method.key] = input;
+  // options.query = options.query ?? {};
+  // (options[method.type] as Record<string, unknown>)[method.key] = input;
+
+  (options[method.type] ?? {})[method.key] = input;
 
   return options;
 };
@@ -26,9 +28,9 @@ export const getStream = async (
   options = mergeInputInOptions(input, options, method);
 
   const params = "?" + new URLSearchParams(options.query).toString();
-  console.log(
-    JSON.stringify(options.body, (_k, v) => (v === null ? undefined : v))
-  );
+  // console.log(
+  //   JSON.stringify(options.body, (_k, v) => (v === null ? undefined : v))
+  // );
 
   const response = await fetch(options.url + params, {
     method: options.method,
@@ -45,11 +47,8 @@ export const getStream = async (
 };
 
 export async function* decodeStreamToJson(
-  data: ReadableStream<Uint8Array> | null
+  reader: any
 ): AsyncIterableIterator<string> {
-  if (!data) return;
-
-  const reader = data.getReader();
   const decoder = new TextDecoder();
 
   while (true) {

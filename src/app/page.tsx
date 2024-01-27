@@ -17,17 +17,19 @@ const Home = (props: any) => {
     isLoading,
     setMessages,
     setInput,
+    stopStream,
   } = useChatStream({
     options: {
-      url: "http://192.168.1.61:8090/api/v1/intract/data/flux",
-      method: "POST",
+      url: "http://192.168.1.95:8091/api/v1/intract/data/flux",
+      method: "GET",
     },
     // This means that the user input will be sent as the body of the request with the key 'prompt' add.
     method: {
-      type: "body",
+      type: "query",
       key: "prompt",
     },
   });
+  console.log("🚀 ~ Home ~ messages:", messages);
 
   return (
     <div>
@@ -39,8 +41,18 @@ const Home = (props: any) => {
         </div>
       ))}
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleInputChange} value={input} />
-        <button type="submit">Send</button>
+        <input
+          type="text"
+          disabled={isLoading}
+          onChange={handleInputChange}
+          value={input}
+        />
+        <button type="submit" disabled={isLoading}>
+          Send
+        </button>
+        <button type="button" disabled={!isLoading} onClick={stopStream}>
+          Stop
+        </button>
         <Link href={"/dashboard"}>Dashboard</Link>
       </form>
     </div>

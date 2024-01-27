@@ -1,14 +1,14 @@
 import { decodeStreamToJson, getStream } from "@/utils/stream";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
-const BOT_ERROR_MESSAGE = "Something went wrong fetching AI response.";
+const SimplAi_ERROR_MESSAGE = "Something went wrong fetching AI response.";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 type ChatMessage = {
-  role: "bot" | "user";
+  role: "SimplAi" | "user";
   content: string;
   id: string;
 };
@@ -35,6 +35,8 @@ const useChatStream = (input: UseChatStreamInput) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  let streamRef = useRef<any>();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
@@ -67,10 +69,20 @@ const useChatStream = (input: UseChatStreamInput) => {
     const stream = await getStream(message, input.options, input.method);
     if (!stream) throw new Error();
 
-    addMessageToChat("", "bot");
+    addMessageToChat("", "SimplAi");
 
-    for await (const message of decodeStreamToJson(stream)) {
+    streamRef.current = stream.getReader();
+    for await (const message of decodeStreamToJson(streamRef.current)) {
       appendMessageToChat(message);
+    }
+  };
+
+  const stopStream = () => {
+    if (!streamRef.current) {
+      return null;
+    } else {
+      streamRef?.current?.cancel();
+      streamRef.current = undefined;
     }
   };
 
@@ -86,7 +98,9 @@ const useChatStream = (input: UseChatStreamInput) => {
     try {
       await fetchAndUpdateAIResponse(newMessage ?? message);
     } catch {
-      addMessageToChat(BOT_ERROR_MESSAGE, "bot");
+      addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
+    } finally {
+      streamRef.current = undefined;
     }
 
     setIsLoading(false);
@@ -100,6 +114,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     handleInputChange,
     handleSubmit,
     isLoading,
+    stopStream,
   };
 };
 
