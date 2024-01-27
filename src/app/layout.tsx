@@ -7,6 +7,7 @@ import "./globals.scss";
 
 import { ThemeProvider } from "@/providers/antdThemeProvider";
 import SessionProvider from "@/providers/SessionProvider";
+import StyledComponentsRegistry from "@/providers/syledComponentsProvider";
 const dm_sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
@@ -23,13 +24,15 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={dm_sans.variable}>
-        <ThemeProvider>
-          <SessionProvider session={session}>
-            <AntdRegistry>
-              <ReactQueryProvider>{children}</ReactQueryProvider>
-            </AntdRegistry>
-          </SessionProvider>
-        </ThemeProvider>
+        <StyledComponentsRegistry>
+          <ThemeProvider>
+            <SessionProvider session={session}>
+              <AntdRegistry>
+                <ReactQueryProvider>{children}</ReactQueryProvider>
+              </AntdRegistry>
+            </SessionProvider>
+          </ThemeProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
