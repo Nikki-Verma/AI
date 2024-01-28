@@ -44,3 +44,34 @@
   line-height: normal;
   text-decoration-line: underline;
 }
+
+
+.back_button_container {
+  display: flex;
+  width: 40px;
+  height: 32px;
+  padding: 0px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 0.5px solid var(--Text-Color-150, #D5D5D5);
+  background: #F8F9FA;
+
+  /* drop-shadow/button-secondary */
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+  cursor: pointer;
+}
+
+.like_button_container {
+  display: flex;
+  height: 35px;
+  padding: 0px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 10px;
+  border: 1px solid #D5D5D5;
+  background: var(--Text-Color-50, #FFF);
+}
