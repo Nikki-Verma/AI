@@ -63,14 +63,14 @@ const Models = () => {
             </Col>
             <Row gutter={[28,16]} style={{display : 'flex',margin : '16px 0px'}}>
 
-                <Col span={8}>
+                <Col span={8} style={{display : 'flex',flexDirection  : 'column'}}>
                     <CardModel
                     imageUrl = {
                         process.env.NEXT_PUBLIC_BASE_URL +
                         "/assets/Images/modelHeaderImage.svg"
                     }
                     modelData = {{}}
-
+                    goToBaseUrl = "/models"
                     />
                 </Col>
 

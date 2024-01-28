@@ -13,14 +13,14 @@ const ModelDetails = ({params} : any) => {
   return (
     <Container>
         <Col span={24} style={{marginBottom : '24px'}}>
-            <Link href={'/models'}>
+            <Link href={'/workspace'}>
             <div 
             className={uiStyles.back_button_container}             >
                 <ArrowLeftOutlined />
             </div>
             </Link>
         </Col>
-        <ModelData page = "models"/>
+        <ModelData page = "workspace" />
     </Container>
   )
 }

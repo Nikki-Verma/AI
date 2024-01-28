@@ -9,36 +9,28 @@ export const SubHeading = styled.div`
     line-height: normal;
 `
 
-export const ModelContainer = styled.div` 
+export const WorkspaceContainer = styled.div` 
     display: flex;
     flex-direction: column;
-    .ant-input-affix-wrapper{
-        border-radius: 20px;
-        border: 1px solid var(--Text-Color-150, #D5D5D5);
-        background: #FFF;
-        height : 60px;
-    }
-    .ant-input-affix-wrapper >input.ant-input{
-        color: var(--Text-Color-900, #171717);
-        font-family: var(--font-dm-sans);
+    .ant-radio-button-wrapper{
+        height : 40px;
+        padding : 9px 30px;
+        color: var(--Text-Color-850, #222);
+        text-align: center;
         font-size: 14px;
         font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-    }
-    .ant-select-selector{
-        display: flex;
-        height: 36px;
-        padding: 0px 7px;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        border-radius: 20px;
-        border: 1px solid var(--Text-Color-150, #D5D5D5);
-        background: var(--Text-Color-50, #FFF);
+        font-weight: 500;
+        line-height: 22px; /* 157.143% */
+        border: 0.5px solid #602EDF !important;
 
         /* drop-shadow/button-secondary */
         box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+    }
+    .ant-radio-button-wrapper:not(:first-child){
+        border-left : 0px !important;
+    }
+    .ant-radio-button-wrapper:not(:first-child)::before{
+        width : 0px !important;
     }
 `
 
@@ -54,7 +46,7 @@ export const Heading = styled.div`
 export const ModelCardContainer = styled.div`
     display : flex;
     flex-direction : column;
-    min-height: 250px;
+    height: 250px;
     flex-shrink: 0;
     border-radius: 10px;
     border: 0.8px solid var(--Text-Color-150, #D5D5D5);
@@ -71,7 +63,6 @@ export const ModelCard = styled.div`
 
 export const ModalTags = styled.div`
     display : flex;
-    flex-wrap : wrap;
     gap : 8px;
     padding : 11px 15px;
     border-radius: 0px 0px 10px 10px;
@@ -82,7 +73,7 @@ export const ModalTags = styled.div`
     .ant-tag{
         display: flex;
         height: 26px;
-        padding: 0px 14px;
+        padding: 0px 7px;
         justify-content: center;
         align-items: center;
         gap: 6px;

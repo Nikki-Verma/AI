@@ -2,9 +2,11 @@ import React from 'react'
 import { Tag } from "antd";
 import { HeartOutlined, HeartFilled} from '@ant-design/icons';
 import { ModelCardContainer, ModelHeaderContainer, ModelCardHeading, ModelCardDetail, ModelCard, ModalTags } from "./style";
+import Link from 'next/link';
 
 const CardModel = (props : any) => {
   return (
+    <Link href={`${props?.goToBaseUrl}/TinyLlama-1.1B-Chat-v1.0`}>
     <ModelCardContainer>
         <ModelCard>
         <ModelHeaderContainer>
@@ -28,6 +30,8 @@ const CardModel = (props : any) => {
         </ModelCardHeading>
         <ModelCardDetail>
         The TinyLlama project aims to pretrain a 1.1B Llama model on 3 trillion tokens. With some proper optimization, we can achieve this within a span of "just" 90 days using 
+        The TinyLlama project aims to pretrain a 1.1B Llama model on 3 trillion tokens. With some proper optimization, we can achieve this within a span of "just" 90 days using 
+
         </ModelCardDetail>
         </ModelCard>
         <ModalTags>
@@ -35,7 +39,13 @@ const CardModel = (props : any) => {
             Text Generation
             </Tag>
             <Tag>
-            2.78B params
+            2.78B par
+            </Tag>
+            <Tag>
+            12.3M Run
+            </Tag>
+            <Tag>
+            12.3M Run
             </Tag>
             <Tag>
             12.3M Run
@@ -44,6 +54,7 @@ const CardModel = (props : any) => {
         </ModalTags>
 
     </ModelCardContainer>
+    </Link>
   )
 }
 
