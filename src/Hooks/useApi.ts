@@ -1,9 +1,6 @@
-import { useAppStore } from "@/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useFetchData = (key: string[], url: string, config: any = {}) => {
-  const { user } = useAppStore();
-
   const defaultConfig = {
     "X-User": 0,
   };
@@ -18,8 +15,6 @@ export const useFetchData = (key: string[], url: string, config: any = {}) => {
 };
 
 export const useMutate = (key: string[], url: string, config: any = {}) => {
-  const { user } = useAppStore();
-
   const defaultConfig = {
     "X-User": 0,
   };
