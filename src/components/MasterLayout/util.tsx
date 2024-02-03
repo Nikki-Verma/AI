@@ -1,5 +1,6 @@
 import { Permissions_Types, PERMISSION_TYPE } from "@/utils/constants";
 import { Typography } from "antd";
+import { cloneDeep } from "lodash";
 import Link from "next/link";
 import AgentsIcon from "../Icons/AgentsIcon";
 import BillingIcon from "../Icons/BillingIcon";
@@ -37,6 +38,7 @@ export const getItemByKey = (
   items: any[]
 ) => {
   for (const item of items) {
+    console.log("🚀 ~ item:", item);
     if (flag === "url") {
       const itemUrl = item["url"];
       const currentUrl = value;
@@ -175,7 +177,8 @@ export const getMenuItems = (
     permissionType: Permissions_Types
   ) => boolean
 ) => {
-  const newItems = items?.map((list: any) => {
+  const menuItems = cloneDeep(items);
+  const newItems = menuItems?.map((list: any) => {
     if (
       list?.permissions &&
       !isAuthorized(list?.permissions, list?.permissionType)

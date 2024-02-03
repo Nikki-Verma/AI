@@ -26,10 +26,13 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [theme, token] = useToken();
   const [currentItemKey, setCurrentItemKey] = useState(["overview"]);
+  console.log("🚀 ~ MasterLayout ~ currentItemKey:", currentItemKey);
   const [openItemKey, setOpenItemKey] = useState<string[]>([]);
+  console.log("🚀 ~ MasterLayout ~ openItemKey:", openItemKey);
 
   useEffect(() => {
     const navItem = getItemByKey(pathname, "url", items);
+    console.log("🚀 ~ useEffect ~ navItem:", navItem);
     if (navItem?.keyPath?.length) {
       setOpenItemKey(navItem.keyPath);
       setCurrentItemKey(navItem.keyPath);
