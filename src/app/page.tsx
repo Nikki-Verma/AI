@@ -66,9 +66,9 @@ const Home = (props: any) => {
           <Detail>
           We are almost ready to launch! Be the first to know
           </Detail>
-          <Button>
+          {/* <Button>
             Join waitlist
-          </Button>
+          </Button> */}
         </Col>
       </Container>
   );
