@@ -6,11 +6,9 @@ import {
   getErrorFromApi,
 } from "@/utils/helperFunction";
 import dayjs from "dayjs";
-import { AuthOptions } from "next-auth";
-import NextAuth from "next-auth/next";
+import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   pages: {
     signIn: "/register",
   },
@@ -160,6 +158,6 @@ const authOptions: AuthOptions = {
   debug: true,
 };
 
-const handler = NextAuth(authOptions);
+export const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
