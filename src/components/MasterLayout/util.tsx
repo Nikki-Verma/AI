@@ -183,9 +183,17 @@ export const getMenuItems = (
       return null;
     }
     const filteredList =
-      list?.children?.filter((route: any) => {
-        return isAuthorized(route?.permissions, route?.permissionType);
-      }) || [];
+      list?.children
+        ?.filter((route: any) => {
+          return isAuthorized(route?.permissions, route?.permissionType);
+        })
+        ?.map((children: any) => {
+          delete children?.keyPath;
+          delete children?.permissionType;
+          return children;
+        }) || [];
+    delete list?.keyPath;
+    delete list?.permissionType;
     if (filteredList?.length > 0 && list?.children?.length > 0) {
       return { ...list, children: [...filteredList] };
     } else if (filteredList?.length === 0 && !list?.children?.length) {
