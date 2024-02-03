@@ -1,4 +1,4 @@
-FROM node:16.15.0-alpine as builder
+FROM node:18.17.0-alpine as builder
 
 ENV NPM_CONFIG_LOGLEVEL warn
 
