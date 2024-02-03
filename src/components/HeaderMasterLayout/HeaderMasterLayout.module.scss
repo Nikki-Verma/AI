@@ -2,13 +2,13 @@
   // Content
   min-height: calc(100vh - 64px) !important;
   padding: 20px 40px;
-  background: #F6F8F8;;
+  background: #f6f8f8;
   // margin: 5px 24px 0;
 }
 
 .logo_container {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   margin: 0px 2px;
   overflow: hidden !important;

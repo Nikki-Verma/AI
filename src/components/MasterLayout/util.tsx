@@ -175,16 +175,16 @@ export const getMenuItems = (
     permissionType: Permissions_Types
   ) => boolean
 ) => {
-  const newItems = items.map((list: any) => {
+  const newItems = items?.map((list: any) => {
     if (
-      list.permissions &&
-      !isAuthorized(list.permissions, list.permissionType)
+      list?.permissions &&
+      !isAuthorized(list?.permissions, list?.permissionType)
     ) {
       return null;
     }
     const filteredList =
       list?.children?.filter((route: any) => {
-        return isAuthorized(route.permissions, route.permissionType);
+        return isAuthorized(route?.permissions, route?.permissionType);
       }) || [];
     if (filteredList?.length > 0 && list?.children?.length > 0) {
       return { ...list, children: [...filteredList] };
@@ -194,5 +194,6 @@ export const getMenuItems = (
       return null;
     }
   });
+
   return newItems || [];
 };

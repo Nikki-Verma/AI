@@ -87,7 +87,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
             top: "64px",
             scrollbarWidth: "thin",
             boxShadow: "6px 0 6px -2px rgba(0, 0, 0, 0.06)",
-            zIndex: 1,
+            zIndex: 99,
           }}
         >
           <div className={styles.logo_container}>
@@ -112,11 +112,16 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
             defaultOpenKeys={["order-management"]}
             selectedKeys={currentItemKey}
             openKeys={openItemKey}
-            style={{
-              borderInlineEnd: "none",
-            }}
+            // style={{
+            //   borderInlineEnd: "none",
+            //   justifyContent: "space-between",
+            // }}
+            rootClassName={styles.rootSider}
             items={menuItems}
             onOpenChange={handleOpenChange}
+            // style={{
+            //   border: "1px solid grey",
+            // }}
           />
         </Sider>
         <Content className={styles.content_x} style={{ marginTop: "64px" }}>
