@@ -26,7 +26,7 @@ const Topbar = () => {
         width: "100vw",
         height: "64px",
         lineHeight: "64px",
-        zIndex: 1,
+        zIndex: 99,
       }}
     >
       <MenuOutlined onClick={toggleSiderFixed} />
