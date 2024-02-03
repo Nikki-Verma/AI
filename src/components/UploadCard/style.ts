@@ -26,7 +26,6 @@ export const Heading = styled.div`
 export const UploadDetail = styled.div`
     color: var(--Text-Color-900, #171717);
     text-align: center;
-    font-family: "DM Sans";
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
