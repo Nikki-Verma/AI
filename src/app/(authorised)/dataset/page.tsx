@@ -1,12 +1,21 @@
 "use client"
 
 import { Col, Row, Typography } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ModelContainer, SubHeading } from './style';
+import { useAppStore } from '@/store';
 
 const { Title } = Typography;
 
 const datset = () => {
+  const { userConfig, updatePageConfig } = useAppStore();
+
+  useEffect(() => {
+      updatePageConfig({
+        pageTitle: "Datasets",
+        pageDescription: "Models are your AI powered automations & skills",
+      });
+    }, []);
   return (
     <ModelContainer>
         <Row

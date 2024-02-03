@@ -14,7 +14,7 @@ const Models = () => {
   useEffect(() => {
     updatePageConfig({
       pageTitle: "Models",
-      pageDescription: " Models Description",
+      pageDescription: "Models are your AI powered automations & skills",
     });
   }, []);
 

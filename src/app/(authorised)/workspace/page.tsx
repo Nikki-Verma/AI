@@ -4,11 +4,21 @@ import { Col, Input, Radio, Row, Select, Tag, Typography } from "antd";
 import {SearchOutlined, HeartOutlined, HeartFilled} from '@ant-design/icons';
 import { Heading, WorkspaceContainer, SubHeading } from "./style";
 import CardModel from "@/components/CardModel";
+import { useEffect } from "react";
+import { useAppStore } from "@/store";
 
 
 const {Title} = Typography
 
 const Workspace = () => {
+    const { userConfig, updatePageConfig } = useAppStore();
+
+    useEffect(() => {
+        updatePageConfig({
+          pageTitle: "Workspace",
+          pageDescription: "Models are your AI powered automations & skills",
+        });
+      }, []);
 
     return(
         <WorkspaceContainer>
