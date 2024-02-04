@@ -34,7 +34,7 @@ const Home = (props: any) => {
   });
 
   return (
-      <Container style={{background : `url(${process.env.NEXT_PUBLIC_BASE_URL + "/assets/Images/backgroundImg.svg"}) center repeat-x`}}>
+      <Container style={{background : `url(${process.env.NEXT_PUBLIC_BASE_URL + "/assets/Images/backgroundImg.svg"}) center`}}>
         <Col 
         xl={5}
         lg={5}
