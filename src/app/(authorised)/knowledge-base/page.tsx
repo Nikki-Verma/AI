@@ -8,12 +8,12 @@ import EmptyUpload from '@/components/EmptyUpload';
 
 const { Title } = Typography;
 
-const datset = () => {
+const KnowledgeBase = () => {
   const { userConfig, updatePageConfig } = useAppStore();
 
   useEffect(() => {
       updatePageConfig({
-        pageTitle: "Datasets",
+        pageTitle: "Knowledge base",
         pageDescription: "Models are your AI powered automations & skills",
       });
     }, []);
@@ -27,13 +27,13 @@ const datset = () => {
             span={14}
             style={{ display: "flex", flexDirection: "column", gap: "12px" }}
         >
-            <Title>Datasets</Title>
+            <Title>Knowledge base</Title>
             <SubHeading>
-            Explore, analyze, and share quality data. you can select your data collection while training your ai model, multi data collection can be added in one AI model
+            The knowledge base serves as a repository of structured or unstructured information that an AI system can access to enhance its understanding and generate informed responses.
             </SubHeading>
         </Col>
         <Col span={24}>
-          <Progress percent={70} />
+          <Progress percent={30} />
           <div style={{display : 'flex',width : '100%',justifyContent : 'space-between',alignItems : 'center'}}>
             <span style={{color : '#727272',fontSize : '14px',fontWeight: '500',lineHeight : '24px'}}>
             File upload limit
@@ -50,15 +50,13 @@ const datset = () => {
         </Col>
         </Row>
         <EmptyUpload
-        buttonText = 'Create your dataset'
-        message = 'It seems like you have not created dataset yet.'
+        buttonText = 'Import from Dataset'
+        message = 'It seems like you have not created a knowledge base yet.'
         onClick = {()=>{console.log(`button Clicked`)}}
 
         />
-
-
     </ModelContainer>
   )
 }
 
-export default datset
+export default KnowledgeBase
