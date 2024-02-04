@@ -5,13 +5,15 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 
 import Message from "./Message";
+import { ChatContainer, GetStartedText, WelcomeText } from "./style";
+import { Col, Row } from "antd";
+import Image from "next/image";
 
 type Props = {
-  chatId: string;
   messages: ChatMessage[];
 };
 
-function Chat({ chatId, messages }: Props) {
+function Chat({ messages }: Props) {
   const { data: session } = useSession();
   const messageEndRef = useRef<null | HTMLDivElement>(null);
 
@@ -20,35 +22,33 @@ function Chat({ chatId, messages }: Props) {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto overflow-x-hidden">
+    <ChatContainer>
       {messages?.length < 1 && (
-        <>
-          <p className="mt-10 text-center text-white">
-            Type a prompt in below to get started
-          </p>
-          <div style={{ height: "10px", width: "20px" }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-10 h-10 mx-auto mt-5 text-white animate-bounce"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-        </>
+        <Row style={{display : 'flex',width : '100%',justifyContent : 'center'}}>
+            <Col span={18} style={{display : 'flex',flexDirection : 'column',alignItems : 'center'}}>
+            <Image
+            src={
+              process.env.NEXT_PUBLIC_BASE_URL +
+              "/assets/Logos/simplaiLogo.svg"
+            }
+            height={47}
+            width={47}
+            alt=""
+            />
+            <WelcomeText>
+            Welcome to Assistant by <a style={{color : '#602EDF'}}>Simplai.ai</a>
+            </WelcomeText>
+            <GetStartedText>
+            Get started by writing a task and Assistant can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.
+            </GetStartedText>
+            </Col>
+        </Row>
       )}
       {messages?.map((message) => (
         <Message key={message.id} message={message} />
       ))}
       <div ref={messageEndRef} />
-    </div>
+    </ChatContainer>
   );
 }
 

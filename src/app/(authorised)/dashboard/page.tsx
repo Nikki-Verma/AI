@@ -1,12 +1,10 @@
 "use client";
 
-import Chat from "@/components/Chat/Chat";
-import ChatInput from "@/components/Chat/ChatInput";
-import useChatStream from "@/Hooks/useChatStream";
+import ChatBot from "@/components/ChatBot";
 import { useAppStore } from "@/store";
 import { motion } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { DashboardContainer } from "./style";
 
 type Props = {
   params: {
@@ -14,24 +12,10 @@ type Props = {
   };
 };
 
-function ChatPage({ params: { id } }: Props) {
+function ChatPage() {
   const { updatePageConfig } = useAppStore();
 
-  const { data: session } = useSession();
-  const [prompt, setPrompt] = useState("");
 
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    setMessages,
-    setInput,
-    stopStream,
-    conversationId,
-    setConversationId,
-  } = useChatStream({});
 
   useEffect(() => {
     updatePageConfig({
@@ -41,22 +25,9 @@ function ChatPage({ params: { id } }: Props) {
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      className="flex flex-col h-screen overflow-hidden"
-    >
-      <Chat messages={messages} chatId={id} />
-      <ChatInput
-        submitHandler={handleSubmit}
-        handleInputChange={handleInputChange}
-        input={input}
-        setInput={setInput}
-        loading={isLoading}
-        chatId={id}
-      />
-    </motion.div>
+    <DashboardContainer>
+    <ChatBot />
+    </DashboardContainer>
   );
 }
 

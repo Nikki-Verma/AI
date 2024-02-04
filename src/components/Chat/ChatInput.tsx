@@ -3,11 +3,14 @@
 import { Button, Input } from "antd";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
+import { ActionContainer, BottomControls, BottonLeftControl, BottonRightControl, ChatInputContainer } from "./style";
+import AttachIcon from "../Icons/AttachIcon";
+import TemplateIcon from "../Icons/TemplateIcon";
+import SendIcon from "../Icons/SendIcon";
 
 const { TextArea } = Input;
 
 type Props = {
-  chatId: string;
   submitHandler: (val: any) => void;
   handleInputChange: (val: any) => void;
   input: string;
@@ -16,7 +19,6 @@ type Props = {
 };
 
 function ChatInput({
-  chatId,
   submitHandler,
   loading,
   input,
@@ -27,7 +29,7 @@ function ChatInput({
   const [prompt, setPrompt] = useState("");
 
   return (
-    <div className="bg-gray-700/50 text-gray-400 rounded-lg text-sm">
+    <ChatInputContainer>
       <TextArea
         placeholder="Type your message here..."
         disabled={!session}
@@ -35,43 +37,33 @@ function ChatInput({
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
           handleInputChange(e);
         }}
-        className={`bg-transparent focus:outline-none flex-1 disabled:cursor-not-allowed disabled:text-gray-300 ${
-          !loading && "animate-pulse"
-        }`}
+        style={{resize : 'none'}}
+        autoSize={{ minRows: 2, maxRows: 6 }}
         onKeyPress={(event: any) => {
           if (event.which === 13) {
             submitHandler({});
           }
         }}
       />
-
-      {loading ? (
-        <button
-          type="submit"
-          disabled={!prompt || !session}
-          className="bg-[#11A37F] hover:opacity-50 text-white font-bold px-4 py-2 rounded disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-4 h-4 -rotate-45"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-            />
-          </svg>
-        </button>
-      ) : (
-        <Button onClick={submitHandler} disabled={!session}>
-          Submit
-        </Button>
-      )}
-    </div>
+      <BottomControls>
+          <BottonLeftControl>
+            <ActionContainer>
+              <AttachIcon />
+              Attach
+            </ActionContainer>
+            <ActionContainer>
+              <TemplateIcon/>
+              Browse templates
+            </ActionContainer>
+          </BottonLeftControl>
+          <BottonRightControl>
+            <div style={{color : 'var(--Text-Color-800, #2E2E2E)',fontSize : '12px'}}>
+            0/1000
+            </div>
+            <SendIcon onClick = {()=>submitHandler({})} style = {{cursor : 'pointer'}}/>
+          </BottonRightControl>
+      </BottomControls>
+    </ChatInputContainer>
   );
 }
 
