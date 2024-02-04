@@ -1,13 +1,14 @@
 import { useAppStore } from "@/store";
+import { HeaderSubTitle, HeaderTitle, PageHeader } from "./style";
 
 const TopbarHeading = () => {
   const { pageConfig } = useAppStore();
 
   return (
-    <>
-      <span>{pageConfig?.pageTitle}</span>
-      <span>{pageConfig?.pageDescription}</span>
-    </>
+    <PageHeader>
+      <HeaderTitle>{pageConfig?.pageTitle}</HeaderTitle>
+      <HeaderSubTitle>{pageConfig?.pageDescription}</HeaderSubTitle>
+    </PageHeader>
   );
 };
 
