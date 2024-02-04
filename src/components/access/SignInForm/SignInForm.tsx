@@ -65,7 +65,7 @@ const SignInForm = () => {
             className={styles.main_heading}
             style={{ color: token.colorPrimary }}
           >
-            Thetechia.ai
+            SimplAi
           </div>
           <div className={styles.form_heading}>Sign in to your account</div>
           <Row gutter={[20, 0]}>
@@ -162,7 +162,7 @@ const SignInForm = () => {
             className={styles.main_heading}
             style={{ color: token.colorPrimary }}
           >
-            Thetechia.ai
+            SimplAi
           </div>
           {!passwordSent ? (
             <>

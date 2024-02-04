@@ -6,7 +6,7 @@ const InfoBanner = () => {
   return (
     <div className={styles.info_container}>
       <div className={styles.info_banner_heading}>
-        Join millions worldwide who automate their work using Thetechia.ai
+        Join millions worldwide who automate their work using SimplAi
       </div>
       <Row gutter={[10, 30]}>
         <Col
