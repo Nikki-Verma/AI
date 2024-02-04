@@ -33,7 +33,7 @@
 
 .form_footer_action {
   cursor: pointer;
-  color: var(--blue-purple-600, #602edf);
+  color: var(primary-color);
   font-feature-settings:
     "clig" off,
     "liga" off;
@@ -45,7 +45,6 @@
   text-decoration-line: underline;
 }
 
-
 .back_button_container {
   display: flex;
   width: 40px;
@@ -56,8 +55,8 @@
   gap: 6px;
   flex-shrink: 0;
   border-radius: 8px;
-  border: 0.5px solid var(--Text-Color-150, #D5D5D5);
-  background: #F8F9FA;
+  border: 0.5px solid var(--Text-Color-150, #d5d5d5);
+  background: #f8f9fa;
 
   /* drop-shadow/button-secondary */
   box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
@@ -72,6 +71,6 @@
   align-items: center;
   gap: 6px;
   border-radius: 10px;
-  border: 1px solid #D5D5D5;
-  background: var(--Text-Color-50, #FFF);
+  border: 1px solid #d5d5d5;
+  background: var(--Text-Color-50, #fff);
 }

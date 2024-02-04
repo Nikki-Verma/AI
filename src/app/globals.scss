@@ -1,3 +1,7 @@
+$primary-color: #602edf;
+$layout-bg-color: #f6f8f8;
+$tertiary-layout-bg-color: #f3f5fb;
+
 a {
   text-decoration: none;
   color: inherit;
@@ -15,7 +19,7 @@ body {
   font-weight: 500;
 }
 
-h1.ant-typography{
+h1.ant-typography {
   color: var(--Text-Color-900, #171717) !important;
   font-family: var(--font-dm-sans) !important;
   font-size: 32px !important;

@@ -1,6 +1,7 @@
 // "use client";
 
 import { getErrorFromApi } from "@/utils/helperFunction";
+import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, notification, Row, Space } from "antd";
 import useToken from "antd/es/theme/useToken";
@@ -239,7 +240,7 @@ const SignInForm = () => {
               <div className={styles.resend_details} style={{ width: "70%" }}>
                 If you haven't received an email in 5 minutes, check your spam
                 or{" "}
-                <span style={{ color: "#602EDF", cursor: "pointer" }}>
+                <span style={{ color: PRIMARY_BRAND_COLOR, cursor: "pointer" }}>
                   retry.
                 </span>
               </div>

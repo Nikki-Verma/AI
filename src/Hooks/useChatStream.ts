@@ -75,6 +75,8 @@ const useChatStream = (input: UseChatStreamInput) => {
   ) => {
     try {
       const stream = await getStream(conversationID, messageID);
+      console.log("🚀 ~ useChatStream ~ messageID:", messageID);
+      console.log("🚀 ~ useChatStream ~ conversationID:", conversationID);
       console.log("🚀 ~ useChatStream ~ stream:", stream);
       if (!stream) throw new Error();
 
@@ -82,11 +84,15 @@ const useChatStream = (input: UseChatStreamInput) => {
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
+        // if (message === "refetch") {
+        //   fetchAndUpdateAIResponse(messageID, conversationID);
+        //   break;
+        // }
         appendMessageToChat(message);
       }
     } catch (error: any) {
-      console.log("error while stream response", error?.response);
-      console.log("error while stream data", error?.response);
+      // console.log("error while stream response", error?.response);
+      // console.log("error while stream data", error?.response);
     }
   };
 
@@ -129,16 +135,10 @@ const useChatStream = (input: UseChatStreamInput) => {
         },
       });
       if (res?.data?.result?.conversation_id) {
-        console.log(
-          "🚀 ~ useChatStream ~ res?.data?.result?.conversation_id:",
-          res?.data?.result?.conversation_id
-        );
-        console.log("🚀 ~ useChatStream ~ conversationId:", conversationId);
         if (
           !conversationId ||
           res?.data?.result?.conversation_id != conversationId
         ) {
-          console.log("conversation logs");
           setConversationId(res?.data?.result?.conversation_id);
         }
 
@@ -147,7 +147,6 @@ const useChatStream = (input: UseChatStreamInput) => {
           res?.data?.result?.conversation_id
         );
       }
-      console.log("🚀 ~ initiateConverstation ~ res:", res);
     } catch {
       addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
     } finally {

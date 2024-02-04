@@ -1,5 +1,6 @@
 "use client";
 
+import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { Button, Checkbox, Col, Form, Input, Row, Space } from "antd";
 import useToken from "antd/es/theme/useToken";
 import Image from "next/image";
@@ -72,11 +73,11 @@ const SignUpForm = () => {
             <Checkbox></Checkbox>
             <div className={styles.checkbox_label}>
               I agree to Thetechia.ai's{" "}
-              <a style={{ color: "#602EDF", cursor: "pointer" }}>
+              <a style={{ color: PRIMARY_BRAND_COLOR, cursor: "pointer" }}>
                 terms and conditions
               </a>{" "}
               and consent to{" "}
-              <a style={{ color: "#602EDF", cursor: "pointer" }}>
+              <a style={{ color: PRIMARY_BRAND_COLOR, cursor: "pointer" }}>
                 data privacy policy
               </a>
               .

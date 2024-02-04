@@ -32,7 +32,6 @@ function ChatPage({ params: { id } }: Props) {
     conversationId,
     setConversationId,
   } = useChatStream({});
-  console.log("🚀 ~ ChatPage ~ conversationId:", conversationId);
 
   useEffect(() => {
     updatePageConfig({

@@ -28,7 +28,7 @@ export const getStream = async (
   cId: string,
   mId: string,
   headers: HeadersInit = {}
-) => {
+): Promise<any> => {
   const query = {
     cId,
     mId,
@@ -60,7 +60,7 @@ export async function* decodeStreamToJson(
     const { value, done } = await reader.read();
     console.log("🚀 ~ done:", done);
     console.log("🚀 ~ value:", value);
-    if (!value && done) return console.log("abcd");
+    if (!value && done) return yield "refetch";
     if (done) break;
 
     if (value) {
