@@ -7,6 +7,7 @@ import { Button, Col, Typography } from "antd";
 import Link from "next/link";
 import { Container, Detail, Heading, SubHeading } from "./style";
 import Image from "next/image";
+import { Page_Type } from "@/utils/constants";
 
 const { Text } = Typography;
 
@@ -74,4 +75,4 @@ const Home = (props: any) => {
   );
 };
 
-export default AuthHoc(Home);
+export default AuthHoc(Home, Page_Type.unauth);
