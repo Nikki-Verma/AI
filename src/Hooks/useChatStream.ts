@@ -34,23 +34,24 @@ type UseChatStreamInput = {
 
 const useChatStream = (input: UseChatStreamInput) => {
   const [messages, setMessages] = useState<ChatMessage[]>(
-    input?.messages ?? []
+    input?.messages ?? [],
   );
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [conversationId, setConversationId] = useState(input?.convId);
 
   let streamRef = useRef<any>();
+  let messageRef = useRef<any>(true);
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setMessage(e.target.value);
   };
 
   const addMessageToChat = (
     message: string,
-    role: ChatMessage["role"] = "user"
+    role: ChatMessage["role"] = "user",
   ) => {
     setMessages((messages) => [
       ...messages,
@@ -71,7 +72,7 @@ const useChatStream = (input: UseChatStreamInput) => {
 
   const fetchAndUpdateAIResponse = async (
     messageID: string,
-    conversationID: string
+    conversationID: string,
   ) => {
     try {
       const stream = await getStream(conversationID, messageID);
@@ -80,17 +81,26 @@ const useChatStream = (input: UseChatStreamInput) => {
       console.log("🚀 ~ useChatStream ~ stream:", stream);
       if (!stream) throw new Error();
 
-      addMessageToChat("", "SimplAi");
+      console.log("messgess", messages);
+
+      if (messageRef.current) addMessageToChat("", "SimplAi");
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
-        // if (message === "refetch") {
-        //   fetchAndUpdateAIResponse(messageID, conversationID);
-        //   break;
-        // }
+        console.log("🚀 ~ forawait ~ message:", message);
+        if (message === "refetch") {
+          setTimeout(() => {
+            messageRef.current = false;
+            fetchAndUpdateAIResponse(messageID, conversationID);
+          }, 3000);
+          break;
+        }
+        messageRef.current = true;
         appendMessageToChat(message);
       }
     } catch (error: any) {
+      addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
+      messageRef.current = true;
       // console.log("error while stream response", error?.response);
       // console.log("error while stream data", error?.response);
     }
@@ -107,7 +117,7 @@ const useChatStream = (input: UseChatStreamInput) => {
 
   const handleSubmit = async (
     e?: FormEvent<HTMLFormElement>,
-    newMessage?: string
+    newMessage?: string,
   ) => {
     setIsLoading(true);
     // e?.preventDefault();
@@ -144,7 +154,7 @@ const useChatStream = (input: UseChatStreamInput) => {
 
         await fetchAndUpdateAIResponse(
           res?.data?.result?.message_id,
-          res?.data?.result?.conversation_id
+          res?.data?.result?.conversation_id,
         );
       }
     } catch {

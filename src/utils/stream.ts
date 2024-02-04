@@ -14,7 +14,7 @@ const DEFAULT_HEADERS = {
 const mergeInputInOptions = (
   input: string,
   options: UseChatStreamOptions,
-  method: UseChatStreamInputMethod
+  method: UseChatStreamInputMethod,
 ) => {
   // options.query = options.query ?? {};
   // (options[method.type] as Record<string, unknown>)[method.key] = input;
@@ -27,7 +27,7 @@ const mergeInputInOptions = (
 export const getStream = async (
   cId: string,
   mId: string,
-  headers: HeadersInit = {}
+  headers: HeadersInit = {},
 ): Promise<any> => {
   const query = {
     cId,
@@ -52,20 +52,27 @@ export const getStream = async (
 };
 
 export async function* decodeStreamToJson(
-  reader: any
+  reader: any,
 ): AsyncIterableIterator<string> {
   const decoder = new TextDecoder();
 
   while (true) {
     const { value, done } = await reader.read();
-    console.log("🚀 ~ done:", done);
     console.log("🚀 ~ value:", value);
-    if (!value && done) return yield "refetch";
+
     if (done) break;
 
     if (value) {
+      var find = "data:";
+      var re = new RegExp(find, "g");
+      const decodedValue = decoder?.decode(value)?.replace(re, "").trim();
+      console.log("🚀 ~ decodedValue:", decodedValue);
+      if (decodedValue.trim().toUpperCase() == "PROCESSING") {
+        yield "refetch";
+        break;
+      }
       try {
-        yield decoder.decode(value);
+        yield decoder?.decode(value);
       } catch (error) {
         console.error(error);
       }
