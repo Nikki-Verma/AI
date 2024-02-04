@@ -1,3 +1,4 @@
+import { initiateConversationApi } from "@/api/intract";
 import { decodeStreamToJson, getStream } from "@/utils/stream";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
@@ -7,7 +8,7 @@ const SimplAi_ERROR_MESSAGE = "Something went wrong fetching AI response.";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-type ChatMessage = {
+export type ChatMessage = {
   role: "SimplAi" | "user";
   content: string;
   id: string;
@@ -27,14 +28,17 @@ export type UseChatStreamInputMethod = {
 };
 
 type UseChatStreamInput = {
-  options: UseChatStreamOptions;
-  method: UseChatStreamInputMethod;
+  convId?: string;
+  messages?: ChatMessage[];
 };
 
 const useChatStream = (input: UseChatStreamInput) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>(
+    input?.messages ?? []
+  );
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationId, setConversationId] = useState(input?.convId);
 
   let streamRef = useRef<any>();
 
@@ -65,15 +69,24 @@ const useChatStream = (input: UseChatStreamInput) => {
     });
   };
 
-  const fetchAndUpdateAIResponse = async (message: string) => {
-    const stream = await getStream(message, input.options, input.method);
-    if (!stream) throw new Error();
+  const fetchAndUpdateAIResponse = async (
+    messageID: string,
+    conversationID: string
+  ) => {
+    try {
+      const stream = await getStream(conversationID, messageID);
+      console.log("🚀 ~ useChatStream ~ stream:", stream);
+      if (!stream) throw new Error();
 
-    addMessageToChat("", "SimplAi");
+      addMessageToChat("", "SimplAi");
 
-    streamRef.current = stream.getReader();
-    for await (const message of decodeStreamToJson(streamRef.current)) {
-      appendMessageToChat(message);
+      streamRef.current = stream.getReader();
+      for await (const message of decodeStreamToJson(streamRef.current)) {
+        appendMessageToChat(message);
+      }
+    } catch (error: any) {
+      console.log("error while stream response", error?.response);
+      console.log("error while stream data", error?.response);
     }
   };
 
@@ -91,12 +104,50 @@ const useChatStream = (input: UseChatStreamInput) => {
     newMessage?: string
   ) => {
     setIsLoading(true);
-    e?.preventDefault();
+    // e?.preventDefault();
     addMessageToChat(newMessage ?? message);
     setMessage("");
 
     try {
-      await fetchAndUpdateAIResponse(newMessage ?? message);
+      const res = await initiateConversationApi({
+        payload: {
+          action: conversationId ? "START_SCREEN" : "START_SCREEN",
+          model: "abc",
+          language_code: "EN",
+          source: "APP",
+          query: {
+            message: newMessage ?? message,
+            message_type: "text",
+            message_category: "",
+          },
+          conversation_id: conversationId,
+        },
+        headers: {
+          "X-SELLER-ID": "1",
+          "X-USER-ID": "1",
+          "X-SELLER-PROFILE-ID": "11",
+        },
+      });
+      if (res?.data?.result?.conversation_id) {
+        console.log(
+          "🚀 ~ useChatStream ~ res?.data?.result?.conversation_id:",
+          res?.data?.result?.conversation_id
+        );
+        console.log("🚀 ~ useChatStream ~ conversationId:", conversationId);
+        if (
+          !conversationId ||
+          res?.data?.result?.conversation_id != conversationId
+        ) {
+          console.log("conversation logs");
+          setConversationId(res?.data?.result?.conversation_id);
+        }
+
+        await fetchAndUpdateAIResponse(
+          res?.data?.result?.message_id,
+          res?.data?.result?.conversation_id
+        );
+      }
+      console.log("🚀 ~ initiateConverstation ~ res:", res);
     } catch {
       addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
     } finally {
@@ -107,6 +158,8 @@ const useChatStream = (input: UseChatStreamInput) => {
   };
 
   return {
+    conversationId,
+    setConversationId,
     messages,
     setMessages,
     input: message,

@@ -2,9 +2,13 @@ import {
   UseChatStreamInputMethod,
   UseChatStreamOptions,
 } from "@/Hooks/useChatStream";
+import config from "./apiEndoints";
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
+  "X-SELLER-ID": "1",
+  "X-USER-ID": "1",
+  "X-SELLER-PROFILE-ID": "11",
 };
 
 const mergeInputInOptions = (
@@ -21,22 +25,26 @@ const mergeInputInOptions = (
 };
 
 export const getStream = async (
-  input: string,
-  options: UseChatStreamOptions,
-  method: UseChatStreamInputMethod
+  cId: string,
+  mId: string,
+  headers: HeadersInit = {}
 ) => {
-  options = mergeInputInOptions(input, options, method);
+  const query = {
+    cId,
+    mId,
+  };
 
-  const params = "?" + new URLSearchParams(options.query).toString();
+  const params = "?" + new URLSearchParams(query).toString();
 
-  const response = await fetch(options.url + params, {
-    method: options.method,
+  const response = await fetch(config.intract.streamResponse + params, {
+    method: "GET",
     headers: {
       ...DEFAULT_HEADERS,
-      ...options.headers,
+      ...headers,
     },
-    body: JSON.stringify(options.body, (_k, v) => (v === null ? undefined : v)),
   });
+  console.log("🚀 ~ response:", response);
+  if (response.status === 102) return getStream(cId, mId, headers);
 
   if (!response.ok) throw new Error(response.statusText);
 
@@ -50,6 +58,9 @@ export async function* decodeStreamToJson(
 
   while (true) {
     const { value, done } = await reader.read();
+    console.log("🚀 ~ done:", done);
+    console.log("🚀 ~ value:", value);
+    if (!value && done) return console.log("abcd");
     if (done) break;
 
     if (value) {

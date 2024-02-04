@@ -1,8 +1,9 @@
 const __EDGE_URL__ = process.env.NEXT_PUBLIC_EDGE_BASE_URL;
 const __IDENTITY_BASE_URL__ = process.env.NEXT_PUBLIC_IDENTITY_BASE_URL;
-
+const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
+  intract: __INTRACT_BASE_URL__,
 };
 
 const config = {
@@ -24,6 +25,10 @@ const config = {
     updatePassword: `${BASE_URLS.identity}/password/update`,
     authenticateEmail: `${BASE_URLS.identity}/authenticate/email`,
     resendOTP: `${BASE_URLS.identity}/authenticate/resend_otp`,
+  },
+  intract: {
+    initiateConversation: `${BASE_URLS.intract}/api/v1/intract/conversation`,
+    streamResponse: `${BASE_URLS.intract}/api/v1/intract/conversation/fetch`,
   },
 };
 

@@ -38,7 +38,6 @@ export const getItemByKey = (
   items: any[]
 ) => {
   for (const item of items) {
-    console.log("🚀 ~ item:", item);
     if (flag === "url") {
       const itemUrl = item["url"];
       const currentUrl = value;
