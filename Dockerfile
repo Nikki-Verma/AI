@@ -26,4 +26,5 @@ RUN npm run build
 COPY ./$SVC/launch.sh .
 RUN chmod +x launch.sh
 ENV parameters="$SVC $ENVIRONMENT"
+RUN rm -f .env || echo ".env file deleted"
 ENTRYPOINT npm run start
