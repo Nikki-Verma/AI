@@ -1,4 +1,5 @@
-FROM node:18.17.0-alpine as builder
+#FROM node:18.17.0-alpine as builder
+FROM 637423419927.dkr.ecr.ap-south-1.amazonaws.com/dashboard:base as builder
 
 ENV NPM_CONFIG_LOGLEVEL warn
 

@@ -28,7 +28,7 @@ const SignUpForm = () => {
           className={styles.main_heading}
           style={{ color: token.colorPrimary }}
         >
-          Thetechia.ai
+          SimplAi
         </div>
         <div className={styles.form_heading}>Create your account</div>
         <Row gutter={[20, 0]} style={{ display: "flex" }}>
@@ -72,8 +72,8 @@ const SignUpForm = () => {
           >
             <Checkbox></Checkbox>
             <div className={styles.checkbox_label}>
-              I agree to Thetechia.ai's{" "}
-              <a style={{ color: PRIMARY_BRAND_COLOR, cursor: "pointer" }}>
+              I agree to SimplAi's{" "}
+              <a style={{ color: "#602EDF", cursor: "pointer" }}>
                 terms and conditions
               </a>{" "}
               and consent to{" "}
