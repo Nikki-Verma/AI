@@ -15,7 +15,6 @@ type Props = {
 function ChatPage() {
   const { updatePageConfig } = useAppStore();
   const [conversationId, setConversationId] = useState<string | undefined>();
-  console.log("🚀 ~ ChatPage ~ conversationId:", conversationId);
 
   useEffect(() => {
     updatePageConfig({

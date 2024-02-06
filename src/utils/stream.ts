@@ -76,8 +76,6 @@ export const getChatDetails = async (
 
   const chatMessage =
     response?.data?.result?.response?.flatMap((chat: any) => {
-      console.log("🚀 ~ chatMessage ~ chat:", chat);
-
       const userMessage = {
         role: "user",
         content: chat?.query?.message || "",

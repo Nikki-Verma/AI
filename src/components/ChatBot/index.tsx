@@ -38,7 +38,6 @@ const ChatBot = ({ propConversationId }: ChatBotProps) => {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ propConversationId:", propConversationId);
     changeConversation(propConversationId);
   }, [propConversationId]);
 
