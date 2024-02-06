@@ -128,7 +128,9 @@ const useChatStream = (input: UseChatStreamInput) => {
   ) => {
     try {
       setIsLoading(true);
-      const stream = await getStream(conversationID, messageID);
+      const stream = await getStream(conversationID, messageID, {
+        [X_USER_ID]: data?.user?.details?.id,
+      });
       if (!stream) throw new Error();
 
       if (messageRef.current) addMessageToChat("", "SimplAi");

@@ -21,11 +21,7 @@ const ChatBot = ({ propConversationId }: ChatBotProps) => {
     handleInputChange,
     handleSubmit,
     isLoading,
-    setMessages,
     setInput,
-    stopStream,
-    conversationId,
-    setConversationId,
     changeConversation,
     changeConversationLoading,
   } = useChatStream({
