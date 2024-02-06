@@ -1,8 +1,8 @@
 "use client";
 
 import ChatBot from "@/components/ChatBot";
+import ChatHistory from "@/components/ChatHistory";
 import { useAppStore } from "@/store";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { DashboardContainer } from "./style";
 
@@ -14,8 +14,8 @@ type Props = {
 
 function ChatPage() {
   const { updatePageConfig } = useAppStore();
-
-
+  const [conversationId, setConversationId] = useState<string | undefined>();
+  console.log("🚀 ~ ChatPage ~ conversationId:", conversationId);
 
   useEffect(() => {
     updatePageConfig({
@@ -26,7 +26,15 @@ function ChatPage() {
 
   return (
     <DashboardContainer>
-    <ChatBot />
+      <div style={{ height: "100%", flex: 1 }}>
+        <ChatBot propConversationId={conversationId} />
+      </div>
+      <div style={{ height: "100%", width: "20%" }}>
+        <ChatHistory
+          setConversationId={setConversationId}
+          conversationId={conversationId}
+        />
+      </div>
     </DashboardContainer>
   );
 }

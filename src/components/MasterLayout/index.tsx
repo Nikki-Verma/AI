@@ -90,10 +90,10 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
               style={{
                 margin: "16px 10px",
               }}
-              alt="SimplAi"
+              alt="SimplAI"
             />
             <Title level={3} style={{ color: token.colorPrimary }}>
-              Simplai.ai
+              SimplAI.ai
             </Title>
           </div>
           <SidebarToggleBtn

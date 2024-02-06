@@ -29,6 +29,8 @@ const config = {
   intract: {
     initiateConversation: `${BASE_URLS.intract}/api/v1/intract/conversation`,
     streamResponse: `${BASE_URLS.intract}/api/v1/intract/conversation/fetch`,
+    chatHistoryList: `${BASE_URLS.intract}/api/v1/intract/conversation`,
+    chatDetails: `${BASE_URLS.intract}/api/v1/intract/conversation`,
   },
 };
 

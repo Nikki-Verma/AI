@@ -1,6 +1,6 @@
 import _unauthHttp from "@/services/_unauthHttp";
 import config from "@/utils/apiEndoints";
-import { tokenDateFormat } from "@/utils/constants";
+import { tokenDateFormat, X_DEVICE_ID } from "@/utils/constants";
 import {
   generateEncryptedPassword,
   getErrorFromApi,
@@ -53,7 +53,7 @@ export const authOptions: AuthOptions = {
                 "Refresh-Token": token?.refreshToken,
                 "Grant-Type": "REFRESH_TOKEN",
               },
-            }
+            },
           );
 
           if (response.status === 201 && response?.data?.ok) {
@@ -69,7 +69,7 @@ export const authOptions: AuthOptions = {
         } catch (error) {
           console.error(
             "Error refreshing access token",
-            getErrorFromApi(error)
+            getErrorFromApi(error),
           );
           // The error property will be used client-side to handle the refresh token error
           return { error: "RefreshAccessTokenError" as const };
@@ -102,7 +102,7 @@ export const authOptions: AuthOptions = {
           // Call login api to get user session
 
           const encryptedPass = await generateEncryptedPassword(
-            credentials?.password
+            credentials?.password,
           );
 
           const url = config.identity.login;
@@ -114,7 +114,7 @@ export const authOptions: AuthOptions = {
           };
 
           const headers = {
-            "X-DEVICE-ID": "armaze-web",
+            [X_DEVICE_ID]: "armaze-web",
           };
 
           const res = await _unauthHttp.post(url, body, {

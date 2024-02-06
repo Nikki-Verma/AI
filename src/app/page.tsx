@@ -40,7 +40,7 @@ const Home = (props: any) => {
           style={{
             margin: "0px 10px",
           }}
-          alt="SimplAi"
+          alt="SimplAI"
         />
         SimplAI
       </Col>

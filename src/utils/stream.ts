@@ -1,14 +1,22 @@
+import { Headers, Params } from "@/Hooks/useApi";
 import {
   UseChatStreamInputMethod,
   UseChatStreamOptions,
 } from "@/Hooks/useChatStream";
+import _authHttp from "@/services/_http";
+import { v4 } from "uuid";
 import config from "./apiEndoints";
+import {
+  DUMMY_SELLER_ID,
+  DUMMY_SELLER_PROFILE_ID,
+  X_SELLER_ID,
+  X_SELLER_PROFILE_ID,
+} from "./constants";
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
-  "X-SELLER-ID": "1",
-  "X-USER-ID": "1",
-  "X-SELLER-PROFILE-ID": "11",
+  [X_SELLER_ID]: DUMMY_SELLER_ID,
+  [X_SELLER_PROFILE_ID]: DUMMY_SELLER_PROFILE_ID,
 };
 
 const mergeInputInOptions = (
@@ -43,12 +51,47 @@ export const getStream = async (
       ...headers,
     },
   });
-  console.log("🚀 ~ response:", response);
+
   if (response.status === 102) return getStream(cId, mId, headers);
 
   if (!response.ok) throw new Error(response.statusText);
 
   return response.body;
+};
+
+export const getChatDetails = async (
+  chatId: string,
+  params?: Params,
+  headers?: Headers,
+) => {
+  const response = await _authHttp.get(
+    `${config.intract.chatDetails}/${chatId}`,
+    {
+      params,
+      headers: { ...DEFAULT_HEADERS, ...headers },
+    },
+  );
+  if (response?.status !== 200)
+    throw new Error("Error while fetching chat details");
+
+  const chatMessage =
+    response?.data?.result?.response?.flatMap((chat: any) => {
+      console.log("🚀 ~ chatMessage ~ chat:", chat);
+
+      const userMessage = {
+        role: "user",
+        content: chat?.query?.message || "",
+        id: v4(),
+      };
+      const SimplAiMessage = {
+        role: "SimplAi",
+        content: chat?.query_result || "",
+        id: v4(),
+      };
+      return [userMessage, SimplAiMessage];
+    }) || [];
+
+  return chatMessage;
 };
 
 export async function* decodeStreamToJson(
@@ -58,7 +101,6 @@ export async function* decodeStreamToJson(
 
   while (true) {
     const { value, done } = await reader.read();
-    console.log("🚀 ~ value:", value);
 
     if (done) break;
 
@@ -66,13 +108,13 @@ export async function* decodeStreamToJson(
       var find = "data:";
       var re = new RegExp(find, "g");
       const decodedValue = decoder?.decode(value)?.replace(re, "").trim();
-      console.log("🚀 ~ decodedValue:", decodedValue);
+
       if (decodedValue.trim().toUpperCase() == "PROCESSING") {
         yield "refetch";
         break;
       }
       try {
-        yield decoder?.decode(value);
+        yield decodedValue;
       } catch (error) {
         console.error(error);
       }

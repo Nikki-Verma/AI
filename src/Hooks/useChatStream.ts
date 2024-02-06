@@ -1,5 +1,13 @@
 import { initiateConversationApi } from "@/api/intract";
-import { decodeStreamToJson, getStream } from "@/utils/stream";
+import {
+  DUMMY_SELLER_ID,
+  DUMMY_SELLER_PROFILE_ID,
+  X_SELLER_ID,
+  X_SELLER_PROFILE_ID,
+  X_USER_ID,
+} from "@/utils/constants";
+import { decodeStreamToJson, getChatDetails, getStream } from "@/utils/stream";
+import { useSession } from "next-auth/react";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
@@ -27,18 +35,35 @@ export type UseChatStreamInputMethod = {
   key: string;
 };
 
+interface chatConfig {
+  model: string;
+  language_code?: string;
+  source?: string;
+}
+
 type UseChatStreamInput = {
   convId?: string;
   messages?: ChatMessage[];
+  chatConfig?: chatConfig;
 };
 
 const useChatStream = (input: UseChatStreamInput) => {
+  const { data }: any = useSession();
   const [messages, setMessages] = useState<ChatMessage[]>(
     input?.messages ?? [],
   );
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [conversationId, setConversationId] = useState(input?.convId);
+  const [changeConversationLoading, setChangeConversationLoading] =
+    useState(false);
+  const [chatConfig, setChatConfig] = useState(
+    input?.chatConfig ?? {
+      model: "abc",
+      language_code: "EN",
+      source: "APP",
+    },
+  );
 
   let streamRef = useRef<any>();
   let messageRef = useRef<any>(true);
@@ -46,7 +71,34 @@ const useChatStream = (input: UseChatStreamInput) => {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
   ) => {
-    setMessage(e.target.value);
+    setMessage(e?.target?.value);
+  };
+
+  const changeConversation = async (convId: string | undefined) => {
+    try {
+      setChangeConversationLoading(true);
+      setConversationId(convId);
+      setMessage("");
+      if (convId) {
+        setMessages([]);
+        const chatDetails = await getChatDetails(
+          convId,
+          {
+            userId: data?.user?.details?.id,
+          },
+          {
+            [X_USER_ID]: data?.user?.details?.id,
+          },
+        );
+        setMessages(chatDetails);
+      } else {
+        setMessages([]);
+      }
+    } catch (error) {
+      setMessages([]);
+    } finally {
+      setChangeConversationLoading(false);
+    }
   };
 
   const addMessageToChat = (
@@ -75,34 +127,28 @@ const useChatStream = (input: UseChatStreamInput) => {
     conversationID: string,
   ) => {
     try {
+      setIsLoading(true);
       const stream = await getStream(conversationID, messageID);
-      console.log("🚀 ~ useChatStream ~ messageID:", messageID);
-      console.log("🚀 ~ useChatStream ~ conversationID:", conversationID);
-      console.log("🚀 ~ useChatStream ~ stream:", stream);
       if (!stream) throw new Error();
-
-      console.log("messgess", messages);
 
       if (messageRef.current) addMessageToChat("", "SimplAi");
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
-        console.log("🚀 ~ forawait ~ message:", message);
         if (message === "refetch") {
-          setTimeout(() => {
-            messageRef.current = false;
-            fetchAndUpdateAIResponse(messageID, conversationID);
-          }, 3000);
+          messageRef.current = false;
+          fetchAndUpdateAIResponse(messageID, conversationID);
           break;
         }
+        setIsLoading(false);
         messageRef.current = true;
         appendMessageToChat(message);
       }
     } catch (error: any) {
       addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
       messageRef.current = true;
-      // console.log("error while stream response", error?.response);
-      // console.log("error while stream data", error?.response);
+      setIsLoading(false);
+    } finally {
     }
   };
 
@@ -119,18 +165,16 @@ const useChatStream = (input: UseChatStreamInput) => {
     e?: FormEvent<HTMLFormElement>,
     newMessage?: string,
   ) => {
+    if (isLoading || (!message && !newMessage)) return null;
     setIsLoading(true);
-    // e?.preventDefault();
     addMessageToChat(newMessage ?? message);
     setMessage("");
 
     try {
       const res = await initiateConversationApi({
         payload: {
+          ...chatConfig,
           action: conversationId ? "START_SCREEN" : "START_SCREEN",
-          model: "abc",
-          language_code: "EN",
-          source: "APP",
           query: {
             message: newMessage ?? message,
             message_type: "text",
@@ -139,11 +183,12 @@ const useChatStream = (input: UseChatStreamInput) => {
           conversation_id: conversationId,
         },
         headers: {
-          "X-SELLER-ID": "1",
-          "X-USER-ID": "1",
-          "X-SELLER-PROFILE-ID": "11",
+          [X_SELLER_ID]: DUMMY_SELLER_ID,
+          [X_USER_ID]: data?.user?.details?.id,
+          [X_SELLER_PROFILE_ID]: DUMMY_SELLER_PROFILE_ID,
         },
       });
+
       if (res?.data?.result?.conversation_id) {
         if (
           !conversationId ||
@@ -159,11 +204,10 @@ const useChatStream = (input: UseChatStreamInput) => {
       }
     } catch {
       addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
+      setIsLoading(false);
     } finally {
       streamRef.current = undefined;
     }
-
-    setIsLoading(false);
   };
 
   return {
@@ -177,6 +221,10 @@ const useChatStream = (input: UseChatStreamInput) => {
     handleSubmit,
     isLoading,
     stopStream,
+    chatConfig,
+    setChatConfig,
+    changeConversation,
+    changeConversationLoading,
   };
 };
 
