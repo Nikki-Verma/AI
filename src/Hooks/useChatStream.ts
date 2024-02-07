@@ -66,7 +66,6 @@ const useChatStream = (input: UseChatStreamInput) => {
   );
 
   let streamRef = useRef<any>();
-  let messageRef = useRef<any>(true);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -133,22 +132,17 @@ const useChatStream = (input: UseChatStreamInput) => {
       });
       if (!stream) throw new Error();
 
-      if (messageRef.current) addMessageToChat("", "SimplAi");
-
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
         if (message === "refetch") {
-          messageRef.current = false;
           fetchAndUpdateAIResponse(messageID, conversationID);
           break;
         }
         setIsLoading(false);
-        messageRef.current = true;
         appendMessageToChat(message);
       }
     } catch (error: any) {
       addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
-      messageRef.current = true;
       setIsLoading(false);
     } finally {
     }
@@ -173,6 +167,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     setMessage("");
 
     try {
+      addMessageToChat("", "SimplAi");
       const res = await initiateConversationApi({
         payload: {
           ...chatConfig,
@@ -205,7 +200,7 @@ const useChatStream = (input: UseChatStreamInput) => {
         );
       }
     } catch {
-      addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
+      appendMessageToChat(SimplAi_ERROR_MESSAGE);
       setIsLoading(false);
     } finally {
       streamRef.current = undefined;

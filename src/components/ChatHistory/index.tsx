@@ -12,7 +12,7 @@ import {
 } from "@/utils/constants";
 import { Col, Empty, Row, Spin } from "antd";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   ChatHeader,
@@ -38,7 +38,6 @@ const ChatHistory = ({
   conversationId,
 }: ChatHistoryProps) => {
   const { data: session }: any = useSession();
-  const [listData, setListData] = useState<any[]>([]);
 
   const [filters, setFilters] = useState({ ...initialFilters() });
   const [prompt, setPrompt] = useState("");
@@ -52,23 +51,6 @@ const ChatHistory = ({
     },
   );
 
-  useEffect(() => {
-    if (data?.result?.response) {
-      setListData((prev: any) => [...prev, ...(data?.result?.response || {})]);
-    } else if (isError) {
-      setListData([]);
-    }
-  }, [data]);
-
-  const loadMoreData = () => {
-    if (!isLoading && !isFetching) {
-      setFilters((prevState: any) => ({
-        ...prevState,
-        page: prevState.page + 1,
-      }));
-    }
-  };
-
   return (
     <Container>
       <ChatHeader>Recent Chats</ChatHeader>
@@ -79,10 +61,10 @@ const ChatHistory = ({
           overflow: "auto",
         }}
       >
-        {listData?.length < 1 && !isLoading && !isFetching ? (
+        {data?.result?.response?.length < 1 && !isLoading && !isFetching ? (
           <Empty description="Start a new chat to be displayed here" />
         ) : (
-          listData?.map((list: any, index: number) => (
+          data?.result?.response?.map((list: any, index: number) => (
             <ChatHistoryTextContainer
               key={list?.cid}
               onClick={() => setConversationId(list?.cid)}

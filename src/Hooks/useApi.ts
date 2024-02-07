@@ -38,7 +38,7 @@ export const useFetchData = (
   };
 
   const queryOptions: UseQueryOptions<any, unknown> = {
-    queryKey: ["customFetch", url, params, headers, DefaultHeaders],
+    queryKey: ["customFetch", url, params, headers, DefaultHeaders, data],
     queryFn: () => fetcher(url, params, { ...headers, ...DefaultHeaders }),
   };
 
