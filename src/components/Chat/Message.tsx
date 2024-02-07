@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import Image from "next/image";
 import { IconContainer, MessageContainer, PromptContainer } from "./style";
 
-const { Text } = Typography;
+const { Paragraph } = Typography;
 
 type Props = {
   message: any;
@@ -98,7 +98,18 @@ function Message({ message, loading }: Props) {
         </div>
       ) : (
         <PromptContainer role={message?.role}>
-          <span className="pt-1 text-sm">{message?.content}</span>
+          <span>
+            {message?.content
+              ? message?.content
+                  ?.split?.("\n")
+                  ?.map((singleLineText: any) => {
+                    if (singleLineText)
+                      return <Paragraph>{singleLineText}</Paragraph>;
+                    return null;
+                  })
+                  ?.filter((text: any) => !!text)
+              : ""}
+          </span>
         </PromptContainer>
       )}
     </MessageContainer>

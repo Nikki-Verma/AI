@@ -83,6 +83,8 @@ export const PromptContainer = styled.div`
     align-items: center;
     gap: 12px;
     border-radius: 10px;
+    // text-wrap:wrap;
+    // white-space: pre;
     background: ${(props: any) => {
       switch (props.role) {
         case "SimplAi":
@@ -117,6 +119,9 @@ export const PromptContainer = styled.div`
           return "0px !important";
       }
     }};
+    & > span > .ant-typography:last-child {
+    margin-bottom: 0 !important;
+    }
 `;
 
 export const BottomControls = styled.div`
