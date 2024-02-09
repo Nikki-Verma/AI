@@ -11,7 +11,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
   pages: {
-    signIn: "/register",
+    signIn: "/login",
+    error: "/login",
   },
   callbacks: {
     async session({ session, token, user }: any) {

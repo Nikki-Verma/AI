@@ -2,6 +2,7 @@
 
 import { Typography } from "antd";
 import Image from "next/image";
+import MarkdownComponent from "../Markdown";
 import { IconContainer, MessageContainer, PromptContainer } from "./style";
 
 const { Paragraph } = Typography;
@@ -94,16 +95,13 @@ function Message({ message, loading }: Props) {
       ) : (
         <PromptContainer role={message?.role}>
           <span>
-            {message?.content
-              ? message?.content
-                  ?.split?.("\n")
-                  ?.map((singleLineText: any) => {
-                    if (singleLineText)
-                      return <Paragraph>{singleLineText}</Paragraph>;
-                    return null;
-                  })
-                  ?.filter((text: any) => !!text)
-              : ""}
+            {message?.content ? (
+              <>
+                <MarkdownComponent markdown={message?.content} />
+              </>
+            ) : (
+              ""
+            )}
           </span>
         </PromptContainer>
       )}
