@@ -1,4 +1,5 @@
 import { Col, Row } from "antd";
+import Image from "next/image";
 
 import styles from "./InfoBanner.module.scss";
 
@@ -13,10 +14,11 @@ const InfoBanner = () => {
           span={24}
           style={{ display: "flex", flexDirection: "row", gap: "11px" }}
         >
-          <img
-            src={process.env.NEXT_PUBLIC_BASE_URL + "/assets/Images/check.svg"}
+          <Image
+            src={"/assets/Images/check.svg"}
+            height={24}
+            width={24}
             alt="check-icon"
-            style={{ height: "24px", width: "24px" }}
           />
           <Col>
             <div className={styles.info_banner_sub_heading}>
@@ -32,10 +34,11 @@ const InfoBanner = () => {
           span={24}
           style={{ display: "flex", flexDirection: "row", gap: "11px" }}
         >
-          <img
-            src={process.env.NEXT_PUBLIC_BASE_URL + "/assets/Images/check.svg"}
+          <Image
+            src={"/assets/Images/check.svg"}
             alt="check-icon"
-            style={{ height: "24px", width: "24px" }}
+            height={24}
+            width={24}
           />
           <Col>
             <div className={styles.info_banner_sub_heading}>
@@ -51,10 +54,11 @@ const InfoBanner = () => {
           span={24}
           style={{ display: "flex", flexDirection: "row", gap: "11px" }}
         >
-          <img
-            src={process.env.NEXT_PUBLIC_BASE_URL + "/assets/Images/check.svg"}
+          <Image
+            src={"/assets/Images/check.svg"}
             alt="check-icon"
-            style={{ height: "24px", width: "24px" }}
+            height={24}
+            width={24}
           />
           <Col>
             <div className={styles.info_banner_sub_heading}>

@@ -2,6 +2,7 @@
 
 import { Button, Col, Input, message, Row, Select } from "antd";
 import Dragger from "antd/es/upload/Dragger";
+import Image from "next/image";
 import { useState } from "react";
 import UploadCard from "../UploadCard";
 import {
@@ -88,11 +89,9 @@ const UploadTrainingData = () => {
                       gap: "20px",
                     }}
                   >
-                    <img
-                      src={
-                        process.env.NEXT_PUBLIC_BASE_URL +
-                        "/assets/Images/uploadImg.svg"
-                      }
+                    <Image
+                      src={"/assets/Images/uploadImg.svg"}
+                      alt="uploader"
                     />
                     <div
                       style={{
@@ -137,10 +136,7 @@ const UploadTrainingData = () => {
           <Row gutter={[18, 24]} style={{ display: "flex" }}>
             <Col span={8}>
               <UploadCard
-                imageUrl={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Images/fileUpload.svg"
-                }
+                imageUrl={"/assets/Images/fileUpload.svg"}
                 heading={"New file upload"}
                 details={"Upload any amount of PDF , TXT formats."}
                 onClick={() => {
@@ -150,20 +146,14 @@ const UploadTrainingData = () => {
             </Col>
             <Col span={8}>
               <UploadCard
-                imageUrl={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Images/existingData.svg"
-                }
+                imageUrl={"/assets/Images/existingData.svg"}
                 heading={"Existing Data"}
                 details={"Upload any amount of PDF , TXT formats."}
               ></UploadCard>
             </Col>
             <Col span={8}>
               <UploadCard
-                imageUrl={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Images/directLink.svg"
-                }
+                imageUrl={"/assets/Images/directLink.svg"}
                 heading={"Direct link"}
                 details={
                   "Fetch data from direct link like, remote url, github, google cloud storage"
@@ -172,10 +162,7 @@ const UploadTrainingData = () => {
             </Col>
             <Col span={8}>
               <UploadCard
-                imageUrl={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Images/externalResoource.svg"
-                }
+                imageUrl={"/assets/Images/externalResoource.svg"}
                 heading={"External sources"}
                 details={
                   "Import data from external app like Slack, Notion, Asana, clickup, confluence.."

@@ -11,7 +11,7 @@ export function AuthHoc(Component: any, PageType = Page_Type.auth) {
     const router = useRouter();
 
     if (status === "unauthenticated" && PageType === Page_Type.auth) {
-      router.push("login");
+      router.push("/login");
       return <FullScreenLoader />;
     }
     if (status === "authenticated" && PageType === Page_Type.unauth) {

@@ -21,7 +21,7 @@ export const WorkspaceContainer = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 22px; /* 157.143% */
-    border: 0.5px solid var(primary-color) !important;
+    border: 0.5px solid $primary-color !important;
 
     /* drop-shadow/button-secondary */
     box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);

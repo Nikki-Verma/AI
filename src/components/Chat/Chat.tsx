@@ -40,10 +40,7 @@ function Chat({ messages, loading, chatLoading }: Props) {
               }}
             >
               <Image
-                src={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Logos/simplaiLogo.svg"
-                }
+                src={"/assets/Logos/simplaiLogo.svg"}
                 height={47}
                 width={47}
                 alt=""
@@ -52,7 +49,7 @@ function Chat({ messages, loading, chatLoading }: Props) {
                 Welcome to Assistant by{" "}
                 <Link href="" style={{ color: "#602EDF" }}>
                   {"        "}
-                  SimplAI.ai
+                  SimplAI
                 </Link>
               </WelcomeText>
               <GetStartedText>

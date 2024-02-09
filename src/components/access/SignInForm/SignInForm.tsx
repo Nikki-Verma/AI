@@ -132,10 +132,7 @@ const SignInForm = () => {
                 }}
               >
                 <Image
-                  src={
-                    process.env.NEXT_PUBLIC_BASE_URL +
-                    "/assets/Images/googleIcon.svg"
-                  }
+                  src={"/assets/Images/googleIcon.svg"}
                   alt="google"
                   width={14}
                   height={14}
@@ -218,11 +215,8 @@ const SignInForm = () => {
             </>
           ) : (
             <>
-              <img
-                src={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Images/mailSent.svg"
-                }
+              <Image
+                src={"/assets/Images/mailSent.svg"}
                 alt="check-icon"
                 style={{ width: "50%" }}
               />

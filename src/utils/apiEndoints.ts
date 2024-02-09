@@ -1,8 +1,11 @@
 const __EDGE_URL__ = process.env.NEXT_PUBLIC_EDGE_BASE_URL;
+
 const __IDENTITY_BASE_URL__ = process.env.NEXT_PUBLIC_IDENTITY_BASE_URL;
+const __MODEL_BASE_URL__ = process.env.NEXT_PUBLIC_MODEL_BASE_URL;
 const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
+  model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
   intract: __INTRACT_BASE_URL__,
 };
 
@@ -31,6 +34,14 @@ const config = {
     streamResponse: `${BASE_URLS.intract}/api/v1/intract/conversation/fetch`,
     chatHistoryList: `${BASE_URLS.intract}/api/v1/intract/conversation`,
     chatDetails: `${BASE_URLS.intract}/api/v1/intract/conversation`,
+  },
+  models: {
+    list: `${BASE_URLS.model}/api/v1/model/search`,
+    detail: `${BASE_URLS.model}/api/v1/model`,
+  },
+  workspace: {
+    models: `${BASE_URLS.model}/api/v1/user/model`,
+    addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
   },
 };
 

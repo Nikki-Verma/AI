@@ -47,9 +47,7 @@ function Message({ message, loading }: Props) {
           }}
         >
           <Image
-            src={
-              process.env.NEXT_PUBLIC_BASE_URL + "/assets/Logos/simplaiLogo.svg"
-            }
+            src={"/assets/Logos/simplaiLogo.svg"}
             height={25}
             width={25}
             alt=""
@@ -62,7 +60,7 @@ function Message({ message, loading }: Props) {
               fontWeight: 700,
             }}
           >
-            SimplAI.ai
+            SimplAI
           </span>
         </div>
       )}
@@ -76,10 +74,7 @@ function Message({ message, loading }: Props) {
           }}
         >
           <Image
-            src={
-              process.env.NEXT_PUBLIC_BASE_URL +
-              "/assets/Images/chatLoading.gif"
-            }
+            src={"/assets/Images/chatLoading.gif"}
             alt="loading"
             width={40}
             height={28}

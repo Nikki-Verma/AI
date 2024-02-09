@@ -109,7 +109,7 @@ export const authOptions: AuthOptions = {
           const body = {
             cred: credentials.email,
             password: encryptedPass,
-            user_type: "EMIZATES",
+            user_type: "CORE_USER",
             is_otp_login: false,
           };
 

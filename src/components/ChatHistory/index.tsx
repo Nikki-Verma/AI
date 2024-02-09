@@ -42,7 +42,7 @@ const ChatHistory = ({
   const [filters, setFilters] = useState({ ...initialFilters() });
   const [prompt, setPrompt] = useState("");
 
-  const { data, error, isLoading, isFetching, isError } = useFetchData(
+  const { data, error, isLoading, isError } = useFetchData(
     config.intract.chatHistoryList,
     { ...filters, userId: session?.user?.details?.id },
     {
@@ -61,7 +61,7 @@ const ChatHistory = ({
           overflow: "auto",
         }}
       >
-        {data?.result?.response?.length < 1 && !isLoading && !isFetching ? (
+        {data?.result?.response?.length < 1 && !isLoading ? (
           <Empty description="Start a new chat to be displayed here" />
         ) : (
           data?.result?.response?.map((list: any, index: number) => (
@@ -73,7 +73,7 @@ const ChatHistory = ({
             </ChatHistoryTextContainer>
           ))
         )}
-        {(isLoading || isFetching) && (
+        {isLoading && (
           <Row justify="center">
             <Col>
               <Spin spinning />

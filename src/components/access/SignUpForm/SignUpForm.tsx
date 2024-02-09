@@ -101,10 +101,7 @@ const SignUpForm = () => {
               }}
             >
               <Image
-                src={
-                  process.env.NEXT_PUBLIC_BASE_URL +
-                  "/assets/Images/googleIcon.svg"
-                }
+                src={"/assets/Images/googleIcon.svg"}
                 alt="check-icon"
                 width={14}
                 height={14}

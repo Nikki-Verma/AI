@@ -11,7 +11,7 @@ export const Container = styled.div`
   }
 
   .ant-menu-item-selected {
-    border: 0.5px solid var(primary-color);
+    border: 0.5px solid $primary-color;
   }
   .ant-menu .ant-menu-item .anticon {
     min-width: 24px !important;

@@ -32,7 +32,7 @@
 }
 
 .forgot_password_container {
-  color: var(primary-color);
+  color: $primary-color;
   text-overflow: ellipsis;
   // font-family: Red Hat Display;
   font-size: 14px;
@@ -44,7 +44,7 @@
 }
 
 .back {
-  color: var(primary-color);
+  color: $primary-color;
   // font-family: Red Hat Display;
   font-size: 16px;
   font-style: normal;

@@ -68,7 +68,7 @@ export const IconContainer = styled.div`
   min-height: 32px;
   min-width: 32px;
   border-radius: 50%;
-  color: var(primary-color);
+  color: $primary-color;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
