@@ -11,12 +11,7 @@ import {
   ModelHeaderContainer,
 } from "./style";
 
-const CardModel = ({
-  modelData,
-  goToBaseUrl,
-  imageUrl,
-  addToworkspace,
-}: any) => {
+const CardModel = ({ modelData, goToBaseUrl, imageUrl }: any) => {
   return (
     <Link prefetch href={`${goToBaseUrl}/${modelData?.id}`}>
       <ModelCardContainer>
@@ -26,11 +21,6 @@ const CardModel = ({
             <>
               {false ? (
                 <HeartOutlined
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    addToworkspace(modelData);
-                  }}
                   style={{
                     color: "#5B5B5B",
                     fontSize: "16px",
@@ -39,11 +29,6 @@ const CardModel = ({
                 />
               ) : (
                 <HeartFilled
-                  onClick={(e) => {
-                    e.preventDefault();
-                    // e.stopPropagation();
-                    addToworkspace(modelData);
-                  }}
                   style={{
                     color: "red",
                     fontSize: "16px",

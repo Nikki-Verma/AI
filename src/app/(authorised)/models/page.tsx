@@ -1,17 +1,10 @@
 "use client";
 
-import { addModelToWorkspaceApi } from "@/api/workspace";
 import CardModel from "@/components/CardModel";
 import { useFetchData } from "@/Hooks/useApi";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
-import {
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_SIZE,
-  DUMMY_TENANT_ID,
-  X_TENANT_ID,
-  X_USER_ID,
-} from "@/utils/constants";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { SearchOutlined } from "@ant-design/icons";
 import {
   Card,
@@ -53,26 +46,6 @@ const Models = () => {
       pageDescription: "Models are your AI powered automations & skills",
     });
   }, []);
-
-  const addToworkspace = async (model: any) => {
-    const payload = {
-      tenant_id: DUMMY_TENANT_ID,
-      user_id: session?.user?.details?.id,
-      username: session?.user?.details?.name,
-      model_id: model?.id,
-      model_name: model?.name,
-      model_params: {
-        ...model,
-      },
-    };
-
-    const headers = {
-      [X_TENANT_ID]: DUMMY_TENANT_ID,
-      [X_USER_ID]: session?.user?.details?.id,
-    };
-
-    const modelResponse = await addModelToWorkspaceApi({ payload, headers });
-  };
 
   const pageChangeHandler: PaginationProps["onChange"] = (
     pageNumber,
@@ -161,7 +134,6 @@ const Models = () => {
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 <CardModel
-                  addToworkspace={addToworkspace}
                   key={model?.name}
                   imageUrl={"/assets/Images/modelHeaderImage.svg"}
                   modelData={model}

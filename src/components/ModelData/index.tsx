@@ -1,11 +1,29 @@
+import { addModelToWorkspaceApi } from "@/api/workspace";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
+import { DUMMY_TENANT_ID, X_TENANT_ID, X_USER_ID } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Result, Row, Skeleton, Tabs, Tag } from "antd";
+import {
+  CheckCircleOutlined,
+  HeartFilled,
+  HeartOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Col,
+  notification,
+  Result,
+  Row,
+  Skeleton,
+  Tabs,
+  Tag,
+} from "antd";
 import TabPane from "antd/es/tabs/TabPane";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 import ModelOverView from "../ModelOverview";
 import uiStyles from "../UIComponents/ui.module.scss";
 import { ModelAbout, ModelTitle } from "./style";
@@ -13,11 +31,55 @@ import { ModelAbout, ModelTitle } from "./style";
 const ModelData = (props: any) => {
   const router = useRouter();
   const { modelId } = useParams();
-  const { data, isLoading, isError, error } = useFetchData(
+  const { data: session }: any = useSession();
+  const { data, isLoading, isError, error, refetch } = useFetchData(
     config.models.detail,
     { id: modelId },
     {},
   );
+  const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+  const addToworkspace = async (model: any) => {
+    try {
+      setAddToWrokspaceLoading(true);
+      const payload = {
+        tenant_id: DUMMY_TENANT_ID,
+        user_id: session?.user?.details?.id,
+        username: session?.user?.details?.name,
+        model_id: data?.result?.id,
+        model_name: data?.result?.name,
+        model_params: {
+          ...data?.result,
+        },
+      };
+
+      const headers = {
+        [X_TENANT_ID]: DUMMY_TENANT_ID,
+        [X_USER_ID]: session?.user?.details?.id,
+      };
+
+      const modelResponse: any = await addModelToWorkspaceApi({
+        payload,
+        headers,
+      });
+
+      if (modelResponse?.ok) {
+        console.log("success");
+        refetch();
+        api.success({
+          message: "Added to workspace",
+        });
+      }
+    } catch (error) {
+      api.error({
+        message: "Error while adding model to workspace",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setAddToWrokspaceLoading(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -41,6 +103,7 @@ const ModelData = (props: any) => {
   }
   return (
     <div>
+      {contextHolder}
       <Row
         style={{
           display: "flex",
@@ -107,7 +170,19 @@ const ModelData = (props: any) => {
           style={{ display: "flex", justifyContent: "flex-end", gap: "20px" }}
         >
           {props?.page === "models" ? (
-            <Button type="primary">Add to workspace</Button>
+            data?.result?.added ? (
+              <Tag color="success" icon={<CheckCircleOutlined />}>
+                Added To workspace
+              </Tag>
+            ) : (
+              <Button
+                type="primary"
+                onClick={addToworkspace}
+                loading={addToWrokspaceLoading}
+              >
+                Add to workspace
+              </Button>
+            )
           ) : (
             <>
               <Button>Test</Button>
