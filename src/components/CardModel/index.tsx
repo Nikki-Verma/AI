@@ -18,7 +18,7 @@ const CardModel = ({
   addToworkspace,
 }: any) => {
   return (
-    <Link href={`${goToBaseUrl}/${modelData?.id}`}>
+    <Link prefetch href={`${goToBaseUrl}/${modelData?.id}`}>
       <ModelCardContainer>
         <ModelCard>
           <ModelHeaderContainer>

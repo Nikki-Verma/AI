@@ -47,7 +47,7 @@ function Chat({ messages, loading, chatLoading }: Props) {
               />
               <WelcomeText>
                 Welcome to Assistant by{" "}
-                <Link href="" style={{ color: "#602EDF" }}>
+                <Link prefetch href="" style={{ color: "#602EDF" }}>
                   {"        "}
                   SimplAI
                 </Link>

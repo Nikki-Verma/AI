@@ -113,7 +113,11 @@ const SignUpForm = () => {
 
         <div className={uiStyles.form_footer}>
           {`Already have an account? `}
-          <Link href={"/login"} className={uiStyles.form_footer_action}>
+          <Link
+            prefetch
+            href={"/login"}
+            className={uiStyles.form_footer_action}
+          >
             Sign in
           </Link>
         </div>

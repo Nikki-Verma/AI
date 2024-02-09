@@ -63,7 +63,7 @@ export default ChatPage;
 //     <div style={{ height: "200vh" }}>
 //       Dashboard
 //       <Button onClick={() => signOut({ redirect: false })}>Sign out</Button>
-//       <Link href={"/"}>Landing page</Link>
+//       <Link prefetch href={"/"}>Landing page</Link>
 //     </div>
 //   );
 // };

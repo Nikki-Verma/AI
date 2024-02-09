@@ -27,14 +27,14 @@ const matchUrlLevels = (currentUrl: string, itemUrl: string) => {
   const itemUrlLevels = itemUrl.split("/");
 
   return itemUrlLevels.every(
-    (level: string, index: number) => level === currentUrlLevels[index]
+    (level: string, index: number) => level === currentUrlLevels[index],
   );
 };
 
 export const getItemByKey = (
   value: string,
   flag: "key" | "url",
-  items: any[]
+  items: any[],
 ) => {
   for (const item of items) {
     if (flag === "url") {
@@ -72,7 +72,7 @@ export const items: any = [
   {
     id: 0,
     label: (
-      <Link href="/dashboard">
+      <Link prefetch href="/dashboard">
         <Text style={{ color: "inherit" }}>Home</Text>
       </Link>
     ),
@@ -86,7 +86,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/playground">
+      <Link prefetch href="/playground">
         <Text style={{ color: "inherit" }}>Playground</Text>
       </Link>
     ),
@@ -98,7 +98,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/workspace">
+      <Link prefetch href="/workspace">
         <Text style={{ color: "inherit" }}>Workspace</Text>
       </Link>
     ),
@@ -110,7 +110,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/models">
+      <Link prefetch href="/models">
         <Text style={{ color: "inherit" }}>Models</Text>
       </Link>
     ),
@@ -122,7 +122,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/dataset">
+      <Link prefetch href="/dataset">
         <Text style={{ color: "inherit" }}>Dataset</Text>
       </Link>
     ),
@@ -134,7 +134,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/integration">
+      <Link prefetch href="/integration">
         <Text style={{ color: "inherit" }}>Integration</Text>
       </Link>
     ),
@@ -146,7 +146,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/billing_usage">
+      <Link prefetch href="/billing_usage">
         <Text style={{ color: "inherit" }}>Billing & Usage</Text>
       </Link>
     ),
@@ -158,7 +158,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link href="/settings">
+      <Link prefetch href="/settings">
         <Text style={{ color: "inherit" }}>Settings</Text>
       </Link>
     ),
@@ -172,8 +172,8 @@ export const items: any = [
 export const getMenuItems = (
   isAuthorized: (
     userPermissions: string[] | string | undefined | null,
-    permissionType: Permissions_Types
-  ) => boolean
+    permissionType: Permissions_Types,
+  ) => boolean,
 ) => {
   const newItems = items.map((list: any) => {
     if (

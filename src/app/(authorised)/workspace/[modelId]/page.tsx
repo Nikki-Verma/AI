@@ -1,28 +1,25 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { Container } from './style'
-import {Col } from 'antd'
+import ModelData from "@/components/ModelData";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Col } from "antd";
+import Link from "next/link";
 import uiStyles from "../../../../components/UIComponents/ui.module.scss";
-import { ArrowLeftOutlined} from '@ant-design/icons';
-import Link from 'next/link';
-import ModelData from '@/components/ModelData';
+import { Container } from "./style";
 
-const ModelDetails = ({params} : any) => {
-
+const ModelDetails = ({ params }: any) => {
   return (
     <Container>
-        <Col span={24} style={{marginBottom : '24px'}}>
-            <Link href={'/workspace'}>
-            <div 
-            className={uiStyles.back_button_container}             >
-                <ArrowLeftOutlined />
-            </div>
-            </Link>
-        </Col>
-        <ModelData page = "workspace" />
+      <Col span={24} style={{ marginBottom: "24px" }}>
+        <Link prefetch href={"/workspace"}>
+          <div className={uiStyles.back_button_container}>
+            <ArrowLeftOutlined />
+          </div>
+        </Link>
+      </Col>
+      <ModelData page="workspace" />
     </Container>
-  )
-}
+  );
+};
 
-export default ModelDetails
+export default ModelDetails;

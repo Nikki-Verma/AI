@@ -11,7 +11,7 @@ const HealthPage: React.FC = () => {
       title="Health Check"
       subTitle="App is working fine."
       extra={
-        <Link href="/">
+        <Link prefetch href="/">
           <Button type="primary">Home</Button>
         </Link>
       }

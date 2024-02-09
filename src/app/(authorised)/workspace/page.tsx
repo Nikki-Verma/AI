@@ -120,7 +120,7 @@ const Workspace = () => {
             <Result
               status={404}
               extra={
-                <Link href={"/models"}>
+                <Link prefetch href={"/models"}>
                   <Button type="primary">Add models to workspace</Button>
                 </Link>
               }
