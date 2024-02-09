@@ -47,6 +47,7 @@ export const useFetchData = (
   headers: Headers = {},
 ): UseQueryResult<any, unknown> => {
   const { data }: any = useSession();
+  console.log("🚀 ~ data:", data);
 
   const DefaultHeaders = {
     [X_USER_ID]: data?.user?.details?.id,
