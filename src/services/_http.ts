@@ -1,4 +1,12 @@
+import {
+  DUMMY_TENANT_ID,
+  PIM_SID,
+  X_DEVICE_ID,
+  X_TENANT_ID,
+  X_USER_ID,
+} from "@/utils/constants";
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { getSession } from "next-auth/react";
 
 interface AdaptAxiosRequestConfig extends AxiosRequestConfig {
   headers: AxiosRequestHeaders;
@@ -9,22 +17,22 @@ const axiosInstance = axios.create();
 // Request interceptor
 axiosInstance.interceptors.request.use(
   async (request): Promise<AdaptAxiosRequestConfig> => {
-    // request.headers["X-TENANT-ID"] = getTenantID();
+    const session: any = await getSession();
 
-    // get session token fro next-auth
-    // const sessionId = getSessionID();
-    // if (sessionId) {
-    //   request.headers["pim-sid"] = sessionId;
-    // } else {
-    //   const sessionId = await createSession();
-    //   request.headers["pim-sid"] = sessionId;
-    // }
+    const DefaultHeaders: any = {
+      [X_USER_ID]: session?.user?.details?.id,
+      [X_TENANT_ID]: DUMMY_TENANT_ID,
+      [PIM_SID]: session?.accessToken,
+      [X_DEVICE_ID]: "armaze-web",
+    };
+
+    request.headers = { ...(request.headers || {}), ...DefaultHeaders };
 
     return request;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor
@@ -51,7 +59,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const axiosInstanceWithoutWarehouse = axios.create();

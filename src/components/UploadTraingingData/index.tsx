@@ -90,6 +90,8 @@ const UploadTrainingData = () => {
                     }}
                   >
                     <Image
+                      width={44}
+                      height={44}
                       src={"/assets/Images/uploadImg.svg"}
                       alt="uploader"
                     />

@@ -1,11 +1,4 @@
 import _authHttp from "@/services/_http";
-import {
-  DUMMY_TENANT_ID,
-  PIM_SID,
-  X_DEVICE_ID,
-  X_TENANT_ID,
-  X_USER_ID,
-} from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import {
   useMutation,
@@ -47,18 +40,17 @@ export const useFetchData = (
   headers: Headers = {},
 ): UseQueryResult<any, unknown> => {
   const { data }: any = useSession();
-  console.log("🚀 ~ data:", data);
-
-  const DefaultHeaders = {
-    [X_USER_ID]: data?.user?.details?.id,
-    [X_TENANT_ID]: DUMMY_TENANT_ID,
-    [PIM_SID]: data?.accessToken,
-    [X_DEVICE_ID]: "armaze-web",
-  };
 
   const queryOptions: UseQueryOptions<any, unknown> = {
-    queryKey: ["customFetch", url, params, headers, DefaultHeaders, data],
-    queryFn: () => fetcher(url, params, { ...headers, ...DefaultHeaders }),
+    queryKey: [
+      "customFetch",
+      url,
+      params,
+      headers,
+      data?.user?.details?.id,
+      data?.accessToken,
+    ],
+    queryFn: () => fetcher(url, params, { ...headers }),
   };
 
   return useQuery(queryOptions);

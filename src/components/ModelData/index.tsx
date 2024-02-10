@@ -1,7 +1,7 @@
 import { addModelToWorkspaceApi } from "@/api/workspace";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
-import { DUMMY_TENANT_ID, X_TENANT_ID, X_USER_ID } from "@/utils/constants";
+import { DUMMY_TENANT_ID } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import {
   CheckCircleOutlined,
@@ -54,14 +54,8 @@ const ModelData = (props: any) => {
         },
       };
 
-      const headers = {
-        [X_TENANT_ID]: DUMMY_TENANT_ID,
-        [X_USER_ID]: session?.user?.details?.id,
-      };
-
       const modelResponse: any = await addModelToWorkspaceApi({
         payload,
-        headers,
       });
 
       if (modelResponse?.ok) {
@@ -200,7 +194,10 @@ const ModelData = (props: any) => {
       </Row>
       <Tabs defaultActiveKey="files">
         <TabPane tab="Files and versions" key={"files"}>
-          <ModelOverView overviewDetails={data?.result?.detail} />
+          <ModelOverView
+            markdown={data?.result?.detail}
+            modelDetails={data?.result}
+          />
         </TabPane>
         <TabPane tab="Files and versions" key={"files1"}></TabPane>
         <TabPane tab="Run" key={"files2"}></TabPane>

@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
         };
       } else if (
         dayjs().format(tokenDateFormat) <
-        dayjs(token.expires).format(tokenDateFormat)
+        dayjs(token.expires).subtract(1, "minute").format(tokenDateFormat)
       ) {
         // If the access token has not expired yet, return it
         return { ...token };

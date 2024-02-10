@@ -2,10 +2,12 @@ const __EDGE_URL__ = process.env.NEXT_PUBLIC_EDGE_BASE_URL;
 
 const __IDENTITY_BASE_URL__ = process.env.NEXT_PUBLIC_IDENTITY_BASE_URL;
 const __MODEL_BASE_URL__ = process.env.NEXT_PUBLIC_MODEL_BASE_URL;
+const __DATA_BASE_URL__ = process.env.NEXT_PUBLIC_DATA_BASE_URL;
 const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
   model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
+  data: `${__EDGE_URL__}${__DATA_BASE_URL__}`,
   intract: __INTRACT_BASE_URL__,
 };
 
@@ -42,6 +44,9 @@ const config = {
   workspace: {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
+  },
+  dataset: {
+    list: `${BASE_URLS.data}/api/v1/dataset/collections`,
   },
 };
 

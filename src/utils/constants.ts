@@ -8,6 +8,10 @@ export const PERMISSION_TYPE = {
   AND: Permissions_Types.AND,
 };
 
+export interface UnknownObject {
+  [key: string]: any;
+}
+
 export const tokenDateFormat = "YYYY-MM-DDThh:mm:ss.ssssss";
 
 export const X_USER_ID = "X-USER-ID";

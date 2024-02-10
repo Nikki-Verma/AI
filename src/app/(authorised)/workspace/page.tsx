@@ -139,7 +139,7 @@ const Workspace = () => {
                 <CardModel
                   key={model?.name}
                   imageUrl={"/assets/Images/modelHeaderImage.svg"}
-                  modelData={model}
+                  modelData={{ ...model, id: model?.model_id }}
                   goToBaseUrl="/workspace"
                 />
               </Col>

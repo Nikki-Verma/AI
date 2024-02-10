@@ -80,15 +80,9 @@ const useChatStream = (input: UseChatStreamInput) => {
       setMessage("");
       if (convId) {
         setMessages([]);
-        const chatDetails = await getChatDetails(
-          convId,
-          {
-            userId: data?.user?.details?.id,
-          },
-          {
-            [X_USER_ID]: data?.user?.details?.id,
-          },
-        );
+        const chatDetails = await getChatDetails(convId, {
+          userId: data?.user?.details?.id,
+        });
         setMessages(chatDetails);
       } else {
         setMessages([]);
@@ -142,7 +136,7 @@ const useChatStream = (input: UseChatStreamInput) => {
         appendMessageToChat(message);
       }
     } catch (error: any) {
-      addMessageToChat(SimplAi_ERROR_MESSAGE, "SimplAi");
+      appendMessageToChat(SimplAi_ERROR_MESSAGE);
       setIsLoading(false);
     } finally {
     }
@@ -181,7 +175,6 @@ const useChatStream = (input: UseChatStreamInput) => {
         },
         headers: {
           [X_SELLER_ID]: DUMMY_SELLER_ID,
-          [X_USER_ID]: data?.user?.details?.id,
           [X_SELLER_PROFILE_ID]: DUMMY_SELLER_PROFILE_ID,
         },
       });

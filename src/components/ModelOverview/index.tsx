@@ -2,12 +2,14 @@ import { Col, Row, Tag } from "antd";
 import MarkdownComponent from "../Markdown";
 
 import { Container, Heading } from "./style";
-const ModelOverView = ({ overviewDetails }: any) => {
+const ModelOverView = ({ markdown, modelDetails }: any) => {
+  console.log("🚀 ~ ModelOverView ~ modelDetails:", modelDetails);
+
   return (
     <Container>
       <Row gutter={[12, 12]}>
         <Col span={16} style={{ padding: "20px", overflow: "hidden" }}>
-          {overviewDetails && <MarkdownComponent markdown={overviewDetails} />}
+          {markdown && <MarkdownComponent markdown={markdown} />}
         </Col>
         <Col
           span={8}

@@ -5,11 +5,7 @@ const UploadCard = (props: any) => {
   return (
     <UploadCardContainer onClick={props?.onClick}>
       {props?.imageUrl && (
-        <Image
-          src={props?.imageUrl}
-          alt="uploader"
-          style={{ width: "68px", height: "68px" }}
-        />
+        <Image src={props?.imageUrl} alt="uploader" width={68} height={68} />
       )}
       <Heading>{props?.heading}</Heading>
       <UploadDetail>{props?.details}</UploadDetail>
