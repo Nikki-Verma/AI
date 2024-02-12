@@ -59,7 +59,6 @@ const ModelData = (props: any) => {
       });
 
       if (modelResponse?.ok) {
-        console.log("success");
         refetch();
         api.success({
           message: "Added to workspace",

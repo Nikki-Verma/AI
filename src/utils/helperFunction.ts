@@ -1,6 +1,8 @@
 import JSEncrypt from "jsencrypt";
+import _authHttp from "../services/_http";
 import _unauthHttp from "../services/_unauthHttp";
-import { BASE_URLS } from "./apiEndoints";
+import config, { BASE_URLS } from "./apiEndoints";
+import { UnknownObject } from "./types";
 
 export const generateEncryptedPassword = async (data: any) => {
   const encrypt = new JSEncrypt();
@@ -36,6 +38,15 @@ export const getErrorFromApi = (
   }
   return res?.message || defaultMessage;
 };
+
+export const getFilters = (filters: any) => {
+  const filtersObj: any = {};
+  Object.entries(filters).forEach(([key, value]: any) => {
+    filtersObj[key] = value?.[0];
+  });
+  return filtersObj;
+};
+
 // Find a way to use the meta deta content and normal content
 // export const getHtmlFromMarkdown = async (content: string) => {
 //   const matterResult = matter(content);
@@ -47,3 +58,36 @@ export const getErrorFromApi = (
 //   const contentHtml = processedContent.toString();
 //   return contentHtml;
 // };
+
+export const uploadDatasetFiles = async (
+  file: string | Blob,
+  doc_details: UnknownObject,
+) => {
+  let resolve: any, reject: any;
+  const promise: any = new Promise((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  const formData = new FormData();
+
+  formData.set("file", file);
+  formData.set("document_detail", JSON.stringify(doc_details));
+  const Headers: any = {
+    "Content-Type": "multipart/form-data",
+  };
+
+  try {
+    let res = await _authHttp.post(config.dataset.uploadFile, formData, {
+      headers: { ...Headers },
+    });
+    if (res?.data?.ok) {
+      resolve(res?.data?.result);
+    } else {
+      const err = getErrorFromApi(res);
+      reject(getErrorFromApi(res));
+    }
+  } catch (e) {
+    reject(getErrorFromApi(e));
+  }
+  return promise;
+};

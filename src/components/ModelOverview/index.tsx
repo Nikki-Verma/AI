@@ -3,8 +3,6 @@ import MarkdownComponent from "../Markdown";
 
 import { Container, Heading } from "./style";
 const ModelOverView = ({ markdown, modelDetails }: any) => {
-  console.log("🚀 ~ ModelOverView ~ modelDetails:", modelDetails);
-
   return (
     <Container>
       <Row gutter={[12, 12]}>

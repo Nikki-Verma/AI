@@ -47,6 +47,9 @@ const config = {
   },
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,
+    create: `${BASE_URLS.data}/api/v1/dataset/collection`,
+    uploadFile: `${BASE_URLS.data}/api/v1/storage/upload`,
+    files: `${BASE_URLS.data}/api/v1/dataset/collection/files`,
   },
 };
 

@@ -91,6 +91,7 @@ const MarkdownComponent: React.FC<{ markdown: string }> = ({ markdown }) => {
       renderer={renderer}
       value={markdown}
       openLinksInNewTab
+      key={markdown}
     />
   );
 };

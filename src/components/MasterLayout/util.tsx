@@ -1,11 +1,14 @@
-import { Permissions_Types, PERMISSION_TYPE } from "@/utils/constants";
+import { PERMISSION_TYPE } from "@/utils/constants";
+import { Permissions_Types } from "@/utils/types";
 import { Typography } from "antd";
+import { cloneDeep } from "lodash";
 import Link from "next/link";
 import AgentsIcon from "../Icons/AgentsIcon";
 import BillingIcon from "../Icons/BillingIcon";
 import DatasetIcon from "../Icons/DatasetIcon";
 import HomeIcon from "../Icons/HomeIcon";
 import IntegrationIcon from "../Icons/IntegrationIcon";
+import KnowledgeBaseIcon from "../Icons/KnowledgeBaseIcon";
 import ModelsIcon from "../Icons/ModelsIcon";
 import PlaygroundIcon from "../Icons/PlaygroundIcon";
 import SettingsIcon from "../Icons/Settings";
@@ -134,6 +137,18 @@ export const items: any = [
   {
     id: 100,
     label: (
+      <Link prefetch href="/knowledge-base">
+        <Text style={{ color: "inherit" }}>Knowledge base</Text>
+      </Link>
+    ),
+    key: "knowledge-base",
+    keyPath: ["knowledge-base"],
+    url: "/knowledge-base",
+    icon: <KnowledgeBaseIcon />,
+  },
+  {
+    id: 100,
+    label: (
       <Link prefetch href="/integration">
         <Text style={{ color: "inherit" }}>Integration</Text>
       </Link>
@@ -175,7 +190,8 @@ export const getMenuItems = (
     permissionType: Permissions_Types,
   ) => boolean,
 ) => {
-  const newItems = items.map((list: any) => {
+  const itemsCopy = cloneDeep(items);
+  const newItems = itemsCopy.map((list: any) => {
     if (
       list.permissions &&
       !isAuthorized(list.permissions, list.permissionType)
@@ -183,9 +199,17 @@ export const getMenuItems = (
       return null;
     }
     const filteredList =
-      list?.children?.filter((route: any) => {
-        return isAuthorized(route.permissions, route.permissionType);
-      }) || [];
+      list?.children
+        ?.filter((route: any) => {
+          return isAuthorized(route.permissions, route.permissionType);
+        })
+        ?.map((route: any) => {
+          delete route?.keyPath;
+          delete route?.permissionType;
+          return route;
+        }) || [];
+    delete list?.keyPath;
+    delete list?.permissionType;
     if (filteredList?.length > 0 && list?.children?.length > 0) {
       return { ...list, children: [...filteredList] };
     } else if (filteredList?.length === 0 && !list?.children?.length) {

@@ -30,7 +30,7 @@ export const SiderX = styled(Sider)`
   left: 0;
   top: 64px;
   scrollbar-width: thin;
-  z-index: 99999;
+  z-index: 999;
   transition: all 0.5s;
   box-shadow: 6px 0 6px -2px rgba(0, 0, 0, 0.06);
   background: #ffffff !important;
