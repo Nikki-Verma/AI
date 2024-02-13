@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const DatasetListContainer = styled.div`
+export const KnowledgeBaseDetailsContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -19,11 +19,5 @@ export const DatasetListContainer = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-  }
-`;
-export const ProgressBar = styled.div`
-  width: 100%;
-  .ant-progress-line {
-    margin-bottom: 0px !important;
   }
 `;

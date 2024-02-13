@@ -1,11 +1,6 @@
-import {
-  addFileToKnowledgeBaseApi,
-  createKnowledgeBaseApi,
-} from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
 import SearchIcon from "@/components/Icons/SearchIcon";
-import AddFilesToKnowledgeBaseModal from "@/components/KnowledgeBase/AddFilesToKnowledgebaseModal";
 import SaDate from "@/components/SaDate/Index";
 import {
   PageAbout,
@@ -18,11 +13,7 @@ import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from "@/utils/constants";
-import {
-  getErrorFromApi,
-  getFilters,
-  uploadDatasetFiles,
-} from "@/utils/helperFunction";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
 import {
@@ -49,9 +40,8 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { v4 } from "uuid";
-import DatasetAddFileModal from "../DatasetAddFileModal";
-import { DatasetDetailsContainer } from "./style";
+
+import { KnowledgeBaseDetailsContainer } from "./style";
 const { Text } = Typography;
 
 interface DataType {
@@ -66,33 +56,33 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
 });
 
-const DatasetDetails = (props: any) => {
+const KnowledgeBaseDetails = (props: any) => {
   const router = useRouter();
-  const { datasetId } = useParams();
+  const { knowledgebaseId } = useParams();
   const { data: session }: any = useSession();
   const [api, contextHolder] = notification.useNotification();
 
   const [filters, setFilters] = useState(initialFilters());
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [addFileModalOpen, setAddFileModalOpen] = useState(false);
-  const [addFileToKnowledgebaseOpen, setAddFileToKnowledgebaseOpen] =
-    useState(false);
-  const [addFilesLoading, setAddFilesLoading] = useState(false);
-  const [addFilesToKnowledgebaseLoading, setAddFilesToKnowledgebaseLoading] =
-    useState(false);
+  // const [addFileModalOpen, setAddFileModalOpen] = useState(false);
+  // const [addFilesLoading, setAddFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.dataset.files,
-    { ...filters, dataset_id: datasetId },
+    config.knowledgebase.files,
+    { ...filters, knowledgebase_id: knowledgebaseId },
     {},
   );
   const {
-    data: datasetConfig,
-    isLoading: datasetLoading,
-    isError: datasetHasError,
-    error: datasetErrorDetail,
+    data: knowledgebaseConfig,
+    isLoading: knowledgebaseLoading,
+    isError: knowledgebaseHasError,
+    error: knowledgebaseErrorDetail,
     refetch: refetchDataset,
-  } = useFetchData(config.dataset.list, { collectionId: datasetId }, {});
+  } = useFetchData(
+    config.knowledgebase.list,
+    { knowledgeBaseId: knowledgebaseId },
+    {},
+  );
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -119,102 +109,9 @@ const DatasetDetails = (props: any) => {
     }
   };
 
-  const toggleAddFileModal = () => {
-    setAddFileModalOpen((val: boolean) => !val);
-  };
-
-  const toggleAddFilesToKnowledgebaseModal = () => {
-    setAddFileToKnowledgebaseOpen((val: boolean) => !val);
-  };
-
-  const addFilesHandler = async (values: any) => {
-    try {
-      setAddFilesLoading(true);
-      const promiseArr = values?.dataset_files?.map((file: any) => {
-        return uploadDatasetFiles(file?.originFileObj, {
-          vertical_type: "DATASET",
-          vertical_id: v4(),
-          sub_vertical_type: "COLLECTION",
-          sub_vertical_id: v4(),
-          file_name: file?.name,
-          remarks: "string",
-          batch_process_needed: false,
-          permanent: true,
-          need_to_process: false,
-          dataset_collection: datasetId,
-        });
-      });
-
-      await Promise.allSettled(promiseArr).then((res) => {
-        let filesUploadSuccess = 0;
-        let filesUploadedFailed = 0;
-        res?.map((file: any) => {
-          if (file?.rejected) {
-            filesUploadedFailed = filesUploadedFailed + 1;
-          } else {
-            filesUploadSuccess = filesUploadSuccess + 1;
-          }
-        });
-        api.success({
-          message: `${filesUploadSuccess} files added to dataset successfully`,
-          description: filesUploadedFailed ? (
-            <Text type="danger">{`Failed to add ${filesUploadedFailed} to dataset `}</Text>
-          ) : (
-            ""
-          ),
-        });
-        refetch();
-        setAddFileModalOpen(false);
-      });
-    } catch (error) {
-      api.error({
-        message: "Error while adding file to dataset",
-        description: getErrorFromApi(error),
-      });
-    } finally {
-      setAddFilesLoading(false);
-    }
-  };
-
-  const addFilesToKnowledgeBaseHandler = async (values: any) => {
-    try {
-      setAddFilesToKnowledgebaseLoading(true);
-
-      const payload = {
-        ...values,
-        username: session?.user?.details?.name,
-        active: true,
-      };
-
-      const createKnowledgeBaseResponse = await createKnowledgeBaseApi({
-        payload,
-      });
-
-      if (createKnowledgeBaseResponse?.status == 200) {
-        // Payload to add to knowledgebase
-
-        // const payload = {
-        //   tenant_id: DUMMY_TENANT_ID,
-        //   user_id: session?.user?.details?.id,
-        //   collection_name: ,
-        //   resource_id: ["string"],
-        //   document_id: [0],
-        //   knowlede_base_id: 0,
-        // };
-
-        const addFileToKnowledgeBaseResponse = await addFileToKnowledgeBaseApi({
-          payload,
-        });
-      }
-    } catch (error) {
-      api.error({
-        message: "Error while adding files to knowledgebase",
-        description: getErrorFromApi(error),
-      });
-    } finally {
-      setAddFilesToKnowledgebaseLoading(false);
-    }
-  };
+  // const toggleAddFileModal = () => {
+  //   setAddFileModalOpen((val: boolean) => !val);
+  // };
 
   const rowSelection: TableRowSelection<DataType> = {
     type: "checkbox",
@@ -269,7 +166,7 @@ const DatasetDetails = (props: any) => {
       align: "center",
       key: "actions",
       width: 100,
-      render: (_: any, dataset: UnknownObject) => {
+      render: (_: any, knowledgebase: UnknownObject) => {
         return (
           <Space>
             <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
@@ -279,14 +176,14 @@ const DatasetDetails = (props: any) => {
     },
   ];
 
-  if (datasetLoading) {
+  if (knowledgebaseLoading) {
     return (
       <Card size="default">
         <Skeleton active avatar loading paragraph={{ rows: 12 }} />
       </Card>
     );
   }
-  if (datasetHasError) {
+  if (knowledgebaseHasError) {
     return (
       <Row justify="center">
         <Col>
@@ -301,7 +198,7 @@ const DatasetDetails = (props: any) => {
   }
 
   return (
-    <DatasetDetailsContainer>
+    <KnowledgeBaseDetailsContainer>
       {contextHolder}
       <Row
         style={{
@@ -314,9 +211,9 @@ const DatasetDetails = (props: any) => {
           style={{ display: "flex", flexDirection: "column", gap: "14px" }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            <PageTitle>{datasetConfig?.result?.[0]?.name}</PageTitle>
+            <PageTitle>{knowledgebaseConfig?.result?.[0]?.name}</PageTitle>
           </div>
-          <PageAbout>{datasetConfig?.result?.[0]?.description}</PageAbout>
+          <PageAbout>{knowledgebaseConfig?.result?.[0]?.description}</PageAbout>
         </Col>
       </Row>
       {isError && (
@@ -330,11 +227,11 @@ const DatasetDetails = (props: any) => {
           </Col>
         </Row>
       )}
-      {!data?.result?.length && !isLoading && (
+      {!isError && !data?.result?.length && !isLoading && (
         <EmptyUpload
           buttonText="Upload File"
-          message="The dataset is empty"
-          onClick={toggleAddFileModal}
+          message="The knowledgebase is empty"
+          // onClick={toggleAddFileModal}
         />
       )}
       {!isError && (isLoading || !!data?.result?.length) && (
@@ -361,7 +258,7 @@ const DatasetDetails = (props: any) => {
                     size="middle"
                     type="default"
                     icon={<PlusOutlined />}
-                    onClick={toggleAddFilesToKnowledgebaseModal}
+                    onClick={() => console.log("add files to knowledge base")}
                   >
                     Add files to knowledgebase
                   </Button>
@@ -370,9 +267,9 @@ const DatasetDetails = (props: any) => {
                   size="middle"
                   type="primary"
                   icon={<PlusOutlined />}
-                  onClick={toggleAddFileModal}
+                  // onClick={toggleAddFileModal}
                 >
-                  Add Fileasd
+                  Add File
                 </Button>
               </Space>
             </Col>
@@ -381,7 +278,7 @@ const DatasetDetails = (props: any) => {
             columns={columns}
             dataSource={data?.result || []}
             rowSelection={rowSelection}
-            rowKey={(data: any) => data?.resource_id}
+            rowKey={(data: any) => data?.id}
             loading={isLoading}
             scroll={{
               x: "max-content",
@@ -397,22 +294,8 @@ const DatasetDetails = (props: any) => {
           />
         </>
       )}
-      <DatasetAddFileModal
-        title="Add files to dataset"
-        open={addFileModalOpen}
-        onClose={toggleAddFileModal}
-        addFilesHandler={addFilesHandler}
-        loading={addFilesLoading}
-      />
-      <AddFilesToKnowledgeBaseModal
-        open={addFileToKnowledgebaseOpen}
-        loading={addFilesToKnowledgebaseLoading}
-        onClose={toggleAddFilesToKnowledgebaseModal}
-        addFilesHandler={addFilesToKnowledgeBaseHandler}
-        title="Add Files to knowledge base"
-      />
-    </DatasetDetailsContainer>
+    </KnowledgeBaseDetailsContainer>
   );
 };
 
-export default DatasetDetails;
+export default KnowledgeBaseDetails;

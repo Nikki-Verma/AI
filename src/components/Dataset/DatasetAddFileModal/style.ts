@@ -31,7 +31,7 @@ export const PrivacyTitle = styled.div`
   font-feature-settings:
     "clig" off,
     "liga" off;
-  font-family: "DM Sans";
+  font-family: var(--font-dm-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
@@ -43,7 +43,7 @@ export const PrivacyDescription = styled.div`
   font-feature-settings:
     "clig" off,
     "liga" off;
-  font-family: "DM Sans";
+  font-family: var(--font-dm-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -52,7 +52,7 @@ export const PrivacyDescription = styled.div`
 
 export const UploadTypeHeading = styled.div`
   color: var(--headings, #000b34);
-  font-family: "DM Sans";
+  font-family: var(--font-dm-sans);
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -61,7 +61,7 @@ export const UploadTypeHeading = styled.div`
 
 export const UploadTypeDescription = styled.div`
   color: var(--Text-Color-900, #171717);
-  font-family: "DM Sans";
+  font-family: var(--font-dm-sans);
   font-size: 17px;
   font-style: normal;
   font-weight: 400;
@@ -86,7 +86,7 @@ export const FileItemDetails = styled.div`
 
 export const FileName = styled.div`
   color: var(--Text-Color-900, #171717);
-  font-family: "DM Sans";
+  font-family: var(--font-dm-sans);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -95,7 +95,7 @@ export const FileName = styled.div`
 
 export const FileSize = styled.div`
   color: var(--Text-Color-900, #171717);
-  font-family: "DM Sans";
+  font-family: var(--font-dm-sans);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

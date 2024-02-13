@@ -51,6 +51,12 @@ const config = {
     uploadFile: `${BASE_URLS.data}/api/v1/storage/upload`,
     files: `${BASE_URLS.data}/api/v1/dataset/collection/files`,
   },
+  knowledgebase: {
+    list: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
+    create: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
+    addFiles: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/add-file`,
+    files: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/files`,
+  },
 };
 
 export default config;

@@ -2,6 +2,7 @@
 
 import { createDatasetApi } from "@/api/dataset";
 import EmptyUpload from "@/components/EmptyUpload";
+import FolderIcon from "@/components/Icons/FolderIcon";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import {
@@ -36,11 +37,10 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import FolderIcon from "../../Icons/FolderIcon";
 import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
-import CreateDatasetModal from "../CreateDatasetModal";
-import { DatasetListContainer, ProgressBar } from "./style";
+
+import { KnowledgeBaseListContainer, ProgressBar } from "./style";
 
 const { Title } = Typography;
 
@@ -56,16 +56,15 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
 });
 
-const DatasetList = () => {
+const KnowledgeBaseList = () => {
   const { data: session }: any = useSession();
   const [api, contextHolder] = notification.useNotification();
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
-
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = useState(initialFilters());
   const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.dataset.list,
+    config.knowledgebase.list,
     { ...filters },
     {},
   );
@@ -76,7 +75,7 @@ const DatasetList = () => {
     sorter: SorterResult<DataType> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current !== filters.page + 1) {
+    if (pagination?.current === filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -180,11 +179,11 @@ const DatasetList = () => {
       dataIndex: "",
       align: "center",
       key: "actions",
-      width: 20,
-      render: (_: any, dataset: UnknownObject) => {
+      width: 100,
+      render: (_: any, knowledgebase: UnknownObject) => {
         return (
           <Space>
-            <Link href={`/dataset/${dataset?.id}`}>
+            <Link href={`/knowledge-base/${knowledgebase?.id}`}>
               <Button icon={<EyeFilled />}>View</Button>
             </Link>
             <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
@@ -204,7 +203,7 @@ const DatasetList = () => {
   };
 
   return (
-    <DatasetListContainer>
+    <KnowledgeBaseListContainer>
       {contextHolder}
       <ProgressBar>
         <Progress percent={70} />
@@ -261,8 +260,8 @@ const DatasetList = () => {
       )}
       {!data?.result?.length && !isError && !isLoading && (
         <EmptyUpload
-          buttonText="Create your dataset"
-          message="It seems like you have not created dataset yet."
+          buttonText="Create your knowledge base"
+          message="It seems like you have not created knowledge base yet."
           onClick={showDatasetModal}
         />
       )}
@@ -271,29 +270,18 @@ const DatasetList = () => {
           <Col span={24} sm={6} md={4}>
             <Input
               prefix={<SearchIcon style={{ marginRight: "6px" }} />}
-              placeholder="Search by Dataset name, file name"
+              placeholder="Search by file name"
             />
           </Col>
           <Col>
             <Space size="middle" align="center">
-              {selectedRowKeys?.length > 0 && (
-                <Button
-                  size="middle"
-                  type="default"
-                  disabled
-                  icon={<PlusOutlined />}
-                  onClick={addToKnowledgebaseHandler}
-                >
-                  Add to knowledgebase
-                </Button>
-              )}
               <Button
                 size="middle"
                 type="primary"
                 icon={<PlusOutlined />}
                 onClick={showDatasetModal}
               >
-                Create Dataset
+                Create Knowledge Base
               </Button>
             </Space>
           </Col>
@@ -304,8 +292,8 @@ const DatasetList = () => {
           columns={columns}
           dataSource={data?.result || []}
           rowSelection={rowSelection}
-          loading={isLoading}
           rowKey={(data: any) => data?.id}
+          loading={isLoading}
           scroll={{
             x: "max-content",
             y: data?.result?.length > 0 ? 600 : undefined,
@@ -319,15 +307,8 @@ const DatasetList = () => {
           onChange={tableChangeHandler}
         />
       )}
-      <CreateDatasetModal
-        open={createDatasetOpen}
-        loading={createDatasetLoading}
-        onClose={closeDatasetModel}
-        createDatasetHandler={createDatasetHandler}
-        title="Create your data collection set"
-      />
-    </DatasetListContainer>
+    </KnowledgeBaseListContainer>
   );
 };
 
-export default DatasetList;
+export default KnowledgeBaseList;

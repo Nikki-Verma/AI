@@ -14,7 +14,7 @@ export const DatasetDetailsContainer = styled.div`
   }
   .ant-input-affix-wrapper > input.ant-input {
     color: var(--Text-Color-900, #171717);
-    font-family: "DM Sans";
+    font-family: var(--font-dm-sans);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
