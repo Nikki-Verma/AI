@@ -1,18 +1,5 @@
-#FROM node:18.17.0-alpine as builder
-FROM 637423419927.dkr.ecr.ap-south-1.amazonaws.com/dashboard:base as builder
-
-ENV NPM_CONFIG_LOGLEVEL warn
-
-#WORKDIR /app
-#COPY . /app/
-#RUN apk update && apk add python3 make g++
-
-#RUN yarn install
-#RUN yarn build || echo 1
-#ENTRYPOINT npm run start
-
-#FROM 144258099647.dkr.ecr.ap-south-1.amazonaws.com/node:14.13.1-alpine
-#FROM node:14.13.1
+FROM node:18.17.0-alpine
+#FROM 637423419927.dkr.ecr.ap-south-1.amazonaws.com/node:16.15.1-alpine
 ARG SVC
 ARG ENVIRONMENT
 RUN mkdir -p /app/
@@ -20,11 +7,11 @@ WORKDIR /app/
 USER root
 COPY ./$SVC/package.json  ./
 COPY ./$SVC .
-RUN npm install --force
-#RUN npm run build:universal:prod
+RUN npm install
+#RUN npm install -g serve
 RUN npm run build
 COPY ./$SVC/launch.sh .
 RUN chmod +x launch.sh
 ENV parameters="$SVC $ENVIRONMENT"
-RUN rm -f .env || echo ".env file deleted"
-ENTRYPOINT npm run start
+ENTRYPOINT /app/launch.sh $parameters
+
