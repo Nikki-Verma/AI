@@ -1,9 +1,10 @@
-import { Permissions_Types, PERMISSION_TYPE } from "./constants";
+import { PERMISSION_TYPE } from "./constants";
+import { Permissions_Types } from "./types";
 
 export const validatePermission = (
   reqPermissions: string[] = [],
   userPermissions: string[] = [],
-  permissionType: Permissions_Types
+  permissionType: Permissions_Types,
 ): boolean => {
   if (userPermissions?.includes("SUPER_ADMIN")) {
     return true;
@@ -20,7 +21,7 @@ export const validatePermission = (
     shouldAllow = perms.some((per) =>
       Array.isArray(per)
         ? per.every((p: any) => userPermissions?.includes(p))
-        : userPermissions?.includes(per)
+        : userPermissions?.includes(per),
     );
   } else {
     shouldAllow = perms.every((per) => {
