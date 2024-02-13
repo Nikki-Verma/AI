@@ -1,5 +1,4 @@
-FROM node:18.17.0-alpine
-#FROM 637423419927.dkr.ecr.ap-south-1.amazonaws.com/node:16.15.1-alpine
+FROM 637423419927.dkr.ecr.ap-south-1.amazonaws.com/node:18.17.0-alpine
 ARG SVC
 ARG ENVIRONMENT
 RUN mkdir -p /app/
