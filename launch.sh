@@ -7,12 +7,12 @@ then
 
   echo "Starting application on $environment environment . . ."
   echo "Exporting Variables. . . . ."
-  npm run start --port 80
+  /usr/local/bin/npm run start 
 
 else
 
   echo "Starting application on $environment environment. . . ."
   echo "Exporting Variables. . . . ."
-  npm run start --port 80
+  /usr/local/bin/npm run start 
 
 fi
