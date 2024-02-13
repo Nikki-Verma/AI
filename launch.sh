@@ -1,6 +1,18 @@
 #!/bin/sh
 svc=$1
 environment=$2
-echo "Starting application on other than $environment environment. . . ."
-echo "Exporting Variables. . . . ."
-npm run start
+
+if [[ "$environment" == "production" ]]
+then
+
+  echo "Starting application on $environment environment . . ."
+  echo "Exporting Variables. . . . ."
+  npm run start --port 80
+
+else
+
+  echo "Starting application on $environment environment. . . ."
+  echo "Exporting Variables. . . . ."
+  npm run start --port 80
+
+fi
