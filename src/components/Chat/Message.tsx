@@ -1,6 +1,8 @@
 "use client";
 
+import { userCredentialsFromName } from "@/utils/helperFunction";
 import { Typography } from "antd";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import MarkdownComponent from "../Markdown";
 import { IconContainer, MessageContainer, PromptContainer } from "./style";
@@ -14,7 +16,7 @@ type Props = {
 
 function Message({ message, loading }: Props) {
   const isUser = message?.role === "user";
-
+  const { data: session }: any = useSession();
   return (
     <MessageContainer role={message?.role}>
       {isUser ? (
@@ -36,7 +38,9 @@ function Message({ message, loading }: Props) {
           >
             You
           </span>
-          <IconContainer>RS</IconContainer>
+          <IconContainer>
+            {userCredentialsFromName(session?.user?.details?.name)}
+          </IconContainer>
         </div>
       ) : (
         <div

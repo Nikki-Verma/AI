@@ -33,6 +33,7 @@ export const TopBarMenuContainer = styled.div`
 `;
 
 export const IconContainer = styled.div`
+  cursor: pointer;
   display: flex;
   background: #e6eaf5;
   justify-content: center;

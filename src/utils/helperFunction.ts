@@ -91,3 +91,13 @@ export const uploadDatasetFiles = async (
   }
   return promise;
 };
+
+export const userCredentialsFromName = (name: string) => {
+  return (
+    name
+      ?.split(" ")
+      ?.map((splittedName: string) => splittedName?.[0] || "")
+      ?.filter((char: string) => !!char)
+      .join("") || "You"
+  );
+};
