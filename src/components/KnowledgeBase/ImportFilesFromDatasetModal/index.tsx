@@ -1,26 +1,24 @@
 "use client";
 
+import AddFilesFromDatasetForm from "@/components/Dataset/AddFilesFromDatasetForm";
 import { Button, Col, Modal, Row, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
-import CreateKnowledgeBaseForm, {
-  KnowledgeBaseCreateType,
-} from "../CreateKnowledgeBaseForm";
 
-interface CreateKnowledgeBaseModalProps {
+interface AddFilesToKnowledgeBaseModalProps {
   open: boolean;
   loading: boolean;
   onClose: () => void;
-  createKnowledgeBaseHandler: (values: { [key: string]: any }) => void;
+  addFilesHandler: (values: { [key: string]: any }) => void;
   title?: string;
 }
 
-const CreateKnowledgeBaseModal = ({
+const ImportFilesFromDatasetModal = ({
   title,
   open,
   loading,
   onClose,
-  createKnowledgeBaseHandler,
-}: CreateKnowledgeBaseModalProps) => {
+  addFilesHandler,
+}: AddFilesToKnowledgeBaseModalProps) => {
   const [form] = useForm();
 
   return (
@@ -64,13 +62,9 @@ const CreateKnowledgeBaseModal = ({
         </Row>
       }
     >
-      <CreateKnowledgeBaseForm
-        form={form}
-        createKnowledgeBaseHandler={createKnowledgeBaseHandler}
-        type={KnowledgeBaseCreateType.ADD}
-      />
+      <AddFilesFromDatasetForm form={form} addFilesHandler={addFilesHandler} />
     </Modal>
   );
 };
 
-export default CreateKnowledgeBaseModal;
+export default ImportFilesFromDatasetModal;

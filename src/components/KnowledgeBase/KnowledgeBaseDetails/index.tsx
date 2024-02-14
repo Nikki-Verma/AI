@@ -1,3 +1,4 @@
+import { addFileToKnowledgeBaseApi } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
 import SearchIcon from "@/components/Icons/SearchIcon";
@@ -12,6 +13,7 @@ import {
   dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
+  DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
@@ -40,6 +42,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import ImportFilesFromDatasetModal from "../ImportFilesFromDatasetModal";
 
 import { KnowledgeBaseDetailsContainer } from "./style";
 const { Text } = Typography;
@@ -61,8 +64,9 @@ const KnowledgeBaseDetails = (props: any) => {
   const { knowledgebaseId } = useParams();
   const { data: session }: any = useSession();
   const [api, contextHolder] = notification.useNotification();
-
   const [filters, setFilters] = useState(initialFilters());
+  const [importDatasetOpen, setImportDatasetOpen] = useState(false);
+  const [importDatasetLoading, setImportDatasetLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   // const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   // const [addFilesLoading, setAddFilesLoading] = useState(false);
@@ -110,9 +114,42 @@ const KnowledgeBaseDetails = (props: any) => {
     }
   };
 
-  // const toggleAddFileModal = () => {
-  //   setAddFileModalOpen((val: boolean) => !val);
-  // };
+  const toggleAddFileModal = () => {
+    setImportDatasetOpen((val: boolean) => !val);
+  };
+
+  const addFilesHandler = async (values: UnknownObject) => {
+    try {
+      setImportDatasetLoading(true);
+
+      // Payload to add to knowledgebase
+      const payload = {
+        tenant_id: DUMMY_TENANT_ID,
+        user_id: session?.user?.details?.id,
+        document_id: values?.files,
+        knowlede_base_id: knowledgebaseId,
+      };
+      console.log("🚀 ~ addFilesHandler ~ payload:", payload);
+
+      const addFileToKnowledgeBaseResponse = await addFileToKnowledgeBaseApi({
+        payload,
+      });
+      if (addFileToKnowledgeBaseResponse?.status == 200) {
+        setImportDatasetOpen(false);
+        api.success({
+          message: "Added files to knowledgebase",
+        });
+        refetch();
+      }
+    } catch (error) {
+      api.error({
+        message: "Error while adding files to knowledgebase",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setImportDatasetLoading(false);
+    }
+  };
 
   const rowSelection: TableRowSelection<DataType> = {
     type: "checkbox",
@@ -230,9 +267,9 @@ const KnowledgeBaseDetails = (props: any) => {
       )}
       {!isError && !data?.document_details?.length && !isLoading && (
         <EmptyUpload
-          buttonText="Upload File"
+          buttonText="Add files from dataset"
           message="The knowledgebase is empty"
-          // onClick={toggleAddFileModal}
+          onClick={toggleAddFileModal}
         />
       )}
       {!isError && (isLoading || !!data?.document_details?.length) && (
@@ -258,7 +295,7 @@ const KnowledgeBaseDetails = (props: any) => {
                   size="middle"
                   type="primary"
                   icon={<CloudDownloadOutlined />}
-                  // onClick={toggleAddFileModal}
+                  onClick={toggleAddFileModal}
                 >
                   Import from Dataset
                 </Button>
@@ -285,6 +322,13 @@ const KnowledgeBaseDetails = (props: any) => {
           />
         </>
       )}
+      <ImportFilesFromDatasetModal
+        title="Import files from dataset"
+        open={importDatasetOpen}
+        loading={importDatasetLoading}
+        onClose={toggleAddFileModal}
+        addFilesHandler={addFilesHandler}
+      />
     </KnowledgeBaseDetailsContainer>
   );
 };

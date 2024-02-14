@@ -46,11 +46,13 @@ const AddToExistingKnowledgebaseForm = ({
             <Select
               showSearch
               optionFilterProp="label"
-              options={data?.result?.map((knowledgebase: any) => ({
-                label: knowledgebase?.name,
-                value: knowledgebase?.name,
-                id: knowledgebase?.id,
-              }))}
+              options={
+                data?.result?.map((knowledgebase: any) => ({
+                  label: knowledgebase?.name,
+                  value: knowledgebase?.name,
+                  id: knowledgebase?.id,
+                })) || []
+              }
               onChange={(value: string, option: UnknownObject) => {
                 form.setFields([
                   {

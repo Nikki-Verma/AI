@@ -38,6 +38,7 @@ export const useFetchData = (
   url: string,
   params: Params = {},
   headers: Headers = {},
+  enabled: boolean = true,
 ): UseQueryResult<any, unknown> => {
   const { data }: any = useSession();
 
@@ -51,6 +52,7 @@ export const useFetchData = (
       data?.accessToken,
     ],
     queryFn: () => fetcher(url, params, { ...headers }),
+    enabled: enabled,
   };
 
   return useQuery(queryOptions);
