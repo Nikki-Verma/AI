@@ -30,6 +30,7 @@ const CreateDatasetModal = ({
         }
       }}
       centered
+      maskClosable={false}
       destroyOnClose
       closable
       footer={

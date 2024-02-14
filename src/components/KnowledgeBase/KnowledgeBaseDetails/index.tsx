@@ -13,9 +13,10 @@ import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
 } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
+import { CloudDownloadOutlined, MoreOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -36,7 +37,6 @@ import {
   SorterResult,
   TableRowSelection,
 } from "antd/es/table/interface";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -72,6 +72,7 @@ const KnowledgeBaseDetails = (props: any) => {
     { ...filters, knowledgebase_id: knowledgebaseId },
     {},
   );
+
   const {
     data: knowledgebaseConfig,
     isLoading: knowledgebaseLoading,
@@ -227,14 +228,14 @@ const KnowledgeBaseDetails = (props: any) => {
           </Col>
         </Row>
       )}
-      {!isError && !data?.result?.length && !isLoading && (
+      {!isError && !data?.document_details?.length && !isLoading && (
         <EmptyUpload
           buttonText="Upload File"
           message="The knowledgebase is empty"
           // onClick={toggleAddFileModal}
         />
       )}
-      {!isError && (isLoading || !!data?.result?.length) && (
+      {!isError && (isLoading || !!data?.document_details?.length) && (
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
@@ -253,36 +254,26 @@ const KnowledgeBaseDetails = (props: any) => {
             </Col>
             <Col>
               <Space size="middle" align="center">
-                {selectedRowKeys?.length > 0 && (
-                  <Button
-                    size="middle"
-                    type="default"
-                    icon={<PlusOutlined />}
-                    onClick={() => console.log("add files to knowledge base")}
-                  >
-                    Add files to knowledgebase
-                  </Button>
-                )}
                 <Button
                   size="middle"
                   type="primary"
-                  icon={<PlusOutlined />}
+                  icon={<CloudDownloadOutlined />}
                   // onClick={toggleAddFileModal}
                 >
-                  Add File
+                  Import from Dataset
                 </Button>
               </Space>
             </Col>
           </Row>
           <Table
             columns={columns}
-            dataSource={data?.result || []}
+            dataSource={data?.document_details || []}
             rowSelection={rowSelection}
             rowKey={(data: any) => data?.id}
             loading={isLoading}
             scroll={{
               x: "max-content",
-              y: data?.result?.length > 0 ? 600 : undefined,
+              y: data?.document_details?.length > 0 ? 600 : undefined,
             }}
             pagination={{
               current: filters?.page + 1,

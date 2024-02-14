@@ -2,8 +2,8 @@ import {
   dateFormatForFrontend,
   timeFormatForFrontend,
 } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { Divider, Space, Typography } from "antd";
-import dayjs from "dayjs";
 
 const { Text } = Typography;
 

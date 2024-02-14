@@ -1,19 +1,24 @@
 "use client";
 
-import { createDatasetApi } from "@/api/dataset";
+import { createKnowledgeBaseApi } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
-import FolderIcon from "@/components/Icons/FolderIcon";
 import { useFetchData } from "@/Hooks/useApi";
+
 import config from "@/utils/apiEndoints";
 import {
   dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
-  DUMMY_TENANT_ID,
 } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { EyeFilled, MoreOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  DatabaseFilled,
+  EyeFilled,
+  MoreOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -33,12 +38,12 @@ import {
   TablePaginationConfig,
   TableRowSelection,
 } from "antd/es/table/interface";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
+import CreateKnowledgeBaseModal from "../CreateKnowledgeBaseModal";
 
 import { KnowledgeBaseListContainer, ProgressBar } from "./style";
 
@@ -59,8 +64,9 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 const KnowledgeBaseList = () => {
   const { data: session }: any = useSession();
   const [api, contextHolder] = notification.useNotification();
-  const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
-  const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
+  const [createKnowledgeBaseOpen, setCreateKnowledgeBaseOpen] = useState(false);
+  const [createKnowledgeBaseLoading, setCreateKnowledgeBaseLoading] =
+    useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = useState(initialFilters());
   const { data, isLoading, isError, error, refetch } = useFetchData(
@@ -94,33 +100,28 @@ const KnowledgeBaseList = () => {
     }
   };
 
-  const showDatasetModal = () => {
-    setCreateDatasetOpen(true);
+  const showKnowledgeBaseModal = () => {
+    setCreateKnowledgeBaseOpen(true);
   };
 
-  const closeDatasetModel = () => {
-    setCreateDatasetOpen(false);
+  const closeKnowledgeBaseModel = () => {
+    setCreateKnowledgeBaseOpen(false);
   };
 
-  const createDatasetHandler = async (values: any) => {
+  const createKnowledgeBaseHandler = async (values: any) => {
     try {
-      setCreateDatasetLoading(true);
+      setCreateKnowledgeBaseLoading(true);
 
       const payload = {
-        name: values?.dataset_name,
-        description: values?.dataset_description,
-        tenant_id: DUMMY_TENANT_ID,
-        user_id: session?.user?.details?.id,
+        ...values,
         username: session?.user?.details?.name,
-        files_count: 0,
-        size: 0,
         active: true,
       };
 
-      const datasetResponse = await createDatasetApi({ payload });
+      const knowledgeBaseResponse = await createKnowledgeBaseApi({ payload });
 
-      if (datasetResponse?.status === 200) {
-        setCreateDatasetOpen(false);
+      if (knowledgeBaseResponse?.status === 200) {
+        setCreateKnowledgeBaseOpen(false);
         api.success({
           message: "Dataset created successfully",
         });
@@ -132,14 +133,8 @@ const KnowledgeBaseList = () => {
         description: getErrorFromApi(error),
       });
     } finally {
-      setCreateDatasetLoading(false);
+      setCreateKnowledgeBaseLoading(false);
     }
-  };
-
-  const addToKnowledgebaseHandler = () => {
-    console.log(
-      "user row selection to add the selected rows to knwoledge base",
-    );
   };
 
   const columns: TableProps<DataType>["columns"] = [
@@ -149,8 +144,8 @@ const KnowledgeBaseList = () => {
       key: "name",
       width: 400,
       render: (val) => (
-        <Space size="small">
-          <FolderIcon /> {val}
+        <Space size={2}>
+          <DatabaseFilled /> {val}
         </Space>
       ),
     },
@@ -262,7 +257,7 @@ const KnowledgeBaseList = () => {
         <EmptyUpload
           buttonText="Create your knowledge base"
           message="It seems like you have not created knowledge base yet."
-          onClick={showDatasetModal}
+          onClick={showKnowledgeBaseModal}
         />
       )}
       {!isError && (
@@ -279,7 +274,7 @@ const KnowledgeBaseList = () => {
                 size="middle"
                 type="primary"
                 icon={<PlusOutlined />}
-                onClick={showDatasetModal}
+                onClick={showKnowledgeBaseModal}
               >
                 Create Knowledge Base
               </Button>
@@ -307,6 +302,13 @@ const KnowledgeBaseList = () => {
           onChange={tableChangeHandler}
         />
       )}
+      <CreateKnowledgeBaseModal
+        title="Create Knowledge Base"
+        loading={createKnowledgeBaseLoading}
+        open={createKnowledgeBaseOpen}
+        onClose={closeKnowledgeBaseModel}
+        createKnowledgeBaseHandler={createKnowledgeBaseHandler}
+      />
     </KnowledgeBaseListContainer>
   );
 };

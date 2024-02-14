@@ -1,11 +1,11 @@
 import _unauthHttp from "@/services/_unauthHttp";
 import config from "@/utils/apiEndoints";
 import { tokenDateFormat, X_DEVICE_ID } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import {
   generateEncryptedPassword,
   getErrorFromApi,
 } from "@/utils/helperFunction";
-import dayjs from "dayjs";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 

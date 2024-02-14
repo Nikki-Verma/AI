@@ -3,7 +3,8 @@
 import UploadCard from "@/components/UploadCard";
 import { Button, Col, Modal, Row, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AddToExistingKnowledgebaseForm from "../AddToExistingKnowledgebaseForm";
 import CreateKnowledgeBaseForm from "../CreateKnowledgeBaseForm";
 import {
   KnowledgebaseOptionType,
@@ -19,7 +20,8 @@ interface AddFilesToKnowledgeBaseModalProps {
   open: boolean;
   loading: boolean;
   onClose: () => void;
-  addFilesHandler: (values: { [key: string]: any }) => void;
+  createAndAddFilesToKnowledgeBase: (values: { [key: string]: any }) => void;
+  addFilesToExistingKnowledgeBase: (values: { [key: string]: any }) => void;
   title?: string;
 }
 
@@ -45,7 +47,8 @@ const AddFilesToKnowledgeBaseModal = ({
   open,
   loading,
   onClose,
-  addFilesHandler,
+  createAndAddFilesToKnowledgeBase,
+  addFilesToExistingKnowledgeBase,
 }: AddFilesToKnowledgeBaseModalProps) => {
   const [form] = useForm();
 
@@ -53,13 +56,25 @@ const AddFilesToKnowledgeBaseModal = ({
     KnowledgebaseOptionType | undefined
   >(undefined);
 
+  useEffect(() => {
+    form.resetFields();
+  }, [uploadType]);
+
   const getUploadStep = () => {
     switch (uploadType) {
       case KnowledgebaseOptionType.CREATE:
         return (
           <CreateKnowledgeBaseForm
             form={form}
-            createKnowledgeBaseHandler={addFilesHandler}
+            createKnowledgeBaseHandler={createAndAddFilesToKnowledgeBase}
+          />
+        );
+
+      case KNOWLEDGEBASE_SELECT_OPTIONS.EXISTING:
+        return (
+          <AddToExistingKnowledgebaseForm
+            form={form}
+            onFinish={addFilesToExistingKnowledgeBase}
           />
         );
 
@@ -116,6 +131,7 @@ const AddFilesToKnowledgeBaseModal = ({
           onClose();
         }
       }}
+      maskClosable={false}
       afterClose={() => setUploadType(undefined)}
       centered
       width={"50%"}

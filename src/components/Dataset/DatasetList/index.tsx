@@ -10,6 +10,7 @@ import {
   DEFAULT_PAGE_SIZE,
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { EyeFilled, MoreOutlined, PlusOutlined } from "@ant-design/icons";
@@ -32,7 +33,6 @@ import {
   TablePaginationConfig,
   TableRowSelection,
 } from "antd/es/table/interface";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";

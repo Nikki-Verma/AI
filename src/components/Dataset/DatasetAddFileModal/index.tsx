@@ -127,6 +127,7 @@ const DatasetAddFileModal = ({
           onClose();
         }
       }}
+      maskClosable={false}
       afterClose={() => setUploadType(undefined)}
       centered
       width={"50%"}

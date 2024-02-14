@@ -17,7 +17,9 @@ import {
   dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
+  DUMMY_TENANT_ID,
 } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import {
   getErrorFromApi,
   getFilters,
@@ -45,7 +47,6 @@ import {
   SorterResult,
   TableRowSelection,
 } from "antd/es/table/interface";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -176,7 +177,41 @@ const DatasetDetails = (props: any) => {
     }
   };
 
-  const addFilesToKnowledgeBaseHandler = async (values: any) => {
+  const addFilesToExistingKnowledgeBase = async (values: any) => {
+    try {
+      setAddFilesToKnowledgebaseLoading(true);
+
+      // Payload to add to knowledgebase
+      const payload = {
+        tenant_id: DUMMY_TENANT_ID,
+        user_id: session?.user?.details?.id,
+        document_id: selectedRowKeys,
+        knowlede_base_id: values?.id,
+      };
+
+      const addFileToKnowledgeBaseResponse = await addFileToKnowledgeBaseApi({
+        payload,
+      });
+      if (addFileToKnowledgeBaseResponse?.status == 200) {
+        setSelectedRowKeys([]);
+        setAddFileToKnowledgebaseOpen(false);
+        setAddFilesToKnowledgebaseLoading(false);
+        api.success({
+          message: "Added files to knowledgebase",
+        });
+        router.push(`/knowledge-base/${values?.id}`);
+      }
+    } catch (error) {
+      api.error({
+        message: "Error while adding files to knowledgebase",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setAddFilesToKnowledgebaseLoading(false);
+    }
+  };
+
+  const createAndAddFilesToKnowledgeBase = async (values: any) => {
     try {
       setAddFilesToKnowledgebaseLoading(true);
 
@@ -193,18 +228,27 @@ const DatasetDetails = (props: any) => {
       if (createKnowledgeBaseResponse?.status == 200) {
         // Payload to add to knowledgebase
 
-        // const payload = {
-        //   tenant_id: DUMMY_TENANT_ID,
-        //   user_id: session?.user?.details?.id,
-        //   collection_name: ,
-        //   resource_id: ["string"],
-        //   document_id: [0],
-        //   knowlede_base_id: 0,
-        // };
+        const payload = {
+          tenant_id: DUMMY_TENANT_ID,
+          user_id: session?.user?.details?.id,
+          document_id: selectedRowKeys,
+          knowlede_base_id: createKnowledgeBaseResponse?.data?.result?.id,
+        };
 
         const addFileToKnowledgeBaseResponse = await addFileToKnowledgeBaseApi({
           payload,
         });
+        if (addFileToKnowledgeBaseResponse?.status == 200) {
+          setSelectedRowKeys([]);
+          setAddFileToKnowledgebaseOpen(false);
+          setAddFilesToKnowledgebaseLoading(false);
+          api.success({
+            message: "Added files to knowledgebase",
+          });
+          router.push(
+            `/knowledge-base/${createKnowledgeBaseResponse?.data?.result?.id}`,
+          );
+        }
       }
     } catch (error) {
       api.error({
@@ -372,7 +416,7 @@ const DatasetDetails = (props: any) => {
                   icon={<PlusOutlined />}
                   onClick={toggleAddFileModal}
                 >
-                  Add Fileasd
+                  Add File
                 </Button>
               </Space>
             </Col>
@@ -381,7 +425,7 @@ const DatasetDetails = (props: any) => {
             columns={columns}
             dataSource={data?.result || []}
             rowSelection={rowSelection}
-            rowKey={(data: any) => data?.resource_id}
+            rowKey={(data: any) => data?.id}
             loading={isLoading}
             scroll={{
               x: "max-content",
@@ -408,7 +452,8 @@ const DatasetDetails = (props: any) => {
         open={addFileToKnowledgebaseOpen}
         loading={addFilesToKnowledgebaseLoading}
         onClose={toggleAddFilesToKnowledgebaseModal}
-        addFilesHandler={addFilesToKnowledgeBaseHandler}
+        createAndAddFilesToKnowledgeBase={createAndAddFilesToKnowledgeBase}
+        addFilesToExistingKnowledgeBase={addFilesToExistingKnowledgeBase}
         title="Add Files to knowledge base"
       />
     </DatasetDetailsContainer>

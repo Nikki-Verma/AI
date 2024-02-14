@@ -29,6 +29,7 @@ export const DUMMY_TENANT_ID = "1";
 // pagination constants
 export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 20;
+export const ALL_DATA_PAGE_SIZE = 2000;
 
 export const Page_Type = {
   auth: PageTypeEnum.AUTH,
