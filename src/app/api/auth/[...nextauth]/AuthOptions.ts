@@ -30,6 +30,17 @@ export const authOptions: AuthOptions = {
       return true;
     },
     async jwt({ token, user }: any) {
+      console.log("🚀 ~ jwt ~ user:", user);
+      console.log("current time", dayjs().format(tokenDateFormat));
+      console.log(
+        "expiry time",
+        dayjs(token.expires).subtract(1, "minute").format(tokenDateFormat),
+      );
+      console.log(
+        "condition",
+        dayjs().format(tokenDateFormat) <
+          dayjs(token.expires).subtract(1, "minute").format(tokenDateFormat),
+      );
       if (user) {
         return {
           user: { permissions: user?.permissions, details: user?.details },
