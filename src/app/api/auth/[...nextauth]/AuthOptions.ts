@@ -34,6 +34,7 @@ export const authOptions: AuthOptions = {
       return true;
     },
     async jwt({ token, user }: any) {
+      console.log("🚀 ~ jwt ~ token:", token);
       console.log("🚀 ~ jwt ~ user:", user);
       console.log("current time", dayjs().format(tokenDateFormat));
       console.log(
@@ -70,6 +71,19 @@ export const authOptions: AuthOptions = {
                 "Grant-Type": "REFRESH_TOKEN",
               },
             },
+          );
+          console.log("🚀 ~ jwt ~ refresh token response:", response);
+          console.log(
+            "🚀 ~ jwt ~ refresh token response headers:",
+            response?.headers,
+          );
+          console.log(
+            "🚀 ~ jwt ~ refresh token response headers PIM-SID:",
+            response?.headers?.["pim-sid"],
+          );
+          console.log(
+            "🚀 ~ jwt ~ refresh token response headers expires at:",
+            response?.headers?.["expires-at"],
           );
 
           if (response.status === 201 && response?.data?.ok) {
