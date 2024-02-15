@@ -37,7 +37,9 @@ const ChatHistory = ({
   setConversationId,
   conversationId,
 }: ChatHistoryProps) => {
-  const { data: session }: any = useSession();
+  const { data: session, status }: any = useSession();
+  console.log("🚀 ~ status:", status);
+  console.log("🚀 ~ session:", session);
 
   const [filters, setFilters] = useState({ ...initialFilters() });
   const [prompt, setPrompt] = useState("");

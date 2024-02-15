@@ -16,7 +16,9 @@ type Props = {
 
 function Message({ message, loading }: Props) {
   const isUser = message?.role === "user";
-  const { data: session }: any = useSession();
+  const { data: session, status }: any = useSession();
+  console.log("🚀 ~ Message ~ status:", status);
+  console.log("🚀 ~ Message ~ session:", session);
   return (
     <MessageContainer role={message?.role}>
       {isUser ? (

@@ -1,3 +1,5 @@
+"use client";
+
 import NotificationIcon from "@/components/Icons/NotificationIcon";
 import { userCredentialsFromName } from "@/utils/helperFunction";
 import { Dropdown, MenuProps, Typography } from "antd";
@@ -8,7 +10,8 @@ import { IconContainer, TopBarMenuContainer } from "./style";
 const { Link } = Typography;
 
 const TopBarMenu = () => {
-  const { data: session }: any = useSession();
+  const { data: session, status }: any = useSession({ required: true });
+  console.log("🚀 ~ TopBarMenu ~ status:", status);
   console.log("🚀 ~ TopBarMenu ~ session:", session);
   const items: MenuProps["items"] = [
     {

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 export function AuthHoc(Component: any, PageType = Page_Type.auth) {
   return function AuthHoc(props: any) {
     const { status } = useSession();
+    console.log("🚀 ~ AuthHoc ~ status:", status);
     const router = useRouter();
 
     if (status === "unauthenticated" && PageType === Page_Type.auth) {
