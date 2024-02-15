@@ -39,12 +39,12 @@ export const authOptions: AuthOptions = {
       console.log("current time", dayjs().format(tokenDateFormat));
       console.log(
         "expiry time",
-        dayjs(token.expiresAt).subtract(1, "minute").format(tokenDateFormat),
+        dayjs(token.expiresAt).format(tokenDateFormat),
       );
       console.log(
         "condition",
         dayjs().format(tokenDateFormat) <
-          dayjs(token.expiresAt).subtract(1, "minute").format(tokenDateFormat),
+          dayjs(token.expiresAt).format(tokenDateFormat),
       );
       if (user) {
         return {
@@ -55,7 +55,7 @@ export const authOptions: AuthOptions = {
         };
       } else if (
         dayjs().format(tokenDateFormat) <
-        dayjs(token.expiresAt).subtract(1, "minute").format(tokenDateFormat)
+        dayjs(token.expiresAt).format(tokenDateFormat)
       ) {
         // If the access token has not expired yet, return it
         return { ...token };

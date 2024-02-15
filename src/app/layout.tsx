@@ -27,7 +27,7 @@ export default async function RootLayout({
       <body className={dm_sans.variable}>
         <StyledComponentsRegistry>
           <ThemeProvider>
-            <SessionProvider session={session}>
+            <SessionProvider session={session} refetchInterval={900}>
               <AntdRegistry>
                 <ReactQueryProvider>{children}</ReactQueryProvider>
               </AntdRegistry>
