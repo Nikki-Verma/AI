@@ -14,11 +14,15 @@ export const authOptions: AuthOptions = {
     signIn: "/login",
     error: "/login",
   },
+
   callbacks: {
     async session({ session, token, user }: any) {
       if (token.error) {
         return false;
       }
+
+      console.log("existing session", session);
+      console.log("new updated session", { ...session, ...token });
 
       return { ...session, ...token };
     },
