@@ -39,23 +39,23 @@ export const authOptions: AuthOptions = {
       console.log("current time", dayjs().format(tokenDateFormat));
       console.log(
         "expiry time",
-        dayjs(token.expires).subtract(1, "minute").format(tokenDateFormat),
+        dayjs(token.expiresAt).subtract(1, "minute").format(tokenDateFormat),
       );
       console.log(
         "condition",
         dayjs().format(tokenDateFormat) <
-          dayjs(token.expires).subtract(1, "minute").format(tokenDateFormat),
+          dayjs(token.expiresAt).subtract(1, "minute").format(tokenDateFormat),
       );
       if (user) {
         return {
           user: { permissions: user?.permissions, details: user?.details },
           accessToken: user?.accessToken,
           refreshToken: user?.refreshToken,
-          expires: user?.expires,
+          expiresAt: user?.expiresAt,
         };
       } else if (
         dayjs().format(tokenDateFormat) <
-        dayjs(token.expires).subtract(1, "minute").format(tokenDateFormat)
+        dayjs(token.expiresAt).subtract(1, "minute").format(tokenDateFormat)
       ) {
         // If the access token has not expired yet, return it
         return { ...token };
@@ -91,7 +91,7 @@ export const authOptions: AuthOptions = {
               user: { ...(token?.user || {}) },
               accessToken: response?.headers?.["pim-sid"],
               refreshToken: token?.refreshToken,
-              expires: response?.headers?.["expires-at"],
+              expiresAt: response?.headers?.["expires-at"],
             };
           }
 
@@ -164,7 +164,7 @@ export const authOptions: AuthOptions = {
               permissions: res?.data?.result?.permissions,
               accessToken: res?.headers?.["pim-sid"],
               refreshToken: res?.headers?.["refresh-token"],
-              expires: res?.headers?.["expires-at"],
+              expiresAt: res?.headers?.["expires-at"],
               id: res?.data?.result?.id,
               error: undefined,
             };

@@ -20,6 +20,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("SIMPLAI APP VERSION:", process.env.NEXT_PUBLIC_APP_VERSION);
   const session = await getServerSession();
   return (
     <html lang="en">
