@@ -11,7 +11,6 @@ import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
-import { X_CLIENT_ID } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { PlusOutlined } from "@ant-design/icons";
@@ -51,7 +50,7 @@ const Workflow = () => {
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.workflow.list,
     { ...filters },
-    { [X_CLIENT_ID]: "1" },
+    {},
   );
   console.log("data : ", data);
   console.log("Loading : ", isLoading);
