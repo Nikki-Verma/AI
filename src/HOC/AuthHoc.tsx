@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export function AuthHoc(Component: any, PageType = Page_Type.auth) {
   return function AuthHoc(props: any) {
     const { data, status, update }: any = useSession();
-    console.log("🚀 ~ AuthHoc ~ status:", status);
+
     const router = useRouter();
 
     useEffect(() => {

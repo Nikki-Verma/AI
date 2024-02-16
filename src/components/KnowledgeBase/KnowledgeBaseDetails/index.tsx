@@ -129,7 +129,6 @@ const KnowledgeBaseDetails = (props: any) => {
         document_id: values?.files,
         knowlede_base_id: knowledgebaseId,
       };
-      console.log("🚀 ~ addFilesHandler ~ payload:", payload);
 
       const addFileToKnowledgeBaseResponse = await addFileToKnowledgeBaseApi({
         payload,

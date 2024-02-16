@@ -36,10 +36,6 @@ const WorkspaceModelData = (props: any) => {
       };
 
       const deploymentResponse = await deployModelApi({ payload });
-      console.log(
-        "🚀 ~ deployHandler ~ deploymentResponse:",
-        deploymentResponse,
-      );
     } catch (error) {
     } finally {
       setDeploymentLoading(false);

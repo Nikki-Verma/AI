@@ -10,7 +10,6 @@ import {
   ModelDetailTitle,
 } from "./style";
 const ModelOverView = ({ markdown, modelDetails }: any) => {
-  console.log("🚀 ~ ModelOverView ~ modelDetails:", modelDetails);
   const ModelInformationItems: DescriptionsProps["items"] = [
     {
       key: "model_type",

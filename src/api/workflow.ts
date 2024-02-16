@@ -6,3 +6,7 @@ export const createWorkFlowApi = ({ payload = {}, headers = {} }: any) => {
     headers,
   });
 };
+
+export const updatePipelineApi = ({ payload = {}, headers = {} }: any) => {
+  return _authHttp.put(config.workflow.update, payload, { headers });
+};

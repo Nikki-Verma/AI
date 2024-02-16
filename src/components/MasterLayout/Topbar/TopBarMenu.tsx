@@ -11,8 +11,7 @@ const { Link } = Typography;
 
 const TopBarMenu = () => {
   const { data: session, status }: any = useSession({ required: true });
-  console.log("🚀 ~ TopBarMenu ~ status:", status);
-  console.log("🚀 ~ TopBarMenu ~ session:", session);
+
   const items: MenuProps["items"] = [
     {
       label: "Logout",

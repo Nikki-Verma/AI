@@ -28,7 +28,6 @@ const AddFilesFromDatasetForm = ({
     page: DEFAULT_PAGE,
     size: ALL_DATA_PAGE_SIZE,
   });
-  console.log("🚀 ~ datasets:", datasets);
 
   const {
     data: datasetFiles,
@@ -46,8 +45,6 @@ const AddFilesFromDatasetForm = ({
     {},
     !!selectedDataset,
   );
-
-  console.log("🚀 ~ datasetFiles:", datasetFiles);
 
   return (
     <Form

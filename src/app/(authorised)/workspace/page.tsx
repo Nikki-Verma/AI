@@ -44,7 +44,6 @@ const Workspace = () => {
     {},
   );
 
-  console.log("🚀 ~ Workspace ~ data:", data);
   useEffect(() => {
     setFilters(initialFilters({ modelStatus }));
   }, [modelStatus]);

@@ -1,8 +1,10 @@
 "use client";
 
 import { createWorkFlowApi } from "@/api/workflow";
+import { WorkflowStatusType } from "@/app/(authorisedHeaderLayout)/workflow/constant";
 import CreateWorkflowModal from "@/components/CreateWorkflowModal";
 import EmptyUpload from "@/components/EmptyUpload";
+import SaDate from "@/components/SaDate/Index";
 import {
   PageContainer,
   PageSubHeading,
@@ -11,6 +13,8 @@ import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
+import { dateTimeFormatWithMillisecondsWithoutTimeZone } from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { PlusOutlined } from "@ant-design/icons";
@@ -19,9 +23,9 @@ import {
   Col,
   Result,
   Row,
-  Space,
   Table,
   TableProps,
+  Tag,
   Typography,
 } from "antd";
 import { useSession } from "next-auth/react";
@@ -29,6 +33,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { WorkflowStatuses } from "./constant";
 
 const { Title, Text, Link: TypographyLink } = Typography;
 
@@ -52,11 +57,9 @@ const Workflow = () => {
     { ...filters },
     {},
   );
-  console.log("data : ", data);
-  console.log("Loading : ", isLoading);
 
+  console.log("🚀 ~ Workflow ~ data:", data);
   useEffect(() => {
-    console.log("🚀 ~ Workflow ~ data:", data);
     updatePageConfig({
       pageTitle: "Workspace",
       pageDescription: "Models are your AI powered automations & skills",
@@ -76,10 +79,7 @@ const Workflow = () => {
       };
 
       const createWorkflowResponse = await createWorkFlowApi({ payload });
-      console.log(
-        "🚀 ~ createWorkflowHandler ~ createWorkflowResponse:",
-        createWorkflowResponse,
-      );
+
       if (createWorkflowResponse?.status == 200) {
         notification.success({ message: "Workflow created successfully" });
         setWorkflowModalOpen(false);
@@ -103,44 +103,101 @@ const Workflow = () => {
       title: "Workflow name",
       dataIndex: "pipeline_name",
       key: "pipeline_name",
-      width: 400,
-      render: (val: any, data: any) => (
-        <Space size="small">
-          {data?.pipeline_state != "COMPLETED" ? (
-            <Link href={`/workflow/${data?.pipeline_id}/edit`}>{val}</Link>
-          ) : (
-            <Text ellipsis style={{ width: 350 }}>
-              {val}
-            </Text>
-          )}
-        </Space>
-      ),
+      width: 200,
+      render: (val: any, data: any) =>
+        data?.pipeline_state != "COMPLETED" ? (
+          <Link href={`/workflow/${data?.pipeline_id}/edit`}>{val}</Link>
+        ) : (
+          <Text ellipsis style={{ width: 200 }}>
+            {val}
+          </Text>
+        ),
     },
     {
       title: "Workflow description",
       dataIndex: "pipeline_description",
       key: "pipeline_description",
-      width: 400,
+      width: 200,
       render: (val: any) => (
-        <Space size="small">
-          <Text ellipsis style={{ width: 350 }}>
-            {val}
-          </Text>
-        </Space>
+        <Text ellipsis style={{ width: 200 }}>
+          {val || "--"}
+        </Text>
       ),
+    },
+    {
+      title: "Model name",
+      dataIndex: "model_detail",
+      key: "model_name",
+      width: 200,
+      render: (val: any) => (
+        <Text ellipsis style={{ width: 200 }}>
+          {val?.model_name || "--"}
+        </Text>
+      ),
+    },
+    {
+      title: "Model version",
+      dataIndex: "model_detail",
+      key: "model_version",
+      width: 200,
+      render: (val: any) => (
+        <Text ellipsis style={{ width: 200 }}>
+          {val?.model_version || "--"}
+        </Text>
+      ),
+    },
+    {
+      title: "Knowledge base",
+      dataIndex: "kb",
+      key: "kb_name",
+      width: 200,
+      render: (val: any) => (
+        <Text ellipsis style={{ width: 200 }}>
+          {val?.kb_name || "--"}
+        </Text>
+      ),
+    },
+    {
+      title: "Knowledge base version",
+      dataIndex: "kb",
+      key: "kb_version",
+      width: 200,
+      render: (val: any) => (
+        <Text ellipsis style={{ width: 200 }}>
+          {val?.kb_version || "--"}
+        </Text>
+      ),
+    },
+    {
+      title: "Created At",
+      dataIndex: "created_at",
+      key: "created_at",
+      width: 200,
+      render: (val: any) =>
+        val ? (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMillisecondsWithoutTimeZone)}
+            inline
+            time
+          />
+        ) : (
+          "--"
+        ),
     },
     {
       title: "Status",
       dataIndex: "pipeline_state",
       key: "pipeline_state",
-      width: 400,
-      render: (val: any) => (
-        <Space size="small">
-          <Text ellipsis style={{ width: 350 }}>
-            {val}
-          </Text>
-        </Space>
-      ),
+      width: 100,
+      fixed: "right",
+      render: (val: WorkflowStatusType) =>
+        val ? (
+          <Tag color={WorkflowStatuses?.[val]?.color || ""}>
+            {WorkflowStatuses?.[val]?.text ?? val}
+          </Tag>
+        ) : (
+          "--"
+        ),
     },
   ];
 
@@ -217,12 +274,15 @@ const Workflow = () => {
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
-            // pagination={{
-            //   current: filters?.page + 1,
-            //   pageSize: filters?.size,
-            //   total: data?.totalElements,
-            //   showSizeChanger: true,
-            // }}
+            pagination={
+              false
+              // {
+              // current: filters?.page + 1,
+              // pageSize: filters?.size,
+              // total: data?.totalElements,
+              // showSizeChanger: false,
+              // }
+            }
             // onChange={tableChangeHandler}
           />
         </>

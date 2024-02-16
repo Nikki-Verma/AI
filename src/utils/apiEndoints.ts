@@ -51,7 +51,9 @@ const config = {
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
+    details: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
+    update: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
   },
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,

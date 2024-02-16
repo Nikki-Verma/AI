@@ -30,7 +30,6 @@ const ModelData = (props: any) => {
     {},
   );
 
-  console.log("data", data);
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
   const [deploymentLoading, setDeploymentLoading] = useState(false);
   const { notification } = useNotify();
@@ -45,10 +44,6 @@ const ModelData = (props: any) => {
       };
 
       const deploymentResponse = await deployModelApi({ payload });
-      console.log(
-        "🚀 ~ deployHandler ~ deploymentResponse:",
-        deploymentResponse,
-      );
     } catch (error) {
     } finally {
       setDeploymentLoading(false);

@@ -11,6 +11,8 @@ export const tokenDateFormat = "YYYY-MM-DDThh:mm:ss.ssssss";
 export const dateFormatForFrontend = "DD-MM-YYYY";
 export const timeFormatForFrontend = "hh:mm A";
 export const dateTimeFormatWithMilliseconds = "DD-MM-YYYY hh:mm:ss A";
+export const dateTimeFormatWithMillisecondsWithoutTimeZone =
+  "DD-MM-YYYY hh:mm:ss";
 
 // common headers constants
 export const X_USER_ID = "X-USER-ID";
