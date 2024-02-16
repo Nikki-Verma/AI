@@ -1,8 +1,10 @@
+"use client";
+
 import { useAppStore } from "@/store";
 import { Layout } from "antd";
 import React, { useEffect } from "react";
+import CustomTopbar from "./CustomTopbar";
 import styles from "./HeaderMasterLayout.module.scss";
-import Topbar from "./Topbar";
 
 const { Content } = Layout;
 
@@ -18,7 +20,7 @@ const HeaderMasterLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Layout>
-      <Topbar />
+      <CustomTopbar />
       <Content className={styles.content_x} style={{ marginTop: "64px" }}>
         {children}
       </Content>

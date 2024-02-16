@@ -107,9 +107,7 @@ const Workflow = () => {
       render: (val: any, data: any) => (
         <Space size="small">
           {data?.pipeline_state != "COMPLETED" ? (
-            <Link href={`/workflow/${data?.pipeline_id}/edit`}>
-              <TypographyLink style={{ width: 350 }}>{val}</TypographyLink>
-            </Link>
+            <Link href={`/workflow/${data?.pipeline_id}/edit`}>{val}</Link>
           ) : (
             <Text ellipsis style={{ width: 350 }}>
               {val}
@@ -213,7 +211,7 @@ const Workflow = () => {
           <Table
             columns={columns}
             dataSource={data?.result || []}
-            rowKey={(data: any) => data?.id}
+            rowKey={(data: any) => data?.pipeline_id}
             loading={isLoading}
             scroll={{
               x: "max-content",
