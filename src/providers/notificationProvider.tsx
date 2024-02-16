@@ -1,3 +1,5 @@
+"use client";
+
 import { notification } from "antd";
 import { NotificationInstance } from "antd/es/notification/interface";
 import React, { createContext, ReactNode, useContext } from "react";
