@@ -23,6 +23,8 @@ export const FlexStartContainer = styled.div`
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  min-height: calc(100vh - 114px);
 `;
 
 export const PageSubHeading = styled.div`

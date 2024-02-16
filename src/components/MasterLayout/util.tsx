@@ -102,13 +102,13 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link prefetch href="/agent-pipeline">
-        <Text style={{ color: "inherit" }}>Agent/Pipeline</Text>
+      <Link prefetch href="/workflow">
+        <Text style={{ color: "inherit" }}>Workflows</Text>
       </Link>
     ),
-    key: "agent-pipeline",
-    keyPath: ["agent-pipeline"],
-    url: "/agent-pipeline",
+    key: "workflow",
+    keyPath: ["workflow"],
+    url: "/workflow",
     icon: <PipelineIcon />,
   },
   {

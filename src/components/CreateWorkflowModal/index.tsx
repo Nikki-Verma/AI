@@ -6,27 +6,27 @@ import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useEffect } from "react";
 
-interface CreateChatbotModalProps {
+interface CreateWorkflowModalProps {
   open: boolean;
   loading: boolean;
   onClose: () => void;
-  createChatbotHandler: (values: { [key: string]: any }) => void;
+  createWorkflowHandler: (values: { [key: string]: any }) => void;
   mode?: PageModeEnum;
-  chatbotData?: {
+  workflowDetails?: {
     id?: string | number | undefined;
     name: string;
     description?: string | undefined | null;
   };
 }
 
-const CreateChatbotModal = ({
+const CreateWorkflowModal = ({
   open,
   loading,
   onClose,
-  createChatbotHandler,
+  createWorkflowHandler,
   mode = PAGE_MODE.CREATE,
-  chatbotData,
-}: CreateChatbotModalProps) => {
+  workflowDetails,
+}: CreateWorkflowModalProps) => {
   const [form] = useForm();
 
   useEffect(() => {
@@ -34,12 +34,12 @@ const CreateChatbotModal = ({
       form.setFields([
         {
           name: "name",
-          value: chatbotData?.name,
+          value: workflowDetails?.name,
           errors: [],
         },
         {
           name: "description",
-          value: chatbotData?.description,
+          value: workflowDetails?.description,
           errors: [],
         },
       ]);
@@ -50,9 +50,9 @@ const CreateChatbotModal = ({
     <Modal
       title={
         mode === PAGE_MODE.CREATE
-          ? "Create Chatbot"
+          ? "Create workflow"
           : mode === PAGE_MODE.CREATE
-            ? "Edit Chatbot"
+            ? "Edit workflow details"
             : ""
       }
       open={open}
@@ -94,26 +94,29 @@ const CreateChatbotModal = ({
         form={form}
         layout="vertical"
         preserve={false}
-        onFinish={createChatbotHandler}
+        onFinish={createWorkflowHandler}
       >
         <Form.Item
-          name="name"
-          label="Chatbot Name"
+          name="pipeline_name"
+          label="Workflow Name"
           rules={[
             {
               required: true,
-              message: "Chatbot name is required",
+              message: "Workflow name is required",
             },
           ]}
         >
-          <Input placeholder="Enter chatbot name" />
+          <Input placeholder="Enter workflow name" />
         </Form.Item>
-        <Form.Item name="description" label="Chatbot description">
-          <Input placeholder="A short description of what this chatbot is supposed to do. (Optional)" />
+        <Form.Item name="pipeline_description" label="Workflow description">
+          <Input.TextArea
+            autoSize={{ minRows: 3, maxRows: 5 }}
+            placeholder="A short description of what this workflow is about. (Optional)"
+          />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default CreateChatbotModal;
+export default CreateWorkflowModal;

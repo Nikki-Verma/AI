@@ -1,6 +1,8 @@
 import {
+  DUMMY_SELLER_ID,
   DUMMY_TENANT_ID,
   PIM_SID,
+  X_CLIENT_ID,
   X_DEVICE_ID,
   X_TENANT_ID,
   X_USER_ID,
@@ -24,6 +26,7 @@ axiosInstance.interceptors.request.use(
       [X_TENANT_ID]: DUMMY_TENANT_ID,
       [PIM_SID]: session?.accessToken,
       [X_DEVICE_ID]: "armaze-web",
+      [X_CLIENT_ID]: DUMMY_SELLER_ID,
     };
 
     request.headers = { ...(request.headers || {}), ...DefaultHeaders };

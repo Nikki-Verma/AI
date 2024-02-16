@@ -254,6 +254,7 @@ const KnowledgeBaseDetails = (props: any) => {
           <PageAbout>{knowledgebaseConfig?.result?.[0]?.description}</PageAbout>
         </Col>
       </Row>
+      {/* TODO: Follow this pattern everywhere for loader/error/data */}
       {isError && (
         <Row justify="center">
           <Col>
