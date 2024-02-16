@@ -6,6 +6,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.scss";
 
 import { ThemeProvider } from "@/providers/antdThemeProvider";
+import NotificationProvider from "@/providers/notificationProvider";
 import SessionProvider from "@/providers/SessionProvider";
 import StyledComponentsRegistry from "@/providers/syledComponentsProvider";
 const dm_sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
@@ -29,7 +30,9 @@ export default async function RootLayout({
           <ThemeProvider>
             <SessionProvider session={session} refetchInterval={900}>
               <AntdRegistry>
-                <ReactQueryProvider>{children}</ReactQueryProvider>
+                <NotificationProvider>
+                  <ReactQueryProvider>{children}</ReactQueryProvider>
+                </NotificationProvider>
               </AntdRegistry>
             </SessionProvider>
           </ThemeProvider>

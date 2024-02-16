@@ -8,17 +8,7 @@ import {
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
-import {
-  Button,
-  Card,
-  Col,
-  notification,
-  Result,
-  Row,
-  Skeleton,
-  Tabs,
-} from "antd";
-import { useSession } from "next-auth/react";
+import { Button, Card, Col, Result, Row, Skeleton, Tabs } from "antd";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -27,7 +17,7 @@ import { items } from "./helper";
 const WorkspaceModelData = (props: any) => {
   const router = useRouter();
   const { modelId, workspaceId } = useParams();
-  const { data: session }: any = useSession();
+
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.models.detail,
     { id: modelId },
@@ -35,7 +25,6 @@ const WorkspaceModelData = (props: any) => {
   );
 
   const [deploymentLoading, setDeploymentLoading] = useState(false);
-  const [api, contextHolder] = notification.useNotification();
 
   const deployHandler = async () => {
     try {
@@ -79,7 +68,6 @@ const WorkspaceModelData = (props: any) => {
   }
   return (
     <div>
-      {contextHolder}
       <Row
         justify="space-between"
         gutter={[20, 20]}

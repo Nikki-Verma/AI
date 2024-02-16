@@ -8,6 +8,7 @@ import {
   PageTitle,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
   dateTimeFormatWithMilliseconds,
@@ -24,7 +25,6 @@ import {
   Card,
   Col,
   Input,
-  notification,
   Result,
   Row,
   Skeleton,
@@ -63,7 +63,7 @@ const KnowledgeBaseDetails = (props: any) => {
   const router = useRouter();
   const { knowledgebaseId } = useParams();
   const { data: session }: any = useSession();
-  const [api, contextHolder] = notification.useNotification();
+  const { notification } = useNotify();
   const [filters, setFilters] = useState(initialFilters());
   const [importDatasetOpen, setImportDatasetOpen] = useState(false);
   const [importDatasetLoading, setImportDatasetLoading] = useState(false);
@@ -136,13 +136,13 @@ const KnowledgeBaseDetails = (props: any) => {
       });
       if (addFileToKnowledgeBaseResponse?.status == 200) {
         setImportDatasetOpen(false);
-        api.success({
+        notification.success({
           message: "Added files to knowledgebase",
         });
         refetch();
       }
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while adding files to knowledgebase",
         description: getErrorFromApi(error),
       });
@@ -237,7 +237,6 @@ const KnowledgeBaseDetails = (props: any) => {
 
   return (
     <KnowledgeBaseDetailsContainer>
-      {contextHolder}
       <Row
         style={{
           display: "flex",

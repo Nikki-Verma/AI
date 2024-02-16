@@ -3,6 +3,7 @@
 import { createKnowledgeBaseApi } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 
 import config from "@/utils/apiEndoints";
 import {
@@ -23,7 +24,6 @@ import {
   Button,
   Col,
   Input,
-  notification,
   Progress,
   Result,
   Row,
@@ -63,7 +63,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 
 const KnowledgeBaseList = () => {
   const { data: session }: any = useSession();
-  const [api, contextHolder] = notification.useNotification();
+  const { notification } = useNotify();
   const [createKnowledgeBaseOpen, setCreateKnowledgeBaseOpen] = useState(false);
   const [createKnowledgeBaseLoading, setCreateKnowledgeBaseLoading] =
     useState(false);
@@ -122,13 +122,13 @@ const KnowledgeBaseList = () => {
 
       if (knowledgeBaseResponse?.status === 200) {
         setCreateKnowledgeBaseOpen(false);
-        api.success({
+        notification.success({
           message: "Dataset created successfully",
         });
         refetch();
       }
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while creating dataset",
         description: getErrorFromApi(error),
       });
@@ -199,7 +199,6 @@ const KnowledgeBaseList = () => {
 
   return (
     <KnowledgeBaseListContainer>
-      {contextHolder}
       <ProgressBar>
         <Progress percent={70} />
         <div

@@ -3,6 +3,7 @@
 import { createDatasetApi } from "@/api/dataset";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
   dateTimeFormatWithMilliseconds,
@@ -18,7 +19,6 @@ import {
   Button,
   Col,
   Input,
-  notification,
   Progress,
   Result,
   Row,
@@ -58,7 +58,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 
 const DatasetList = () => {
   const { data: session }: any = useSession();
-  const [api, contextHolder] = notification.useNotification();
+  const { notification } = useNotify();
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
 
@@ -122,13 +122,13 @@ const DatasetList = () => {
 
       if (datasetResponse?.status === 200) {
         setCreateDatasetOpen(false);
-        api.success({
+        notification.success({
           message: "Dataset created successfully",
         });
         refetch();
       }
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while creating dataset",
         description: getErrorFromApi(error),
       });
@@ -205,7 +205,6 @@ const DatasetList = () => {
 
   return (
     <DatasetListContainer>
-      {contextHolder}
       <ProgressBar>
         <Progress percent={70} />
         <div

@@ -12,6 +12,7 @@ import {
   PageTitle,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
   dateTimeFormatWithMilliseconds,
@@ -32,7 +33,6 @@ import {
   Card,
   Col,
   Input,
-  notification,
   Result,
   Row,
   Skeleton,
@@ -71,7 +71,7 @@ const DatasetDetails = (props: any) => {
   const router = useRouter();
   const { datasetId } = useParams();
   const { data: session }: any = useSession();
-  const [api, contextHolder] = notification.useNotification();
+  const { notification } = useNotify();
 
   const [filters, setFilters] = useState(initialFilters());
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
@@ -156,7 +156,7 @@ const DatasetDetails = (props: any) => {
             filesUploadSuccess = filesUploadSuccess + 1;
           }
         });
-        api.success({
+        notification.success({
           message: `${filesUploadSuccess} files added to dataset successfully`,
           description: filesUploadedFailed ? (
             <Text type="danger">{`Failed to add ${filesUploadedFailed} to dataset `}</Text>
@@ -168,7 +168,7 @@ const DatasetDetails = (props: any) => {
         setAddFileModalOpen(false);
       });
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while adding file to dataset",
         description: getErrorFromApi(error),
       });
@@ -196,13 +196,13 @@ const DatasetDetails = (props: any) => {
         setSelectedRowKeys([]);
         setAddFileToKnowledgebaseOpen(false);
         setAddFilesToKnowledgebaseLoading(false);
-        api.success({
+        notification.success({
           message: "Added files to knowledgebase",
         });
         router.push(`/knowledge-base/${values?.id}`);
       }
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while adding files to knowledgebase",
         description: getErrorFromApi(error),
       });
@@ -242,7 +242,7 @@ const DatasetDetails = (props: any) => {
           setSelectedRowKeys([]);
           setAddFileToKnowledgebaseOpen(false);
           setAddFilesToKnowledgebaseLoading(false);
-          api.success({
+          notification.success({
             message: "Added files to knowledgebase",
           });
           router.push(
@@ -251,7 +251,7 @@ const DatasetDetails = (props: any) => {
         }
       }
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while adding files to knowledgebase",
         description: getErrorFromApi(error),
       });
@@ -346,7 +346,6 @@ const DatasetDetails = (props: any) => {
 
   return (
     <DatasetDetailsContainer>
-      {contextHolder}
       <Row
         style={{
           display: "flex",

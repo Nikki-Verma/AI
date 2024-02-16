@@ -8,6 +8,7 @@ import {
   PageSubHeading,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import { X_CLIENT_ID } from "@/utils/constants";
@@ -17,7 +18,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  notification,
   Result,
   Row,
   Space,
@@ -44,7 +44,7 @@ const Workflow = () => {
   const router = useRouter();
 
   const { data: session }: any = useSession();
-  const [api, contextHolder] = notification.useNotification();
+  const { notification } = useNotify();
   const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = useState(initialFilters({}));
@@ -82,7 +82,7 @@ const Workflow = () => {
         createWorkflowResponse,
       );
       if (createWorkflowResponse?.status == 200) {
-        api.success({ message: "Workflow created successfully" });
+        notification.success({ message: "Workflow created successfully" });
         setWorkflowModalOpen(false);
         refetch();
         router.push(
@@ -90,7 +90,7 @@ const Workflow = () => {
         );
       }
     } catch (error) {
-      api.error({
+      notification.error({
         message: "Error while creating workflow",
         description: getErrorFromApi(error),
       });
@@ -149,7 +149,6 @@ const Workflow = () => {
 
   return (
     <PageContainer>
-      {contextHolder}
       <Row
         gutter={[12, 12]}
         style={{
