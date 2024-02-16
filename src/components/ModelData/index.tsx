@@ -1,4 +1,4 @@
-import { addModelToWorkspaceApi } from "@/api/workspace";
+import { addModelToWorkspaceApi, deployModelApi } from "@/api/workspace";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import { DUMMY_TENANT_ID } from "@/utils/constants";
@@ -24,21 +24,45 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import DeployIcon from "../Icons/DeployIcon";
 import ModelOverView from "../ModelOverview";
 import uiStyles from "../UIComponents/ui.module.scss";
 import { ModelAbout, ModelTitle } from "./style";
 
 const ModelData = (props: any) => {
   const router = useRouter();
-  const { modelId } = useParams();
+  const { modelId, workspaceId } = useParams();
   const { data: session }: any = useSession();
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.models.detail,
     { id: modelId },
     {},
   );
+
+  console.log("data", data);
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
+  const [deploymentLoading, setDeploymentLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+
+  const deployHandler = async () => {
+    try {
+      setDeploymentLoading(true);
+
+      const payload = {
+        model_id: modelId,
+        user_model_id: workspaceId,
+      };
+
+      const deploymentResponse = await deployModelApi({ payload });
+      console.log(
+        "🚀 ~ deployHandler ~ deploymentResponse:",
+        deploymentResponse,
+      );
+    } catch (error) {
+    } finally {
+      setDeploymentLoading(false);
+    }
+  };
 
   const addToworkspace = async (model: any) => {
     try {
@@ -186,7 +210,13 @@ const ModelData = (props: any) => {
               >
                 Train
               </Button>
-              <Button type="primary">Deploy</Button>
+              <Button
+                type="primary"
+                icon={<DeployIcon />}
+                onClick={deployHandler}
+              >
+                Deploy
+              </Button>
             </>
           )}
         </Col>

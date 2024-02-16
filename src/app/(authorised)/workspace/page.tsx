@@ -43,6 +43,7 @@ const Workspace = () => {
     {},
   );
 
+  console.log("🚀 ~ Workspace ~ data:", data);
   useEffect(() => {
     setFilters(initialFilters({ modelStatus }));
   }, [modelStatus]);
@@ -140,7 +141,7 @@ const Workspace = () => {
                   key={model?.name}
                   imageUrl={"/assets/Images/modelHeaderImage.svg"}
                   modelData={{ ...model, id: model?.model_id }}
-                  goToBaseUrl="/workspace"
+                  redirectUrl={`/workspace/${model?.id}/${model?.model_id}`}
                 />
               </Col>
             );

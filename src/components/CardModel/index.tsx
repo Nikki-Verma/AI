@@ -1,3 +1,4 @@
+import { UnknownObject } from "@/utils/types";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Tag } from "antd";
 import Image from "next/image";
@@ -11,9 +12,15 @@ import {
   ModelHeaderContainer,
 } from "./style";
 
-const CardModel = ({ modelData, goToBaseUrl, imageUrl }: any) => {
+type CardModelProps = {
+  modelData: UnknownObject;
+  redirectUrl: string;
+  imageUrl: string;
+};
+
+const CardModel = ({ modelData, redirectUrl, imageUrl }: CardModelProps) => {
   return (
-    <Link prefetch href={`${goToBaseUrl}/${modelData?.id}`}>
+    <Link prefetch href={redirectUrl}>
       <ModelCardContainer>
         <ModelCard>
           <ModelHeaderContainer>

@@ -6,3 +6,9 @@ export const addModelToWorkspaceApi = ({ payload = {}, headers = {} }: any) => {
     headers,
   });
 };
+
+export const deployModelApi = ({ payload = {}, headers = {} }: any) => {
+  return _authHttp.post(config.workspace.deploy, payload, {
+    headers,
+  });
+};

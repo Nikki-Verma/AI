@@ -137,7 +137,7 @@ const Models = () => {
                   key={model?.name}
                   imageUrl={"/assets/Images/modelHeaderImage.svg"}
                   modelData={model}
-                  goToBaseUrl="/models"
+                  redirectUrl={`/models/${model?.id}`}
                 />
               </Col>
             );

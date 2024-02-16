@@ -44,6 +44,7 @@ const config = {
   workspace: {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
+    deploy: `${BASE_URLS.model}/api/v1/user/model/deploy`,
   },
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,

@@ -4,7 +4,7 @@ import ModelData from "@/components/ModelData";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Col } from "antd";
 import Link from "next/link";
-import uiStyles from "../../../../components/UIComponents/ui.module.scss";
+import uiStyles from "../../../../../components/UIComponents/ui.module.scss";
 import { Container } from "./style";
 
 const ModelDetails = ({ params }: any) => {
