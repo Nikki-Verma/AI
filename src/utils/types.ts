@@ -8,6 +8,12 @@ export enum PageTypeEnum {
   AUTH = "AUTH",
 }
 
+export enum PageModeEnum {
+  CREATE = "CREATE",
+  EDIT = "EDIT",
+  VIEW = "VIEW",
+}
+
 export interface UnknownObject {
   [key: string]: any;
 }

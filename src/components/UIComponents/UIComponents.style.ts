@@ -20,6 +20,20 @@ export const FlexStartContainer = styled.div`
   align-items: center;
 `;
 
+export const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const PageSubHeading = styled.div`
+  color: var(--Text-Color-900, #171717);
+  font-family: var(--font-dm-sans);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+`;
+
 export const PageTitle = styled.div`
   display: flex;
   color: var(--Text-Color-900, #171717);

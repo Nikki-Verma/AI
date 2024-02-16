@@ -3,6 +3,7 @@ import { Permissions_Types } from "@/utils/types";
 import { Typography } from "antd";
 import { cloneDeep } from "lodash";
 import Link from "next/link";
+import PipelineIcon from "../Icons/AgentPipelineIcon";
 import AgentsIcon from "../Icons/AgentsIcon";
 import BillingIcon from "../Icons/BillingIcon";
 import DatasetIcon from "../Icons/DatasetIcon";
@@ -97,6 +98,18 @@ export const items: any = [
     keyPath: ["playground"],
     url: "/playground",
     icon: <PlaygroundIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link prefetch href="/agent-pipeline">
+        <Text style={{ color: "inherit" }}>Agent/Pipeline</Text>
+      </Link>
+    ),
+    key: "agent-pipeline",
+    keyPath: ["agent-pipeline"],
+    url: "/agent-pipeline",
+    icon: <PipelineIcon />,
   },
   {
     id: 100,

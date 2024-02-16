@@ -134,7 +134,7 @@ const ModelData = (props: any) => {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             <Image
-              src={"/assets/Images/modelHeaderImage.svg"}
+              src={"/assets/Images/dummyModel.png"}
               alt="models"
               height={32}
               width={32}

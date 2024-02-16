@@ -1,4 +1,4 @@
-import { PageTypeEnum, Permissions_Types } from "./types";
+import { PageModeEnum, PageTypeEnum, Permissions_Types } from "./types";
 
 // Auth constants
 export const PERMISSION_TYPE = {
@@ -30,6 +30,13 @@ export const DUMMY_TENANT_ID = "1";
 export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 20;
 export const ALL_DATA_PAGE_SIZE = 2000;
+
+// Page mode
+export const PAGE_MODE = {
+  CREATE: PageModeEnum.CREATE,
+  VIEW: PageModeEnum.VIEW,
+  EDIT: PageModeEnum.EDIT,
+};
 
 export const Page_Type = {
   auth: PageTypeEnum.AUTH,

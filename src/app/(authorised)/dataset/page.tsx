@@ -1,10 +1,11 @@
 "use client";
 
 import DatasetList from "@/components/Dataset/DatasetList";
+import PageHeading from "@/components/PageHeading";
 import { useAppStore } from "@/store";
 import { Col, Row, Typography } from "antd";
 import { useEffect } from "react";
-import { ModelContainer, SubHeading } from "./style";
+import { ModelContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -27,16 +28,13 @@ const datset = () => {
           justifyContent: "space-between",
         }}
       >
-        <Col
-          span={14}
-          style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-        >
-          <Title>Datasets</Title>
-          <SubHeading>
-            Explore, analyze, and share quality data. you can select your data
+        <Col span={14}>
+          <PageHeading
+            title="Datasets"
+            subHeading="Explore, analyze, and share quality data. you can select your data
             collection while training your ai model, multi data collection can
-            be added in one AI model
-          </SubHeading>
+            be added in one AI model."
+          />
         </Col>
       </Row>
       <DatasetList />

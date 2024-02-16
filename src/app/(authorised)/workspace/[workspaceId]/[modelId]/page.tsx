@@ -1,6 +1,6 @@
 "use client";
 
-import ModelData from "@/components/ModelData";
+import WorkspaceModelData from "@/components/Workspace/WorkspaceModelData";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Col } from "antd";
 import Link from "next/link";
@@ -17,7 +17,7 @@ const ModelDetails = ({ params }: any) => {
           </div>
         </Link>
       </Col>
-      <ModelData page="workspace" />
+      <WorkspaceModelData />
     </Container>
   );
 };

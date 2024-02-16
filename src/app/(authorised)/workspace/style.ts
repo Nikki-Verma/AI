@@ -1,14 +1,5 @@
 import styled from "styled-components";
 
-export const SubHeading = styled.div`
-  color: var(--Text-Color-900, #171717);
-  font-family: var(--font-dm-sans);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-`;
-
 export const WorkspaceContainer = styled.div`
   display: flex;
   flex-direction: column;

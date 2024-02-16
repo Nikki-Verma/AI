@@ -1,27 +1,19 @@
 "use client";
 
-import CardModel from "@/components/CardModel";
-import PageHeading from "@/components/PageHeading";
+import CreateChatbotModal from "@/components/CreateChatbot";
+import {
+  PageContainer,
+  PageSubHeading,
+} from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
-import {
-  Button,
-  Card,
-  Col,
-  PaginationProps,
-  Radio,
-  Result,
-  Row,
-  Skeleton,
-  Typography,
-} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Result, Row, Skeleton, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { WorkspaceContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -31,23 +23,18 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
 });
 
-const Workspace = () => {
-  const { userConfig, updatePageConfig } = useAppStore();
-  const [modelStatus, setModelStatus] = useState("ADDED");
+const AgentPipeline = () => {
+  const { updatePageConfig } = useAppStore();
 
   const { data: session }: any = useSession();
-
-  const [filters, setFilters] = useState(initialFilters({ modelStatus }));
+  const [chatbotModalOpen, setChatbotModalOpen] = useState(false);
+  const [createChatbotLoading, setCreateChatbotLoading] = useState(false);
+  const [filters, setFilters] = useState(initialFilters({}));
   const { data, isLoading, isError, error } = useFetchData(
     config.workspace.models,
     { ...filters },
     {},
   );
-
-  console.log("🚀 ~ Workspace ~ data:", data);
-  useEffect(() => {
-    setFilters(initialFilters({ modelStatus }));
-  }, [modelStatus]);
 
   useEffect(() => {
     updatePageConfig({
@@ -56,30 +43,30 @@ const Workspace = () => {
     });
   }, []);
 
-  const pageChangeHandler: PaginationProps["onChange"] = (
-    pageNumber,
-    pageSize,
-  ) => {
-    setFilters((prev: any) => ({ ...prev, page: pageNumber, size: pageSize }));
+  const toggleChatbotHandler = () => {
+    setChatbotModalOpen((prev: boolean) => !prev);
   };
 
   return (
-    <WorkspaceContainer>
+    <PageContainer>
       <Row
-        gutter={12}
+        gutter={[12, 12]}
         style={{
           display: "flex",
           justifyContent: "space-between",
           marginBottom: "24px",
         }}
       >
-        <Col span={14}>
-          <PageHeading
-            title="Workspace"
-            subHeading="Explore a vast array of meticulously trained and readily deployable
+        <Col
+          span={14}
+          style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+        >
+          <Title>Tools/Chatbot/App/Pipeline</Title>
+          <PageSubHeading>
+            Explore a vast array of meticulously trained and readily deployable
             machine learning models all conveniently centralized in a single
-            location."
-          />
+            location.
+          </PageSubHeading>
         </Col>
         <Col span={6} style={{ display: "flex", justifyContent: "flex-end" }}>
           <Image
@@ -91,18 +78,18 @@ const Workspace = () => {
         </Col>
       </Row>
       <Col span={24}>
-        <Radio.Group
-          value={modelStatus}
-          onChange={(val: any) => {
-            setModelStatus(val?.target?.value);
-          }}
-          buttonStyle="solid"
-        >
-          <Radio.Button value="ADDED">Added Models</Radio.Button>
-          <Radio.Button value="TRAINED">Trained Models</Radio.Button>
-          <Radio.Button value="DEPLOYED">Deployed Models</Radio.Button>
-          <Radio.Button value="INACTIVE">Inactive models</Radio.Button>
-        </Radio.Group>
+        <Row justify="space-between" align="middle">
+          <Col></Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={toggleChatbotHandler}
+            >
+              Create Agent
+            </Button>
+          </Col>
+        </Row>
       </Col>
 
       <Row gutter={[28, 16]} style={{ display: "flex", margin: "24px 0px" }}>
@@ -122,17 +109,21 @@ const Workspace = () => {
           <Col span={24}>
             <Result
               status={404}
+              title="You do not have any Tools/Chatbot/App/Pipeline yet"
+              subTitle="Start creating new Tools/Chatbot/App/Pipeline now to use models to it's full extent"
               extra={
-                <Link prefetch href={"/models"}>
-                  <Button type="primary">Add models to workspace</Button>
-                </Link>
+                <Button
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={toggleChatbotHandler}
+                >
+                  Create Agent
+                </Button>
               }
-              title="You do not have any models in your workspace yet"
-              subTitle="Please add some models to start interacting "
             />
           </Col>
         )}
-        {(data?.result || [])?.map(
+        {/* {(data?.result || [])?.map(
           (
             model: { name: string; desc: "string"; [key: string]: any },
             index: number,
@@ -153,10 +144,19 @@ const Workspace = () => {
               </Col>
             );
           },
-        )}
+        )} */}
       </Row>
-    </WorkspaceContainer>
+
+      <CreateChatbotModal
+        open={chatbotModalOpen}
+        onClose={toggleChatbotHandler}
+        loading={createChatbotLoading}
+        createChatbotHandler={() => {
+          console.log("hello");
+        }}
+      />
+    </PageContainer>
   );
 };
 
-export default Workspace;
+export default AgentPipeline;

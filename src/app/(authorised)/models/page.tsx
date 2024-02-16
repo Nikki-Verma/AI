@@ -1,6 +1,7 @@
 "use client";
 
 import CardModel from "@/components/CardModel";
+import PageHeading from "@/components/PageHeading";
 import { useFetchData } from "@/Hooks/useApi";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
@@ -21,7 +22,7 @@ import {
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Heading, ModelContainer, SubHeading } from "./style";
+import { Heading, ModelContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -62,16 +63,13 @@ const Models = () => {
         gutter={12}
         style={{ display: "flex", justifyContent: "space-between" }}
       >
-        <Col
-          span={14}
-          style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-        >
-          <Title>Models</Title>
-          <SubHeading>
-            Explore a vast array of meticulously trained and readily deployable
+        <Col span={14}>
+          <PageHeading
+            title="Models"
+            subHeading="Explore a vast array of meticulously trained and readily deployable
             machine learning models all conveniently centralized in a single
-            location.
-          </SubHeading>
+            location."
+          />
         </Col>
         <Col span={6} style={{ display: "flex", justifyContent: "flex-end" }}>
           <Image
@@ -161,7 +159,7 @@ const Models = () => {
                 <CardModel
                   index={index}
                   key={model?.name}
-                  imageUrl={"/assets/Images/modelHeaderImage.svg"}
+                  imageUrl={"/assets/Images/dummyModel.png"}
                   modelData={model}
                   redirectUrl={`/models/${model?.id}`}
                 />
