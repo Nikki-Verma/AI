@@ -12,6 +12,7 @@ import {
   Input,
   Pagination,
   PaginationProps,
+  Radio,
   Row,
   Select,
   Skeleton,
@@ -27,6 +28,7 @@ const { Title } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
   size: DEFAULT_PAGE_SIZE,
+  source: "OPEN",
   ...dynamicState,
 });
 
@@ -82,6 +84,21 @@ const Models = () => {
       </Row>
       <Row gutter={[12, 12]} style={{ display: "flex", margin: "30px 0px" }}>
         <Col span={24}>
+          <Col span={24}>
+            <Radio.Group
+              value={filters?.source}
+              onChange={(event: any) => {
+                setFilters(initialFilters({ source: event?.target?.value }));
+              }}
+              size="large"
+              buttonStyle="solid"
+            >
+              <Radio.Button value="OPEN">Open Source</Radio.Button>
+              <Radio.Button value="CLOSED">Closed Source</Radio.Button>
+            </Radio.Group>
+          </Col>
+        </Col>
+        <Col span={24}>
           <Input
             prefix={
               <SearchOutlined
@@ -119,21 +136,30 @@ const Models = () => {
       </Col>
       <Row gutter={[28, 16]} style={{ display: "flex", margin: "16px 0px" }}>
         {isLoading &&
-          Array.from({ length: 3 }).map((_, i) => (
-            <Col span={8} style={{ display: "flex", flexDirection: "column" }}>
+          Array.from({ length: filters?.size }).map((_, i) => (
+            <Col
+              key={i}
+              span={8}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
               <Card key={i}>
                 <Skeleton loading active avatar round></Skeleton>
               </Card>
             </Col>
           ))}
         {(data?.result || [])?.map(
-          (model: { name: string; desc: "string"; [key: string]: any }) => {
+          (
+            model: { name: string; desc: "string"; [key: string]: any },
+            index: number,
+          ) => {
             return (
               <Col
+                key={model?.name}
                 span={8}
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 <CardModel
+                  index={index}
                   key={model?.name}
                   imageUrl={"/assets/Images/modelHeaderImage.svg"}
                   modelData={model}

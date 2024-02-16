@@ -69,14 +69,23 @@ export const ModelCard = styled.div`
   height: 100%;
 `;
 
-export const ModalTags = styled.div`
+export const ModalTags = styled.div<any>`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   padding: 11px 15px;
   border-radius: 0px 0px 10px 10px;
   border-top: 0.2px solid var(--Text-Color-150, #d5d5d5);
-  background: #f7fdf5;
+  background: ${(props: any) => {
+    switch (props.serial % 2) {
+      case 0:
+        return "#f7fdf5";
+      case 1:
+        return "#F5F9FD";
+      default:
+        return "#f7fdf5";
+    }
+  }};
   box-shadow: 0px 3px 8px 0px rgba(158, 158, 158, 0.15);
   text-overflow: ellipsis;
   overflow: hidden;

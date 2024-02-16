@@ -16,9 +16,15 @@ type CardModelProps = {
   modelData: UnknownObject;
   redirectUrl: string;
   imageUrl: string;
+  index: number;
 };
 
-const CardModel = ({ modelData, redirectUrl, imageUrl }: CardModelProps) => {
+const CardModel = ({
+  modelData,
+  redirectUrl,
+  imageUrl,
+  index,
+}: CardModelProps) => {
   return (
     <Link prefetch href={redirectUrl}>
       <ModelCardContainer>
@@ -50,7 +56,7 @@ const CardModel = ({ modelData, redirectUrl, imageUrl }: CardModelProps) => {
           </ModelCardHeading>
           <ModelCardDetail>{modelData?.desc}</ModelCardDetail>
         </ModelCard>
-        <ModalTags>
+        <ModalTags serial={index}>
           {[...(modelData?.tags || [])]?.map((tag: string) => (
             <Tag key={tag}>{tag}</Tag>
           ))}

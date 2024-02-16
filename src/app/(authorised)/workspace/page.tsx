@@ -109,8 +109,12 @@ const Workspace = () => {
 
       <Row gutter={[28, 16]} style={{ display: "flex", margin: "24px 0px" }}>
         {isLoading &&
-          Array.from({ length: 3 }).map((_, i) => (
-            <Col span={8} style={{ display: "flex", flexDirection: "column" }}>
+          Array.from({ length: filters?.size }).map((_, i) => (
+            <Col
+              key={i}
+              span={8}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
               <Card key={i}>
                 <Skeleton loading active avatar round></Skeleton>
               </Card>
@@ -131,13 +135,18 @@ const Workspace = () => {
           </Col>
         )}
         {(data?.result || [])?.map(
-          (model: { name: string; desc: "string"; [key: string]: any }) => {
+          (
+            model: { name: string; desc: "string"; [key: string]: any },
+            index: number,
+          ) => {
             return (
               <Col
+                key={model?.name}
                 span={8}
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 <CardModel
+                  index={index}
                   key={model?.name}
                   imageUrl={"/assets/Images/modelHeaderImage.svg"}
                   modelData={{ ...model, id: model?.model_id }}
