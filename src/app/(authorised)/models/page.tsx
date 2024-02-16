@@ -29,7 +29,7 @@ const { Title } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
   size: DEFAULT_PAGE_SIZE,
-  source: "OPEN",
+  type: "OPEN",
   ...dynamicState,
 });
 
@@ -84,9 +84,9 @@ const Models = () => {
         <Col span={24}>
           <Col span={24}>
             <Radio.Group
-              value={filters?.source}
+              value={filters?.type}
               onChange={(event: any) => {
-                setFilters(initialFilters({ source: event?.target?.value }));
+                setFilters(initialFilters({ type: event?.target?.value }));
               }}
               size="large"
               buttonStyle="solid"
