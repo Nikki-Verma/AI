@@ -32,7 +32,7 @@ const WorkflowEdit = () => {
   const { workflowId } = useParams();
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [filters, setFilters] = useState(initialFilters());
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(-1);
   console.log("🚀 ~ WorkflowEdit ~ current:", current);
   const { data, isError, error, isLoading, refetch } = useFetchData(
     `${config.workflow.details}/${workflowId}`,
@@ -260,7 +260,7 @@ const WorkflowEdit = () => {
 
   return (
     <WorkflowEditContainer>
-      {<Steps items={items} current={current} />}
+      <Steps items={items} current={current} />
       {getCurrentStep()}
       {getActionButtons()}
     </WorkflowEditContainer>
