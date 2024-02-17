@@ -64,7 +64,7 @@ const KnowledgebaseInfo = ({
             onFinish={onFininsh}
           >
             <Form.Item
-              name={["kb", "kb_name"]}
+              name={["kb", "kb_id"]}
               rules={[
                 { required: true, message: "Knowledge base is required" },
               ]}
@@ -91,19 +91,22 @@ const KnowledgebaseInfo = ({
                     </Button>
                   </>
                 )}
-                optionRender={(option: any) => (
-                  <SelectOptionDetail>
-                    <SelectOptionName>{option?.data?.name}</SelectOptionName>
-                    <SelectOptionDescription>
-                      {option?.data?.desc}
-                    </SelectOptionDescription>
-                  </SelectOptionDetail>
-                )}
+                optionRender={(option: any) => {
+                  console.log("🚀 ~ option:", option);
+                  return (
+                    <SelectOptionDetail key={option?.data?.id}>
+                      <SelectOptionName>{option?.data?.name}</SelectOptionName>
+                      <SelectOptionDescription>
+                        {option?.data?.description}
+                      </SelectOptionDescription>
+                    </SelectOptionDetail>
+                  );
+                }}
                 onChange={(val: any, option: any) => {
                   form.setFields([
                     {
-                      name: ["kb", "kb_id"],
-                      value: option?.id,
+                      name: ["kb", "kb_name"],
+                      value: option?.label,
                       errors: [],
                     },
                     {
@@ -116,14 +119,14 @@ const KnowledgebaseInfo = ({
                 options={
                   data?.result?.map((data: any) => ({
                     label: data?.name,
-                    value: data?.name,
+                    value: data?.id,
                     id: data?.id,
                     ...data,
                   })) || []
                 }
               />
             </Form.Item>
-            <Form.Item name={["kb", "kb_id"]} hidden>
+            <Form.Item name={["kb", "kb_name"]} hidden>
               <Input></Input>
             </Form.Item>
             <Form.Item name={["kb", "kb_version"]} hidden>
