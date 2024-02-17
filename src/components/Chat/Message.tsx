@@ -4,6 +4,7 @@ import { userCredentialsFromName } from "@/utils/helperFunction";
 import { Typography } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import ChatLoadingIcon from "../Icons/ChatLoadingIcon";
 import MarkdownComponent from "../Markdown";
 import { IconContainer, MessageContainer, PromptContainer } from "./style";
 
@@ -78,12 +79,7 @@ function Message({ message, loading }: Props) {
             gap: "2px",
           }}
         >
-          <Image
-            src={"/assets/Images/chatLoading.gif"}
-            alt="loading"
-            width={40}
-            height={28}
-          />
+          <ChatLoadingIcon />
           <span
             style={{
               fontSize: "14px",

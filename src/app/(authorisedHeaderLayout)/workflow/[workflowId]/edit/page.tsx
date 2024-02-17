@@ -7,6 +7,7 @@ import CurrentStepIcon from "@/components/Icons/CurrentStepIcon";
 import FinishedIcon from "@/components/Icons/FinishedIcon";
 import UnvisitedStepIcon from "@/components/Icons/UnvisitedStep";
 import KnowledgebaseInfo from "@/components/KnowledgebaseInfo";
+import TestPlayground from "@/components/TestPlayground";
 import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
@@ -159,7 +160,7 @@ const WorkflowEdit = () => {
           <KnowledgebaseInfo
             details={data}
             form={form}
-            onFininsh={(values) =>
+            onFininsh={(values: any) =>
               updatePipeline(
                 { ...values, is_kb_attached: true },
                 WorkflowStatus.KB_ADDED,
@@ -168,7 +169,7 @@ const WorkflowEdit = () => {
           />
         );
       case 3:
-        return <div> test & launch screen</div>;
+        return null;
 
       default:
         return <FullScreenLoader />;
@@ -242,10 +243,24 @@ const WorkflowEdit = () => {
       </Col>
     </Row>;
   }
+  if (current == 3) {
+    return (
+      <TestPlayground
+        details={data}
+        form={form}
+        onFininsh={(values: any) =>
+          updatePipeline(
+            { ...values, is_kb_attached: true },
+            WorkflowStatus.KB_ADDED,
+          )
+        }
+      />
+    );
+  }
 
   return (
     <WorkflowEditContainer>
-      <Steps items={items} current={current} />
+      {<Steps items={items} current={current} />}
       {getCurrentStep()}
       {getActionButtons()}
     </WorkflowEditContainer>

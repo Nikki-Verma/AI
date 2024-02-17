@@ -1,42 +1,29 @@
 "use client";
 
-import useChatStream from "@/Hooks/useChatStream";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { ChatMessage } from "@/Hooks/useChatStream";
 import Chat from "../Chat/Chat";
 import ChatInput from "../Chat/ChatInput";
 import { Container } from "./style";
 
 type ChatBotProps = {
-  propConversationId: string | undefined;
+  messages: ChatMessage[];
+  isLoading: boolean;
+  changeConversationLoading: boolean;
+  handleSubmit: (val: any) => void;
+  handleInputChange: (val: any) => void;
+  input: string;
+  setInput: (val: string) => void;
 };
 
-const ChatBot = ({ propConversationId }: ChatBotProps) => {
-  const { data: session } = useSession();
-  const [prompt, setPrompt] = useState("");
-
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    setInput,
-    changeConversation,
-    changeConversationLoading,
-  } = useChatStream({
-    chatConfig: {
-      model: "abc",
-      language_code: "EN",
-      source: "APP",
-    },
-    convId: propConversationId,
-  });
-
-  useEffect(() => {
-    changeConversation(propConversationId);
-  }, [propConversationId]);
-
+const ChatBot = ({
+  messages,
+  isLoading,
+  changeConversationLoading,
+  handleSubmit,
+  handleInputChange,
+  input,
+  setInput,
+}: ChatBotProps) => {
   return (
     <Container>
       <Chat

@@ -2,6 +2,7 @@
 
 import ChatBot from "@/components/ChatBot";
 import ChatHistory from "@/components/ChatHistory";
+import useChatStream from "@/Hooks/useChatStream";
 import { useAppStore } from "@/store";
 import { useEffect, useState } from "react";
 import { DashboardContainer } from "./style";
@@ -15,6 +16,27 @@ type Props = {
 function ChatPage() {
   const { updatePageConfig } = useAppStore();
   const [conversationId, setConversationId] = useState<string | undefined>();
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    setInput,
+    changeConversation,
+    changeConversationLoading,
+  } = useChatStream({
+    chatConfig: {
+      model: "abc",
+      language_code: "EN",
+      source: "APP",
+    },
+    convId: conversationId,
+  });
+
+  useEffect(() => {
+    changeConversation(conversationId);
+  }, [conversationId]);
 
   useEffect(() => {
     updatePageConfig({
@@ -26,7 +48,15 @@ function ChatPage() {
   return (
     <DashboardContainer>
       <div style={{ height: "100%", flex: 1 }}>
-        <ChatBot propConversationId={conversationId} />
+        <ChatBot
+          messages={messages}
+          changeConversationLoading={changeConversationLoading}
+          handleSubmit={handleSubmit}
+          handleInputChange={handleInputChange}
+          input={input}
+          setInput={setInput}
+          isLoading={isLoading}
+        />
       </div>
       <div style={{ height: "100%", width: "20%" }}>
         <ChatHistory
