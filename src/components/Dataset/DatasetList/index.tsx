@@ -184,7 +184,7 @@ const DatasetList = () => {
       render: (_: any, dataset: UnknownObject) => {
         return (
           <Space>
-            <Link href={`/dataset/${dataset?.id}`}>
+            <Link prefetch href={`/dataset/${dataset?.id}`}>
               <Button icon={<EyeFilled />}>View</Button>
             </Link>
             <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />

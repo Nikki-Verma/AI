@@ -107,7 +107,7 @@ const KnowledgebaseInfo = ({
                     },
                     {
                       name: ["kb", "kb_version"],
-                      value: option?.data?.version,
+                      value: option?.version,
                       errors: [],
                     },
                   ]);

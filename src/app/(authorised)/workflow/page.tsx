@@ -1,7 +1,10 @@
 "use client";
 
 import { createWorkFlowApi } from "@/api/workflow";
-import { WorkflowStatusType } from "@/app/(authorisedHeaderLayout)/workflow/constant";
+import {
+  WorkflowStatus,
+  WorkflowStatusType,
+} from "@/app/(authorisedHeaderLayout)/workflow/constant";
 import CreateWorkflowModal from "@/components/CreateWorkflowModal";
 import EmptyUpload from "@/components/EmptyUpload";
 import SaDate from "@/components/SaDate/Index";
@@ -104,8 +107,10 @@ const Workflow = () => {
       key: "pipeline_name",
       width: 200,
       render: (val: any, data: any) =>
-        data?.pipeline_state != "COMPLETED" ? (
-          <Link href={`/workflow/${data?.pipeline_id}/edit`}>{val}</Link>
+        data?.pipeline_state != WorkflowStatus.COMPLETED ? (
+          <Link prefetch href={`/workflow/edit/${data?.pipeline_id}`}>
+            {val}
+          </Link>
         ) : (
           <Text ellipsis style={{ width: 200 }}>
             {val}
@@ -197,6 +202,23 @@ const Workflow = () => {
         ) : (
           "--"
         ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "",
+      align: "center",
+      key: "actions",
+      width: 200,
+      fixed: "right",
+      render: (_: any, workflowData: UnknownObject) =>
+        workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
+          <Link
+            prefetch
+            href={`/workflow/playground/${workflowData?.pipeline_id}`}
+          >
+            <Button type="primary">Visit Playground</Button>
+          </Link>
+        ) : null,
     },
   ];
 

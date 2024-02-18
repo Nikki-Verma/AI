@@ -142,6 +142,7 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                   </div>
                 )}
                 onChange={(val: any, option: any) => {
+                  console.log("🚀 ~ WorkflowInfo ~ option:", option);
                   form.setFields([
                     {
                       name: ["model_detail", "model_id"],
@@ -150,7 +151,7 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                     },
                     {
                       name: ["model_detail", "model_version"],
-                      value: option?.data?.version,
+                      value: option?.version,
                       errors: [],
                     },
                   ]);

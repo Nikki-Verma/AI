@@ -178,7 +178,7 @@ const KnowledgeBaseList = () => {
       render: (_: any, knowledgebase: UnknownObject) => {
         return (
           <Space>
-            <Link href={`/knowledge-base/${knowledgebase?.id}`}>
+            <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
               <Button icon={<EyeFilled />}>View</Button>
             </Link>
             <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
