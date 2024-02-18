@@ -138,7 +138,7 @@ const Workspace = () => {
           ) => {
             return (
               <Col
-                key={model?.name}
+                key={model?.id}
                 span={8}
                 style={{ display: "flex", flexDirection: "column" }}
               >
