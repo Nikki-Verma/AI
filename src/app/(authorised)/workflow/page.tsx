@@ -58,7 +58,6 @@ const Workflow = () => {
     {},
   );
 
-  console.log("🚀 ~ Workflow ~ data:", data);
   useEffect(() => {
     updatePageConfig({
       pageTitle: "Workspace",

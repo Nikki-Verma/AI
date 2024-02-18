@@ -33,13 +33,11 @@ const WorkflowEdit = () => {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [filters, setFilters] = useState(initialFilters());
   const [current, setCurrent] = useState(-1);
-  console.log("🚀 ~ WorkflowEdit ~ current:", current);
   const { data, isError, error, isLoading, refetch } = useFetchData(
     `${config.workflow.details}/${workflowId}`,
     filters,
   );
 
-  console.log("🚀 ~ WorkflowEdit ~ data:", data);
   useEffect(() => {
     if (!isError && !isLoading) {
       if (data?.result?.pipeline_state === WorkflowStatus.COMPLETED) {
@@ -61,7 +59,7 @@ const WorkflowEdit = () => {
                 data?.result?.pipeline_state === WorkflowStatus.KB_SKIPPED
               ? 3
               : -1;
-      console.log("🚀 ~ useEffect ~ currentStep:", currentStep);
+
       if (currentStep === -1) {
         router.push(`/workflow`);
       } else if (currentStep != current) {
@@ -122,16 +120,17 @@ const WorkflowEdit = () => {
         pipeline_state: type,
         pipeline_id: workflowId,
       };
-      console.log("🚀 ~ addModelToPipeline ~ payload:", payload);
 
       const updatePipelineResponse = await updatePipelineApi({ payload });
-      console.log(
-        "🚀 ~ addModelToPipeline ~ updatePipelineResponse:",
-        updatePipelineResponse,
-      );
 
       if (updatePipelineResponse?.status === 200) {
         refetch();
+      }
+      if (type === WorkflowStatus.COMPLETED) {
+        notification.success({
+          message: "workflow completed successfully",
+        });
+        router.push(`/workflow`);
       }
     } catch (error) {
       notification.error({
@@ -248,11 +247,9 @@ const WorkflowEdit = () => {
       <TestPlayground
         details={data}
         form={form}
+        loading={formSubmitting}
         onFininsh={(values: any) =>
-          updatePipeline(
-            { ...values, is_kb_attached: true },
-            WorkflowStatus.KB_ADDED,
-          )
+          updatePipeline({ ...values }, WorkflowStatus.COMPLETED)
         }
       />
     );

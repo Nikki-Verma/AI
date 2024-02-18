@@ -10,10 +10,15 @@ type TestPlaygroundProps = {
   details: UnknownObject | undefined | null;
   form: FormInstance;
   onFininsh: (values: any) => void;
+  loading: boolean;
 };
 
-const TestPlayground = ({ details, form, onFininsh }: TestPlaygroundProps) => {
-  console.log("🚀 ~ TestPlayground ~ details:", details);
+const TestPlayground = ({
+  loading,
+  details,
+  form,
+  onFininsh,
+}: TestPlaygroundProps) => {
   const [playgroundConfigDetails, setPlaygroundConfigDetails] = useState({
     model_paramters: {},
     kb_parameters: {},
@@ -30,18 +35,42 @@ const TestPlayground = ({ details, form, onFininsh }: TestPlaygroundProps) => {
     setInput,
     changeConversation,
     changeConversationLoading,
+    custAtrr,
+    setCustAtrr,
   } = useChatStream({
     chatConfig: {
-      model: "abc",
+      model: details?.result?.pipeline_name,
       language_code: "EN",
       source: "APP",
+      app_id: details?.result?.pipeline_id,
+      model_id: details?.result?.pipeline_id,
     },
     convId: conversationId,
+    customAttributes: details?.result,
   });
 
   useEffect(() => {
     changeConversation(conversationId);
   }, [conversationId]);
+
+  const changeConfigHandler = (values: any) => {
+    const newCustAtrr = {
+      ...custAtrr,
+      model_detail: {
+        ...(custAtrr?.model_detail || {}),
+        model_parameters: values?.model_parameters,
+      },
+      kb: {
+        ...(custAtrr?.kb || {}),
+        kb_parameters: values?.kb_parameters,
+      },
+    };
+    setCustAtrr(newCustAtrr);
+  };
+
+  const savePlaygroundConfig = (values: any) => {
+    onFininsh({ ...custAtrr });
+  };
 
   useEffect(() => {
     const modelParameters =
@@ -58,7 +87,7 @@ const TestPlayground = ({ details, form, onFininsh }: TestPlaygroundProps) => {
   }, [details]);
 
   return (
-    <Spin spinning={configDetailsLoading}>
+    <Spin spinning={configDetailsLoading || loading}>
       <TestPlaygroundContainer>
         <div style={{ height: "100%", flex: 1, padding: "20px" }}>
           <ChatBot
@@ -75,7 +104,9 @@ const TestPlayground = ({ details, form, onFininsh }: TestPlaygroundProps) => {
           <PlaygroundConfig
             playgroundConfigDetails={playgroundConfigDetails}
             canLaunch={true}
+            changeConfigHandler={changeConfigHandler}
             form={form}
+            savePlaygroundConfig={savePlaygroundConfig}
           />
         </div>
       </TestPlaygroundContainer>

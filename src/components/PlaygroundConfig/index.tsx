@@ -31,6 +31,8 @@ type PlaygroundConfigProps = {
     kb_parameters: UnknownObject;
   };
   form: FormInstance;
+  changeConfigHandler: (values: UnknownObject) => void;
+  savePlaygroundConfig: (values: UnknownObject) => void;
 };
 
 const fullWidth = { width: "100%" };
@@ -39,12 +41,10 @@ const PlaygroundConfig = ({
   canLaunch = false,
   playgroundConfigDetails,
   form,
+  changeConfigHandler,
+  savePlaygroundConfig,
 }: PlaygroundConfigProps) => {
   useEffect(() => {
-    console.log(
-      "🚀 ~ useEffect ~ playgroundConfigDetails?.model_paramters:",
-      playgroundConfigDetails?.model_paramters,
-    );
     form.setFields([
       {
         name: "model_parameters",
@@ -57,8 +57,6 @@ const PlaygroundConfig = ({
       form.resetFields();
     };
   }, [playgroundConfigDetails]);
-
-  console.log("form values", form.getFieldsValue());
 
   const getItems: () => CollapseProps["items"] = () => [
     {
@@ -133,12 +131,18 @@ const PlaygroundConfig = ({
   return (
     <PlaygroundConfigContainer>
       <PlaygroundConfigCollapseContainer>
-        <Form layout="vertical" form={form}>
+        <Form
+          layout="vertical"
+          form={form}
+          onValuesChange={(changedValues, values) => {
+            changeConfigHandler(values);
+          }}
+          onFinish={savePlaygroundConfig}
+        >
           <ParamterCollapse
             bordered={false}
             defaultActiveKey={["1"]}
             expandIcon={({ isActive }) => {
-              console.log("🚀 ~ PlaygroundConfig ~ isActive:", isActive);
               return <ExpandIcon rotate={isActive ? 90 : 0} />;
             }}
             expandIconPosition="right"
@@ -150,7 +154,9 @@ const PlaygroundConfig = ({
         <PlaygroundActionContainer>
           <Row justify="end">
             <Col>
-              <Button type="primary">Save & Launch</Button>
+              <Button type="primary" onClick={form.submit}>
+                Save & Launch
+              </Button>
             </Col>
           </Row>
         </PlaygroundActionContainer>

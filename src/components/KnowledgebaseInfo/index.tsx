@@ -44,7 +44,6 @@ const KnowledgebaseInfo = ({
     size: ALL_DATA_PAGE_SIZE,
   });
 
-  console.log("🚀 ~ data:", data);
   return (
     <Row gutter={[6, 20]}>
       <Col>
@@ -91,17 +90,14 @@ const KnowledgebaseInfo = ({
                     </Button>
                   </>
                 )}
-                optionRender={(option: any) => {
-                  console.log("🚀 ~ option:", option);
-                  return (
-                    <SelectOptionDetail key={option?.data?.id}>
-                      <SelectOptionName>{option?.data?.name}</SelectOptionName>
-                      <SelectOptionDescription>
-                        {option?.data?.description}
-                      </SelectOptionDescription>
-                    </SelectOptionDetail>
-                  );
-                }}
+                optionRender={(option: any) => (
+                  <SelectOptionDetail key={option?.data?.id}>
+                    <SelectOptionName>{option?.data?.name}</SelectOptionName>
+                    <SelectOptionDescription>
+                      {option?.data?.description}
+                    </SelectOptionDescription>
+                  </SelectOptionDetail>
+                )}
                 onChange={(val: any, option: any) => {
                   form.setFields([
                     {

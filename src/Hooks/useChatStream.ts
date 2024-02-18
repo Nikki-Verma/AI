@@ -7,6 +7,7 @@ import {
   X_USER_ID,
 } from "@/utils/constants";
 import { decodeStreamToJson, getChatDetails, getStream } from "@/utils/stream";
+import { UnknownObject } from "@/utils/types";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 
@@ -39,12 +40,15 @@ interface chatConfig {
   model: string;
   language_code?: string;
   source?: string;
+  app_id: string;
+  model_id: string;
 }
 
 type UseChatStreamInput = {
   convId?: string;
   messages?: ChatMessage[];
   chatConfig?: chatConfig;
+  customAttributes?: UnknownObject | undefined | null;
 };
 
 const useChatStream = (input: UseChatStreamInput) => {
@@ -65,6 +69,12 @@ const useChatStream = (input: UseChatStreamInput) => {
     },
   );
 
+  const [custAtrr, setCustAtrr] = useState(input?.customAttributes);
+  const resetCustAtrr = () => {
+    stopStream();
+    setCustAtrr(undefined);
+  };
+
   let streamRef = useRef<any>();
 
   const handleInputChange = (
@@ -75,6 +85,7 @@ const useChatStream = (input: UseChatStreamInput) => {
 
   const changeConversation = async (convId: string | undefined) => {
     try {
+      stopStream();
       setChangeConversationLoading(true);
       setConversationId(convId);
       setMessage("");
@@ -165,6 +176,7 @@ const useChatStream = (input: UseChatStreamInput) => {
       const res = await initiateConversationApi({
         payload: {
           ...chatConfig,
+          custAtrr,
           action: conversationId ? "START_SCREEN" : "START_SCREEN",
           query: {
             message: newMessage ?? message,
@@ -215,6 +227,9 @@ const useChatStream = (input: UseChatStreamInput) => {
     setChatConfig,
     changeConversation,
     changeConversationLoading,
+    custAtrr,
+    setCustAtrr,
+    resetCustAtrr,
   };
 };
 
