@@ -9,7 +9,7 @@ import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { Col, Result, Row } from "antd";
 import { useParams } from "next/navigation";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { WorkflowPlaygroundContainer } from "./style";
 
 const WorkflowPlayground = () => {
@@ -31,6 +31,7 @@ const WorkflowPlayground = () => {
     isLoading,
     setInput,
     changeConversationLoading,
+    setChatConfig,
   } = useChatStream({
     chatConfig: {
       model: workflowData?.result?.pipeline_name,
@@ -47,6 +48,16 @@ const WorkflowPlayground = () => {
         ? `Workflow Playground - ${workflowData?.result?.pipeline_name}`
         : `Workflow Playground - ${workflowId}`,
     );
+  }, [workflowData]);
+
+  useEffect(() => {
+    setChatConfig({
+      model: workflowData?.result?.pipeline_name,
+      language_code: "EN",
+      source: "APP",
+      app_id: workflowData?.result?.pipeline_id,
+      model_id: workflowData?.result?.pipeline_id,
+    });
   }, [workflowData]);
 
   if (workflowDataLoading) {
