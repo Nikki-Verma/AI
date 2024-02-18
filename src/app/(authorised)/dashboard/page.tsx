@@ -27,9 +27,11 @@ function ChatPage() {
     changeConversationLoading,
   } = useChatStream({
     chatConfig: {
-      model: "abc",
+      model: "OpenAI-GPT-3.5",
       language_code: "EN",
       source: "APP",
+      app_id: "65cb90d0444d8dd56b28db09",
+      model_id: "65cb90d0444d8dd56b28db09",
     },
     convId: conversationId,
   });
