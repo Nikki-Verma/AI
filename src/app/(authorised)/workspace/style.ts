@@ -52,42 +52,6 @@ export const ModelCard = styled.div`
   height: 100%;
 `;
 
-export const ModalTags = styled.div`
-  display: flex;
-  gap: 8px;
-  padding: 11px 15px;
-  border-radius: 0px 0px 10px 10px;
-  border-top: 0.2px solid var(--Text-Color-150, #d5d5d5);
-  background: #f7fdf5;
-  box-shadow: 0px 3px 8px 0px rgba(158, 158, 158, 0.15);
-
-  .ant-tag {
-    display: flex;
-    height: 26px;
-    padding: 0px 7px;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    border: 0.3px solid var(--Text-Color-150, #d5d5d5);
-    background: inherit;
-
-    /* drop-shadow/button-secondary */
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
-
-    // font styling
-
-    color: var(--Text-Color-900, #171717);
-    text-align: center;
-    font-family: var(--font-dm-sans);
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-  }
-`;
-
 export const ModelHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;

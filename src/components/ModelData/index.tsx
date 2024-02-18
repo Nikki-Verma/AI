@@ -1,35 +1,48 @@
 import { addModelToWorkspaceApi, deployModelApi } from "@/api/workspace";
+import DeployIcon from "@/components/Icons/DeployIcon";
+import ModelTag from "@/components/ModelTag";
+import {
+  PageAbout,
+  PageTitle,
+} from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { DUMMY_TENANT_ID } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
+import { CheckCircleOutlined } from "@ant-design/icons";
 import {
-  CheckCircleOutlined,
-  HeartFilled,
-  HeartOutlined,
-} from "@ant-design/icons";
-import { Button, Card, Col, Result, Row, Skeleton, Tabs, Tag } from "antd";
-import TabPane from "antd/es/tabs/TabPane";
+  Button,
+  Card,
+  Col,
+  Result,
+  Row,
+  Skeleton,
+  Spin,
+  Tabs,
+  Tag,
+} from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import DeployIcon from "../Icons/DeployIcon";
-import ModelOverView from "../ModelOverview";
-import uiStyles from "../UIComponents/ui.module.scss";
-import { ModelAbout, ModelTitle } from "./style";
+import { ModelPage, ModelPageType } from "./constant";
+import { items } from "./helper";
 
-const ModelData = (props: any) => {
+type ModelDataParams = {
+  page: ModelPageType;
+  modelId: string | string[];
+  workspaceId?: string | string[] | undefined;
+};
+
+const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
   const router = useRouter();
-  const { modelId, workspaceId } = useParams();
   const { data: session }: any = useSession();
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.models.detail,
     { id: modelId },
     {},
   );
-
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
   const [deploymentLoading, setDeploymentLoading] = useState(false);
   const { notification } = useNotify();
@@ -105,73 +118,57 @@ const ModelData = (props: any) => {
     );
   }
   return (
-    <div>
+    <Spin spinning={deploymentLoading}>
       <Row
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "24px",
-        }}
+        justify="space-between"
+        gutter={[20, 20]}
+        style={{ marginBottom: "24px" }}
       >
         <Col
-          span={props?.page === "models" ? 18 : 16}
+          span={16}
           style={{ display: "flex", flexDirection: "column", gap: "14px" }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "16px",
+              justifyContent: "flex-start",
+            }}
+          >
             <Image
               src={"/assets/Images/dummyModel.png"}
               alt="models"
-              height={32}
-              width={32}
+              height={96}
+              width={96}
               style={{
                 display: "flex",
                 marginRight: "12px",
               }}
             />
-            <ModelTitle>{data?.result?.name}</ModelTitle>
-            <div className={uiStyles.like_button_container}>
-              {true ? (
-                <HeartOutlined
-                  style={{
-                    color: "#5B5B5B",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                  }}
-                />
-              ) : (
-                <HeartFilled
-                  style={{
-                    color: "red",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                  }}
-                />
-              )}
-
-              <div
-                style={{
-                  color: "var(--Text-Color-850, #222)",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  lineHeight: "22pxs",
-                }}
-              >
-                Like | 2.61ks
-              </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+              }}
+            >
+              <PageTitle>{data?.result?.name}</PageTitle>
+              <PageAbout>{data?.result?.desc}</PageAbout>
             </div>
           </div>
-          <ModelAbout>{data?.result?.desc}</ModelAbout>
-          <Row gutter={[0, 10]}>
-            {(data?.result?.tags || [])?.map((tag: string) => (
-              <Tag key={tag}>{tag}</Tag>
-            ))}
-          </Row>
         </Col>
         <Col
-          span={props?.page === "models" ? 6 : 8}
-          style={{ display: "flex", justifyContent: "flex-end", gap: "20px" }}
+          span={8}
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "flex-end",
+            gap: "20px",
+          }}
         >
-          {props?.page === "models" ? (
+          {page === ModelPage.MODELS ? (
             data?.result?.added ? (
               <Tag color="success" icon={<CheckCircleOutlined />}>
                 Added To workspace
@@ -205,18 +202,18 @@ const ModelData = (props: any) => {
             </>
           )}
         </Col>
+        <Col span={24}>
+          <Row gutter={[0, 10]}>
+            {(data?.result?.tags || [])?.map((tag: string) => (
+              <ModelTag tag={tag} />
+              // <Tag key={tag}>{tag}</Tag>
+            ))}
+          </Row>
+        </Col>
       </Row>
-      <Tabs defaultActiveKey="files">
-        <TabPane tab="Files and versions" key={"files"}>
-          <ModelOverView
-            markdown={data?.result?.detail}
-            modelDetails={data?.result}
-          />
-        </TabPane>
-        <TabPane tab="Files and versions" key={"files1"}></TabPane>
-        <TabPane tab="Run" key={"files2"}></TabPane>
-      </Tabs>
-    </div>
+      {/* Modify to get items dynamically based on the workspace current status  */}
+      <Tabs defaultActiveKey="model_details" items={items(data)} />
+    </Spin>
   );
 };
 
