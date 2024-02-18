@@ -1,13 +1,17 @@
+import { UnknownObject } from "@/utils/types";
 import {
   Button,
   Col,
   CollapseProps,
   Flex,
   Form,
+  FormInstance,
+  Input,
   InputNumber,
   Row,
   Typography,
 } from "antd";
+import { useEffect } from "react";
 import ExpandIcon from "../Icons/ExpandIcon";
 import ParameterIcon from "../Icons/ParameterIcon";
 import {
@@ -22,11 +26,40 @@ const { Text } = Typography;
 
 type PlaygroundConfigProps = {
   canLaunch?: boolean;
+  playgroundConfigDetails: {
+    model_paramters: UnknownObject;
+    kb_parameters: UnknownObject;
+  };
+  form: FormInstance;
 };
 
-const fullwidth = { width: "100%" };
+const fullWidth = { width: "100%" };
 
-const PlaygroundConfig = ({ canLaunch = true }: PlaygroundConfigProps) => {
+const PlaygroundConfig = ({
+  canLaunch = false,
+  playgroundConfigDetails,
+  form,
+}: PlaygroundConfigProps) => {
+  useEffect(() => {
+    console.log(
+      "🚀 ~ useEffect ~ playgroundConfigDetails?.model_paramters:",
+      playgroundConfigDetails?.model_paramters,
+    );
+    form.setFields([
+      {
+        name: "model_parameters",
+        value: playgroundConfigDetails?.model_paramters,
+        errors: [],
+      },
+    ]);
+
+    return () => {
+      form.resetFields();
+    };
+  }, [playgroundConfigDetails]);
+
+  console.log("form values", form.getFieldsValue());
+
   const getItems: () => CollapseProps["items"] = () => [
     {
       key: "1",
@@ -40,19 +73,55 @@ const PlaygroundConfig = ({ canLaunch = true }: PlaygroundConfigProps) => {
         <>
           <Flex gap={0} vertical>
             <Form.Item
-              name={["model_paramters", "token_length"]}
-              label="Token length"
+              name={["model_parameters", "decay_rate"]}
+              label="Decay Rate"
             >
               <InputNumber
-                placeholder="Token length"
-                style={{ ...fullwidth }}
+                style={{ ...fullWidth }}
+                placeholder="Decay Rate"
+                precision={2}
               />
             </Form.Item>
             <Form.Item
-              name={["model_paramters", "temperature"]}
+              name={["model_parameters", "temperature"]}
               label="Temperature"
             >
-              <InputNumber placeholder="Temperature" style={{ ...fullwidth }} />
+              <InputNumber
+                style={{ ...fullWidth }}
+                placeholder="Temperature"
+                min={0}
+                max={1}
+                precision={2}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["model_parameters", "output_style"]}
+              label="Output Style"
+            >
+              <Input placeholder="Output style" />
+            </Form.Item>
+            <Form.Item
+              name={["model_parameters", "chunk_size"]}
+              label="Chunk size"
+            >
+              <InputNumber
+                style={{ ...fullWidth }}
+                placeholder="Chunk size"
+                precision={0}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["model_parameters", "token_length"]}
+              label="Token length"
+            >
+              <InputNumber
+                style={{ ...fullWidth }}
+                placeholder="Token length"
+                precision={2}
+              />
+            </Form.Item>
+            <Form.Item name={["model_parameters", "sample"]} label="Sample">
+              <Input placeholder="Sample" />
             </Form.Item>
           </Flex>
         </>
@@ -64,7 +133,7 @@ const PlaygroundConfig = ({ canLaunch = true }: PlaygroundConfigProps) => {
   return (
     <PlaygroundConfigContainer>
       <PlaygroundConfigCollapseContainer>
-        <Form layout="vertical">
+        <Form layout="vertical" form={form}>
           <ParamterCollapse
             bordered={false}
             defaultActiveKey={["1"]}
@@ -81,7 +150,7 @@ const PlaygroundConfig = ({ canLaunch = true }: PlaygroundConfigProps) => {
         <PlaygroundActionContainer>
           <Row justify="end">
             <Col>
-              <Button type="primary"> Launch</Button>
+              <Button type="primary">Save & Launch</Button>
             </Col>
           </Row>
         </PlaygroundActionContainer>
