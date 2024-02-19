@@ -56,8 +56,8 @@ const DescriptionList = ({
             </DescriptionItemLabel>
             <DescriptionItemValue width={DescriptionItem?.width}>
               {DescriptionItem?.render
-                ? DescriptionItem?.render(data[DescriptionItem?.key], data)
-                : data[DescriptionItem?.key] ?? "--"}
+                ? DescriptionItem?.render(data?.[DescriptionItem?.key], data)
+                : data?.[DescriptionItem?.key] ?? "--"}
             </DescriptionItemValue>
           </Flex>
         );

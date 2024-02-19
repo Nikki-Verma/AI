@@ -7,6 +7,7 @@ import {
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
+import { EditOutlined, PlayCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Result, Row, Skeleton, Space, Tabs } from "antd";
 import Link from "next/link";
 
@@ -66,16 +67,24 @@ const WorkflowData = ({ workflowId }: WorkflowDataParams) => {
             gap: "20px",
           }}
         >
-          {data?.result?.pipeline_state === WorkflowStatus.COMPLETED && (
+          {data?.result?.pipeline_state === WorkflowStatus.COMPLETED ? (
             <Space>
               <Button type="default">Integration</Button>
               <Link
                 prefetch
                 href={`/workflow/playground/${data?.result?.pipeline_id}`}
               >
-                <Button type="primary">Playground</Button>
+                <Button type="primary" icon={<PlayCircleOutlined />}>
+                  Playground
+                </Button>
               </Link>
             </Space>
+          ) : (
+            <Link prefetch href={`/workflow/edit/${data?.result?.pipeline_id}`}>
+              <Button type="primary" icon={<EditOutlined />}>
+                Continue Edit
+              </Button>
+            </Link>
           )}
         </Col>
         <Col span={24}>

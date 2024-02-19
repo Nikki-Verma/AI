@@ -41,7 +41,7 @@ const WorkflowEdit = () => {
   useEffect(() => {
     if (!isError && !isLoading) {
       if (data?.result?.pipeline_state === WorkflowStatus.COMPLETED) {
-        router.push(`/workflow/${workflowId}`);
+        router.push(`/workflow/view/${workflowId}`);
       }
       //   CREATED,
       // MODEL_ADDED,

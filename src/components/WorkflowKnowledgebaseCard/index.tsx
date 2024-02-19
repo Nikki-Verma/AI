@@ -1,4 +1,4 @@
-import { Card, Divider, Flex } from "antd";
+import { Card, Divider, Flex, Result } from "antd";
 import { useMemo } from "react";
 import DescriptionList, { DescriptionItemType } from "../DescriptionList";
 import {
@@ -13,6 +13,7 @@ type WorkflowKnowledgebaseCardProps = {
 const WorkflowKnowledgebaseCard = ({
   kbDetails,
 }: WorkflowKnowledgebaseCardProps) => {
+  console.log("🚀 ~ kbDetails:", kbDetails);
   const hasParameters = useMemo(
     () => Object.keys(kbDetails?.kb_parameters || {})?.length > 0,
     [kbDetails],
@@ -35,26 +36,30 @@ const WorkflowKnowledgebaseCard = ({
 
   return (
     <WorkflowKnowledgebaseContainer>
-      <Card>
-        <DescriptionList
-          columns={KnowledgebaseDetailColumns}
-          data={kbDetails}
-        />
-        {hasParameters && (
-          <>
-            <Divider />
-            <Flex vertical gap={"large"}>
-              <KnowledgebaseCardParameterHeading>
-                Model Parameters
-              </KnowledgebaseCardParameterHeading>
-              <DescriptionList
-                columns={KnowledgebaseParameterColumns}
-                data={kbDetails?.kb_parameters || {}}
-              />
-            </Flex>
-          </>
-        )}
-      </Card>
+      {kbDetails ? (
+        <Card>
+          <DescriptionList
+            columns={KnowledgebaseDetailColumns}
+            data={kbDetails}
+          />
+          {hasParameters && (
+            <>
+              <Divider />
+              <Flex vertical gap={"large"}>
+                <KnowledgebaseCardParameterHeading>
+                  Model Parameters
+                </KnowledgebaseCardParameterHeading>
+                <DescriptionList
+                  columns={KnowledgebaseParameterColumns}
+                  data={kbDetails?.kb_parameters || {}}
+                />
+              </Flex>
+            </>
+          )}
+        </Card>
+      ) : (
+        <Result status="403" title="Knowledge base not present" />
+      )}
     </WorkflowKnowledgebaseContainer>
   );
 };

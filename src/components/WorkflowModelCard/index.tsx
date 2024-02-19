@@ -1,4 +1,4 @@
-import { Card, Divider, Flex } from "antd";
+import { Card, Divider, Flex, Result } from "antd";
 import { useMemo } from "react";
 import DescriptionList, { DescriptionItemType } from "../DescriptionList";
 import { ModelCardParameterHeading, WorkflowModelContainer } from "./style";
@@ -55,23 +55,27 @@ const WorkflowModelCard = ({ modelDetails }: WorkflowModelCardProps) => {
 
   return (
     <WorkflowModelContainer>
-      <Card>
-        <DescriptionList columns={ModelDetailColumns} data={modelDetails} />
-        {hasParameters && (
-          <>
-            <Divider />
-            <Flex vertical gap={"large"}>
-              <ModelCardParameterHeading>
-                Model Parameters
-              </ModelCardParameterHeading>
-              <DescriptionList
-                columns={ModelParameterColumns}
-                data={modelDetails?.model_parameters || {}}
-              />
-            </Flex>
-          </>
-        )}
-      </Card>
+      {modelDetails ? (
+        <Card>
+          <DescriptionList columns={ModelDetailColumns} data={modelDetails} />
+          {hasParameters && (
+            <>
+              <Divider />
+              <Flex vertical gap={"large"}>
+                <ModelCardParameterHeading>
+                  Model Parameters
+                </ModelCardParameterHeading>
+                <DescriptionList
+                  columns={ModelParameterColumns}
+                  data={modelDetails?.model_parameters || {}}
+                />
+              </Flex>
+            </>
+          )}
+        </Card>
+      ) : (
+        <Result status="403" title="Model not present" />
+      )}
     </WorkflowModelContainer>
   );
 };

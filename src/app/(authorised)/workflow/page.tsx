@@ -16,9 +16,13 @@ import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
-import { dateTimeFormatWithMillisecondsWithoutTimeZone } from "@/utils/constants";
+import {
+  dateTimeFormatWithMillisecondsWithoutTimeZone,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi } from "@/utils/helperFunction";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
   EditOutlined,
@@ -32,10 +36,12 @@ import {
   Row,
   Space,
   Table,
+  TablePaginationConfig,
   TableProps,
   Tag,
   Typography,
 } from "antd";
+import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,8 +52,8 @@ import { WorkflowStatuses } from "./constant";
 const { Title, Text, Link: TypographyLink } = Typography;
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
-  // page: DEFAULT_PAGE,
-  // size: DEFAULT_PAGE_SIZE,
+  page: DEFAULT_PAGE,
+  size: DEFAULT_PAGE_SIZE,
   ...dynamicState,
 });
 
@@ -92,7 +98,7 @@ const Workflow = () => {
         setWorkflowModalOpen(false);
         refetch();
         router.push(
-          `/workflow/${createWorkflowResponse?.data?.result?.pipeline_id}/edit`,
+          `/workflow/edit/${createWorkflowResponse?.data?.result?.pipeline_id}`,
         );
       }
     } catch (error) {
@@ -102,6 +108,31 @@ const Workflow = () => {
       });
     } finally {
       setCreateWorkflowLoading(false);
+    }
+  };
+
+  const tableChangeHandler = (
+    pagination: TablePaginationConfig,
+    Filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<any> | SorterResult<any>[],
+    extra: any,
+  ) => {
+    if (pagination?.current === filters.page + 1) {
+      // reset page as with new filters there might not be any data at the current page
+      setFilters((prevFilters: any) => ({
+        ...prevFilters,
+        ...getFilters(Filters),
+        page: DEFAULT_PAGE,
+        size: pagination?.pageSize,
+      }));
+    } else {
+      // set filters along with page change
+      setFilters((state: any) => ({
+        ...state,
+        ...getFilters(Filters),
+        page: (pagination?.current ?? 1) - 1,
+        size: pagination?.pageSize,
+      }));
     }
   };
 
@@ -305,16 +336,13 @@ const Workflow = () => {
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
-            pagination={
-              false
-              // {
-              // current: filters?.page + 1,
-              // pageSize: filters?.size,
-              // total: data?.totalElements,
-              // showSizeChanger: false,
-              // }
-            }
-            // onChange={tableChangeHandler}
+            pagination={{
+              current: filters?.page + 1,
+              pageSize: filters?.size,
+              total: data?.totalElements,
+              showSizeChanger: false,
+            }}
+            onChange={tableChangeHandler}
           />
         </>
       )}

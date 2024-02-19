@@ -36,7 +36,13 @@ const CreateDatasetModal = ({
       footer={
         <Row justify="space-between">
           <Col>
-            <Button size="large" block type="default" disabled={loading}>
+            <Button
+              size="large"
+              block
+              type="default"
+              disabled={loading}
+              onClick={onClose}
+            >
               Cancel
             </Button>
           </Col>
