@@ -20,12 +20,17 @@ import { dateTimeFormatWithMillisecondsWithoutTimeZone } from "@/utils/constants
 import dayjs from "@/utils/date";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  PlayCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
   Result,
   Row,
+  Space,
   Table,
   TableProps,
   Tag,
@@ -106,16 +111,11 @@ const Workflow = () => {
       dataIndex: "pipeline_name",
       key: "pipeline_name",
       width: 200,
-      render: (val: any, data: any) =>
-        data?.pipeline_state != WorkflowStatus.COMPLETED ? (
-          <Link prefetch href={`/workflow/edit/${data?.pipeline_id}`}>
-            {val}
-          </Link>
-        ) : (
-          <Text ellipsis style={{ width: 200 }}>
-            {val}
-          </Text>
-        ),
+      render: (val: any, data: any) => (
+        <Link prefetch href={`/workflow/view/${data?.pipeline_id}`}>
+          {val}
+        </Link>
+      ),
     },
     {
       title: "Workflow description",
@@ -127,6 +127,20 @@ const Workflow = () => {
           {val || "--"}
         </Text>
       ),
+    },
+    {
+      title: "Status",
+      dataIndex: "pipeline_state",
+      key: "pipeline_state",
+      width: 200,
+      render: (val: WorkflowStatusType) =>
+        val ? (
+          <Tag color={WorkflowStatuses?.[val]?.color || ""}>
+            {WorkflowStatuses?.[val]?.text ?? val}
+          </Tag>
+        ) : (
+          "--"
+        ),
     },
     {
       title: "Model name",
@@ -189,36 +203,32 @@ const Workflow = () => {
         ),
     },
     {
-      title: "Status",
-      dataIndex: "pipeline_state",
-      key: "pipeline_state",
-      width: 100,
-      fixed: "right",
-      render: (val: WorkflowStatusType) =>
-        val ? (
-          <Tag color={WorkflowStatuses?.[val]?.color || ""}>
-            {WorkflowStatuses?.[val]?.text ?? val}
-          </Tag>
-        ) : (
-          "--"
-        ),
-    },
-    {
       title: "Actions",
       dataIndex: "",
-      align: "center",
+      align: "left",
       key: "actions",
-      width: 200,
+      width: 160,
       fixed: "right",
-      render: (_: any, workflowData: UnknownObject) =>
-        workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
-          <Link
-            prefetch
-            href={`/workflow/playground/${workflowData?.pipeline_id}`}
-          >
-            <Button type="primary">Visit Playground</Button>
-          </Link>
-        ) : null,
+      render: (_: any, workflowData: UnknownObject) => (
+        <Space>
+          {workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
+            <Link
+              prefetch
+              href={`/workflow/playground/${workflowData?.pipeline_id}`}
+            >
+              <Button block type="primary" icon={<PlayCircleOutlined />}>
+                Playground
+              </Button>
+            </Link>
+          ) : (
+            <Link prefetch href={`/workflow/edit/${workflowData?.pipeline_id}`}>
+              <Button block type="default" icon={<EditOutlined />}>
+                Continue edit
+              </Button>
+            </Link>
+          )}
+        </Space>
+      ),
     },
   ];
 
