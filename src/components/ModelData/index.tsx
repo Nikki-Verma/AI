@@ -24,6 +24,7 @@ import {
 } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ConnectModal from "../ConnectModal";
@@ -292,13 +293,18 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
               >
                 Playground
               </Button>
-              <Button
-                type="default"
-                icon={<ApiOutlined />}
-                onClick={deployHandler}
+              <Link
+                prefetch
+                href={`/integration/model/${modelId}/${data?.result?.user_model_id}`}
               >
-                Integration
-              </Button>
+                <Button
+                  type="default"
+                  icon={<ApiOutlined />}
+                  onClick={deployHandler}
+                >
+                  Integration
+                </Button>
+              </Link>
             </>
           )}
         </Col>
