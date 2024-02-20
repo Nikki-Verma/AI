@@ -168,7 +168,7 @@ export const items: any = [
     ),
     key: "integration",
     keyPath: ["integration"],
-    url: "/Integration",
+    url: "/integration",
     icon: <IntegrationIcon />,
   },
   {

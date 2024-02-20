@@ -67,6 +67,10 @@ const config = {
     addFiles: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/add-file`,
     files: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/files`,
   },
+  integrate: {
+    channels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,
+    create: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,
+  },
 };
 
 export default config;

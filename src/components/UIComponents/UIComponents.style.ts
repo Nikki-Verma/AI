@@ -1,3 +1,4 @@
+import { Radio } from "antd";
 import { styled } from "styled-components";
 
 export const FlexBox = styled.div`
@@ -54,4 +55,27 @@ export const PageAbout = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 154%; /* 24.64px */
+`;
+
+export const MediumRadioGroup = styled(Radio.Group)`
+  .ant-radio-button-wrapper {
+    height: 40px;
+    padding: 9px 30px;
+    color: var(--Text-Color-850, #222);
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 157.143% */
+    border: 0.5px solid $primary-color !important;
+
+    /* drop-shadow/button-secondary */
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+  }
+  .ant-radio-button-wrapper:not(:first-child) {
+    border-left: 0px !important;
+  }
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    width: 0px !important;
+  }
 `;

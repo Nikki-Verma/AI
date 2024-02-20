@@ -13,7 +13,6 @@ type WorkflowKnowledgebaseCardProps = {
 const WorkflowKnowledgebaseCard = ({
   kbDetails,
 }: WorkflowKnowledgebaseCardProps) => {
-  console.log("🚀 ~ kbDetails:", kbDetails);
   const hasParameters = useMemo(
     () => Object.keys(kbDetails?.kb_parameters || {})?.length > 0,
     [kbDetails],
