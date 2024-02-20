@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ModelPage, ModelPageType } from "./constant";
 import { items } from "./helper";
+import ConnectModal from "../ConnectModal";
 
 type ModelDataParams = {
   page: ModelPageType;
@@ -45,6 +46,8 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
   );
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
   const [deploymentLoading, setDeploymentLoading] = useState(false);
+  const [connectModelVisible,setConnectModelVisible] = useState(false)
+  const [connectBtnLoading, setConnectBtnLoading] = useState(false)
   const { notification } = useNotify();
 
   const deployHandler = async () => {
@@ -53,17 +56,27 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
 
       const payload = {
         model_id: modelId,
-        user_model_id: workspaceId,
+        user_model_id: data?.result?.user_model_id,
       };
 
       const deploymentResponse = await deployModelApi({ payload });
+      if(deploymentResponse?.status === 200){
+        refetch();
+        notification.success({
+            message: "Model Deployed successfully",
+        });
+      }
     } catch (error) {
+        notification.error({
+          message: "Error while deploying model.",
+          description: getErrorFromApi(error),
+        });
     } finally {
       setDeploymentLoading(false);
     }
   };
 
-  const addToworkspace = async (model: any) => {
+  const addToworkspace = async () => {
     try {
       setAddToWrokspaceLoading(true);
       const payload = {
@@ -81,11 +94,13 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         payload,
       });
 
-      if (modelResponse?.ok) {
+      if (modelResponse?.status == 200) {
         refetch();
         notification.success({
           message: "Added to workspace",
         });
+        setConnectBtnLoading(false)
+        setConnectModelVisible(true)
       }
     } catch (error) {
       notification.error({
@@ -96,6 +111,15 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
       setAddToWrokspaceLoading(false);
     }
   };
+  const connectModel = async (model: any) => {
+    setConnectBtnLoading(true)
+      if(!data?.result?.added){
+        await addToworkspace()
+      }else{
+        setConnectBtnLoading(false)
+        setConnectModelVisible(true)
+      }
+    }
 
   if (isLoading) {
     return (
@@ -169,37 +193,103 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
           }}
         >
           {page === ModelPage.MODELS ? (
+            <>
+            {
             data?.result?.added ? (
-              <Tag color="success" icon={<CheckCircleOutlined />}>
+              <Tag style={{display : 'flex',alignItems : 'center',justifyContent : 'center',height : '32px'}} color="success" icon={<CheckCircleOutlined />}>
                 Added To workspace
               </Tag>
             ) : (
-              <Button
-                type="primary"
-                onClick={addToworkspace}
-                loading={addToWrokspaceLoading}
-              >
-                Add to workspace
-              </Button>
+              <>
+              {data?.result?.type === "Open source" &&
+                <Button
+                  type="primary"
+                  onClick={addToworkspace}
+                  loading={addToWrokspaceLoading}
+                >
+                  Add to workspace
+                </Button>
+              }
+              </>
             )
-          ) : (
-            <>
-              <Button>Test</Button>
-              <Button
-                onClick={() =>
-                  router.push("/train-model/TinyLlama-1.1B-Chat-v1.0")
-                }
-              >
-                Train
-              </Button>
+            }
+            {
+            data?.result?.type === "Closed source" &&
+              ((data?.result?.status !== "DEPLOYED") ?
               <Button
                 type="primary"
-                icon={<DeployIcon />}
-                onClick={deployHandler}
+                onClick={connectModel}
+                loading={connectBtnLoading}
               >
-                Deploy
+                Connect
               </Button>
+              :
+              <Tag style={{display : 'flex',alignItems : 'center',justifyContent : 'center',height : '32px'}} color="success" icon={<CheckCircleOutlined />}>
+                Connected
+              </Tag>
+              )
+            }
             </>
+          ) : (
+            (data?.result?.status !== "DEPLOYED") ?
+              (data?.result?.type === "Open source" ?
+                <>
+                  {/* <Button>Test</Button>
+                  <Button
+                    onClick={() =>
+                      router.push("/train-model/TinyLlama-1.1B-Chat-v1.0")
+                    }
+                  >
+                    Train
+                  </Button> */}
+                  <Button
+                    type="primary"
+                    icon={<DeployIcon />}
+                    onClick={deployHandler}
+                  >
+                    Deploy
+                  </Button>
+                </>
+              :
+                <>
+                  {/* <Button>Test</Button>
+                  <Button
+                    onClick={() =>
+                      router.push("/train-model/TinyLlama-1.1B-Chat-v1.0")
+                    }
+                  >
+                    Train
+                  </Button> */}
+                  <Button
+                    type="primary"
+                    icon={<DeployIcon />}
+                    onClick={connectModel}
+                    loading = {connectBtnLoading}
+                  >
+                    Connect
+                  </Button>
+                </>
+              )
+            :
+            (
+              <>
+                <Button
+                  type="primary"
+                  icon={<DeployIcon />}
+                  onClick={deployHandler}
+                >
+                  Playground
+                </Button>
+                <Button
+                  type="primary"
+                  icon={<DeployIcon />}
+                  onClick={deployHandler}
+                >
+                  Integrate
+                </Button>
+              </>
+            )
+            
           )}
         </Col>
         <Col span={24}>
@@ -213,6 +303,14 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
       </Row>
       {/* Modify to get items dynamically based on the workspace current status  */}
       <Tabs defaultActiveKey="model_details" items={items(data)} />
+      {connectModelVisible &&
+      <ConnectModal
+      isVisible = {connectModelVisible}
+      setIsVisible = {setConnectModelVisible}
+      modelData = {data}
+      refetch={refetch}
+      />
+      }
     </Spin>
   );
 };

@@ -12,3 +12,9 @@ export const deployModelApi = ({ payload = {}, headers = {} }: any) => {
     headers,
   });
 };
+
+export const connectClosedModel = ({payload = {},headers = {}} : any) => {
+  return _authHttp.post(config.workspace.connect, payload, {
+    headers,
+  });
+}

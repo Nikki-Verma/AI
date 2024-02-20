@@ -48,6 +48,7 @@ const config = {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
     deploy: `${BASE_URLS.model}/api/v1/user/model/deploy`,
+    connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
