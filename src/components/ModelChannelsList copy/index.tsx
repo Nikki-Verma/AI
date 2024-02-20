@@ -1,42 +1,66 @@
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
+import {
+  dateTimeFormatWithMillisecondsWithoutTimeZone,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
-import { UnknownObject } from "@/utils/types";
 import {
   Button,
   Col,
+  Flex,
   Result,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
+import { ChannelTableDetails } from "../IntegrateChannelModal/helper";
+import SaDate from "../SaDate/Index";
+
 const { Text } = Typography;
+
+type ModelChannelsListProps = {
+  data?: any;
+  modelId: string | string[];
+  integrateChannel: () => void;
+  isRefetching: boolean;
+};
+
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
   size: DEFAULT_PAGE_SIZE,
-  modelStatus: "DEPLOYED",
   ...dynamicState,
 });
 
-const IntegrationModelsList = () => {
+const ModelChannelsList = ({
+  modelId,
+  data,
+  integrateChannel,
+  isRefetching,
+}: ModelChannelsListProps) => {
   const [filters, setFilters] = useState(initialFilters());
   const {
-    data: deployedModels,
+    data: modelChannelData,
     isLoading,
     isError,
     error,
-  } = useFetchData(config.workspace.models, {
-    ...filters,
+    refetch,
+  } = useFetchData(config.integrate.channels, {
+    modelId,
   });
+  console.log("🚀 ~ modelChannelData:", modelChannelData);
+  console.log("🚀 ~ ModelChannelsList ~ modelChannelData:", modelChannelData);
+
+  useEffect(() => {
+    refetch();
+  }, [isRefetching]);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -65,78 +89,55 @@ const IntegrationModelsList = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Model name",
-      dataIndex: "name",
-      key: "name",
+      title: "Name",
+      dataIndex: "bot_name",
+      key: "bot_name",
       width: 250,
       render: (val) => (
-        <Space size="small" align="center">
-          <Image
-            src={"/assets/Images/dummyModel.png"}
-            height={32}
-            width={32}
-            alt="Model"
-          />{" "}
-          <Text ellipsis style={{ width: 200 }}>
-            {val}
-          </Text>
-        </Space>
+        <Text ellipsis style={{ width: 200 }}>
+          {val}
+        </Text>
       ),
     },
     {
-      title: "Version",
-      dataIndex: "version",
-      key: "version",
+      title: "Channel",
+      dataIndex: "chat_channel_name",
+      key: "chat_channel_name",
       width: 200,
       render: (val: any) =>
         val ? (
-          <Text ellipsis style={{ width: 200 }}>
-            {val}
-          </Text>
+          <Flex align="center" gap="12px">
+            {ChannelTableDetails?.[
+              val?.toUpperCase() as keyof typeof ChannelTableDetails
+            ] &&
+              ChannelTableDetails?.[
+                val?.toUpperCase() as keyof typeof ChannelTableDetails
+              ]?.icon}
+            <Text ellipsis style={{ width: 200 }}>
+              {ChannelTableDetails?.[
+                val?.toUpperCase() as keyof typeof ChannelTableDetails
+              ]?.text ?? val}
+            </Text>
+          </Flex>
         ) : (
           "--"
         ),
     },
     {
-      title: "Description",
-      dataIndex: "desc",
-      key: "desc",
+      title: "Created At",
+      dataIndex: "created_at",
+      key: "created_at",
       width: 400,
       render: (val: any) =>
         val ? (
-          <Text ellipsis style={{ width: 400 }}>
-            {val}
-          </Text>
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMillisecondsWithoutTimeZone)}
+            inline
+            time
+          />
         ) : (
           "--"
         ),
-    },
-    {
-      title: "Integrated channels",
-      dataIndex: "channels",
-      key: "channels",
-      width: 200,
-      render: (val: any) => (val ? <Text>{val} MB</Text> : "--"),
-    },
-    {
-      title: "Actions",
-      dataIndex: "",
-      align: "left",
-      fixed: "right",
-      key: "actions",
-      width: 100,
-      render: (_: any, dataset: UnknownObject) => {
-        return (
-          <Space>
-            <Link
-              prefetch
-              href={`/integration/model/${dataset?.model_id}/${dataset?.id}`}
-            >
-              <Button type="primary">View Details</Button>
-            </Link>
-          </Space>
-        );
-      },
     },
   ];
 
@@ -151,37 +152,40 @@ const IntegrationModelsList = () => {
       </Col>
     </Row>;
   }
-  if (!isLoading && !deployedModels?.result?.length) {
+
+  if (!isLoading && !modelChannelData?.result?.length) {
     return (
       <Result
         status={403}
-        title="No deployed models available"
+        title="No integrated channels available"
         extra={
-          <Link prefetch href={`/workspace`}>
-            <Button type="primary" icon={<DeployIcon />}>
-              Deploy Models
-            </Button>
-          </Link>
+          <Button
+            type="primary"
+            icon={<DeployIcon />}
+            onClick={integrateChannel}
+          >
+            Integrate Channels
+          </Button>
         }
       />
     );
   }
-  if (isLoading || !!deployedModels?.result?.length) {
+  if (isLoading || !!modelChannelData?.result?.length) {
     return (
       <>
         <Table
           columns={columns}
-          dataSource={deployedModels?.result || []}
+          dataSource={modelChannelData?.result || []}
           rowKey={(data: any) => data?.pipeline_id}
           loading={isLoading}
           scroll={{
             x: "max-content",
-            y: deployedModels?.result?.length > 0 ? 600 : undefined,
+            y: modelChannelData?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
             current: filters?.page + 1,
             pageSize: filters?.size,
-            total: deployedModels?.totalElements,
+            total: modelChannelData?.totalElements,
             showSizeChanger: false,
           }}
           onChange={tableChangeHandler}
@@ -193,4 +197,4 @@ const IntegrationModelsList = () => {
   return null;
 };
 
-export default IntegrationModelsList;
+export default ModelChannelsList;

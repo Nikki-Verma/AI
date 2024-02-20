@@ -121,7 +121,8 @@ const IntegrationWorkflowsList = () => {
       title: "Integrated channels",
       dataIndex: "channels",
       key: "channels",
-      render: (val: any) => (val ? <Text>{val} MB</Text> : "--"),
+      width: 200,
+      render: (val: any) => (val ? <Text>{val}</Text> : "--"),
     },
     {
       title: "Actions",

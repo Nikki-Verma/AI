@@ -21,7 +21,7 @@ import {
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
-import { ChannelTableDetails } from "../IntergrateChannelModal/helper";
+import { ChannelTableDetails } from "../IntegrateChannelModal/helper";
 import SaDate from "../SaDate/Index";
 
 const { Text } = Typography;

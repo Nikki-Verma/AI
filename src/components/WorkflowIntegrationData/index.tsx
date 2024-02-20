@@ -8,7 +8,7 @@ import { ApiOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Result, Row, Skeleton, Tabs } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useState } from "react";
-import IntegrateChannelModal from "../IntergrateChannelModal";
+import IntegrateChannelModal from "../IntegrateChannelModal";
 import ModelTag from "../ModelTag";
 import { PageAbout, PageTitle } from "../UIComponents/UIComponents.style";
 import { WorkflowTagObjectType, WorkflowTags } from "../WorkflowData/helper";

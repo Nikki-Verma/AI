@@ -3,7 +3,7 @@ import ChannelCard from "../ChannelCard";
 import {
   AvailableChannelType,
   ChannelType,
-} from "../IntergrateChannelModal/constant";
+} from "../IntegrateChannelModal/constant";
 import { ChannelOptionsContainer, ChannelOptionsDescription } from "./style";
 
 type ChannelOptionsProps = {

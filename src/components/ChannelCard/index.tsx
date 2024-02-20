@@ -1,7 +1,7 @@
 import {
   AvailableChannelType,
   ChannelType,
-} from "../IntergrateChannelModal/constant";
+} from "../IntegrateChannelModal/constant";
 import { ChannelCardContainer, ChannelCardTitle } from "./style";
 type ChannelCardProps = {
   setSelectedChannel: (val: ChannelType) => void;
