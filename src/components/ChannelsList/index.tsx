@@ -37,7 +37,7 @@ export const CHANNEL_PAGE_TYPE = {
 
 type ChannelsListProps = {
   data?: any;
-  modelId?: string | string[];
+  userModelId?: string | string[];
   workflowId?: string | string[];
   integrateChannel: () => void;
   isRefetching: boolean;
@@ -51,7 +51,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const ChannelsList = ({
-  modelId,
+  userModelId,
   workflowId,
   data,
   integrateChannel,
@@ -69,7 +69,7 @@ const ChannelsList = ({
   } = useFetchData(
     config.integrate.channels,
     pageType === CHANNEL_PAGE_TYPE.MODEL
-      ? { modelId: modelId }
+      ? { modelId: userModelId }
       : { pipelineId: workflowId },
   );
 
@@ -191,7 +191,7 @@ const ChannelsList = ({
         <Table
           columns={columns}
           dataSource={ChannelData?.result || []}
-          rowKey={(data: any) => data?.pipeline_id}
+          rowKey={(data: any) => data?.id || data?.pipeline_id}
           loading={isLoading}
           scroll={{
             x: "max-content",

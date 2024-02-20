@@ -129,8 +129,10 @@ const WorkflowEdit = () => {
       if (type === WorkflowStatus.COMPLETED) {
         notification.success({
           message: "workflow completed successfully",
+          description:
+            "Now you can proceed with intergration with several apps",
         });
-        router.push(`/workflow`);
+        router.push(`/integration/workflow/${workflowId}`);
       }
     } catch (error) {
       notification.error({

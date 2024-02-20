@@ -16,15 +16,20 @@ import { items } from "./helper";
 
 type ModelIntegrationDataProps = {
   modelId: string | string[];
+  userModelId: string | string[];
 };
 
-const ModelIntegrationData = ({ modelId }: ModelIntegrationDataProps) => {
+const ModelIntegrationData = ({
+  modelId,
+  userModelId,
+}: ModelIntegrationDataProps) => {
   const { notification } = useNotify();
   const [form] = useForm();
   const [showIntegrateChannel, setShowIntegrateChannel] = useState(false);
   const [integratechannelLoading, setIntegratechannelLoading] = useState(false);
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useFetchData(config.models.detail, { id: modelId });
+  console.log("🚀 ~ ModelIntegrationData ~ data:", data);
 
   const integrateChannelHandler = async (values: UnknownObject) => {
     try {
@@ -32,7 +37,7 @@ const ModelIntegrationData = ({ modelId }: ModelIntegrationDataProps) => {
 
       const payload = {
         ...values,
-        model_id: modelId,
+        model_id: userModelId,
       };
 
       const integrateChannelResponse = await integrateChannelApi({ payload });
@@ -144,7 +149,7 @@ const ModelIntegrationData = ({ modelId }: ModelIntegrationDataProps) => {
         </Col>
       </Row>
       <Tabs
-        items={items(data, modelId, toggleChannelIntegrate, isRefetching)}
+        items={items(data, userModelId, toggleChannelIntegrate, isRefetching)}
       />
       <IntegrateChannelModal
         open={showIntegrateChannel}

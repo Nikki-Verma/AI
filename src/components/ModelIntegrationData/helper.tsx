@@ -2,7 +2,7 @@ import ChannelsList, { CHANNEL_PAGE_TYPE } from "../ChannelsList";
 
 export const items = (
   data: any,
-  modelId: string | string[],
+  userModelId: string | string[],
   toggleChannelIntegrate: () => void,
   isRefetching: boolean,
 ) => [
@@ -12,7 +12,7 @@ export const items = (
     children: (
       <ChannelsList
         data={data}
-        modelId={modelId}
+        userModelId={userModelId}
         integrateChannel={toggleChannelIntegrate}
         isRefetching={isRefetching}
         pageType={CHANNEL_PAGE_TYPE.MODEL}

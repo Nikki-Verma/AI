@@ -25,6 +25,7 @@ import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
+  ApiOutlined,
   EditOutlined,
   PlayCircleOutlined,
   PlusOutlined,
@@ -241,24 +242,34 @@ const Workflow = () => {
       width: 160,
       fixed: "right",
       render: (_: any, workflowData: UnknownObject) => (
-        <Space>
+        <>
           {workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
-            <Link
-              prefetch
-              href={`/workflow/playground/${workflowData?.pipeline_id}`}
-            >
-              <Button block type="primary" icon={<PlayCircleOutlined />}>
-                Playground
-              </Button>
-            </Link>
+            <Space>
+              <Link
+                prefetch
+                href={`/workflow/playground/${workflowData?.pipeline_id}`}
+              >
+                <Button block type="primary" icon={<PlayCircleOutlined />}>
+                  Playground
+                </Button>
+              </Link>
+              <Link
+                prefetch
+                href={`/integration/workflow/${workflowData?.pipeline_id}`}
+              >
+                <Button block type="default" icon={<ApiOutlined />}>
+                  Integration
+                </Button>
+              </Link>
+            </Space>
           ) : (
             <Link prefetch href={`/workflow/edit/${workflowData?.pipeline_id}`}>
-              <Button block type="default" icon={<EditOutlined />}>
+              <Button block type="primary" icon={<EditOutlined />}>
                 Continue edit
               </Button>
             </Link>
           )}
-        </Space>
+        </>
       ),
     },
   ];

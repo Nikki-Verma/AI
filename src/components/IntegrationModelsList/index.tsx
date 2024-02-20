@@ -23,7 +23,7 @@ const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
   size: DEFAULT_PAGE_SIZE,
-  status: "DEPLOYED",
+  modelStatus: "DEPLOYED",
   ...dynamicState,
 });
 
@@ -34,7 +34,7 @@ const IntegrationModelsList = () => {
     isLoading,
     isError,
     error,
-  } = useFetchData(config.models.list, {
+  } = useFetchData(config.workspace.models, {
     ...filters,
   });
 
@@ -127,7 +127,10 @@ const IntegrationModelsList = () => {
       render: (_: any, dataset: UnknownObject) => {
         return (
           <Space>
-            <Link prefetch href={`/integration/model/${dataset?.id}`}>
+            <Link
+              prefetch
+              href={`/integration/model/${dataset?.model_id}/${dataset?.id}`}
+            >
               <Button type="primary">View Details</Button>
             </Link>
           </Space>
