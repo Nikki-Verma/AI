@@ -4,7 +4,7 @@ import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { PlusOutlined } from "@ant-design/icons";
+import { ApiOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Result, Row, Skeleton, Tabs } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useState } from "react";
@@ -34,7 +34,7 @@ const WorkflowIntegrationData = ({
 
       const payload = {
         ...values,
-        pipeline_id: workflowId,
+        pipeline_id_or_model_id: workflowId,
       };
 
       const integrateChannelResponse = await integrateChannelApi({ payload });
@@ -103,7 +103,7 @@ const WorkflowIntegrationData = ({
         >
           <Button
             type="primary"
-            icon={<PlusOutlined />}
+            icon={<ApiOutlined />}
             onClick={toggleChannelIntegrate}
           >
             Integrate channel

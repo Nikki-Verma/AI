@@ -4,7 +4,7 @@ import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { PlusOutlined } from "@ant-design/icons";
+import { ApiOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Result, Row, Skeleton, Tabs } from "antd";
 import { useForm } from "antd/es/form/Form";
 import Image from "next/image";
@@ -37,7 +37,7 @@ const ModelIntegrationData = ({
 
       const payload = {
         ...values,
-        model_id: userModelId,
+        pipeline_id_or_model_id: userModelId,
       };
 
       const integrateChannelResponse = await integrateChannelApi({ payload });
@@ -134,7 +134,7 @@ const ModelIntegrationData = ({
         >
           <Button
             type="primary"
-            icon={<PlusOutlined />}
+            icon={<ApiOutlined />}
             onClick={toggleChannelIntegrate}
           >
             Integrate channel

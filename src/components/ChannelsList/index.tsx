@@ -7,6 +7,7 @@ import {
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { ApiOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -20,7 +21,6 @@ import {
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useEffect, useState } from "react";
-import DeployIcon from "../Icons/DeployIcon";
 import { ChannelTableDetails } from "../IntergrateChannelModal/helper";
 import SaDate from "../SaDate/Index";
 
@@ -66,12 +66,10 @@ const ChannelsList = ({
     isError,
     error,
     refetch,
-  } = useFetchData(
-    config.integrate.channels,
-    pageType === CHANNEL_PAGE_TYPE.MODEL
-      ? { modelId: userModelId }
-      : { pipelineId: workflowId },
-  );
+  } = useFetchData(config.integrate.channels, {
+    pipelineIdOrModelId:
+      pageType === CHANNEL_PAGE_TYPE.MODEL ? userModelId : workflowId,
+  });
 
   useEffect(() => {
     refetch();
@@ -176,7 +174,7 @@ const ChannelsList = ({
         extra={
           <Button
             type="primary"
-            icon={<DeployIcon />}
+            icon={<ApiOutlined />}
             onClick={integrateChannel}
           >
             Integrate Channels
