@@ -288,13 +288,14 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
             )
           ) : (
             <>
-              <Button
-                type="primary"
-                icon={<DeployIcon />}
-                onClick={deployHandler}
+              <Link
+                prefetch
+                href={`/model/playground/${modelId}/${data?.result?.user_model_id}`}
               >
-                Playground
-              </Button>
+                <Button type="primary" icon={<DeployIcon />}>
+                  Playground
+                </Button>
+              </Link>
               <Link
                 prefetch
                 href={`/integration/model/${modelId}/${data?.result?.user_model_id}`}
