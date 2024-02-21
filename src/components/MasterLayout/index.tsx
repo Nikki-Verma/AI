@@ -141,9 +141,10 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
             defaultOpenKeys={["order-management"]}
             selectedKeys={currentItemKey}
             openKeys={openItemKey}
-            // style={{
-            //   borderInlineEnd: "none",
-            // }}
+            style={{
+              overflow: "auto",
+              height: "100%",
+            }}
             items={menuItems}
             onOpenChange={handleOpenChange}
           />
