@@ -100,8 +100,10 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         notification.success({
           message: "Added to workspace",
         });
-        setConnectBtnLoading(false);
-        setConnectModelVisible(true);
+        if(data?.result?.type === "Closed source"){
+          setConnectBtnLoading(false);
+          setConnectModelVisible(true);
+        }
       }
     } catch (error) {
       notification.error({

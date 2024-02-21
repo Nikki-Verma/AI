@@ -19,17 +19,27 @@ export const ModelContainer = styled.div`
   }
   .ant-select-selector {
     display: flex;
-    height: 36px;
-    padding: 0px 7px;
+    height: 36px !important;
+    width : 150px !important;
+    padding: 0px 20px !important;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    border-radius: 20px;
-    border: 1px solid var(--Text-Color-150, #d5d5d5);
-    background: var(--Text-Color-50, #fff);
+    border-radius: 20px !important;
+    border: 1px solid var(--Text-Color-150, #d5d5d5) !important;
+    background: var(--Text-Color-50, #fff) !important;
 
     /* drop-shadow/button-secondary */
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02) !important;
+  }
+  .ant-select .ant-select-arrow,.ant-select .ant-select-clear {
+    inset-inline-start: auto;
+    inset-inline-end: 20px !important;
+    margin-top: -4px !important;
+  }
+  .ant-select-single .ant-select-selector .ant-select-selection-search{
+    inset-inline-start: 20px;
+    inset-inline-end: 20px;
   }
 `;
 

@@ -6,7 +6,7 @@ import { useFetchData } from "@/Hooks/useApi";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined,CloseOutlined } from "@ant-design/icons";
 import {
   Card,
   Col,
@@ -23,6 +23,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Heading, ModelContainer } from "./style";
+import { UnknownObject } from "@/utils/types";
 
 const { Title } = Typography;
 
@@ -33,10 +34,78 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
 });
 
+const ModalityOptions = [
+  {
+    label : 'Text',
+    value : 'Text',
+  },
+  {
+    label : 'Image',
+    value : 'Image',
+  },
+  {
+    label : 'Video',
+    value : 'Video',
+  },
+  {
+    label : 'Audio',
+    value : 'Audio',
+  },
+]
+const FunctionFilterOptions = [
+  {
+    label : 'Text to Text',
+    value : 'Text-to-Text',
+  },
+  {
+    label : 'Audio to Text',
+    value : 'Audio-to-Text',
+  },
+  {
+    label : 'Image to Text',
+    value : 'Image-to-Text',
+  },
+  {
+    label : 'Video to Text',
+    value : 'Video-to-Text',
+  },
+]
+
+const ArchitectureFilterOptions = [
+  {
+    label : 'Transformer',
+    value : 'Transformer',
+  },
+  {
+    label : 'Diffusion',
+    value : 'Diffusion',
+  },
+  {
+    label : 'LSTM',
+    value : 'LSTM',
+  },
+  {
+    label : 'RNN',
+    value : 'RNN',
+  },
+  {
+    label : 'CNN',
+    value : 'CNN',
+  },
+  {
+    label : 'GAN',
+    value : 'GAN',
+  },
+]
+
 const Models = () => {
   const { updatePageConfig } = useAppStore();
   const { data: session }: any = useSession();
   const [filters, setFilters] = useState(initialFilters());
+  const [modality,setModality] = useState<string | undefined>(undefined)
+  const [functionFilter,setFunctionFilter] = useState<string | undefined>(undefined)
+  const [architecture,setArchitecture] = useState<string | undefined>(undefined)
+  const [searchValue, setSearchValue] = useState<string>('')
   const { data, isLoading, isError, error } = useFetchData(
     config.models.list,
     { ...filters },
@@ -56,6 +125,15 @@ const Models = () => {
   ) => {
     setFilters((prev: any) => ({ ...prev, page: pageNumber, size: pageSize }));
   };
+
+  const updateFilters = (updateState: { [key: string]: any } = {}) => (
+    setFilters((prev: any) => ({ 
+      ...prev,
+      ...updateState,
+      page: DEFAULT_PAGE, 
+
+    }))
+  )
 
   return (
     <ModelContainer>
@@ -87,6 +165,10 @@ const Models = () => {
               value={filters?.type}
               onChange={(event: any) => {
                 setFilters(initialFilters({ type: event?.target?.value }));
+                setModality(undefined)
+                setArchitecture(undefined)
+                setFunctionFilter(undefined)
+                setSearchValue('')
               }}
               size="large"
               buttonStyle="solid"
@@ -108,25 +190,61 @@ const Models = () => {
               />
             }
             placeholder="Search models"
+            onPressEnter={(e : any)=>{
+              updateFilters({name : e?.target?.value })
+            }}
+            allowClear={{ clearIcon: <CloseOutlined onClick={()=> updateFilters({name : '' }) } /> }}
+            onChange={(e:any)=>{
+              setSearchValue(e.target.value)
+              if(!e.target.value){
+                updateFilters({name : '' })
+              }
+            }}
+            value={searchValue}
           />
         </Col>
         <Col>
-          <Select placeholder="Model type" />
+          <Select
+            showSearch
+            optionFilterProp="label"
+            options={ModalityOptions}
+            onChange={(value: string) => {
+              console.log(`modality`,value)
+              setModality(value)
+              updateFilters({modality : value})
+            }}
+            value={modality}
+            placeholder="Modality"
+            allowClear
+          />
         </Col>
         <Col>
-          <Select placeholder="Model size" />
+          <Select
+            showSearch
+            optionFilterProp="label"
+            options={FunctionFilterOptions}
+            onChange={(value: string) => {
+              setFunctionFilter(value)
+              updateFilters({function : value})
+            }}
+            value={functionFilter}
+            placeholder="Function"
+            allowClear
+          />
         </Col>
         <Col>
-          <Select placeholder="Dataset type" />
-        </Col>
-        <Col>
-          <Select placeholder="Model type" />
-        </Col>
-        <Col>
-          <Select placeholder="Dataset type" />
-        </Col>
-        <Col>
-          <Select placeholder="Model type" />
+          <Select
+            showSearch
+            optionFilterProp="label"
+            options={ArchitectureFilterOptions}
+            onChange={(value: string) => {
+              setArchitecture(value)
+              updateFilters({architecture : value})
+            }}
+            value={architecture}
+            placeholder="Architecture"
+            allowClear
+          />
         </Col>
       </Row>
       <Col span={24}>
