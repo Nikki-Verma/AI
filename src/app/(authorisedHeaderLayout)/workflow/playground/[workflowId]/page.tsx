@@ -32,6 +32,7 @@ const WorkflowPlayground = () => {
     setInput,
     changeConversationLoading,
     setChatConfig,
+    stopStream,
   } = useChatStream({
     chatConfig: {
       model: workflowData?.result?.pipeline_name,
@@ -41,6 +42,12 @@ const WorkflowPlayground = () => {
       model_id: workflowData?.result?.pipeline_id,
     },
   });
+
+  useEffect(() => {
+    return () => {
+      stopStream();
+    };
+  }, []);
 
   useLayoutEffect(() => {
     updateHeaderTitle(

@@ -33,6 +33,7 @@ const ModelPlayground = () => {
     setInput,
     changeConversationLoading,
     setChatConfig,
+    stopStream,
   } = useChatStream({
     chatConfig: {
       model: modelData?.result?.name,
@@ -42,6 +43,12 @@ const ModelPlayground = () => {
       model_id: typeof userModelId === "string" ? userModelId : "",
     },
   });
+
+  useEffect(() => {
+    return () => {
+      stopStream();
+    };
+  }, []);
 
   useLayoutEffect(() => {
     updateHeaderTitle(
