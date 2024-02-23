@@ -22,7 +22,6 @@ const ModelPlayground = () => {
     isLoading: modelDataLoading,
     refetch,
   } = useFetchData(config.models.detail, { id: modelId }, {});
-  console.log("🚀 ~ ModelPlayground ~ modelData:", modelData);
 
   const {
     messages,

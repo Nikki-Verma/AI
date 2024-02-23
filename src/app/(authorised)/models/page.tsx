@@ -216,7 +216,6 @@ const Models = () => {
             optionFilterProp="label"
             options={ModalityOptions}
             onChange={(value: string) => {
-              console.log(`modality`, value);
               setModality(value);
               updateFilters({ modality: value });
             }}

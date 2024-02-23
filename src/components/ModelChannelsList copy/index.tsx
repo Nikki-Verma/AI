@@ -55,8 +55,6 @@ const ModelChannelsList = ({
   } = useFetchData(config.integrate.channels, {
     modelId,
   });
-  console.log("🚀 ~ modelChannelData:", modelChannelData);
-  console.log("🚀 ~ ModelChannelsList ~ modelChannelData:", modelChannelData);
 
   useEffect(() => {
     refetch();

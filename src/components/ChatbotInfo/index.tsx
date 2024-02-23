@@ -55,7 +55,6 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
 
-  console.log("🚀 ~ WorkflowInfo ~ data:", data);
   return (
     <Row gutter={[6, 20]}>
       <Col span={24}>

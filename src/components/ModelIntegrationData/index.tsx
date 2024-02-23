@@ -29,7 +29,6 @@ const ModelIntegrationData = ({
   const [integratechannelLoading, setIntegratechannelLoading] = useState(false);
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useFetchData(config.models.detail, { id: modelId });
-  console.log("🚀 ~ ModelIntegrationData ~ data:", data);
 
   const integrateChannelHandler = async (values: UnknownObject) => {
     try {

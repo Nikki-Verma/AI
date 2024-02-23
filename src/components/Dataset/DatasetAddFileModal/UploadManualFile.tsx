@@ -40,7 +40,6 @@ const UploadManualFile = ({
   const uploadProps = {
     name: "dataset_files",
     itemRender: (originalNode: any, file: any) => {
-      console.log("🚀 ~ file:", file);
       return (
         <FileListItem key={file?.uid}>
           <FileItemDetails>
@@ -53,11 +52,9 @@ const UploadManualFile = ({
           <RemoveIcon
             style={{ cursor: "pointer" }}
             onClick={() => {
-              console.log("hello");
               const index = fileList.findIndex(
                 (singleFile: any) => singleFile?.uid === file?.uid,
               );
-              console.log("🚀 ~ index:", index);
 
               if (index != -1) {
                 const newFileList = fileList.slice();

@@ -76,7 +76,6 @@ const KnowledgeBaseDetails = (props: any) => {
     { ...filters, knowledgebase_id: knowledgebaseId },
     {},
   );
-  console.log("🚀 ~ KnowledgeBaseDetails ~ data:", data);
 
   const {
     data: knowledgebaseConfig,
