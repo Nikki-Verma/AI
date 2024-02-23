@@ -69,6 +69,7 @@ const DatasetAddFileModal = ({
             addFilesHandler={addFilesHandler}
             fileList={fileList}
             setFileList={setFileList}
+            loading={loading}
           />
         );
 

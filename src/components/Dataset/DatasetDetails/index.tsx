@@ -146,27 +146,35 @@ const DatasetDetails = (props: any) => {
         });
       });
 
-      await Promise.allSettled(promiseArr).then((res) => {
-        let filesUploadSuccess = 0;
-        let filesUploadedFailed = 0;
-        res?.map((file: any) => {
-          if (file?.rejected) {
-            filesUploadedFailed = filesUploadedFailed + 1;
-          } else {
-            filesUploadSuccess = filesUploadSuccess + 1;
-          }
+      await Promise.allSettled(promiseArr)
+        .then((res) => {
+          let filesUploadSuccess = 0;
+          let filesUploadedFailed = 0;
+          res?.map((file: any) => {
+            console.log("🚀 ~ res?.map ~ file:", file);
+            if (file?.status == "rejected") {
+              filesUploadedFailed = filesUploadedFailed + 1;
+            } else {
+              filesUploadSuccess = filesUploadSuccess + 1;
+            }
+          });
+          notification.info({
+            message: `${filesUploadSuccess} files added to dataset successfully`,
+            description: filesUploadedFailed ? (
+              <Text type="danger">{`Failed to add ${filesUploadedFailed} to dataset `}</Text>
+            ) : (
+              ""
+            ),
+          });
+          refetch();
+          setAddFileModalOpen(false);
+        })
+        .catch((error) => {
+          notification.error({
+            message: "Error while uploading file",
+            description: getErrorFromApi(error),
+          });
         });
-        notification.success({
-          message: `${filesUploadSuccess} files added to dataset successfully`,
-          description: filesUploadedFailed ? (
-            <Text type="danger">{`Failed to add ${filesUploadedFailed} to dataset `}</Text>
-          ) : (
-            ""
-          ),
-        });
-        refetch();
-        setAddFileModalOpen(false);
-      });
     } catch (error) {
       notification.error({
         message: "Error while adding file to dataset",

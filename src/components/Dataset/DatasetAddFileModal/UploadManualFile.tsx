@@ -35,10 +35,11 @@ const UploadManualFile = ({
   maxCount = 2,
   multiple = true,
   accept = undefined,
-  preview = false,
+  loading = false,
 }: any) => {
   const uploadProps = {
     name: "dataset_files",
+    disabled: loading,
     itemRender: (originalNode: any, file: any) => {
       return (
         <FileListItem key={file?.uid}>
@@ -52,6 +53,10 @@ const UploadManualFile = ({
           <RemoveIcon
             style={{ cursor: "pointer" }}
             onClick={() => {
+              if (loading) {
+                return null;
+              }
+
               const index = fileList.findIndex(
                 (singleFile: any) => singleFile?.uid === file?.uid,
               );
