@@ -3,6 +3,7 @@
 import { createDatasetApi } from "@/api/dataset";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
@@ -63,7 +64,7 @@ const DatasetList = () => {
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [filters, setFilters] = useState(initialFilters());
+  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.dataset.list,
     { ...filters },

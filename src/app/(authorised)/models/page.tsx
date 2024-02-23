@@ -3,6 +3,7 @@
 import CardModel from "@/components/CardModel";
 import PageHeading from "@/components/PageHeading";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
@@ -21,7 +22,7 @@ import {
 } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Heading, ModelContainer } from "./style";
 
 const { Title } = Typography;
@@ -36,7 +37,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 const Models = () => {
   const { updatePageConfig } = useAppStore();
   const { data: session }: any = useSession();
-  const [filters, setFilters] = useState(initialFilters());
+  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const { data, isLoading, isError, error } = useFetchData(
     config.models.list,
     { ...filters },
