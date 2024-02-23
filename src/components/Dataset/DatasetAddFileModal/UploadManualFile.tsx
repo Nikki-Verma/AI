@@ -34,14 +34,15 @@ const UploadManualFile = ({
   addFilesHandler,
   maxCount = 2,
   multiple = true,
-  accept = "",
+  accept = undefined,
   preview = false,
 }: any) => {
   const uploadProps = {
     name: "dataset_files",
     itemRender: (originalNode: any, file: any) => {
+      console.log("🚀 ~ file:", file);
       return (
-        <FileListItem>
+        <FileListItem key={file?.uid}>
           <FileItemDetails>
             <DocumentIcon />
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -52,10 +53,23 @@ const UploadManualFile = ({
           <RemoveIcon
             style={{ cursor: "pointer" }}
             onClick={() => {
-              const index = fileList.indexOf(file);
-              const newFileList = fileList.slice();
-              newFileList.splice(index, 1);
-              setFileList(newFileList);
+              const index = fileList
+                .map((singleFile: any) => singleFile?.uid)
+                .indexOf(file?.uid);
+              if (index != -1) {
+                const newFileList = fileList.slice();
+
+                newFileList.splice(index, 1);
+
+                form.setFields([
+                  {
+                    name: "dataset_files",
+                    value: [...newFileList],
+                    errors: [],
+                  },
+                ]);
+                setFileList([...newFileList]);
+              }
             }}
           />
         </FileListItem>

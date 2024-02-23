@@ -76,6 +76,7 @@ const KnowledgeBaseDetails = (props: any) => {
     { ...filters, knowledgebase_id: knowledgebaseId },
     {},
   );
+  console.log("🚀 ~ KnowledgeBaseDetails ~ data:", data);
 
   const {
     data: knowledgebaseConfig,
@@ -314,7 +315,7 @@ const KnowledgeBaseDetails = (props: any) => {
             pagination={{
               current: filters?.page + 1,
               pageSize: filters?.size,
-              total: data?.totalElements,
+              total: data?.total_elements,
               showSizeChanger: true,
             }}
             onChange={tableChangeHandler}
