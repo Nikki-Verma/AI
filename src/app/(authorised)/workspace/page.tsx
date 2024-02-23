@@ -98,9 +98,9 @@ const Workspace = () => {
           buttonStyle="solid"
         >
           <Radio.Button value="ADDED">Added Models</Radio.Button>
-          <Radio.Button value="TRAINED">Trained Models</Radio.Button>
+          {/* <Radio.Button value="TRAINED">Trained Models</Radio.Button> */}
           <Radio.Button value="DEPLOYED">Deployed Models</Radio.Button>
-          <Radio.Button value="INACTIVE">Inactive models</Radio.Button>
+          {/* <Radio.Button value="INACTIVE">Inactive models</Radio.Button> */}
         </Radio.Group>
       </Col>
 

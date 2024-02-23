@@ -88,7 +88,10 @@ const IntegrateChannelModal = ({
                 <Button
                   type="default"
                   disabled={loading}
-                  onClick={() => setSelectedChannel(undefined)}
+                  onClick={() => {
+                    setSelectedChannel(undefined);
+                    form.resetFields();
+                  }}
                 >
                   Back
                 </Button>

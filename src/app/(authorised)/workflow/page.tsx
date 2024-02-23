@@ -207,17 +207,17 @@ const Workflow = () => {
         </Text>
       ),
     },
-    {
-      title: "Knowledge base version",
-      dataIndex: "kb",
-      key: "kb_version",
-      width: 200,
-      render: (val: any) => (
-        <Text ellipsis style={{ width: 200 }}>
-          {val?.kb_version || "--"}
-        </Text>
-      ),
-    },
+    // {
+    //   title: "Knowledge base version",
+    //   dataIndex: "kb",
+    //   key: "kb_version",
+    //   width: 200,
+    //   render: (val: any) => (
+    //     <Text ellipsis style={{ width: 200 }}>
+    //       {val?.kb_version || "--"}
+    //     </Text>
+    //   ),
+    // },
     {
       title: "Created At",
       dataIndex: "created_at",
