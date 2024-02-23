@@ -45,8 +45,8 @@ type WorkflowInfoProps = {
 const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
   const router = useRouter();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
-  const { data, isLoading } = useFetchData(config.models.list, {
-    status: "DEPLOYED",
+  const { data, isLoading } = useFetchData(config.workspace.models, {
+    modelStatus: "DEPLOYED",
     page: DEFAULT_PAGE,
     size: ALL_DATA_PAGE_SIZE,
   });
@@ -55,6 +55,7 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
 
+  console.log("🚀 ~ WorkflowInfo ~ data:", data);
   return (
     <Row gutter={[6, 20]}>
       <Col span={24}>

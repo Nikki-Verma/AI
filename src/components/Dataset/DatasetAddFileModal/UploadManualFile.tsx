@@ -34,7 +34,7 @@ const UploadManualFile = ({
   addFilesHandler,
   maxCount = 2,
   multiple = true,
-  accept = ".csv",
+  accept = "",
   preview = false,
 }: any) => {
   const uploadProps = {
