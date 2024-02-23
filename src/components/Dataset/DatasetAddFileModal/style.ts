@@ -12,6 +12,11 @@ export const UploadDatasetFileContainer = styled.div`
   flex-direction: column;
   gap: 15px;
   height: 100% !important;
+
+  .ant-upload-list {
+    max-height: 400px;
+    overflow: auto;
+  }
 `;
 
 export const UploadPrivacyContainer = styled.div`

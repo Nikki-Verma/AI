@@ -32,9 +32,9 @@ const UploadManualFile = ({
   fileList,
   setFileList,
   addFilesHandler,
-  maxCount = 2,
+  maxCount = undefined,
   multiple = true,
-  accept = undefined,
+  accept = ".pdf",
   loading = false,
 }: any) => {
   const uploadProps = {
@@ -51,12 +51,11 @@ const UploadManualFile = ({
             </div>
           </FileItemDetails>
           <RemoveIcon
-            style={{ cursor: "pointer" }}
+            style={{ cursor: loading ? "no-drop" : "pointer" }}
             onClick={() => {
               if (loading) {
                 return null;
               }
-
               const index = fileList.findIndex(
                 (singleFile: any) => singleFile?.uid === file?.uid,
               );
@@ -66,6 +65,7 @@ const UploadManualFile = ({
 
                 newFileList.splice(index, 1);
 
+                setFileList([...newFileList]);
                 form.setFields([
                   {
                     name: "dataset_files",
@@ -73,7 +73,6 @@ const UploadManualFile = ({
                     errors: [],
                   },
                 ]);
-                setFileList([...newFileList]);
               }
             }}
           />
@@ -89,26 +88,17 @@ const UploadManualFile = ({
       newFileList.splice(index, 1);
       setFileList(newFileList);
     },
-    beforeUpload: (file: any) => {
-      if (fileList?.length < maxCount) {
-        setFileList([...fileList, file]);
-      }
-
-      if (fileList?.length === maxCount) {
-        const index = fileList.findIndex(
-          (data: any) => data.name === file.name,
-        );
-
-        if (index === -1) {
-          fileList.shift();
-          fileList.push(file);
-        } else {
-          fileList[index] = file;
+    onChange: (files: any) => {
+      if (maxCount) {
+        if (files?.fileList?.length > maxCount) {
+          const newFiles = files?.fileList?.slice(maxCount - 1);
+          setFileList([...newFiles]);
+          return null;
         }
         setFileList(fileList);
+      } else {
+        setFileList([...files?.fileList]);
       }
-
-      return false;
     },
     fileList,
   };
