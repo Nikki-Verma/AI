@@ -53,9 +53,12 @@ const UploadManualFile = ({
           <RemoveIcon
             style={{ cursor: "pointer" }}
             onClick={() => {
-              const index = fileList
-                .map((singleFile: any) => singleFile?.uid)
-                .indexOf(file?.uid);
+              console.log("hello");
+              const index = fileList.findIndex(
+                (singleFile: any) => singleFile?.uid === file?.uid,
+              );
+              console.log("🚀 ~ index:", index);
+
               if (index != -1) {
                 const newFileList = fileList.slice();
 
