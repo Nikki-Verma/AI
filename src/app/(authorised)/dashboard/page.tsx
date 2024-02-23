@@ -25,6 +25,7 @@ function ChatPage() {
     setInput,
     changeConversation,
     changeConversationLoading,
+    stopStream,
   } = useChatStream({
     chatConfig: {
       model: "OpenAI-GPT-3.5",
@@ -39,6 +40,12 @@ function ChatPage() {
   useEffect(() => {
     changeConversation(conversationId);
   }, [conversationId]);
+
+  useEffect(() => {
+    return () => {
+      stopStream();
+    };
+  }, []);
 
   useEffect(() => {
     updatePageConfig({

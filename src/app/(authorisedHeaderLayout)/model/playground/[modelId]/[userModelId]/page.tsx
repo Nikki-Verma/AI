@@ -10,18 +10,19 @@ import { getErrorFromApi } from "@/utils/helperFunction";
 import { Col, Result, Row } from "antd";
 import { useParams } from "next/navigation";
 import { useEffect, useLayoutEffect } from "react";
-import { WorkflowPlaygroundContainer } from "./style";
+import { ModelPlaygroundContainer } from "./style";
 
-const WorkflowPlayground = () => {
-  const { workflowId } = useParams();
+const ModelPlayground = () => {
+  const { userModelId, modelId } = useParams();
   const { updateHeaderTitle } = useAppStore();
   const {
-    data: workflowData,
-    isError: workflowFetchHasError,
-    error: workflowFetchError,
-    isLoading: workflowDataLoading,
+    data: modelData,
+    isError: modelFetchHasError,
+    error: modelFetchError,
+    isLoading: modelDataLoading,
     refetch,
-  } = useFetchData(`${config.workflow.details}/${workflowId}`);
+  } = useFetchData(config.models.detail, { id: modelId }, {});
+  console.log("🚀 ~ ModelPlayground ~ modelData:", modelData);
 
   const {
     messages,
@@ -35,11 +36,11 @@ const WorkflowPlayground = () => {
     stopStream,
   } = useChatStream({
     chatConfig: {
-      model: workflowData?.result?.pipeline_name,
+      model: modelData?.result?.name,
       language_code: "EN",
       source: "APP",
-      app_id: workflowData?.result?.pipeline_id,
-      model_id: workflowData?.result?.pipeline_id,
+      app_id: typeof userModelId === "string" ? userModelId : "",
+      model_id: typeof userModelId === "string" ? userModelId : "",
     },
   });
 
@@ -51,32 +52,32 @@ const WorkflowPlayground = () => {
 
   useLayoutEffect(() => {
     updateHeaderTitle(
-      workflowData?.result?.pipeline_name
-        ? `Workflow Playground - ${workflowData?.result?.pipeline_name}`
-        : `Workflow Playground - ${workflowId}`,
+      modelData?.result?.name
+        ? `Model Playground - ${modelData?.result?.name}`
+        : `Model Playground - ${userModelId}`,
     );
-  }, [workflowData]);
+  }, [modelData]);
 
   useEffect(() => {
     setChatConfig({
-      model: workflowData?.result?.pipeline_name,
+      model: modelData?.result?.name,
       language_code: "EN",
       source: "APP",
-      app_id: workflowData?.result?.pipeline_id,
-      model_id: workflowData?.result?.pipeline_id,
+      app_id: typeof userModelId === "string" ? userModelId : "",
+      model_id: typeof userModelId === "string" ? userModelId : "",
     });
-  }, [workflowData]);
+  }, [modelData]);
 
-  if (workflowDataLoading) {
+  if (modelDataLoading) {
     return <FullScreenLoader />;
   }
 
-  if (workflowFetchHasError) {
+  if (modelFetchHasError) {
     <Row justify="center">
       <Col>
         <Result
           status="500"
-          title={getErrorFromApi(workflowFetchError)}
+          title={getErrorFromApi(modelFetchError)}
           subTitle="Please refresh or comeback in sometime"
         />
       </Col>
@@ -84,7 +85,7 @@ const WorkflowPlayground = () => {
   }
 
   return (
-    <WorkflowPlaygroundContainer>
+    <ModelPlaygroundContainer>
       <ChatBot
         messages={messages}
         changeConversationLoading={changeConversationLoading}
@@ -94,8 +95,8 @@ const WorkflowPlayground = () => {
         setInput={setInput}
         isLoading={isLoading}
       />
-    </WorkflowPlaygroundContainer>
+    </ModelPlaygroundContainer>
   );
 };
 
-export default WorkflowPlayground;
+export default ModelPlayground;

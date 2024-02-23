@@ -37,6 +37,7 @@ const TestPlayground = ({
     changeConversationLoading,
     custAtrr,
     setCustAtrr,
+    stopStream,
   } = useChatStream({
     chatConfig: {
       model: details?.result?.pipeline_name,
@@ -48,6 +49,12 @@ const TestPlayground = ({
     convId: conversationId,
     customAttributes: details?.result,
   });
+
+  useEffect(() => {
+    return () => {
+      stopStream();
+    };
+  }, []);
 
   useEffect(() => {
     changeConversation(conversationId);
