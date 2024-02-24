@@ -1,6 +1,4 @@
 import {
-  DUMMY_SELLER_ID,
-  DUMMY_TENANT_ID,
   PIM_SID,
   X_CLIENT_ID,
   X_DEVICE_ID,
@@ -23,10 +21,10 @@ axiosInstance.interceptors.request.use(
 
     const DefaultHeaders: any = {
       [X_USER_ID]: session?.user?.details?.id,
-      [X_TENANT_ID]: DUMMY_TENANT_ID,
+      [X_TENANT_ID]: session?.user?.details?.tenantId,
       [PIM_SID]: session?.accessToken,
       [X_DEVICE_ID]: "armaze-web",
-      [X_CLIENT_ID]: DUMMY_SELLER_ID,
+      [X_CLIENT_ID]: session?.user?.details?.id,
     };
 
     request.headers = { ...(request.headers || {}), ...DefaultHeaders };

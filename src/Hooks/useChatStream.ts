@@ -1,11 +1,5 @@
 import { initiateConversationApi } from "@/api/intract";
-import {
-  DUMMY_SELLER_ID,
-  DUMMY_SELLER_PROFILE_ID,
-  X_SELLER_ID,
-  X_SELLER_PROFILE_ID,
-  X_USER_ID,
-} from "@/utils/constants";
+import { X_SELLER_ID, X_SELLER_PROFILE_ID, X_USER_ID } from "@/utils/constants";
 import { decodeStreamToJson, getChatDetails, getStream } from "@/utils/stream";
 import { UnknownObject } from "@/utils/types";
 import { useSession } from "next-auth/react";
@@ -141,6 +135,8 @@ const useChatStream = (input: UseChatStreamInput) => {
       setIsLoading(true);
       const stream = await getStream(conversationID, messageID, {
         [X_USER_ID]: data?.user?.details?.id,
+        [X_SELLER_ID]: data?.user?.details?.id,
+        [X_SELLER_PROFILE_ID]: data?.user?.details?.id,
       });
       if (!stream) throw new Error();
 
@@ -194,8 +190,8 @@ const useChatStream = (input: UseChatStreamInput) => {
           conversation_id: conversationId,
         },
         headers: {
-          [X_SELLER_ID]: DUMMY_SELLER_ID,
-          [X_SELLER_PROFILE_ID]: DUMMY_SELLER_PROFILE_ID,
+          [X_SELLER_ID]: data?.user?.details?.id,
+          [X_SELLER_PROFILE_ID]: data?.user?.details?.id,
         },
       });
 

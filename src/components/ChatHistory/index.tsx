@@ -5,8 +5,6 @@ import config from "@/utils/apiEndoints";
 import {
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
-  DUMMY_SELLER_ID,
-  DUMMY_SELLER_PROFILE_ID,
   X_SELLER_ID,
   X_SELLER_PROFILE_ID,
 } from "@/utils/constants";
@@ -46,8 +44,8 @@ const ChatHistory = ({
     config.intract.chatHistoryList,
     { ...filters, userId: session?.user?.details?.id },
     {
-      [X_SELLER_ID]: DUMMY_SELLER_ID,
-      [X_SELLER_PROFILE_ID]: DUMMY_SELLER_PROFILE_ID,
+      [X_SELLER_ID]: session?.user?.details?.id,
+      [X_SELLER_PROFILE_ID]: session?.user?.details?.id,
     },
   );
 

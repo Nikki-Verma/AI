@@ -150,6 +150,7 @@ export const authOptions: AuthOptions = {
           const res = await _unauthHttp.post(url, body, {
             headers,
           });
+          console.log("🚀 ~ authorize ~ res:", res?.data);
 
           // If no error and we have user data, return it
           if (res?.data) {
@@ -160,6 +161,7 @@ export const authOptions: AuthOptions = {
                 userGroup: res?.data?.result?.user_group_id,
                 id: res?.data?.result?.id,
                 userId: res?.data?.result?.user_id,
+                tenantId: res?.data?.result?.tenant_id,
               },
               permissions: res?.data?.result?.permissions,
               accessToken: res?.headers?.["pim-sid"],

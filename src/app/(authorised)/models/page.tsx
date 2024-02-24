@@ -22,7 +22,7 @@ import {
 } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Heading, ModelContainer } from "./style";
 
 const { Title } = Typography;
@@ -103,13 +103,6 @@ const Models = () => {
   const { data: session }: any = useSession();
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
 
-  const [modality, setModality] = useState<string | undefined>(undefined);
-  const [functionFilter, setFunctionFilter] = useState<string | undefined>(
-    undefined,
-  );
-  const [architecture, setArchitecture] = useState<string | undefined>(
-    undefined,
-  );
   const [searchValue, setSearchValue] = useState<string>("");
   const { data, isLoading, isError, error } = useFetchData(
     config.models.list,
@@ -123,6 +116,12 @@ const Models = () => {
       pageDescription: "Models are your AI powered automations & skills",
     });
   }, []);
+
+  useLayoutEffect(() => {
+    if (filters?.name != searchValue) {
+      setSearchValue(filters?.name);
+    }
+  }, [filters]);
 
   const pageChangeHandler: PaginationProps["onChange"] = (
     pageNumber,
@@ -168,9 +167,6 @@ const Models = () => {
               value={filters?.type}
               onChange={(event: any) => {
                 setFilters(initialFilters({ type: event?.target?.value }));
-                setModality(undefined);
-                setArchitecture(undefined);
-                setFunctionFilter(undefined);
                 setSearchValue("");
               }}
               size="large"
@@ -216,10 +212,9 @@ const Models = () => {
             optionFilterProp="label"
             options={ModalityOptions}
             onChange={(value: string) => {
-              setModality(value);
               updateFilters({ modality: value });
             }}
-            value={modality}
+            value={filters?.modality}
             placeholder="Modality"
             allowClear
           />
@@ -230,10 +225,9 @@ const Models = () => {
             optionFilterProp="label"
             options={FunctionFilterOptions}
             onChange={(value: string) => {
-              setFunctionFilter(value);
               updateFilters({ function: value });
             }}
-            value={functionFilter}
+            value={filters?.function}
             placeholder="Function"
             allowClear
           />
@@ -244,10 +238,9 @@ const Models = () => {
             optionFilterProp="label"
             options={ArchitectureFilterOptions}
             onChange={(value: string) => {
-              setArchitecture(value);
               updateFilters({ architecture: value });
             }}
-            value={architecture}
+            value={filters?.architecture}
             placeholder="Architecture"
             allowClear
           />

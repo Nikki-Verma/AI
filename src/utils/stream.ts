@@ -6,18 +6,6 @@ import {
 import _authHttp from "@/services/_http";
 import { v4 } from "uuid";
 import config from "./apiEndoints";
-import {
-  DUMMY_SELLER_ID,
-  DUMMY_SELLER_PROFILE_ID,
-  X_SELLER_ID,
-  X_SELLER_PROFILE_ID,
-} from "./constants";
-
-const DEFAULT_HEADERS = {
-  "Content-Type": "application/json",
-  [X_SELLER_ID]: DUMMY_SELLER_ID,
-  [X_SELLER_PROFILE_ID]: DUMMY_SELLER_PROFILE_ID,
-};
 
 const mergeInputInOptions = (
   input: string,
@@ -30,6 +18,10 @@ const mergeInputInOptions = (
   (options[method.type] ?? {})[method.key] = input;
 
   return options;
+};
+
+const DEFAULT_HEADERS = {
+  "Content-Type": "application/json",
 };
 
 export const getStream = async (

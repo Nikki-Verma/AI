@@ -12,15 +12,17 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
   useLayoutEffect(() => {
     const queryParams = new URLSearchParams();
 
-    for (const [key, value] of searchParams?.entries()) {
-      queryParams.set(key, value ?? "");
-    }
-
     if (key) {
-      queryParams.set(key, filters ?? "");
+      if (filters != undefined && filters != null) {
+        queryParams.set(key, filters);
+      }
     } else {
       Object.entries(filters).forEach(([key, value]: any) => {
-        queryParams.set(key, value ?? "");
+        if (value != undefined && value != null) {
+          queryParams.set(key, value);
+        } else {
+          queryParams.set(key, "undefined");
+        }
       });
     }
 
@@ -33,12 +35,20 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
   useLayoutEffect(() => {
     if (key) {
       const currentFilterParam = searchParams?.get(key);
-      setFilters(currentFilterParam ?? "");
+      if (currentFilterParam != "undefined" && currentFilterParam != "null") {
+        setFilters(currentFilterParam);
+      } else {
+        setFilters(undefined);
+      }
     } else {
       const newFilters: any = {};
 
       for (const [key, value] of searchParams?.entries()) {
-        newFilters[key] = value ?? "";
+        if (value != "undefined" && value != "null") {
+          newFilters[key] = value;
+        } else {
+          newFilters[key] = undefined;
+        }
       }
       setFilters({ ...filters, ...newFilters });
     }
