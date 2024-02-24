@@ -8,7 +8,7 @@ import {
   X_USER_ID,
 } from "@/utils/constants";
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 
 interface AdaptAxiosRequestConfig extends AxiosRequestConfig {
   headers: AxiosRequestHeaders;
@@ -55,6 +55,7 @@ axiosInstance.interceptors.response.use(
 
     //This means that session token has expired and need to generate new access token using create session api
     if (error?.response?.status === 511) {
+      signOut({ redirect: false });
       //TODO: Figure out a way to create new session and update next-auth session with new session
       //   const sessionId = await createSession();
       //   originalRequest.headers["pim-sid"] = sessionId;
