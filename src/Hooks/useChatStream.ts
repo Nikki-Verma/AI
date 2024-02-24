@@ -9,7 +9,7 @@ import {
 import { decodeStreamToJson, getChatDetails, getStream } from "@/utils/stream";
 import { UnknownObject } from "@/utils/types";
 import { useSession } from "next-auth/react";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -70,6 +70,13 @@ const useChatStream = (input: UseChatStreamInput) => {
   );
 
   const [custAtrr, setCustAtrr] = useState(input?.customAttributes);
+
+  useEffect(() => {
+    return () => {
+      stopStream();
+    };
+  }, []);
+
   const resetCustAtrr = () => {
     stopStream();
     setCustAtrr(undefined);
@@ -139,6 +146,7 @@ const useChatStream = (input: UseChatStreamInput) => {
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
+        console.log("🚀 ~ forawait ~ message:", message);
         if (message === "refetch") {
           fetchAndUpdateAIResponse(messageID, conversationID);
           break;

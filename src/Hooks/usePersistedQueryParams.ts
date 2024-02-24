@@ -13,14 +13,14 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
     const queryParams = new URLSearchParams();
 
     for (const [key, value] of searchParams?.entries()) {
-      queryParams.set(key, value);
+      queryParams.set(key, value ?? "");
     }
 
     if (key) {
-      queryParams.set(key, filters);
+      queryParams.set(key, filters ?? "");
     } else {
       Object.entries(filters).forEach(([key, value]: any) => {
-        queryParams.set(key, value);
+        queryParams.set(key, value ?? "");
       });
     }
 
@@ -33,12 +33,12 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
   useLayoutEffect(() => {
     if (key) {
       const currentFilterParam = searchParams?.get(key);
-      setFilters(currentFilterParam);
+      setFilters(currentFilterParam ?? "");
     } else {
       const newFilters: any = {};
 
       for (const [key, value] of searchParams?.entries()) {
-        newFilters[key] = value;
+        newFilters[key] = value ?? "";
       }
       setFilters({ ...filters, ...newFilters });
     }

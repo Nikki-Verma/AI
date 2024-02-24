@@ -1,9 +1,14 @@
-import { Spin } from "antd";
+import Image from "next/image";
 import styles from "./FullScreenLoader.module.scss";
 function FullScreenLoader() {
   return (
     <div className={styles.container}>
-      <Spin spinning />
+      <Image
+        src={"/assets/Images/fullScreenLoader.gif"}
+        width={140}
+        height={140}
+        alt="models"
+      />
     </div>
   );
 }

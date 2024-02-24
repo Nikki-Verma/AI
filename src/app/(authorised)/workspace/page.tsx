@@ -3,6 +3,7 @@
 import CardModel from "@/components/CardModel";
 import PageHeading from "@/components/PageHeading";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
@@ -20,7 +21,7 @@ import {
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { WorkspaceContainer } from "./style";
 
 const { Title } = Typography;
@@ -33,20 +34,20 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 
 const Workspace = () => {
   const { userConfig, updatePageConfig } = useAppStore();
-  const [modelStatus, setModelStatus] = useState("ADDED");
 
   const { data: session }: any = useSession();
 
-  const [filters, setFilters] = useState(initialFilters({ modelStatus }));
+  const [filters, setFilters] = usePersistedQueryParams(
+    initialFilters({ modelStatus: "ADDED" }),
+  );
+
+  console.log("🚀 ~ Workspace ~ filters:", filters);
+
   const { data, isLoading, isError, error } = useFetchData(
     config.workspace.models,
     { ...filters },
     {},
   );
-
-  useEffect(() => {
-    setFilters(initialFilters({ modelStatus }));
-  }, [modelStatus]);
 
   useEffect(() => {
     updatePageConfig({
@@ -91,9 +92,9 @@ const Workspace = () => {
       </Row>
       <Col span={24}>
         <Radio.Group
-          value={modelStatus}
+          value={filters?.modelStatus}
           onChange={(val: any) => {
-            setModelStatus(val?.target?.value);
+            setFilters(initialFilters({ modelStatus: val?.target?.value }));
           }}
           buttonStyle="solid"
         >
@@ -106,7 +107,7 @@ const Workspace = () => {
 
       <Row gutter={[28, 16]} style={{ display: "flex", margin: "24px 0px" }}>
         {isLoading &&
-          Array.from({ length: filters?.size }).map((_, i) => (
+          Array.from({ length: +filters?.size }).map((_, i) => (
             <Col
               key={i}
               span={8}

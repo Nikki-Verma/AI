@@ -13,6 +13,7 @@ import {
   PageSubHeading,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
@@ -66,7 +67,8 @@ const Workflow = () => {
   const { notification } = useNotify();
   const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
-  const [filters, setFilters] = useState(initialFilters({}));
+  const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
+  console.log("🚀 ~ Workflow ~ filters:", filters);
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.workflow.list,
     { ...filters },
@@ -118,7 +120,7 @@ const Workflow = () => {
     sorter: SorterResult<any> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current === filters.page + 1) {
+    if (pagination?.current === +filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -348,8 +350,8 @@ const Workflow = () => {
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
             pagination={{
-              current: filters?.page + 1,
-              pageSize: filters?.size,
+              current: +filters?.page + 1,
+              pageSize: +filters?.size,
               total: data?.totalElements,
               showSizeChanger: false,
             }}
