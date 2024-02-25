@@ -1,5 +1,4 @@
 import { useFetchData } from "@/Hooks/useApi";
-import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
@@ -18,6 +17,7 @@ import {
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
 const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
@@ -28,7 +28,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const IntegrationModelsList = () => {
-  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
+  const [filters, setFilters] = useState(initialFilters());
   const {
     data: deployedModels,
     isLoading,

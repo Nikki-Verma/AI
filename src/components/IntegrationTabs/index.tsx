@@ -1,5 +1,5 @@
-import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { Radio } from "antd";
+import { useState } from "react";
 import IntegrationModelsList from "../IntegrationModelsList";
 import IntegrationWorkflowsList from "../IntegrationWorkflowsList";
 import { MediumRadioGroup } from "../UIComponents/UIComponents.style";
@@ -16,12 +16,7 @@ const IntegrationTab = {
 };
 
 const IntegrationTabs = () => {
-  const [integrationTab, setIntegrationTab] = usePersistedQueryParams(
-    IntegrationTab.MODELS,
-    "integrationTab",
-  );
-
-  console.log("integrationTab", integrationTab);
+  const [integrationTab, setIntegrationTab] = useState(IntegrationTab.MODELS);
 
   const getCurrentTabDetails = () => {
     switch (integrationTab) {
