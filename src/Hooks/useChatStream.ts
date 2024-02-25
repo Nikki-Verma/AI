@@ -122,7 +122,7 @@ const useChatStream = (input: UseChatStreamInput) => {
 
       return [
         ...messages.slice(0, -1),
-        { ...latestMessage, content: latestMessage.content + message },
+        { ...latestMessage, content: `${latestMessage.content}${message}` },
       ];
     });
   };
