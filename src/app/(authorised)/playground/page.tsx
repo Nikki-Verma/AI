@@ -5,7 +5,7 @@ import ChatHistory from "@/components/ChatHistory";
 import useChatStream from "@/Hooks/useChatStream";
 import { useAppStore } from "@/store";
 import { useEffect, useState } from "react";
-import { DashboardContainer } from "./style";
+import { PlaygroundContainer } from "./style";
 
 type Props = {
   params: {
@@ -55,7 +55,7 @@ function ChatPage() {
   }, []);
 
   return (
-    <DashboardContainer>
+    <PlaygroundContainer>
       <div style={{ height: "100%", flex: 1 }}>
         <ChatBot
           messages={messages}
@@ -73,7 +73,7 @@ function ChatPage() {
           conversationId={conversationId}
         />
       </div>
-    </DashboardContainer>
+    </PlaygroundContainer>
   );
 }
 
