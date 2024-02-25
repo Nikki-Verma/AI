@@ -251,7 +251,7 @@ const Models = () => {
       </Col>
       <Row gutter={[28, 16]} style={{ display: "flex", margin: "16px 0px" }}>
         {isLoading &&
-          Array.from({ length: filters?.size }).map((_, i) => (
+          Array.from({ length: +filters?.size }).map((_, i) => (
             <Col
               key={i}
               span={8}
@@ -289,8 +289,8 @@ const Models = () => {
       <Row justify="end">
         <Col>
           <Pagination
-            pageSize={filters?.size}
-            current={filters?.page - 1}
+            pageSize={+filters?.size}
+            current={+filters?.page - 1}
             total={data?.totalElements}
             showSizeChanger={false}
             hideOnSinglePage

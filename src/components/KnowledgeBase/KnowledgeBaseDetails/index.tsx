@@ -8,10 +8,10 @@ import {
   PageTitle,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
-  dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   DUMMY_TENANT_ID,
@@ -64,7 +64,7 @@ const KnowledgeBaseDetails = (props: any) => {
   const { knowledgebaseId } = useParams();
   const { data: session }: any = useSession();
   const { notification } = useNotify();
-  const [filters, setFilters] = useState(initialFilters());
+  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const [importDatasetOpen, setImportDatasetOpen] = useState(false);
   const [importDatasetLoading, setImportDatasetLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
@@ -95,7 +95,7 @@ const KnowledgeBaseDetails = (props: any) => {
     sorter: SorterResult<DataType> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current === filters.page + 1) {
+    if (pagination?.current === +filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -180,15 +180,12 @@ const KnowledgeBaseDetails = (props: any) => {
       key: "createdAt",
       width: 250,
       render: (val) => {
-        return val ? (
-          <SaDate
-            date={dayjs(val, dateTimeFormatWithMilliseconds)}
-            inline
-            time={true}
-          />
-        ) : (
-          "--"
+        console.log("🚀 ~ KnowledgeBaseDetails ~ val:", val);
+        console.log(
+          "🚀 ~ KnowledgeBaseDetails ~ dayjs(val, dateTimeFormatWithMilliseconds):",
+          dayjs(val),
         );
+        return val ? <SaDate date={dayjs(val)} inline time={true} /> : "--";
       },
     },
     {
@@ -312,8 +309,8 @@ const KnowledgeBaseDetails = (props: any) => {
               y: data?.document_details?.length > 0 ? 600 : undefined,
             }}
             pagination={{
-              current: filters?.page + 1,
-              pageSize: filters?.size,
+              current: +filters?.page + 1,
+              pageSize: +filters?.size,
               total: data?.total_elements,
               showSizeChanger: true,
             }}

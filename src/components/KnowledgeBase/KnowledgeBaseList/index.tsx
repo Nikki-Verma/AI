@@ -3,6 +3,7 @@
 import { createKnowledgeBaseApi } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 
 import config from "@/utils/apiEndoints";
@@ -68,7 +69,7 @@ const KnowledgeBaseList = () => {
   const [createKnowledgeBaseLoading, setCreateKnowledgeBaseLoading] =
     useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [filters, setFilters] = useState(initialFilters());
+  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.knowledgebase.list,
     { ...filters },
@@ -81,7 +82,7 @@ const KnowledgeBaseList = () => {
     sorter: SorterResult<DataType> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current === filters.page + 1) {
+    if (pagination?.current === +filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -259,47 +260,48 @@ const KnowledgeBaseList = () => {
           onClick={showKnowledgeBaseModal}
         />
       )}
-      {!isError && (
-        <Row justify="space-between" align="middle">
-          <Col span={24} sm={6} md={4}>
-            <Input
-              prefix={<SearchIcon style={{ marginRight: "6px" }} />}
-              placeholder="Search by file name"
-            />
-          </Col>
-          <Col>
-            <Space size="middle" align="center">
-              <Button
-                size="middle"
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={showKnowledgeBaseModal}
-              >
-                Create Knowledge Base
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-      )}
-      {!isError && (
-        <Table
-          columns={columns}
-          dataSource={data?.result || []}
-          rowSelection={rowSelection}
-          rowKey={(data: any) => data?.id}
-          loading={isLoading}
-          scroll={{
-            x: "max-content",
-            y: data?.result?.length > 0 ? 600 : undefined,
-          }}
-          pagination={{
-            current: filters?.page + 1,
-            pageSize: filters?.size,
-            total: data?.totalElements,
-            showSizeChanger: true,
-          }}
-          onChange={tableChangeHandler}
-        />
+      {!isError && (!!data?.result?.length || isLoading) && (
+        <>
+          <Row justify="space-between" align="middle">
+            <Col span={24} sm={6} md={4}>
+              <Input
+                prefix={<SearchIcon style={{ marginRight: "6px" }} />}
+                placeholder="Search by file name"
+              />
+            </Col>
+            <Col>
+              <Space size="middle" align="center">
+                <Button
+                  size="middle"
+                  type="primary"
+                  icon={<PlusOutlined />}
+                  onClick={showKnowledgeBaseModal}
+                >
+                  Create Knowledge Base
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+
+          <Table
+            columns={columns}
+            dataSource={data?.result || []}
+            rowSelection={rowSelection}
+            rowKey={(data: any) => data?.id}
+            loading={isLoading}
+            scroll={{
+              x: "max-content",
+              y: data?.result?.length > 0 ? 600 : undefined,
+            }}
+            pagination={{
+              current: +filters?.page + 1,
+              pageSize: +filters?.size,
+              total: data?.totalElements,
+              showSizeChanger: true,
+            }}
+            onChange={tableChangeHandler}
+          />
+        </>
       )}
       <CreateKnowledgeBaseModal
         title="Create Knowledge Base"

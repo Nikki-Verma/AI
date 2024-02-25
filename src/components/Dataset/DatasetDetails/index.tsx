@@ -12,6 +12,7 @@ import {
   PageTitle,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
@@ -73,7 +74,7 @@ const DatasetDetails = (props: any) => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
 
-  const [filters, setFilters] = useState(initialFilters());
+  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   const [addFileToKnowledgebaseOpen, setAddFileToKnowledgebaseOpen] =
@@ -101,7 +102,7 @@ const DatasetDetails = (props: any) => {
     sorter: SorterResult<DataType> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current === filters.page + 1) {
+    if (pagination?.current === +filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -439,8 +440,8 @@ const DatasetDetails = (props: any) => {
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
             pagination={{
-              current: filters?.page + 1,
-              pageSize: filters?.size,
+              current: +filters?.page + 1,
+              pageSize: +filters?.size,
               total: data?.totalElements,
               showSizeChanger: true,
             }}

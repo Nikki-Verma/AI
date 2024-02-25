@@ -71,13 +71,14 @@ const DatasetList = () => {
     {},
   );
 
+  console.log("🚀 ~ DatasetList ~ data:", data);
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
     Filters: Record<string, FilterValue | null>,
     sorter: SorterResult<DataType> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current !== filters.page + 1) {
+    if (pagination?.current !== +filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -266,58 +267,59 @@ const DatasetList = () => {
           onClick={showDatasetModal}
         />
       )}
-      {!isError && (
-        <Row justify="space-between" align="middle">
-          <Col span={24} sm={6} md={4}>
-            <Input
-              prefix={<SearchIcon style={{ marginRight: "6px" }} />}
-              placeholder="Search by Dataset name, file name"
-            />
-          </Col>
-          <Col>
-            <Space size="middle" align="center">
-              {selectedRowKeys?.length > 0 && (
+      {!isError && (!!data?.result?.length || isLoading) && (
+        <>
+          <Row justify="space-between" align="middle">
+            <Col span={24} sm={6} md={4}>
+              <Input
+                prefix={<SearchIcon style={{ marginRight: "6px" }} />}
+                placeholder="Search by Dataset name, file name"
+              />
+            </Col>
+            <Col>
+              <Space size="middle" align="center">
+                {selectedRowKeys?.length > 0 && (
+                  <Button
+                    size="middle"
+                    type="default"
+                    disabled
+                    icon={<PlusOutlined />}
+                    onClick={addToKnowledgebaseHandler}
+                  >
+                    Add to knowledgebase
+                  </Button>
+                )}
                 <Button
                   size="middle"
-                  type="default"
-                  disabled
+                  type="primary"
                   icon={<PlusOutlined />}
-                  onClick={addToKnowledgebaseHandler}
+                  onClick={showDatasetModal}
                 >
-                  Add to knowledgebase
+                  Create Dataset
                 </Button>
-              )}
-              <Button
-                size="middle"
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={showDatasetModal}
-              >
-                Create Dataset
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-      )}
-      {!isError && (
-        <Table
-          columns={columns}
-          dataSource={data?.result || []}
-          rowSelection={rowSelection}
-          loading={isLoading}
-          rowKey={(data: any) => data?.id}
-          scroll={{
-            x: "max-content",
-            y: data?.result?.length > 0 ? 600 : undefined,
-          }}
-          pagination={{
-            current: filters?.page + 1,
-            pageSize: filters?.size,
-            total: data?.totalElements,
-            showSizeChanger: true,
-          }}
-          onChange={tableChangeHandler}
-        />
+              </Space>
+            </Col>
+          </Row>
+
+          <Table
+            columns={columns}
+            dataSource={data?.result || []}
+            rowSelection={rowSelection}
+            loading={isLoading}
+            rowKey={(data: any) => data?.id}
+            scroll={{
+              x: "max-content",
+              y: data?.result?.length > 0 ? 600 : undefined,
+            }}
+            pagination={{
+              current: +filters?.page + 1,
+              pageSize: +filters?.size,
+              total: data?.totalElements,
+              showSizeChanger: true,
+            }}
+            onChange={tableChangeHandler}
+          />
+        </>
       )}
       <CreateDatasetModal
         open={createDatasetOpen}
