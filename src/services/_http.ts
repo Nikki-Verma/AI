@@ -2,6 +2,8 @@ import {
   PIM_SID,
   X_CLIENT_ID,
   X_DEVICE_ID,
+  X_SELLER_ID,
+  X_SELLER_PROFILE_ID,
   X_TENANT_ID,
   X_USER_ID,
 } from "@/utils/constants";
@@ -25,6 +27,8 @@ axiosInstance.interceptors.request.use(
       [PIM_SID]: session?.accessToken,
       [X_DEVICE_ID]: "armaze-web",
       [X_CLIENT_ID]: session?.user?.details?.id,
+      [X_SELLER_ID]: session?.user?.details?.id,
+      [X_SELLER_PROFILE_ID]: session?.user?.details?.id,
     };
 
     request.headers = { ...(request.headers || {}), ...DefaultHeaders };
