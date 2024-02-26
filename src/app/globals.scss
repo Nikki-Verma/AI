@@ -16,11 +16,53 @@ body {
 }
 
 h1.ant-typography {
+  line-height: normal;
   color: var(--Text-Color-900, #171717) !important;
   font-family: var(--font-dm-sans) !important;
-  font-size: 32px !important;
+  font-size: 22px !important;
   font-style: normal;
   font-weight: 700 !important;
   line-height: normal !important;
   margin: 0 !important;
+}
+
+.ant-table-wrapper .ant-table{
+  border-radius: 10px !important;
+  border: 1px solid #CCD3DE !important;
+  background: #FFF !important;
+}
+
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+  border-start-start-radius: 10px !important ;
+}
+
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child {
+  border-start-end-radius: 10px !important;
+}
+.ant-table-wrapper .ant-table-container table>tbody>tr:last-child >*:first-child {
+  border-end-start-radius: 10px !important ;
+}
+
+.ant-table-wrapper .ant-table-container table>tbody>tr:last-child >*:last-child {
+  border-end-end-radius: 10px !important;
+}
+.ant-table-wrapper .ant-table-thead >tr>th{
+  background: #F9FAFB !important;  
+  border-bottom: none !important;
+  color: var(--Text-Color-850, #222) !important;
+  font-family: var(--font-dm-sans) !important;
+  font-size: 14px!important;
+  font-style: normal;
+  font-weight: 700 !important;
+  line-height: normal;
+}
+.ant-table-wrapper .ant-table-tbody >tr >td {
+  border-bottom: 0.5px solid #CCD3DE !important;
+  background: #FFF !important;
+  color: var(--Text-Color-850, #222) !important;
+  font-family: var(--font-dm-sans) !important;
+  font-size: 12px !important;
+  font-style: normal;
+  font-weight: 400 !important;
+  line-height: normal;
 }

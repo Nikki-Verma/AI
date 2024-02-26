@@ -1,6 +1,6 @@
-import { Typography } from "antd";
+import { Col, Typography } from "antd";
 import { ReactNode } from "react";
-import { PageHeadingContainer, PageSubheading } from "./style";
+import { PageSubHeading } from "../UIComponents/UIComponents.style";
 
 const { Title } = Typography;
 
@@ -11,10 +11,17 @@ type PageHeadingProps = {
 
 const PageHeading = ({ title, subHeading }: PageHeadingProps) => {
   return (
-    <PageHeadingContainer>
+    <Col
+      xl={14}
+      lg={16}
+      md={20}
+      sm={24}
+      xs={24}
+      style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+    >
       <Title>{title}</Title>
-      {subHeading && <PageSubheading>{subHeading}</PageSubheading>}
-    </PageHeadingContainer>
+      {subHeading && <PageSubHeading>{subHeading}</PageSubHeading>}
+    </Col>
   );
 };
 

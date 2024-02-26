@@ -28,12 +28,10 @@ const datset = () => {
           justifyContent: "space-between",
         }}
       >
-        <Col span={14}>
           <PageHeading
             title="Integration"
             subHeading="Explore a vast array of meticulously trained and readily deployable machine learning models all conveniently centralized in a single location."
           />
-        </Col>
       </Row>
       <IntegrationTabs />
     </IntegrationContainer>

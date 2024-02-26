@@ -29,9 +29,9 @@ export const PageContainer = styled.div`
 `;
 
 export const PageSubHeading = styled.div`
+  font-size: 14px;
   color: var(--Text-Color-900, #171717);
   font-family: var(--font-dm-sans);
-  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

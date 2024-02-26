@@ -28,14 +28,12 @@ const datset = () => {
           justifyContent: "space-between",
         }}
       >
-        <Col span={14}>
           <PageHeading
             title="Datasets"
             subHeading="Explore, analyze, and share quality data. you can select your data
             collection while training your ai model, multi data collection can
             be added in one AI model."
           />
-        </Col>
       </Row>
       <DatasetList />
     </ModelContainer>

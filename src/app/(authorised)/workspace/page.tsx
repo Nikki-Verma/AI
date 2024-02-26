@@ -73,22 +73,12 @@ const Workspace = () => {
           marginBottom: "24px",
         }}
       >
-        <Col span={14}>
-          <PageHeading
-            title="Workspace"
-            subHeading="Explore a vast array of meticulously trained and readily deployable
-            machine learning models all conveniently centralized in a single
-            location."
-          />
-        </Col>
-        <Col span={6} style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Image
-            src={"/assets/Images/modelHeaderImage.svg"}
-            alt="workspace"
-            width={140}
-            height={96}
-          />
-        </Col>
+        <PageHeading
+          title="Workspace"
+          subHeading="Explore a vast array of meticulously trained and readily deployable
+          machine learning models all conveniently centralized in a single
+          location."
+        />
       </Row>
       <Col span={24}>
         <Radio.Group

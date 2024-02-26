@@ -143,22 +143,12 @@ const Models = () => {
         gutter={12}
         style={{ display: "flex", justifyContent: "space-between" }}
       >
-        <Col span={14}>
           <PageHeading
             title="Models"
             subHeading="Explore a vast array of meticulously trained and readily deployable
             machine learning models all conveniently centralized in a single
             location."
           />
-        </Col>
-        <Col span={6} style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Image
-            src={"/assets/Images/modelHeaderImage.svg"}
-            width={140}
-            height={96}
-            alt="models"
-          />
-        </Col>
       </Row>
       <Row gutter={[12, 12]} style={{ display: "flex", margin: "30px 0px" }}>
         <Col span={24}>

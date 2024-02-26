@@ -50,6 +50,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { WorkflowStatuses } from "./constant";
+import { LinkContainer } from "./style";
+import Tags from "@/components/Tags";
+import PageHeading from "@/components/PageHeading";
 
 const { Title, Text, Link: TypographyLink } = Typography;
 
@@ -146,13 +149,15 @@ const Workflow = () => {
       key: "pipeline_name",
       width: 200,
       render: (val: any, data: any) => (
+        <LinkContainer>
         <Link prefetch href={`/workflow/view/${data?.pipeline_id}`}>
           {val}
         </Link>
+        </LinkContainer>
       ),
     },
     {
-      title: "Workflow description",
+      title: "Description",
       dataIndex: "pipeline_description",
       key: "pipeline_description",
       width: 200,
@@ -169,9 +174,15 @@ const Workflow = () => {
       width: 200,
       render: (val: WorkflowStatusType) =>
         val ? (
-          <Tag color={WorkflowStatuses?.[val]?.color || ""}>
-            {WorkflowStatuses?.[val]?.text ?? val}
-          </Tag>
+          <Tags
+          tag={WorkflowStatuses?.[val]?.text ?? val}
+          tagProps={
+            {color :WorkflowStatuses?.[val]?.color || "", background : WorkflowStatuses?.[val]?.background, border : WorkflowStatuses?.[val]?.border}
+          }
+          />
+          // <Tags color={WorkflowStatuses?.[val]?.color || ""}>
+          //   {WorkflowStatuses?.[val]?.text ?? val}
+          // </TTagsag>
         ) : (
           "--"
         ),
@@ -286,29 +297,18 @@ const Workflow = () => {
           marginBottom: "24px",
         }}
       >
-        <Col
-          span={14}
-          style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-        >
-          <Title>Workflows</Title>
-          <PageSubHeading>
-            Explore a vast array of meticulously trained and readily deployable
-            machine learning models all conveniently centralized in a single
-            location.
-          </PageSubHeading>
-        </Col>
-        <Col span={6} style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Image
-            src={"/assets/Images/modelHeaderImage.svg"}
-            alt="workspace"
-            width={140}
-            height={96}
-          />
-        </Col>
+      <PageHeading
+        title="Workflows"
+        subHeading="Explore a vast array of meticulously trained and readily deployable
+        machine learning models all conveniently centralized in a single
+        location."
+      />
       </Row>
       <Col span={24}>
         <Row justify="space-between" align="middle">
-          <Col></Col>
+          <Col>
+          
+          </Col>
           <Col>
             <Button
               type="primary"

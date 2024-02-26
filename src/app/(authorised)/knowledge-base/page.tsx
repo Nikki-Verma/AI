@@ -28,14 +28,12 @@ const KnowledgeBase = () => {
           justifyContent: "space-between",
         }}
       >
-        <Col span={14}>
           <PageHeading
             title="Knowledge base"
             subHeading="The knowledge base serves as a repository of structured or
             unstructured information that an AI system can access to enhance its
             understanding and generate informed responses."
           />
-        </Col>
       </Row>
       <KnowledgeBaseList />
     </ModelContainer>
