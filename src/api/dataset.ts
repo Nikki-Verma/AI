@@ -12,3 +12,45 @@ export const uploadFileToDatasetApi = ({ payload = {}, headers = {} }: any) => {
     headers,
   });
 };
+
+export const connectConfluenceApi = ({
+  source,
+  payload = {},
+  headers = {},
+}: any) => {
+  return _authHttp.post(
+    `${config.dataConnectors.connectConfluence}/${source}`,
+    payload,
+    {
+      headers,
+    },
+  );
+};
+
+export const confluenceSpaceDetailsApi = ({
+  source,
+  payload = {},
+  headers = {},
+}: any) => {
+  return _authHttp.post(
+    `${config.dataConnectors.connectConfluence}/${source}/fetch-data`,
+    payload,
+    {
+      headers,
+    },
+  );
+};
+
+export const addConfluenceFilesToDatasetApi = ({
+  source,
+  payload = {},
+  headers = {},
+}: any) => {
+  return _authHttp.post(
+    `${config.dataConnectors.connectConfluence}/${source}/pages`,
+    payload,
+    {
+      headers,
+    },
+  );
+};

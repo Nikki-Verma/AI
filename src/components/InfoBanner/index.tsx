@@ -22,11 +22,11 @@ const InfoBanner = () => {
           />
           <Col>
             <div className={styles.info_banner_sub_heading}>
-              Save development time
+              Seamless Integration
             </div>
             <div className={styles.info_banner_details}>
-              Add authentication and user management to your app with just a few
-              lines of code
+              Easily connect with existing systems using our platform to enhance
+              efficiency and innovation in your workflows.
             </div>
           </Col>
         </Col>
@@ -42,11 +42,11 @@ const InfoBanner = () => {
           />
           <Col>
             <div className={styles.info_banner_sub_heading}>
-              Apply AI with Tailored Solutions
+              Diverse AI Models
             </div>
             <div className={styles.info_banner_details}>
-              Add authentication and user management to your app with just a few
-              lines of code
+              Access a wide range of GenAI models, from LLMs to RAGs, tailored
+              for diverse enterprise applications.
             </div>
           </Col>
         </Col>
@@ -62,11 +62,11 @@ const InfoBanner = () => {
           />
           <Col>
             <div className={styles.info_banner_sub_heading}>
-              Increase engagement
+              Rapid Deployment
             </div>
             <div className={styles.info_banner_details}>
-              Add authentication and user management to your app with just a few
-              lines of code
+              Deploy cutting-edge AI applications swiftly, transforming business
+              processes with minimal effort and high scalability.
             </div>
           </Col>
         </Col>

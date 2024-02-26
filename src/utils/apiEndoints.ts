@@ -48,7 +48,7 @@ const config = {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
     deploy: `${BASE_URLS.model}/api/v1/user/model/deploy`,
-    connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`
+    connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`,
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
@@ -61,6 +61,10 @@ const config = {
     create: `${BASE_URLS.data}/api/v1/dataset/collection`,
     uploadFile: `${BASE_URLS.data}/api/v1/storage/upload`,
     files: `${BASE_URLS.data}/api/v1/dataset/collection/files`,
+  },
+  dataConnectors: {
+    connectConfluence: `${BASE_URLS.channelAggregator}/api/v1/data-connector`,
+    addFilesToDataset: `${BASE_URLS.channelAggregator}/api/v1/data-connector`,
   },
   knowledgebase: {
     list: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,

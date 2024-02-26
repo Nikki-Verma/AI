@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import styled from "styled-components";
 
 export const DatasetUploadTypeContainer = styled.div`
@@ -58,7 +59,7 @@ export const PrivacyDescription = styled.div`
 export const UploadTypeHeading = styled.div`
   color: var(--headings, #000b34);
   font-family: var(--font-dm-sans);
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -67,7 +68,7 @@ export const UploadTypeHeading = styled.div`
 export const UploadTypeDescription = styled.div`
   color: var(--Text-Color-900, #171717);
   font-family: var(--font-dm-sans);
-  font-size: 17px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -106,3 +107,5 @@ export const FileSize = styled.div`
   font-weight: 400;
   line-height: normal;
 `;
+
+export const ConfluenceFilesModal = styled(Card)``;
