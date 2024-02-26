@@ -1,3 +1,4 @@
+import { addConfluenceFilesToDatasetApi } from "@/api/dataset";
 import {
   addFileToKnowledgeBaseApi,
   createKnowledgeBaseApi,
@@ -127,6 +128,34 @@ const DatasetDetails = (props: any) => {
 
   const toggleAddFilesToKnowledgebaseModal = () => {
     setAddFileToKnowledgebaseOpen((val: boolean) => !val);
+  };
+
+  const addConfluenceFilesToDataset = async (values: any) => {
+    try {
+      setAddFilesLoading(true);
+      const payload = {
+        ...values,
+      };
+
+      const addFileToConfluenceResponse = await addConfluenceFilesToDatasetApi({
+        source: "confluence",
+        payload,
+      });
+      if (addFileToConfluenceResponse?.status === 200) {
+        notification.success({
+          message: "Added files to dataset successfully",
+        });
+        toggleAddFileModal();
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while adding file to dataset",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setAddFilesLoading(false);
+    }
   };
 
   const addFilesHandler = async (values: any) => {
@@ -450,11 +479,12 @@ const DatasetDetails = (props: any) => {
         </>
       )}
       <DatasetAddFileModal
-        title="Add files to dataset"
         open={addFileModalOpen}
         onClose={toggleAddFileModal}
         addFilesHandler={addFilesHandler}
         loading={addFilesLoading}
+        addConfluenceFilesToDataset={addConfluenceFilesToDataset}
+        datasetId={datasetId}
       />
       <AddFilesToKnowledgeBaseModal
         open={addFileToKnowledgebaseOpen}

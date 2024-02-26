@@ -28,11 +28,7 @@ export default async function RootLayout({
       <body className={dm_sans.variable}>
         <StyledComponentsRegistry>
           <ThemeProvider>
-            <SessionProvider
-              session={session}
-              refetchInterval={900}
-              refetchOnWindowFocus={false}
-            >
+            <SessionProvider session={session} refetchOnWindowFocus={false}>
               <AntdRegistry>
                 <NotificationProvider>
                   <ReactQueryProvider>{children}</ReactQueryProvider>
