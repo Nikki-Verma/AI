@@ -41,7 +41,8 @@ import {
 } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateKnowledgeBaseModal from "../CreateKnowledgeBaseModal";
@@ -63,6 +64,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const KnowledgeBaseList = () => {
+  const router = useRouter();
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createKnowledgeBaseOpen, setCreateKnowledgeBaseOpen] = useState(false);
@@ -75,6 +77,10 @@ const KnowledgeBaseList = () => {
     { ...filters },
     {},
   );
+
+  useEffect(() => {
+    router.prefetch(`/knowledge-base/[knowledgebaseId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -124,9 +130,11 @@ const KnowledgeBaseList = () => {
       if (knowledgeBaseResponse?.status === 200) {
         setCreateKnowledgeBaseOpen(false);
         notification.success({
-          message: "Dataset created successfully",
+          message: "Knowledge base created successfully",
         });
-        refetch();
+        router.push(
+          `/knowledge-base/${knowledgeBaseResponse?.data?.result?.id}`,
+        );
       }
     } catch (error) {
       notification.error({
