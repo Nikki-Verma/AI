@@ -7,7 +7,7 @@ const InfoBanner = () => {
   return (
     <div className={styles.info_container}>
       <div className={styles.info_banner_heading}>
-        Join millions worldwide who automate their work using SimplAi
+        Unlock Your Enterprise's Potential with SimplAi's GenAI Solutions Today!
       </div>
       <Row gutter={[10, 30]}>
         <Col
