@@ -16,6 +16,7 @@ interface AddFilesToKnowledgeBaseModalProps {
   onClose: () => void;
   addFilesHandler: (values: { [key: string]: any }) => void;
   title?: string;
+  knowledgebaseId: string | string[];
 }
 
 const ImportFilesFromDatasetModal = ({
@@ -24,6 +25,7 @@ const ImportFilesFromDatasetModal = ({
   loading,
   onClose,
   addFilesHandler,
+  knowledgebaseId,
 }: AddFilesToKnowledgeBaseModalProps) => {
   const [form] = useForm();
   const { notification } = useNotify();
@@ -33,6 +35,7 @@ const ImportFilesFromDatasetModal = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
   const [selectedRowDetails, setSelectedRowDetails] = useState<any>([]);
+  console.log("🚀 ~ selectedRowDetails:", selectedRowDetails);
 
   const [selectedDataset, setSelectedDataset] = useState<
     undefined | UnknownObject
@@ -92,7 +95,8 @@ const ImportFilesFromDatasetModal = ({
             form={form}
             addFilesToDataset={addFilesToDataset}
             selectedRowKeys={selectedRowKeys}
-            setSelectedRowDetails={setSelectedRowDetails}
+            selectedRowDetails={selectedRowDetails}
+            knowledgebaseId={knowledgebaseId}
           />
         );
 

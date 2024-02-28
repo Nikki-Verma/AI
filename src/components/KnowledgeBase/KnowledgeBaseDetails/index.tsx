@@ -338,6 +338,7 @@ const KnowledgeBaseDetails = (props: any) => {
         loading={importDatasetLoading}
         onClose={toggleAddFileModal}
         addFilesHandler={addFilesHandler}
+        knowledgebaseId={knowledgebaseId}
       />
       <KnowledgebasePlaygroundDrawer
         open={displayKbPlayground}

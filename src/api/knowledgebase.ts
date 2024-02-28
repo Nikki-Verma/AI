@@ -24,3 +24,9 @@ export const getKbPlaygroundResponseApi = ({
     headers,
   });
 };
+
+export const getFileChunksApi = ({ payload = {}, headers = {} }: any) => {
+  return _authHttp.post(config.rag.chunks, payload, {
+    headers,
+  });
+};

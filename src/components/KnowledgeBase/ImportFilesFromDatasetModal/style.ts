@@ -18,14 +18,6 @@ export const PreviewTitle = styled(Text)`
   font-size: 16px !important;
 `;
 
-export const PreviewContainer = styled.div`
-  border-radius: 10px;
-  border: 1px solid #ccd3de;
-  padding: 20px 10px;
-  max-height: 600px;
-  overflow: auto;
-`;
-
 export const RadioOptionContainer = styled(Card)<RadioOptionContainerProps>`
   border: ${(props: any) => {
     switch (props.checked) {

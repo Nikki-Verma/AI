@@ -76,6 +76,7 @@ const config = {
   },
   rag: {
     chat: `${BASE_URLS.rag}/retrieve/context/`,
+    chunks: `${BASE_URLS.rag}/ingestion/chunking/`,
   },
   integrate: {
     channels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,

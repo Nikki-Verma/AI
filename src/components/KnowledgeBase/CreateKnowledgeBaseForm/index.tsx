@@ -182,12 +182,12 @@ const CreateKnowledgeBaseForm = ({
                 <Col span={24} md={12}>
                   <Form.Item
                     name="allowed_size"
-                    label="Chunk Overload (File chunk overload)"
+                    label="Chunk Overlap (File chunk overlap)"
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
                       min={0}
-                      placeholder="Enter chunk overload"
+                      placeholder="Enter chunk overlap"
                     />
                   </Form.Item>
                 </Col>
