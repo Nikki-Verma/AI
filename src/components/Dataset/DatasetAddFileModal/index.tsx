@@ -78,12 +78,10 @@ const DatasetAddFileModal = ({
   const [confluenceConnectionDetails, setconfluenceConnectionDetails] =
     useState<UnknownObject>({});
   const [selectedSpaces, setSelectedSpaces] = useState<any>({});
-  console.log("🚀 ~ selectedSpaces:", selectedSpaces);
   const [confluenceSpaceOptions, setConfluenceSpaceOptions] = useState([]);
   const [confluenceDataConectorId, setConfluenceDataConectorId] = useState<
     undefined | string
   >(undefined);
-  console.log("🚀 ~ confluenceSpaceOptions:", confluenceSpaceOptions);
 
   useEffect(() => {
     form.resetFields();
@@ -133,10 +131,6 @@ const DatasetAddFileModal = ({
           source: values?.source,
           payload: confluencePayload,
         });
-        console.log(
-          "🚀 ~ connectConfluence ~ confluenceSpaceResponse:",
-          confluenceSpaceResponse,
-        );
         if (confluenceSpaceResponse?.status === 200) {
           setconfluenceConnectionDetails({ ...values });
           const newPageOptions =
@@ -177,7 +171,6 @@ const DatasetAddFileModal = ({
     }
   };
 
-  console.log("🚀 ~ uploadType:", uploadType);
   const getUploadStep = () => {
     switch (uploadType) {
       case UPLOAD_FILE_TYPES.FILE:

@@ -19,7 +19,6 @@ import {
   Typography,
 } from "antd";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { WorkspaceContainer } from "./style";
@@ -40,8 +39,6 @@ const Workspace = () => {
   const [filters, setFilters] = usePersistedQueryParams(
     initialFilters({ modelStatus: "ADDED" }),
   );
-
-  console.log("🚀 ~ Workspace ~ filters:", filters);
 
   const { data, isLoading, isError, error } = useFetchData(
     config.workspace.models,

@@ -31,9 +31,9 @@ const ImportFilesFromDatasetModal = ({
     FilesFromDatasetOptions.FOLDER,
   );
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  console.log("🚀 ~ selectedRowKeys:", selectedRowKeys);
+
   const [selectedRowDetails, setSelectedRowDetails] = useState<any>([]);
-  console.log("🚀 ~ selectedRowDetails:", selectedRowDetails);
+
   const [selectedDataset, setSelectedDataset] = useState<
     undefined | UnknownObject
   >();
@@ -47,14 +47,11 @@ const ImportFilesFromDatasetModal = ({
   };
 
   const selectFolder = (values: any) => {
-    console.log("🚀 ~ selectFolder ~ values:", values);
     setSelectedDataset(values);
     setCurrentStep(FilesFromDatasetOptions.FILES);
   };
 
   const addDatasetFilesToKnowledgebaseHandler = (values: UnknownObject) => {
-    console.log("🚀 ~ addDatasetFilesToKnowledgebaseHandler ~ values:", values);
-    console.log("selected rows", selectedRowKeys);
     if (selectedRowKeys?.length < 1) {
       return notification.error({ message: "Select atleast one file" });
     }
@@ -62,8 +59,6 @@ const ImportFilesFromDatasetModal = ({
   };
 
   const addFilesToDataset = async (values: UnknownObject) => {
-    console.log("🚀 ~ addFilesToDataset ~ values:", values);
-    console.log("🚀 ~ addFilesToDataset ~ selectedRowKeys:", selectedRowKeys);
     const payload = {
       ...values,
       document_id: selectedRowKeys,

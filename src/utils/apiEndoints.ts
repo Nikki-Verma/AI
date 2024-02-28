@@ -3,6 +3,7 @@ const __EDGE_URL__ = process.env.NEXT_PUBLIC_EDGE_BASE_URL;
 const __IDENTITY_BASE_URL__ = process.env.NEXT_PUBLIC_IDENTITY_BASE_URL;
 const __MODEL_BASE_URL__ = process.env.NEXT_PUBLIC_MODEL_BASE_URL;
 const __DATA_BASE_URL__ = process.env.NEXT_PUBLIC_DATA_BASE_URL;
+const __RAG_BASE_URL__ = process.env.NEXT_PUBLIC_RAG_BASE_URL;
 const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 const __CHANNEL_AGGREGATOR_BASE_URL__ =
   process.env.NEXT_PUBLIC_CHANNEL_AGGREGATOR_BASE_URL;
@@ -10,6 +11,7 @@ export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
   model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
   data: `${__EDGE_URL__}${__DATA_BASE_URL__}`,
+  rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
   intract: __INTRACT_BASE_URL__,
 };
@@ -71,6 +73,9 @@ const config = {
     create: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     addFiles: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/add-file`,
     files: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/files`,
+  },
+  rag: {
+    chat: `${BASE_URLS.rag}/retrieve/context/`,
   },
   integrate: {
     channels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,

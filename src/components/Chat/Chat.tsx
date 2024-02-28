@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { Col, Row, Skeleton } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+
 import Message from "./Message";
 import { ChatContainer, GetStartedText, WelcomeText } from "./style";
 
@@ -22,7 +23,7 @@ function Chat({ messages, loading, chatLoading }: Props) {
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView();
-  }, [messages]);
+  }, [messages, loading]);
 
   return (
     <ChatContainer>
@@ -68,7 +69,7 @@ function Chat({ messages, loading, chatLoading }: Props) {
           loading={
             index === messages?.length - 1 &&
             loading &&
-            message?.role === "SimplAi"
+            message?.role !== "user"
           }
         />
       ))}

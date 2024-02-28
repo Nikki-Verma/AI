@@ -69,7 +69,7 @@ const Workflow = () => {
   const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
-  console.log("🚀 ~ Workflow ~ filters:", filters);
+
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.workflow.list,
     { ...filters },

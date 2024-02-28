@@ -19,7 +19,11 @@ import {
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { CloudDownloadOutlined, MoreOutlined } from "@ant-design/icons";
+import {
+  CloudDownloadOutlined,
+  MoreOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -43,6 +47,7 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import ImportFilesFromDatasetModal from "../ImportFilesFromDatasetModal";
+import KnowledgebasePlaygroundDrawer from "../KnowledgebasePlaygroundDrawer";
 
 import { KnowledgeBaseDetailsContainer } from "./style";
 const { Text } = Typography;
@@ -71,6 +76,7 @@ const KnowledgeBaseDetails = (props: any) => {
   // const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   // const [addFilesLoading, setAddFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [displayKbPlayground, setDisplayKbPlayground] = useState(false);
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.knowledgebase.files,
     { ...filters, knowledgebase_id: knowledgebaseId },
@@ -150,6 +156,10 @@ const KnowledgeBaseDetails = (props: any) => {
     }
   };
 
+  const toggleKbPlayground = () => {
+    setDisplayKbPlayground((prev: boolean) => !prev);
+  };
+
   const rowSelection: TableRowSelection<DataType> = {
     type: "checkbox",
     preserveSelectedRowKeys: true,
@@ -180,11 +190,6 @@ const KnowledgeBaseDetails = (props: any) => {
       key: "createdAt",
       width: 250,
       render: (val) => {
-        console.log("🚀 ~ KnowledgeBaseDetails ~ val:", val);
-        console.log(
-          "🚀 ~ KnowledgeBaseDetails ~ dayjs(val, dateTimeFormatWithMilliseconds):",
-          dayjs(val),
-        );
         return val ? <SaDate date={dayjs(val)} inline time={true} /> : "--";
       },
     },
@@ -192,6 +197,7 @@ const KnowledgeBaseDetails = (props: any) => {
       title: "File Size",
       dataIndex: "size",
       key: "size",
+      width: 200,
       render: (val) => (val ? <Text>{val} MB</Text> : "--"),
     },
     {
@@ -295,13 +301,21 @@ const KnowledgeBaseDetails = (props: any) => {
                 >
                   Import from Dataset
                 </Button>
+                <Button
+                  size="middle"
+                  type="default"
+                  icon={<PlayCircleOutlined />}
+                  onClick={toggleKbPlayground}
+                >
+                  Knowledge base playground
+                </Button>
               </Space>
             </Col>
           </Row>
           <Table
             columns={columns}
             dataSource={data?.document_details || []}
-            rowSelection={rowSelection}
+            // rowSelection={rowSelection}
             rowKey={(data: any) => data?.id}
             loading={isLoading}
             scroll={{
@@ -324,6 +338,11 @@ const KnowledgeBaseDetails = (props: any) => {
         loading={importDatasetLoading}
         onClose={toggleAddFileModal}
         addFilesHandler={addFilesHandler}
+      />
+      <KnowledgebasePlaygroundDrawer
+        open={displayKbPlayground}
+        onClose={toggleKbPlayground}
+        kbDetails={knowledgebaseConfig?.result?.[0] || {}}
       />
     </KnowledgeBaseDetailsContainer>
   );

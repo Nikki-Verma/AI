@@ -8,7 +8,6 @@ interface RadioOptionContainerProps extends CardProps {
 
 export const RadioOptionContainer = styled(Card)<RadioOptionContainerProps>`
   border: ${(props: any) => {
-    console.log("🚀 ~ props:", props);
     switch (props.checked) {
       case true:
         return `1.5px solid ${PRIMARY_BRAND_COLOR} !important`;

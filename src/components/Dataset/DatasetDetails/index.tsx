@@ -181,7 +181,6 @@ const DatasetDetails = (props: any) => {
           let filesUploadSuccess = 0;
           let filesUploadedFailed = 0;
           res?.map((file: any) => {
-            console.log("🚀 ~ res?.map ~ file:", file);
             if (file?.status == "rejected") {
               filesUploadedFailed = filesUploadedFailed + 1;
             } else {

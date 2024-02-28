@@ -28,7 +28,6 @@ export const PreviewContainer = styled.div`
 
 export const RadioOptionContainer = styled(Card)<RadioOptionContainerProps>`
   border: ${(props: any) => {
-    console.log("🚀 ~ props:", props);
     switch (props.checked) {
       case true:
         return `1.5px solid ${PRIMARY_BRAND_COLOR} !important`;
@@ -39,7 +38,6 @@ export const RadioOptionContainer = styled(Card)<RadioOptionContainerProps>`
     }
   }};
   background: ${(props: any) => {
-    console.log("🚀 ~ props:", props);
     switch (props.checked) {
       case true:
         return `rgb(249, 249, 255) !important`;
