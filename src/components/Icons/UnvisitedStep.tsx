@@ -14,7 +14,7 @@ const UnvisitedStepLogo = () => (
       r="8.75"
       fill="white"
       stroke="black"
-      stroke-width="0.5"
+      strokeWidth="0.5"
     />
   </svg>
 );

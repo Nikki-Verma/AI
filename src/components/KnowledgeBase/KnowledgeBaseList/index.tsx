@@ -35,7 +35,6 @@ import {
 } from "antd";
 import {
   FilterValue,
-  SorterResult,
   TablePaginationConfig,
   TableRowSelection,
 } from "antd/es/table/interface";
@@ -85,8 +84,6 @@ const KnowledgeBaseList = () => {
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
     Filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<DataType> | SorterResult<any>[],
-    extra: any,
   ) => {
     if (pagination?.current === +filters.page + 1) {
       // reset page as with new filters there might not be any data at the current page

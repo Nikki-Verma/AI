@@ -8,7 +8,7 @@ const FinishedLogo = () => (
     viewBox="0 0 18 18"
     fill="none"
   >
-    <g clip-path="url(#clip0_140_27207)">
+    <g clipPath="url(#clip0_140_27207)">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"

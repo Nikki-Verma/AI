@@ -126,8 +126,8 @@ const KnowledgeBaseDetails = (props: any) => {
       const payload = {
         tenant_id: DUMMY_TENANT_ID,
         user_id: session?.user?.details?.id,
-        document_id: values?.files,
         knowlede_base_id: knowledgebaseId,
+        ...values,
       };
 
       const addFileToKnowledgeBaseResponse = await addFileToKnowledgeBaseApi({
