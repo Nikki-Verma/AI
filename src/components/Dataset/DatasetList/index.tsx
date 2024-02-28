@@ -71,7 +71,6 @@ const DatasetList = () => {
     {},
   );
 
-  console.log("🚀 ~ DatasetList ~ data:", data);
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
     Filters: Record<string, FilterValue | null>,

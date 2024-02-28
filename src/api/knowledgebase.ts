@@ -15,3 +15,18 @@ export const addFileToKnowledgeBaseApi = ({
     headers,
   });
 };
+
+export const getKbPlaygroundResponseApi = ({
+  payload = {},
+  headers = {},
+}: any) => {
+  return _authHttp.post(config.rag.chat, payload, {
+    headers,
+  });
+};
+
+export const getFileChunksApi = ({ payload = {}, headers = {} }: any) => {
+  return _authHttp.post(config.rag.chunks, payload, {
+    headers,
+  });
+};

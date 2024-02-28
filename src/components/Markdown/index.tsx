@@ -14,6 +14,7 @@ const rehypePlugins = [rehypeSlug, rehypeRaw, rehypeHighlight];
 const remarkPlugins = [remarkToc, remarkGfm];
 
 const MarkdownComponent: React.FC<{ markdown: string }> = ({ markdown }) => {
+  markdown = markdown?.replace(/\\n/g, "  \n");
   return (
     <MarkdownBody className="markdown-body light">
       <Markdown remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins}>

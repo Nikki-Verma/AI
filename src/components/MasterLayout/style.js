@@ -58,3 +58,19 @@ export const SidebarToggleBtn = styled.div`
     height: 12px;
   }
 `;
+
+export const CollapseToggleContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden !important;
+  cursor: pointer;
+  border-top: 1.5px solid #c7c7c7;
+
+  .ant-typography {
+    overflow: hidden;
+    word-break: normal;
+    text-align: center;
+    margin: 0 !important;
+  }
+`;

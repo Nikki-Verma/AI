@@ -7,11 +7,10 @@ import {
 } from "@/app/(authorisedHeaderLayout)/workflow/constant";
 import CreateWorkflowModal from "@/components/CreateWorkflowModal";
 import EmptyUpload from "@/components/EmptyUpload";
+import PageHeading from "@/components/PageHeading";
 import SaDate from "@/components/SaDate/Index";
-import {
-  PageContainer,
-  PageSubHeading,
-} from "@/components/UIComponents/UIComponents.style";
+import Tags from "@/components/Tags";
+import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
@@ -28,31 +27,30 @@ import { UnknownObject } from "@/utils/types";
 import {
   ApiOutlined,
   EditOutlined,
+  MoreOutlined,
   PlayCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import {
   Button,
   Col,
+  Dropdown,
+  MenuProps,
   Result,
   Row,
   Space,
   Table,
   TablePaginationConfig,
   TableProps,
-  Tag,
+  Tooltip,
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { WorkflowStatuses } from "./constant";
-import { LinkContainer } from "./style";
-import Tags from "@/components/Tags";
-import PageHeading from "@/components/PageHeading";
 
 const { Title, Text, Link: TypographyLink } = Typography;
 
@@ -71,7 +69,7 @@ const Workflow = () => {
   const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
-  console.log("🚀 ~ Workflow ~ filters:", filters);
+
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.workflow.list,
     { ...filters },
@@ -149,11 +147,9 @@ const Workflow = () => {
       key: "pipeline_name",
       width: 200,
       render: (val: any, data: any) => (
-        <LinkContainer>
         <Link prefetch href={`/workflow/view/${data?.pipeline_id}`}>
           {val}
         </Link>
-        </LinkContainer>
       ),
     },
     {
@@ -162,9 +158,11 @@ const Workflow = () => {
       key: "pipeline_description",
       width: 200,
       render: (val: any) => (
-        <Text ellipsis style={{ width: 200 }}>
-          {val || "--"}
-        </Text>
+        <Tooltip title={val}>
+          <Text ellipsis style={{ width: 200 }}>
+            {val || "--"}
+          </Text>
+        </Tooltip>
       ),
     },
     {
@@ -175,15 +173,17 @@ const Workflow = () => {
       render: (val: WorkflowStatusType) =>
         val ? (
           <Tags
-          tag={WorkflowStatuses?.[val]?.text ?? val}
-          tagProps={
-            {color :WorkflowStatuses?.[val]?.color || "", background : WorkflowStatuses?.[val]?.background, border : WorkflowStatuses?.[val]?.border}
-          }
+            tag={WorkflowStatuses?.[val]?.text ?? val}
+            tagProps={{
+              color: WorkflowStatuses?.[val]?.color || "",
+              background: WorkflowStatuses?.[val]?.background,
+              border: WorkflowStatuses?.[val]?.border,
+            }}
           />
+        ) : (
           // <Tags color={WorkflowStatuses?.[val]?.color || ""}>
           //   {WorkflowStatuses?.[val]?.text ?? val}
           // </TTagsag>
-        ) : (
           "--"
         ),
     },
@@ -193,9 +193,11 @@ const Workflow = () => {
       key: "model_name",
       width: 200,
       render: (val: any) => (
-        <Text ellipsis style={{ width: 200 }}>
-          {val?.model_name || "--"}
-        </Text>
+        <Tooltip title={val?.model_name}>
+          <Text ellipsis style={{ width: 200 }}>
+            {val?.model_name || "--"}
+          </Text>
+        </Tooltip>
       ),
     },
     {
@@ -204,9 +206,11 @@ const Workflow = () => {
       key: "model_version",
       width: 200,
       render: (val: any) => (
-        <Text ellipsis style={{ width: 200 }}>
-          {val?.model_version || "--"}
-        </Text>
+        <Tooltip title={val?.model_version}>
+          <Text ellipsis style={{ width: 200 }}>
+            {val?.model_version || "--"}
+          </Text>
+        </Tooltip>
       ),
     },
     {
@@ -215,9 +219,11 @@ const Workflow = () => {
       key: "kb_name",
       width: 200,
       render: (val: any) => (
-        <Text ellipsis style={{ width: 200 }}>
-          {val?.kb_name || "--"}
-        </Text>
+        <Tooltip title={val?.kb_name}>
+          <Text ellipsis style={{ width: 200 }}>
+            {val?.kb_name || "--"}
+          </Text>
+        </Tooltip>
       ),
     },
     // {
@@ -254,36 +260,61 @@ const Workflow = () => {
       key: "actions",
       width: 160,
       fixed: "right",
-      render: (_: any, workflowData: UnknownObject) => (
-        <>
-          {workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
-            <Space>
-              <Link
-                prefetch
-                href={`/workflow/playground/${workflowData?.pipeline_id}`}
-              >
-                <Button block type="primary" icon={<PlayCircleOutlined />}>
-                  Playground
-                </Button>
-              </Link>
+      render: (_: any, workflowData: UnknownObject) => {
+        const completedItems: MenuProps["items"] = [
+          {
+            key: "integration",
+            label: (
               <Link
                 prefetch
                 href={`/integration/workflow/${workflowData?.pipeline_id}`}
               >
-                <Button block type="default" icon={<ApiOutlined />}>
+                <Button type="text" icon={<ApiOutlined />}>
                   Integration
                 </Button>
               </Link>
-            </Space>
-          ) : (
-            <Link prefetch href={`/workflow/edit/${workflowData?.pipeline_id}`}>
-              <Button block type="primary" icon={<EditOutlined />}>
-                Continue edit
-              </Button>
-            </Link>
-          )}
-        </>
-      ),
+            ),
+          },
+        ];
+        return (
+          <>
+            {workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
+              <Space>
+                <Link
+                  prefetch
+                  href={`/workflow/playground/${workflowData?.pipeline_id}`}
+                >
+                  <Button type="primary" icon={<PlayCircleOutlined />}>
+                    Playground
+                  </Button>
+                </Link>
+                <Dropdown
+                  menu={{ items: completedItems }}
+                  placement="bottomLeft"
+                >
+                  <MoreOutlined
+                    style={{ fontSize: "28px", fontWeight: "bold" }}
+                  />
+                </Dropdown>
+              </Space>
+            ) : (
+              <Space>
+                <Link
+                  prefetch
+                  href={`/workflow/edit/${workflowData?.pipeline_id}`}
+                >
+                  <Button type="primary" icon={<EditOutlined />}>
+                    Continue Edit
+                  </Button>
+                </Link>
+                <MoreOutlined
+                  style={{ fontSize: "28px", fontWeight: "bold" }}
+                />
+              </Space>
+            )}
+          </>
+        );
+      },
     },
   ];
 
@@ -297,18 +328,16 @@ const Workflow = () => {
           marginBottom: "24px",
         }}
       >
-      <PageHeading
-        title="Workflows"
-        subHeading="Explore a vast array of meticulously trained and readily deployable
+        <PageHeading
+          title="Workflows"
+          subHeading="Explore a vast array of meticulously trained and readily deployable
         machine learning models all conveniently centralized in a single
         location."
-      />
+        />
       </Row>
       <Col span={24}>
         <Row justify="space-between" align="middle">
-          <Col>
-          
-          </Col>
+          <Col></Col>
           <Col>
             <Button
               type="primary"

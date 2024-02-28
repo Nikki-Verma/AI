@@ -3,6 +3,7 @@ const __EDGE_URL__ = process.env.NEXT_PUBLIC_EDGE_BASE_URL;
 const __IDENTITY_BASE_URL__ = process.env.NEXT_PUBLIC_IDENTITY_BASE_URL;
 const __MODEL_BASE_URL__ = process.env.NEXT_PUBLIC_MODEL_BASE_URL;
 const __DATA_BASE_URL__ = process.env.NEXT_PUBLIC_DATA_BASE_URL;
+const __RAG_BASE_URL__ = process.env.NEXT_PUBLIC_RAG_BASE_URL;
 const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 const __CHANNEL_AGGREGATOR_BASE_URL__ =
   process.env.NEXT_PUBLIC_CHANNEL_AGGREGATOR_BASE_URL;
@@ -11,6 +12,7 @@ export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
   model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
   data: `${__EDGE_URL__}${__DATA_BASE_URL__}`,
+  rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
   intract: __INTRACT_BASE_URL__,
   agents : __AGENT_BASE_URL__,
@@ -50,7 +52,7 @@ const config = {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
     deploy: `${BASE_URLS.model}/api/v1/user/model/deploy`,
-    connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`
+    connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`,
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
@@ -71,11 +73,19 @@ const config = {
     uploadFile: `${BASE_URLS.data}/api/v1/storage/upload`,
     files: `${BASE_URLS.data}/api/v1/dataset/collection/files`,
   },
+  dataConnectors: {
+    connectConfluence: `${BASE_URLS.channelAggregator}/api/v1/data-connector`,
+    addFilesToDataset: `${BASE_URLS.channelAggregator}/api/v1/data-connector`,
+  },
   knowledgebase: {
     list: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     create: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     addFiles: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/add-file`,
     files: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/files`,
+  },
+  rag: {
+    chat: `${BASE_URLS.rag}/retrieve/context/`,
+    chunks: `${BASE_URLS.rag}/ingestion/chunking/`,
   },
   integrate: {
     channels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,
