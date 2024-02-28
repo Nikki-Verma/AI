@@ -76,14 +76,14 @@ export const items: any = [
   {
     id: 0,
     label: (
-      <Link prefetch href="/dashboard">
+      <Link prefetch href="/home">
         <Text style={{ color: "inherit" }}>Home</Text>
       </Link>
     ),
     icon: <HomeIcon />,
-    key: "dashboard",
-    keyPath: ["dashboard"],
-    url: "/dashboard",
+    key: "home",
+    keyPath: ["home"],
+    url: "/home",
     permissions: [],
     permissionType: PERMISSION_TYPE.OR,
   },
@@ -98,6 +98,18 @@ export const items: any = [
     keyPath: ["playground"],
     url: "/playground",
     icon: <PlaygroundIcon />,
+  },
+  {
+    id: 100,
+    label: (
+      <Link prefetch href="/agents">
+        <Text style={{ color: "inherit" }}>Agents</Text>
+      </Link>
+    ),
+    key: "agents",
+    keyPath: ["agents"],
+    url: "/agents",
+    icon: <AgentsIcon />,
   },
   {
     id: 100,

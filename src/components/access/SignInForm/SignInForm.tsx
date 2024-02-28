@@ -37,7 +37,7 @@ const SignInForm = () => {
           description: response?.error,
         });
       } else {
-        router.push("/dashboard");
+        router.push("/home");
       }
     } catch (error) {
       notification.error({
