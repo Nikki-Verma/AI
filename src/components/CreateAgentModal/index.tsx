@@ -10,7 +10,7 @@ interface CreateAgentflowModalProps {
   open: boolean;
   loading: boolean;
   onClose: () => void;
-  createAgentflowHandler: (values: { [key: string]: any }) => void;
+  createAgentHandler: (values: { [key: string]: any }) => void;
   mode?: PageModeEnum;
   agentFlowDetails?: {
     id?: string | number | undefined;
@@ -23,7 +23,7 @@ const CreateAgentModal = ({
   open,
   loading,
   onClose,
-  createAgentflowHandler,
+  createAgentHandler,
   mode = PAGE_MODE.CREATE,
   agentFlowDetails,
 }: CreateAgentflowModalProps) => {
@@ -100,7 +100,7 @@ const CreateAgentModal = ({
         form={form}
         layout="vertical"
         preserve={false}
-        onFinish={createAgentflowHandler}
+        onFinish={createAgentHandler}
       >
         <Form.Item
           name="agent_name"

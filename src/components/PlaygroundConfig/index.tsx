@@ -132,15 +132,6 @@ const PlaygroundConfig = ({
                 precision={2}
               />
             </Form.Item>
-            <Form.Item 
-            name={["model_parameters", "n_threads"]} 
-            label="CPU threads"
-            >
-              <InputNumber 
-              style={{...fullWidth}}
-              placeholder="CPU threads"
-               />
-            </Form.Item>
           </Flex>
         </>
       ),

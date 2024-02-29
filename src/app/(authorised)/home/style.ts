@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import { styled } from "styled-components";
 
 export const HomeContainer = styled.div`
@@ -10,18 +11,20 @@ export const HomeContainer = styled.div`
 `;
 
 
-export const HomeNavigateCards = styled.div`
+export const HomeNavigateCards = styled(Card)`
   display : flex;
-  padding : 12px;
-  flex-direction : column;
   width : 100%;
   min-height : 80px;
   border-radius: 10px;
   border: 0.8px solid var(--Text-Color-150, #D5D5D5);
   background: #FFFFFF;
   cursor : pointer;
-  &:hover {
-    border : 0.8px solid var(--Text-Color-150, #D5D5D5);
+  height : 100%;
+  .ant-card-body{
+    display : flex;
+    height : 100%;
+    width : 100%;
+    align-items: flex-start;
   }
 `
 
@@ -51,4 +54,12 @@ export const CardDescription = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+`
+
+export const ModelDetails = styled.div`
+  display : flex;
+  flex-direction : column;
+  align-items : space-between;
+  width : 100%;
+  margin-left : 8px;
 `

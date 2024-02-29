@@ -7,3 +7,7 @@ export const createAgentApi = ({ payload = {}, headers = {} }: any) => {
     });
   };
   
+export const updateAgentApi = ({ payload = {}, headers = {} }: any) => {
+  return _authHttp.put(config.agents.update, payload, { headers });
+};
+  

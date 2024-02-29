@@ -19,12 +19,13 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { AgentStatus, AgentStatusType } from "../../constants";
 import { AgentEditContainer } from "./style";
+import { updateAgentApi } from "@/api/agents";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
 });
 
-const WorkflowEdit = () => {
+const AgentEdit = () => {
   const router = useRouter();
   const [form] = useForm();
   const { notification } = useNotify();
@@ -40,8 +41,8 @@ const WorkflowEdit = () => {
 
   useEffect(() => {
     if (!isError && !isLoading) {
-      if (data?.result?.pipeline_state === AgentStatus.COMPLETED) {
-        router.push(`/workflow/view/${agentId}`);
+      if (data?.result?.agent_state === AgentStatus.COMPLETED) {
+        router.push(`/agents/view/${agentId}`);
       }
       //   CREATED,
       // MODEL_ADDED,
@@ -51,17 +52,17 @@ const WorkflowEdit = () => {
       // TOOL_SKIPED,
       // COMPLETED
       const currentStep =
-        data?.result?.pipeline_state === AgentStatus.CREATED
+        data?.result?.agent_state === AgentStatus.CREATED
           ? 1
-          : data?.result?.pipeline_state === AgentStatus.MODEL_ADDED
+          : data?.result?.agent_state === AgentStatus.MODEL_ADDED
             ? 2
-            : data?.result?.pipeline_state === AgentStatus.KB_ADDED ||
-                data?.result?.pipeline_state === AgentStatus.KB_SKIPPED
+            : data?.result?.agent_state === AgentStatus.KB_ADDED ||
+                data?.result?.agent_state === AgentStatus.KB_SKIPPED
               ? 3
               : -1;
 
       if (currentStep === -1) {
-        router.push(`/workflow`);
+        router.push(`/agents`);
       } else if (currentStep != current) {
         setCurrent(currentStep);
       }
@@ -107,35 +108,35 @@ const WorkflowEdit = () => {
   ];
 
   useLayoutEffect(() => {
-    updateHeaderTitle("Edit Workflow");
+    updateHeaderTitle("Edit Agent");
   }, []);
 
-  const updatePipeline = async (values: any, type: AgentStatusType) => {
+  const updateAgent = async (values: any, type: AgentStatusType) => {
     try {
       setFormSubmitting(true);
 
       const payload = {
         ...(data?.result || {}),
         ...values,
-        pipeline_state: type,
+        agent_state: type,
         pipeline_id: agentId,
       };
 
-      const updatePipelineResponse = await updatePipelineApi({ payload });
+      const updateAgentResponse = await updateAgentApi({ payload });
 
-      if (updatePipelineResponse?.status === 200) {
+      if (updateAgentResponse?.status === 200) {
         refetch();
       }
       if (type === AgentStatus.COMPLETED) {
         notification.success({
-          message: "workflow completed successfully",
+          message: "Agent successfully created",
           description: "Now you can proceed with integration with several apps",
         });
         router.push(`/agents/view/${agentId}`);
       }
     } catch (error) {
       notification.error({
-        message: "Error while updating pipeline",
+        message: "Error while updating agent",
         description: getErrorFromApi(error),
       });
     } finally {
@@ -151,7 +152,7 @@ const WorkflowEdit = () => {
             details={data}
             form={form}
             onFininsh={(values) =>
-              updatePipeline(values, AgentStatus.MODEL_ADDED)
+              updateAgent(values, AgentStatus.MODEL_ADDED)
             }
           />
         );
@@ -161,7 +162,7 @@ const WorkflowEdit = () => {
             details={data}
             form={form}
             onFininsh={(values: any) =>
-              updatePipeline(
+              updateAgent(
                 { ...values, is_kb_attached: true },
                 AgentStatus.KB_ADDED,
               )
@@ -201,7 +202,7 @@ const WorkflowEdit = () => {
                 <Button
                   type="default"
                   onClick={() =>
-                    updatePipeline(
+                    updateAgent(
                       { is_kb_attached: false },
                       AgentStatus.KB_SKIPPED,
                     )
@@ -250,7 +251,7 @@ const WorkflowEdit = () => {
         form={form}
         loading={formSubmitting}
         onFininsh={(values: any) =>
-          updatePipeline({ ...values }, AgentStatus.COMPLETED)
+          updateAgent({ ...values }, AgentStatus.COMPLETED)
         }
       />
     );
@@ -265,4 +266,4 @@ const WorkflowEdit = () => {
   );
 };
 
-export default WorkflowEdit;
+export default AgentEdit;

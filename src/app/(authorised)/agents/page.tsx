@@ -9,6 +9,8 @@ import { useAppStore } from "@/store";
 import {
     Button,
     Col,
+    Dropdown,
+  MenuProps,
   Result,
   Row,
   Space,
@@ -32,6 +34,7 @@ import config from "@/utils/apiEndoints";
 import {
     ApiOutlined,
     EditOutlined,
+    MoreOutlined,
     PlayCircleOutlined,
     PlusOutlined,
   } from "@ant-design/icons";
@@ -57,10 +60,8 @@ const Agents = () => {
 
   const { data: session }: any = useSession();
   const { notification } = useNotify();
-  const [createAgentflowLoading, setCreateAgentflowLoading] = useState(false);
+  const [createAgentLoading, setCreateAgentLoading] = useState(false);
   const [isCreateAgentModalVisible, setIsCreateAgentModalVisible] = useState<boolean>(false)
-  const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
-  const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   console.log("🚀 ~ Workflow ~ filters:", filters);
   const { data, isLoading, isError, error, refetch } = useFetchData(
@@ -68,6 +69,46 @@ const Agents = () => {
     { ...filters },
     {},
   );
+
+  useEffect(() => {
+    updatePageConfig({
+      pageTitle: "Agent",
+      pageDescription: "Models are your AI powered automations & skills",
+    });
+  }, []);
+
+  const toggleCreateAgentHandler = () => {
+    setIsCreateAgentModalVisible((prev: boolean) => !prev);
+  };
+
+  const createAgentHandler = async (values: UnknownObject) => {
+    try {
+      setCreateAgentLoading(true);
+      const payload = {
+        ...values,
+        agent_state: "CREATED",
+      };
+
+      const createAgentResponse = await createAgentApi({ payload });
+      console.log(`agent creation response`,createAgentResponse)
+
+      if (createAgentResponse?.status == 200) {
+        notification.success({ message: "Agent created successfully" });
+        setIsCreateAgentModalVisible(false);
+        refetch();
+        router.push(
+          `/agents/edit/${createAgentResponse?.data?.result?.pipeline_id}`,
+        );
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while creating agent",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setCreateAgentLoading(false);
+    }
+  };
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -94,46 +135,6 @@ const Agents = () => {
     }
   };
 
-  const toggleCreateAgentHandler = () => {
-    setIsCreateAgentModalVisible((prev: boolean) => !prev);
-  };
-
-  const createAgentflowHandler = async (values: UnknownObject) => {
-    try {
-        setCreateAgentflowLoading(true);
-      const payload = {
-        ...values,
-        // agent_state: "CREATED",
-      };
-
-      const createAgentflowResponse = await createAgentApi({ payload });
-      console.log(`agent creation response`,createAgentflowResponse)
-
-      if (createAgentflowResponse?.status == 200) {
-        notification.success({ message: "Agent created successfully" });
-        setIsCreateAgentModalVisible(false);
-        // refetch();
-        router.push(
-          `/agents/edit/${createAgentflowResponse?.data?.result?.pipeline_id}`,
-        );
-      }
-    } catch (error) {
-      notification.error({
-        message: "Error while creating agent",
-        description: getErrorFromApi(error),
-      });
-    } finally {
-        setCreateAgentflowLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    updatePageConfig({
-      pageTitle: "Agent",
-      pageDescription: "Models are your AI powered automations & skills",
-    });
-  }, []);
-
   const columns: TableProps<any>["columns"] = [
     {
       title: "Agent name",
@@ -142,7 +143,7 @@ const Agents = () => {
       width: 200,
       render: (val: any, data: any) => (
         <LinkContainer>
-        <Link prefetch href={`/workflow/view/${data?.pipeline_id}`}>
+        <Link prefetch href={`/agents/view/${data?.pipeline_id}`}>
           {val}
         </Link>
         </LinkContainer>
@@ -169,7 +170,9 @@ const Agents = () => {
           <Tags
           tag={AgentStatuses?.[val]?.text ?? val}
           tagProps={
-            {color :AgentStatuses?.[val]?.color || "", background : AgentStatuses?.[val]?.background, border : AgentStatuses?.[val]?.border}
+            {color :AgentStatuses?.[val]?.color || "", 
+            background : AgentStatuses?.[val]?.background, 
+            border : AgentStatuses?.[val]?.border}
           }
           />
           // <Tags color={WorkflowStatuses?.[val]?.color || ""}>
@@ -246,36 +249,61 @@ const Agents = () => {
       key: "actions",
       width: 160,
       fixed: "right",
-      render: (_: any, workflowData: UnknownObject) => (
-        <>
-          {workflowData?.pipeline_state === AgentStatus.COMPLETED ? (
-            <Space>
+      render: (_: any, agentData: UnknownObject) => {
+        const completedItems: MenuProps["items"] = [
+          {
+            key: "integration",
+            label: (
               <Link
                 prefetch
-                href={`/workflow/playground/${workflowData?.pipeline_id}`}
+                href={`/integration/agent/${agentData?.pipeline_id}`}
               >
-                <Button block type="primary" icon={<PlayCircleOutlined />}>
-                  Playground
-                </Button>
-              </Link>
-              <Link
-                prefetch
-                href={`/integration/workflow/${workflowData?.pipeline_id}`}
-              >
-                <Button block type="default" icon={<ApiOutlined />}>
+                <Button type="text" icon={<ApiOutlined />}>
                   Integration
                 </Button>
               </Link>
-            </Space>
-          ) : (
-            <Link prefetch href={`/agents/edit/${workflowData?.pipeline_id}`}>
-              <Button block type="primary" icon={<EditOutlined />}>
-                Continue edit
-              </Button>
-            </Link>
-          )}
-        </>
-      ),
+            ),
+          },
+        ];
+        return (
+          <>
+            {agentData?.agent_state === AgentStatuses.COMPLETED ? (
+              <Space>
+                <Link
+                  prefetch
+                  href={`/agents/playground/${agentData?.pipeline_id}`}
+                >
+                  <Button type="primary" icon={<PlayCircleOutlined />}>
+                    Playground
+                  </Button>
+                </Link>
+                <Dropdown
+                  menu={{ items: completedItems }}
+                  placement="bottomLeft"
+                >
+                  <MoreOutlined
+                    style={{ fontSize: "28px", fontWeight: "bold" }}
+                  />
+                </Dropdown>
+              </Space>
+            ) : (
+              <Space>
+                <Link
+                  prefetch
+                  href={`/agents/edit/${agentData?.pipeline_id}`}
+                >
+                  <Button type="primary" icon={<EditOutlined />}>
+                    Continue Edit
+                  </Button>
+                </Link>
+                <MoreOutlined
+                  style={{ fontSize: "28px", fontWeight: "bold" }}
+                />
+              </Space>
+            )}
+          </>
+        );
+      },
     },
   ];
 
@@ -357,8 +385,8 @@ const Agents = () => {
         <CreateAgentModal
         open={isCreateAgentModalVisible}
         onClose={toggleCreateAgentHandler}
-        loading={createAgentflowLoading}
-        createAgentflowHandler={createAgentflowHandler}
+        loading={createAgentLoading}
+        createAgentHandler={createAgentHandler}
         />
     </PageContainer>
   );
