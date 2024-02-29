@@ -100,7 +100,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={["/dashboard"]}
+            defaultSelectedKeys={["/home"]}
             defaultOpenKeys={["order-management"]}
             selectedKeys={currentItemKey}
             openKeys={openItemKey}

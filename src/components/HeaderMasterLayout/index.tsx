@@ -13,8 +13,8 @@ const HeaderMasterLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     updatePageConfig({
-      pageTitle: "Dashboard",
-      pageDescription: " Dashboard description",
+      pageTitle: "Home",
+      pageDescription: " Home description",
     });
   }, []);
 

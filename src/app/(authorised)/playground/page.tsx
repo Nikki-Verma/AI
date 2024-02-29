@@ -49,8 +49,8 @@ function ChatPage() {
 
   useEffect(() => {
     updatePageConfig({
-      pageTitle: "Dashboard",
-      pageDescription: " Dashboard description",
+      pageTitle: "Playground",
+      pageDescription: " Playground description",
     });
   }, []);
 
