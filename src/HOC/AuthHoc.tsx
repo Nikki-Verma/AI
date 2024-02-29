@@ -23,7 +23,7 @@ export function AuthHoc(Component: any, PageType = Page_Type.auth) {
       return <FullScreenLoader />;
     }
     if (status === "authenticated" && PageType === Page_Type.unauth) {
-      router.push("/dashboard");
+      router.push("/home");
       return <FullScreenLoader />;
     }
     return <Component {...props} />;

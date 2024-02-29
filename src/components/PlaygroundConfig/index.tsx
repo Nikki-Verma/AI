@@ -71,17 +71,17 @@ const PlaygroundConfig = ({
         <>
           <Flex gap={0} vertical>
             <Form.Item
-              name={["model_parameters", "decay_rate"]}
-              label="Decay Rate"
+              name={["model_parameters", "n_predict"]}
+              label="Tokens to generate"
             >
               <InputNumber
                 style={{ ...fullWidth }}
-                placeholder="Decay Rate"
-                precision={2}
+                placeholder="Tokens to generate"
+                precision={0}
               />
             </Form.Item>
             <Form.Item
-              name={["model_parameters", "temperature"]}
+              name={["model_parameters", "temp"]}
               label="Temperature"
             >
               <InputNumber
@@ -89,37 +89,48 @@ const PlaygroundConfig = ({
                 placeholder="Temperature"
                 min={0}
                 max={1}
+                precision={1}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["model_parameters", "top_k"]}
+              label="Top K sampling"
+            >
+              <InputNumber
+              style={{...fullWidth}}
+              placeholder="Top K sampling" 
+              precision = {0}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["model_parameters", "repeat_penalty"]}
+              label="Repeat penalty"
+            >
+              <InputNumber
+                style={{ ...fullWidth }}
+                placeholder="Repeat penalty"
+                precision={1}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["model_parameters", "min_p"]}
+              label="Min P sampling"
+            >
+              <InputNumber
+                style={{ ...fullWidth }}
+                placeholder="Min P sampling"
                 precision={2}
               />
             </Form.Item>
             <Form.Item
-              name={["model_parameters", "output_style"]}
-              label="Output Style"
-            >
-              <Input placeholder="Output style" />
-            </Form.Item>
-            <Form.Item
-              name={["model_parameters", "chunk_size"]}
-              label="Chunk size"
+              name={["model_parameters", "top_p"]}
+              label="Top P sampling"
             >
               <InputNumber
                 style={{ ...fullWidth }}
-                placeholder="Chunk size"
-                precision={0}
-              />
-            </Form.Item>
-            <Form.Item
-              name={["model_parameters", "token_length"]}
-              label="Token length"
-            >
-              <InputNumber
-                style={{ ...fullWidth }}
-                placeholder="Token length"
+                placeholder="Top P sampling"
                 precision={2}
               />
-            </Form.Item>
-            <Form.Item name={["model_parameters", "sample"]} label="Sample">
-              <Input placeholder="Sample" />
             </Form.Item>
           </Flex>
         </>

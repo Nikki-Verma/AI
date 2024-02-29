@@ -179,19 +179,19 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
               <Row gutter={[12, 12]}>
                 <Col span={6}>
                   <Form.Item
-                    name={["model_detail", "model_parameters", "decay_rate"]}
-                    label="Decay Rate"
+                    name={["model_detail", "model_parameters", "n_predict"]}
+                    label="Tokens to generate"
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
-                      placeholder="Decay Rate"
-                      precision={2}
+                      placeholder="Tokens to generate"
+                      precision={0}
                     />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item
-                    name={["model_detail", "model_parameters", "temperature"]}
+                    name={["model_detail", "model_parameters", "temp"]}
                     label="Temperature"
                   >
                     <InputNumber
@@ -199,48 +199,56 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                       placeholder="Temperature"
                       min={0}
                       max={1}
+                      precision={1}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item
+                    name={["model_detail", "model_parameters", "top_k"]}
+                    label="Top K sampling"
+                  >
+                    <InputNumber 
+                    style={{...fullWidth}}
+                    placeholder="Top K sampling"
+                    precision = {0}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item
+                    name={["model_detail", "model_parameters", "repeat_penalty"]}
+                    label="Repeat penalty"
+                  >
+                    <InputNumber
+                      style={{ ...fullWidth }}
+                      placeholder="Repeat penalty"
+                      precision={1}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item
+                    name={["model_detail", "model_parameters", "min_p"]}
+                    label="Min P sampling"
+                  >
+                    <InputNumber
+                      style={{ ...fullWidth }}
+                      placeholder="Min P sampling"
                       precision={2}
                     />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item
-                    name={["model_detail", "model_parameters", "output_style"]}
-                    label="Output Style"
+                    name={["model_detail", "model_parameters", "top_p"]}
+                    label="Top P sampling"
                   >
-                    <Input placeholder="Output style" />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    name={["model_detail", "model_parameters", "chunk_size"]}
-                    label="Chunk size"
-                  >
-                    <InputNumber
-                      style={{ ...fullWidth }}
-                      placeholder="Chunk size"
-                      precision={0}
+                    <InputNumber 
+                    style={{ ...fullWidth }}
+                    placeholder="Top P sampling"
+                    precision={2} 
                     />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    name={["model_detail", "model_parameters", "token_length"]}
-                    label="Token length"
-                  >
-                    <InputNumber
-                      style={{ ...fullWidth }}
-                      placeholder="Token length"
-                      precision={2}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={6}>
-                  <Form.Item
-                    name={["model_detail", "model_parameters", "sample"]}
-                    label="Sample"
-                  >
-                    <Input placeholder="Sample" />
                   </Form.Item>
                 </Col>
               </Row>
