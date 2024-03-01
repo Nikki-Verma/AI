@@ -9,6 +9,7 @@ import {
   Input,
   InputNumber,
   Row,
+  Switch,
   Typography,
 } from "antd";
 import { useEffect } from "react";
@@ -130,6 +131,13 @@ const PlaygroundConfig = ({
                 style={{ ...fullWidth }}
                 placeholder="Top P sampling"
                 precision={2}
+              />
+            </Form.Item>
+            <Form.Item
+              name={["model_detail", "model_parameters", "do_sample"]}
+              label="DO sample"
+            >
+              <Switch
               />
             </Form.Item>
           </Flex>
