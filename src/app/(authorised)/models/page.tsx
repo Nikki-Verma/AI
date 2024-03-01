@@ -2,6 +2,7 @@
 
 import CardModel from "@/components/CardModel";
 import PageHeading from "@/components/PageHeading";
+import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useAppStore } from "@/store";
@@ -21,9 +22,8 @@ import {
   Typography,
 } from "antd";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Heading, ModelContainer } from "./style";
+import { Heading, SearchInpuContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -138,108 +138,101 @@ const Models = () => {
     }));
 
   return (
-    <ModelContainer>
-      <Row
-        gutter={12}
-        style={{ display: "flex", justifyContent: "space-between" }}
-      >
-          <PageHeading
-            title="Models"
-            subHeading="Explore a vast array of meticulously trained and readily deployable
+    <PageContainer>
+      <PageHeading
+        title="Models"
+        subHeading="Explore a vast array of meticulously trained and readily deployable
             machine learning models all conveniently centralized in a single
             location."
-          />
-      </Row>
-      <Row gutter={[12, 12]} style={{ display: "flex", margin: "30px 0px" }}>
-        <Col span={24}>
+      />
+      <Radio.Group
+        value={filters?.type}
+        onChange={(event: any) => {
+          setFilters(initialFilters({ type: event?.target?.value }));
+          setSearchValue("");
+        }}
+        size="large"
+        buttonStyle="solid"
+      >
+        <Radio.Button value="OPEN">Open Source</Radio.Button>
+        <Radio.Button value="CLOSED">Closed Source</Radio.Button>
+      </Radio.Group>
+      <SearchInpuContainer>
+        <Row gutter={[12, 12]}>
           <Col span={24}>
-            <Radio.Group
-              value={filters?.type}
-              onChange={(event: any) => {
-                setFilters(initialFilters({ type: event?.target?.value }));
-                setSearchValue("");
-              }}
-              size="large"
-              buttonStyle="solid"
-            >
-              <Radio.Button value="OPEN">Open Source</Radio.Button>
-              <Radio.Button value="CLOSED">Closed Source</Radio.Button>
-            </Radio.Group>
-          </Col>
-        </Col>
-        <Col span={24}>
-          <Input
-            prefix={
-              <SearchOutlined
-                style={{
-                  color: "#727272",
-                  fontSize: "20px",
-                  margin: "0px 12px",
-                }}
-              />
-            }
-            placeholder="Search models"
-            onPressEnter={(e: any) => {
-              updateFilters({ name: e?.target?.value });
-            }}
-            allowClear={{
-              clearIcon: (
-                <CloseOutlined onClick={() => updateFilters({ name: "" })} />
-              ),
-            }}
-            onChange={(e: any) => {
-              setSearchValue(e.target.value);
-              if (!e.target.value) {
-                updateFilters({ name: "" });
+            <Input
+              prefix={
+                <SearchOutlined
+                  style={{
+                    color: "#727272",
+                    fontSize: "20px",
+                    margin: "0px 12px",
+                  }}
+                />
               }
-            }}
-            value={searchValue}
-          />
-        </Col>
-        <Col>
-          <Select
-            showSearch
-            optionFilterProp="label"
-            options={ModalityOptions}
-            onChange={(value: string) => {
-              updateFilters({ modality: value });
-            }}
-            value={filters?.modality}
-            placeholder="Modality"
-            allowClear
-          />
-        </Col>
-        <Col>
-          <Select
-            showSearch
-            optionFilterProp="label"
-            options={FunctionFilterOptions}
-            onChange={(value: string) => {
-              updateFilters({ function: value });
-            }}
-            value={filters?.function}
-            placeholder="Function"
-            allowClear
-          />
-        </Col>
-        <Col>
-          <Select
-            showSearch
-            optionFilterProp="label"
-            options={ArchitectureFilterOptions}
-            onChange={(value: string) => {
-              updateFilters({ architecture: value });
-            }}
-            value={filters?.architecture}
-            placeholder="Architecture"
-            allowClear
-          />
-        </Col>
-      </Row>
+              placeholder="Search models"
+              onPressEnter={(e: any) => {
+                updateFilters({ name: e?.target?.value });
+              }}
+              allowClear={{
+                clearIcon: (
+                  <CloseOutlined onClick={() => updateFilters({ name: "" })} />
+                ),
+              }}
+              onChange={(e: any) => {
+                setSearchValue(e.target.value);
+                if (!e.target.value) {
+                  updateFilters({ name: "" });
+                }
+              }}
+              value={searchValue}
+            />
+          </Col>
+          <Col>
+            <Select
+              showSearch
+              optionFilterProp="label"
+              options={ModalityOptions}
+              onChange={(value: string) => {
+                updateFilters({ modality: value });
+              }}
+              value={filters?.modality}
+              placeholder="Modality"
+              allowClear
+            />
+          </Col>
+          <Col>
+            <Select
+              showSearch
+              optionFilterProp="label"
+              options={FunctionFilterOptions}
+              onChange={(value: string) => {
+                updateFilters({ function: value });
+              }}
+              value={filters?.function}
+              placeholder="Function"
+              allowClear
+            />
+          </Col>
+          <Col>
+            <Select
+              showSearch
+              optionFilterProp="label"
+              options={ArchitectureFilterOptions}
+              onChange={(value: string) => {
+                updateFilters({ architecture: value });
+              }}
+              value={filters?.architecture}
+              placeholder="Architecture"
+              allowClear
+            />
+          </Col>
+        </Row>
+      </SearchInpuContainer>
       <Col span={24}>
         <Heading>Trending Models</Heading>
       </Col>
-      <Row gutter={[28, 16]} style={{ display: "flex", margin: "16px 0px" }}>
+      <Row gutter={[16, 16]} style={{ display: "flex", margin: "flex-start" }}>
         {isLoading &&
           Array.from({ length: +filters?.size }).map((_, i) => (
             <Col
@@ -289,7 +282,7 @@ const Models = () => {
           />
         </Col>
       </Row>
-    </ModelContainer>
+    </PageContainer>
   );
 };
 

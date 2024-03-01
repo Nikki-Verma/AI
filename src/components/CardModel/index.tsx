@@ -1,5 +1,4 @@
 import { UnknownObject } from "@/utils/types";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Tag } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,29 +30,11 @@ const CardModel = ({
         <ModelCard>
           <ModelHeaderContainer>
             <Image src={imageUrl} height={28} width={28} alt="Model-img" />
-            <>
-              {false ? (
-                <HeartOutlined
-                  style={{
-                    color: "#5B5B5B",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                  }}
-                />
-              ) : (
-                <HeartFilled
-                  style={{
-                    color: "red",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                  }}
-                />
-              )}
-            </>
+            <ModelCardHeading>
+              {modelData?.name || modelData?.model_name}
+            </ModelCardHeading>
           </ModelHeaderContainer>
-          <ModelCardHeading>
-            {modelData?.name || modelData?.model_name}
-          </ModelCardHeading>
+
           <ModelCardDetail>{modelData?.desc}</ModelCardDetail>
         </ModelCard>
         <ModalTags serial={index}>

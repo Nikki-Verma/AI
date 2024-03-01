@@ -61,6 +61,7 @@ const CreateWorkflowModal = ({
           onClose();
         }
       }}
+      width="40%"
       centered
       maskClosable={false}
       destroyOnClose
@@ -71,7 +72,8 @@ const CreateWorkflowModal = ({
             <Button
               size="large"
               block
-              type="default"
+              danger
+              type="text"
               disabled={loading}
               onClick={onClose}
             >

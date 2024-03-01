@@ -1,3 +1,4 @@
+import { TEXT_HOVER_BG_COLOR } from "@/_utils/theme.antd";
 import styled from "styled-components";
 
 export const ModelContainer = styled.div`
@@ -45,7 +46,7 @@ export const Heading = styled.div`
 export const ModelCardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 250px;
+  min-height: 200px;
   flex-shrink: 0;
   border-radius: 10px;
   border: 0.8px solid var(--Text-Color-150, #d5d5d5);
@@ -63,20 +64,11 @@ export const ModelCard = styled.div`
 export const ModalTags = styled.div<any>`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 11px 15px;
+  gap: 12px;
+  padding: 8px;
   border-radius: 0px 0px 10px 10px;
-  border-top: 0.2px solid var(--Text-Color-150, #d5d5d5);
-  background: ${(props: any) => {
-    switch (props.serial % 2) {
-      case 0:
-        return "#f7fdf5";
-      case 1:
-        return "#F5F9FD";
-      default:
-        return "#f7fdf5";
-    }
-  }};
+  // border-top: 0.2px solid var(--Text-Color-150, #d5d5d5);
+
   box-shadow: 0px 3px 8px 0px rgba(158, 158, 158, 0.15);
   text-overflow: ellipsis;
   overflow: hidden;
@@ -92,7 +84,8 @@ export const ModalTags = styled.div<any>`
     flex-shrink: 0;
     border-radius: 10px;
     border: 0.3px solid var(--Text-Color-150, #d5d5d5);
-    background: inherit;
+    background: ${TEXT_HOVER_BG_COLOR};
+    // // }};
 
     /* drop-shadow/button-secondary */
     box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
@@ -111,8 +104,9 @@ export const ModalTags = styled.div<any>`
 
 export const ModelHeaderContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 6px;
 `;
 
 export const ModelCardHeading = styled.div`
@@ -128,12 +122,12 @@ export const ModelCardHeading = styled.div`
 export const ModelCardDetail = styled.div`
   //   display: flex;
   display: -webkit-box;
-  -webkit-line-clamp: 6;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   color: var(--Text-Color-850, #222);
   text-overflow: ellipsis;
   overflow: hidden;
-  height: 140px;
+  height: 72px;
   word-break: break-all;
   font-family: var(--font-dm-sans);
   font-size: 14px;

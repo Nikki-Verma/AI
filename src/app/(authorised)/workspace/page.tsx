@@ -2,6 +2,7 @@
 
 import CardModel from "@/components/CardModel";
 import PageHeading from "@/components/PageHeading";
+import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useAppStore } from "@/store";
@@ -21,7 +22,7 @@ import {
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
-import { WorkspaceContainer } from "./style";
+import { RadioButton } from "./style";
 
 const { Title } = Typography;
 
@@ -61,38 +62,36 @@ const Workspace = () => {
   };
 
   return (
-    <WorkspaceContainer>
-      <Row
-        gutter={12}
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "24px",
-        }}
-      >
-        <PageHeading
-          title="Workspace"
-          subHeading="Explore a vast array of meticulously trained and readily deployable
+    <PageContainer>
+      <PageHeading
+        title="Workspace"
+        subHeading="Explore a vast array of meticulously trained and readily deployable
           machine learning models all conveniently centralized in a single
           location."
-        />
-      </Row>
-      <Col span={24}>
-        <Radio.Group
-          value={filters?.modelStatus}
-          onChange={(val: any) => {
-            setFilters(initialFilters({ modelStatus: val?.target?.value }));
-          }}
-          buttonStyle="solid"
-        >
-          <Radio.Button value="ADDED">Added Models</Radio.Button>
-          {/* <Radio.Button value="TRAINED">Trained Models</Radio.Button> */}
-          <Radio.Button value="DEPLOYED">Deployed Models</Radio.Button>
-          {/* <Radio.Button value="INACTIVE">Inactive models</Radio.Button> */}
-        </Radio.Group>
-      </Col>
+      />
+      <Radio.Group
+        value={filters?.modelStatus}
+        onChange={(val: any) => {
+          setFilters(initialFilters({ modelStatus: val?.target?.value }));
+        }}
+        buttonStyle="solid"
+        size="large"
+      >
+        <RadioButton value="ADDED">Added Models</RadioButton>
+        {/* <Radio.Button value="TRAINED">Trained Models</Radio.Button> */}
+        <RadioButton value="DEPLOYED" style={{ borderLeft: "0px !important" }}>
+          Deployed Models
+        </RadioButton>
+        {/* <Radio.Button value="INACTIVE">Inactive models</Radio.Button> */}
+      </Radio.Group>
 
-      <Row gutter={[28, 16]} style={{ display: "flex", margin: "24px 0px" }}>
+      <Row
+        gutter={[16, 16]}
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+      >
         {isLoading &&
           Array.from({ length: +filters?.size }).map((_, i) => (
             <Col
@@ -142,7 +141,7 @@ const Workspace = () => {
           },
         )}
       </Row>
-    </WorkspaceContainer>
+    </PageContainer>
   );
 };
 

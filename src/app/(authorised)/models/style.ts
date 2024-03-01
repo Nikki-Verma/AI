@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-export const ModelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const SearchInpuContainer = styled.div`
   .ant-input-affix-wrapper {
     border-radius: 20px;
     border: 1px solid var(--Text-Color-150, #d5d5d5);
@@ -20,7 +18,7 @@ export const ModelContainer = styled.div`
   .ant-select-selector {
     display: flex;
     height: 36px !important;
-    width : 150px !important;
+    width: 150px !important;
     padding: 0px 20px !important;
     justify-content: center;
     align-items: center;
@@ -32,12 +30,13 @@ export const ModelContainer = styled.div`
     /* drop-shadow/button-secondary */
     box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02) !important;
   }
-  .ant-select .ant-select-arrow,.ant-select .ant-select-clear {
+  .ant-select .ant-select-arrow,
+  .ant-select .ant-select-clear {
     inset-inline-start: auto;
     inset-inline-end: 20px !important;
     margin-top: -4px !important;
   }
-  .ant-select-single .ant-select-selector .ant-select-selection-search{
+  .ant-select-single .ant-select-selector .ant-select-selection-search {
     inset-inline-start: 20px;
     inset-inline-end: 20px;
   }

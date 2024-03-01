@@ -120,7 +120,7 @@ export const authOptions: AuthOptions = {
       //     password: { label: "Password", type: "password" },
       //   },
       async authorize(credentials: any, req: any) {
-        "use client";
+        console.log("🚀 ~ authorize ~ credentials:", credentials);
         try {
           // You need to provide your own logic here that takes the credentials
           // submitted and returns either a object representing a user or value
@@ -142,6 +142,7 @@ export const authOptions: AuthOptions = {
             user_type: "CORE_USER",
             is_otp_login: false,
           };
+          console.log("🚀 ~ authorize ~ body:", body);
 
           const headers = {
             [X_DEVICE_ID]: "armaze-web",

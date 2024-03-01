@@ -24,6 +24,7 @@ const CreateDatasetModal = ({
     <Modal
       title={title}
       open={open}
+      width="40%"
       onCancel={() => {
         if (!loading) {
           onClose();

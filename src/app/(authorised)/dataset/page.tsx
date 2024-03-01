@@ -2,10 +2,10 @@
 
 import DatasetList from "@/components/Dataset/DatasetList";
 import PageHeading from "@/components/PageHeading";
+import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useAppStore } from "@/store";
-import { Col, Row, Typography } from "antd";
+import { Typography } from "antd";
 import { useEffect } from "react";
-import { ModelContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -20,23 +20,15 @@ const datset = () => {
   }, [updatePageConfig]);
 
   return (
-    <ModelContainer>
-      <Row
-        gutter={[0, 20]}
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-          <PageHeading
-            title="Datasets"
-            subHeading="Explore, analyze, and share quality data. you can select your data
+    <PageContainer>
+      <PageHeading
+        title="Datasets"
+        subHeading="Explore, analyze, and share quality data. you can select your data
             collection while training your ai model, multi data collection can
             be added in one AI model."
-          />
-      </Row>
+      />
       <DatasetList />
-    </ModelContainer>
+    </PageContainer>
   );
 };
 

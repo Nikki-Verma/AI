@@ -11,9 +11,4 @@ export const items = (data: any) => [
       />
     ),
   },
-  {
-    key: "run",
-    label: "Run",
-    children: <div>Under Maintenance</div>,
-  },
 ];

@@ -1,5 +1,6 @@
 export const PRIMARY_BRAND_COLOR = "#602EDF";
 export const PRIMARY_ACTIVE_BRAND_COLOR = "#3A1C86";
+export const DEFAULT_BUTTON_HOVER = "#E8DDFF";
 export const LAYOUT_BG_COLOR = "#F6F8F8";
 export const TERTIARY_LAYOUT_BG_COLOR = "#F3F5FB";
 export const TEXT_HOVER_BG_COLOR = "#F9F9FF";
@@ -17,6 +18,8 @@ export const WHITE_BG_COLOR = "#FFFFFF";
 export const BG_ELEVATED_COLOR = "#2B116E";
 export const ICON_COLOR = "#e7e6e673";
 export const NOTIFICATION_BG_COLOR = "#1D0E43";
+
+export const RADIO_SELECTED_BG = "#EAE1FF";
 const theme = {
   token: {
     colorPrimary: PRIMARY_BRAND_COLOR,
@@ -35,6 +38,8 @@ const theme = {
       colorLinkActive: PRIMARY_ACTIVE_BRAND_COLOR,
       colorPrimaryBorder: LINK_COLOR,
       colorText: LINK_COLOR,
+      defaultHoverBg: DEFAULT_BUTTON_HOVER,
+      defaultBorderColor: PRIMARY_BRAND_COLOR,
     },
     Breadcrumb: {
       linkHoverColor: LINK_COLOR,
@@ -93,9 +98,13 @@ const theme = {
     },
     Radio: {
       colorPrimary: LINK_COLOR,
-      buttonSolidCheckedActiveBg: LINK_COLOR,
-      buttonSolidCheckedBg: LINK_COLOR,
-      buttonSolidCheckedHoverBg: LINK_COLOR,
+      buttonSolidCheckedActiveBg: RADIO_SELECTED_BG,
+      buttonSolidCheckedBg: RADIO_SELECTED_BG,
+      buttonSolidCheckedHoverBg: RADIO_SELECTED_BG,
+      buttonSolidCheckedColor: PRIMARY_BRAND_COLOR,
+      controlHeightLG: 40,
+      fontSizeLG: 14,
+      buttonPaddingInline: 30,
     },
     Select: {
       optionSelectedBg: TEXT_HOVER_BG_COLOR,

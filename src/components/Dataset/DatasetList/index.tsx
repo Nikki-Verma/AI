@@ -20,7 +20,6 @@ import {
   Button,
   Col,
   Input,
-  Progress,
   Result,
   Row,
   Space,
@@ -41,7 +40,7 @@ import FolderIcon from "../../Icons/FolderIcon";
 import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateDatasetModal from "../CreateDatasetModal";
-import { DatasetListContainer, ProgressBar } from "./style";
+import { DatasetListContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -206,52 +205,6 @@ const DatasetList = () => {
 
   return (
     <DatasetListContainer>
-      <ProgressBar>
-        <Progress percent={70} />
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span
-            style={{
-              color: "#727272",
-              fontSize: "14px",
-              fontWeight: "500",
-              lineHeight: "24px",
-            }}
-          >
-            File upload limit
-          </span>
-          <div style={{ display: "flex", gap: "11px" }}>
-            <span
-              style={{
-                color: "#727272",
-                fontSize: "14px",
-                fontWeight: "500",
-                lineHeight: "24px",
-              }}
-            >
-              10 kb / 50 GB
-            </span>
-            <a
-              style={{
-                textDecoration: "underline",
-                color: "#602EDF",
-                fontSize: "14px",
-                fontWeight: "700",
-                lineHeight: "24px",
-                cursor: "pointer",
-              }}
-            >
-              Upgrade space
-            </a>
-          </div>
-        </div>
-      </ProgressBar>
       {isError && (
         <Result
           status="500"

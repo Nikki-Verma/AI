@@ -1,4 +1,4 @@
-import SlackIcon from "@/components/Icons/SlackIcon";
+import ConfluenceIcon from "@/components/Icons/ConfluenceIcon";
 import { UnknownObject } from "@/utils/types";
 import { Alert, Flex, Form, FormInstance, Input } from "antd";
 import { UploadDatasetFileContainer, UploadTypeDescription } from "./style";
@@ -25,7 +25,7 @@ const ConfluenceConfig = ({
           We'll create a data table that can be added to any tool or agent.
           Knowledge is used to provide context to the large language model.
         </UploadTypeDescription>
-        <SlackIcon />
+        <ConfluenceIcon />
       </Flex>
 
       <Form

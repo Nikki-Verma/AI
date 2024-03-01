@@ -1,5 +1,5 @@
+import ConfluenceIcon from "@/components/Icons/ConfluenceIcon";
 import DownIcon from "@/components/Icons/DownIcon";
-import SlackIcon from "@/components/Icons/SlackIcon";
 import { UnknownObject } from "@/utils/types";
 import { Flex, Form, FormInstance, Tree } from "antd";
 import {
@@ -46,7 +46,7 @@ const ConfluenceFiles = ({
           We'll create a data table that can be added to any tool or agent.
           Knowledge is used to provide context to the large language model.
         </UploadTypeDescription>
-        <SlackIcon />
+        <ConfluenceIcon />
       </Flex>
 
       <Form

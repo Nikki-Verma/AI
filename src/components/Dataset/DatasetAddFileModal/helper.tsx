@@ -1,4 +1,4 @@
-import SlackIcon from "@/components/Icons/SlackIcon";
+import ConfluenceIcon from "@/components/Icons/ConfluenceIcon";
 import { ReactNode } from "react";
 import {
   ConnectorsAvailableChannelType,
@@ -12,7 +12,7 @@ export const Data_Connectors_Available_Channels: ConnectorsAvailableChannelType[
       channelType: CONNECTOR_CHANNEL_TYPES.CONFLUENCE,
       name: "confluence",
       displayName: "Confluence",
-      imageUrl: <SlackIcon />,
+      imageUrl: <ConfluenceIcon />,
     },
   ];
 
@@ -24,6 +24,6 @@ export const ChannelTableDetails: {
 } = {
   [UploadFileType.CONFLUENCE_CONFIG]: {
     text: "Confluence",
-    icon: <SlackIcon style={{ height: "24px", width: "24px" }} />,
+    icon: <ConfluenceIcon style={{ height: "24px", width: "24px" }} />,
   },
 };

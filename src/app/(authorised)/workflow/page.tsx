@@ -169,7 +169,7 @@ const Workflow = () => {
       title: "Status",
       dataIndex: "pipeline_state",
       key: "pipeline_state",
-      width: 200,
+      width: 120,
       render: (val: WorkflowStatusType) =>
         val ? (
           <Tags
@@ -191,10 +191,10 @@ const Workflow = () => {
       title: "Model name",
       dataIndex: "model_detail",
       key: "model_name",
-      width: 200,
+      width: 150,
       render: (val: any) => (
         <Tooltip title={val?.model_name}>
-          <Text ellipsis style={{ width: 200 }}>
+          <Text ellipsis style={{ width: 150 }}>
             {val?.model_name || "--"}
           </Text>
         </Tooltip>
@@ -204,10 +204,10 @@ const Workflow = () => {
       title: "Model version",
       dataIndex: "model_detail",
       key: "model_version",
-      width: 200,
+      width: 150,
       render: (val: any) => (
         <Tooltip title={val?.model_version}>
-          <Text ellipsis style={{ width: 200 }}>
+          <Text ellipsis style={{ width: 150 }}>
             {val?.model_version || "--"}
           </Text>
         </Tooltip>
@@ -217,10 +217,10 @@ const Workflow = () => {
       title: "Knowledge base",
       dataIndex: "kb",
       key: "kb_name",
-      width: 200,
+      width: 150,
       render: (val: any) => (
         <Tooltip title={val?.kb_name}>
-          <Text ellipsis style={{ width: 200 }}>
+          <Text ellipsis style={{ width: 150 }}>
             {val?.kb_name || "--"}
           </Text>
         </Tooltip>
@@ -258,7 +258,7 @@ const Workflow = () => {
       dataIndex: "",
       align: "left",
       key: "actions",
-      width: 160,
+      width: 100,
       fixed: "right",
       render: (_: any, workflowData: UnknownObject) => {
         const completedItems: MenuProps["items"] = [
@@ -284,8 +284,8 @@ const Workflow = () => {
                   prefetch
                   href={`/workflow/playground/${workflowData?.pipeline_id}`}
                 >
-                  <Button type="primary" icon={<PlayCircleOutlined />}>
-                    Playground
+                  <Button block type="default" icon={<PlayCircleOutlined />}>
+                    Chat
                   </Button>
                 </Link>
                 <Dropdown
@@ -299,17 +299,14 @@ const Workflow = () => {
               </Space>
             ) : (
               <Space>
-                <Link
+                {/* <Link
                   prefetch
                   href={`/workflow/edit/${workflowData?.pipeline_id}`}
-                >
-                  <Button type="primary" icon={<EditOutlined />}>
-                    Continue Edit
-                  </Button>
-                </Link>
-                <MoreOutlined
-                  style={{ fontSize: "28px", fontWeight: "bold" }}
-                />
+                > */}
+                <Button block type="default" icon={<EditOutlined />}>
+                  Edit
+                </Button>
+                {/* </Link> */}
               </Space>
             )}
           </>
@@ -325,7 +322,6 @@ const Workflow = () => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: "24px",
         }}
       >
         <PageHeading
