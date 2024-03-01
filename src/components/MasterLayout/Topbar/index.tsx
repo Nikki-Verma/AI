@@ -1,11 +1,11 @@
 "use client";
 
 import { useAppStore } from "@/store";
-import { MenuOutlined } from "@ant-design/icons";
 import { Layout, Typography } from "antd";
 import dynamic from "next/dynamic";
-const TopbarHeading = dynamic(() => import("./TopbarHeading"), { ssr: false });
-const TopBarMenu = dynamic(() => import("./TopBarMenu"), { ssr: false });
+import { DashboardHeader } from "./style";
+const TopbarHeading = dynamic(() => import("./TopbarHeading"));
+const TopBarMenu = dynamic(() => import("./TopBarMenu"));
 const { Title, Text } = Typography;
 const { Header, Sider, Content } = Layout;
 
@@ -17,26 +17,11 @@ const Topbar = () => {
   };
 
   return (
-    <Header
-      style={{
-        display : 'flex',
-        justifyContent : 'space-between',
-        padding: "0 24px",
-        background: "#fff",
-        boxShadow: "0 3px 6px 0 rgba(0, 0, 0, 0.06)",
-        position: "fixed",
-        top: 0,
-        width: "100vw",
-        height: "64px",
-        lineHeight: "64px",
-        zIndex: 99,
-        overflow : 'hidden',
-      }}
-    >
+    <DashboardHeader>
       {/* <MenuOutlined onClick={toggleSiderFixed} /> */}
       <TopbarHeading />
       <TopBarMenu />
-    </Header>
+    </DashboardHeader>
   );
 };
 

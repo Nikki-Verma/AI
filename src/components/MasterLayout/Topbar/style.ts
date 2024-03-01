@@ -1,4 +1,23 @@
+import { Layout } from "antd";
 import { styled } from "styled-components";
+const { Header } = Layout;
+
+export const DashboardHeader = styled(Header)`
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 0 24px !important;
+  background: #fff !important;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.06) !important;
+  position: fixed !important;
+  top: 0 !important;
+  width: 100vw !important;
+  height: 64px !important;
+  line-height: 64px !important;
+  z-index: 99 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  font-family: var(--font-dm-sans) !important;
+`;
 
 export const PageHeader = styled.div`
   display: flex;
