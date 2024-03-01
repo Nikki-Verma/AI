@@ -25,7 +25,6 @@ import {
   Button,
   Col,
   Input,
-  Progress,
   Result,
   Row,
   Space,
@@ -46,7 +45,7 @@ import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateKnowledgeBaseModal from "../CreateKnowledgeBaseModal";
 
-import { KnowledgeBaseListContainer, ProgressBar } from "./style";
+import { KnowledgeBaseListContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -205,7 +204,7 @@ const KnowledgeBaseList = () => {
 
   return (
     <KnowledgeBaseListContainer>
-      <ProgressBar>
+      {/* <ProgressBar>
         <Progress percent={70} />
         <div
           style={{
@@ -250,7 +249,7 @@ const KnowledgeBaseList = () => {
             </a>
           </div>
         </div>
-      </ProgressBar>
+      </ProgressBar> */}
       {isError && (
         <Result
           status="500"
