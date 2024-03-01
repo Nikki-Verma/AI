@@ -20,6 +20,9 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { AgentStatus, AgentStatusType } from "../../constants";
 import { AgentEditContainer } from "./style";
 import { updateAgentApi } from "@/api/agents";
+import PipelineInfo from "@/components/PipelineInfo";
+import ChatBot from "@/components/ChatBot";
+import useChatStream from "@/Hooks/useChatStream";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
@@ -39,6 +42,38 @@ const AgentEdit = () => {
     filters,
   );
 
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading : isChatLoading,
+    setInput,
+    changeConversationLoading,
+    setChatConfig,
+    stopStream,
+    custAtrr,
+    setCustAtrr
+  } = useChatStream({
+    chatConfig: {
+      model: data?.result?.agent_name,
+      language_code: "EN",
+      source: "APP",
+      app_id: data?.result?.pipeline_id,
+      model_id: data?.result?.pipeline_id,
+    },
+  });
+
+  useEffect(()=>{
+    setChatConfig({
+      model: data?.result?.agent_name,
+      language_code: "EN",
+      source: "APP",
+      app_id: data?.result?.pipeline_id,
+      model_id: data?.result?.pipeline_id,
+    })
+  },[data])
+
   useEffect(() => {
     if (!isError && !isLoading) {
       if (data?.result?.agent_state === AgentStatus.COMPLETED) {
@@ -53,12 +88,10 @@ const AgentEdit = () => {
       // COMPLETED
       const currentStep =
         data?.result?.agent_state === AgentStatus.CREATED
+        || data?.result?.agent_state === AgentStatus.MODEL_ADDED 
+            || data?.result?.agent_state === AgentStatus.KB_ADDED 
+              || data?.result?.agent_state === AgentStatus.KB_SKIPPED
           ? 1
-          : data?.result?.agent_state === AgentStatus.MODEL_ADDED
-            ? 2
-            : data?.result?.agent_state === AgentStatus.KB_ADDED ||
-                data?.result?.agent_state === AgentStatus.KB_SKIPPED
-              ? 3
               : -1;
 
       if (currentStep === -1) {
@@ -69,43 +102,6 @@ const AgentEdit = () => {
     }
   }, [data, isError, isLoading]);
 
-  const items: StepsProps["items"] = [
-    {
-      title: "Agent Info",
-      icon: <FinishedIcon />,
-    },
-    {
-      title: "Select Model",
-      icon:
-        current === 1 ? (
-          <CurrentStepIcon />
-        ) : current > 1 ? (
-          <FinishedIcon />
-        ) : undefined,
-    },
-    {
-      title: "Knowledge Base",
-      icon:
-        current === 2 ? (
-          <CurrentStepIcon />
-        ) : current > 2 ? (
-          <FinishedIcon />
-        ) : current < 2 ? (
-          <UnvisitedStepIcon />
-        ) : undefined,
-    },
-    {
-      title: "Text & Launch",
-      icon:
-        current === 3 ? (
-          <CurrentStepIcon />
-        ) : current > 3 ? (
-          <FinishedIcon />
-        ) : current < 3 ? (
-          <UnvisitedStepIcon />
-        ) : undefined,
-    },
-  ];
 
   useLayoutEffect(() => {
     updateHeaderTitle("Edit Agent");
@@ -118,6 +114,8 @@ const AgentEdit = () => {
       const payload = {
         ...(data?.result || {}),
         ...values,
+        kb : values?.kb?.kb_name ? values?.kb : null,
+        tools : ['65df05b1f402ca4e373f940d'],
         agent_state: type,
         pipeline_id: agentId,
       };
@@ -144,90 +142,8 @@ const AgentEdit = () => {
     }
   };
 
-  const getCurrentStep = () => {
-    switch (current) {
-      case 1:
-        return (
-          <WorkflowInfo
-            details={data}
-            form={form}
-            onFininsh={(values) =>
-              updateAgent(values, AgentStatus.MODEL_ADDED)
-            }
-          />
-        );
-      case 2:
-        return (
-          <KnowledgebaseInfo
-            details={data}
-            form={form}
-            onFininsh={(values: any) =>
-              updateAgent(
-                { ...values, is_kb_attached: true },
-                AgentStatus.KB_ADDED,
-              )
-            }
-          />
-        );
-      case 3:
-        return null;
 
-      default:
-        return <FullScreenLoader />;
-    }
-  };
 
-  const getActionButtons = () => {
-    switch (current) {
-      case 1:
-        return (
-          <Row justify="end">
-            <Col>
-              <Button
-                type="primary"
-                onClick={form.submit}
-                loading={formSubmitting}
-              >
-                Next
-              </Button>
-            </Col>
-          </Row>
-        );
-
-      case 2:
-        return (
-          <Row justify="end">
-            <Col>
-              <Space>
-                <Button
-                  type="default"
-                  onClick={() =>
-                    updateAgent(
-                      { is_kb_attached: false },
-                      AgentStatus.KB_SKIPPED,
-                    )
-                  }
-                  disabled={formSubmitting}
-                >
-                  Skip knowledge base
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={form.submit}
-                  loading={formSubmitting}
-                >
-                  Next
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-        );
-      case 3:
-        return null;
-      default:
-        return null;
-    }
-  };
 
   if (isLoading) {
     return <FullScreenLoader />;
@@ -259,9 +175,37 @@ const AgentEdit = () => {
 
   return (
     <AgentEditContainer>
-      <Steps items={items} current={current} />
-      {getCurrentStep()}
-      {getActionButtons()}
+      <Row gutter={[16,20]}>
+        <Col span={12}>
+          <PipelineInfo
+            details={data}
+            form={form}
+            formSubmitting = {formSubmitting}
+            onFininsh={(values) =>
+              updateAgent(values, AgentStatus.MODEL_ADDED)
+            }
+            setCustAtrr = {setCustAtrr}
+            isChatLoading={isChatLoading}
+          />
+        </Col>
+        <Col span={12}>
+        {custAtrr?.model_detail?.model_name ?
+        <ChatBot
+          messages={messages}
+          changeConversationLoading={changeConversationLoading}
+          handleSubmit={handleSubmit}
+          handleInputChange={handleInputChange}
+          input={input}
+          setInput={setInput}
+          isLoading={isChatLoading}
+        />
+        :
+        <>
+        Please select a model to start testing
+        </>
+        }
+        </Col>
+      </Row>
     </AgentEditContainer>
   );
 };

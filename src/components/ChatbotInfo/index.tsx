@@ -14,6 +14,7 @@ import {
   Row,
   Select,
   Space,
+  Switch,
   Typography,
 } from "antd";
 import Image from "next/image";
@@ -63,7 +64,7 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
             <Col span={24}>
               <Row justify="space-between">
                 <Col>
-                  <WorkflowName>{details?.result?.pipeline_name}</WorkflowName>
+                  <WorkflowName>{details?.result?.pipeline_name ?? details?.result?.agent_name}</WorkflowName>
                 </Col>
                 <Col>
                   <EditIcon style={{ cursor: "no-drop" }} />
@@ -72,7 +73,7 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
             </Col>
             <Col>
               <WorkflowDescription>
-                {details?.result?.pipeline_description}
+                {details?.result?.pipeline_description ?? details?.result?.agent_description}
               </WorkflowDescription>
             </Col>
           </Row>
@@ -248,6 +249,15 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                     style={{ ...fullWidth }}
                     placeholder="Top P sampling"
                     precision={2} 
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item
+                    name={["model_detail", "model_parameters", "do_sample"]}
+                    label="DO sample"
+                  >
+                    <Switch
                     />
                   </Form.Item>
                 </Col>

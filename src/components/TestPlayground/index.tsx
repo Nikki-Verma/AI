@@ -40,7 +40,7 @@ const TestPlayground = ({
     stopStream,
   } = useChatStream({
     chatConfig: {
-      model: details?.result?.pipeline_name,
+      model: details?.result?.pipeline_name ?? details?.result?.agent_name,
       language_code: "EN",
       source: "APP",
       app_id: details?.result?.pipeline_id,
