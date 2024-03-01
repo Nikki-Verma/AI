@@ -99,18 +99,18 @@ export const items: any = [
     url: "/playground",
     icon: <PlaygroundIcon />,
   },
-  // {
-  //   id: 100,
-  //   label: (
-  //     <Link prefetch href="/agents">
-  //       <Text style={{ color: "inherit" }}>Agents</Text>
-  //     </Link>
-  //   ),
-  //   key: "agents",
-  //   keyPath: ["agents"],
-  //   url: "/agents",
-  //   icon: <AgentsIcon />,
-  // },
+  {
+    id: 100,
+    label: (
+      <Link prefetch href="/agents">
+        <Text style={{ color: "inherit" }}>Agents</Text>
+      </Link>
+    ),
+    key: "agents",
+    keyPath: ["agents"],
+    url: "/agents",
+    icon: <AgentsIcon />,
+  },
   {
     id: 100,
     label: (
