@@ -2,10 +2,10 @@
 
 import { useAppStore } from "@/store";
 import { Layout, Typography } from "antd";
-import dynamic from "next/dynamic";
 import { DashboardHeader } from "./style";
-const TopbarHeading = dynamic(() => import("./TopbarHeading"));
-const TopBarMenu = dynamic(() => import("./TopBarMenu"));
+import TopbarHeading from "./TopbarHeading";
+import TopBarMenu from "./TopBarMenu";
+
 const { Title, Text } = Typography;
 const { Header, Sider, Content } = Layout;
 

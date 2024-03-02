@@ -1,10 +1,8 @@
 "use client";
 
-import NotificationIcon from "@/components/Icons/NotificationIcon";
 import { userCredentialsFromName } from "@/utils/helperFunction";
 import { Dropdown, MenuProps, Typography } from "antd";
 import { signOut, useSession } from "next-auth/react";
-import WalletIcon from "../../Icons/WalletIcon";
 import { IconContainer, TopBarMenuContainer } from "./style";
 
 const { Link } = Typography;
@@ -24,7 +22,7 @@ const TopBarMenu = () => {
 
   return (
     <TopBarMenuContainer>
-      <div
+      {/* <div
         style={{
           display: "flex",
           gap: "10px",
@@ -38,7 +36,7 @@ const TopBarMenu = () => {
       </div>
       <IconContainer>
         <NotificationIcon />
-      </IconContainer>
+      </IconContainer> */}
       <Dropdown menu={{ items }} placement="bottomLeft" trigger={["click"]}>
         <IconContainer>
           {userCredentialsFromName(session?.user?.details?.name)}
