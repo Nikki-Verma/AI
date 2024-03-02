@@ -14,7 +14,7 @@ import {
 } from "antd";
 import { useState } from "react";
 import { embeddingModelsOptions, vectorDbOptions } from "./constant";
-import { RadioOptionContainer } from "./style";
+import { KbSettingsLabel, RadioOptionContainer } from "./style";
 
 const { Text, Paragraph } = Typography;
 interface CreateKnowledgeBaseFormProps {
@@ -75,7 +75,7 @@ const CreateKnowledgeBaseForm = ({
         <Col span={24}>
           <Form.Item
             name="kb_setting"
-            label="Knowledge Base Setting"
+            label={<KbSettingsLabel>Knowledge Base Setting</KbSettingsLabel>}
             rules={[
               {
                 required: true,

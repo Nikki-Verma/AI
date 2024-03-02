@@ -1,8 +1,10 @@
 import _authHttp from "@/services/_http";
 import { getErrorFromApi } from "@/utils/helperFunction";
+import { UnknownObject } from "@/utils/types";
 import {
   useMutation,
   useQuery,
+  useQueryClient,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
@@ -39,12 +41,14 @@ export const useFetchData = (
   params: Params = {},
   headers: Headers = {},
   enabled: boolean = true,
+  fetchKey: string = "",
 ): UseQueryResult<any, unknown> => {
   const { data }: any = useSession();
 
   const queryOptions: UseQueryOptions<any, unknown> = {
     queryKey: [
       "customFetch",
+      fetchKey,
       url,
       params,
       headers,
@@ -58,16 +62,53 @@ export const useFetchData = (
   return useQuery(queryOptions);
 };
 
-export const useMutate = (key: string[], url: string, config: any = {}) => {
-  const defaultConfig = {
-    "X-User": 0,
-  };
+const postData = async (
+  url: string,
+  payload: UnknownObject,
+  params: Params,
+  headers: Headers,
+): Promise<any> => {
+  try {
+    const response: AxiosResponse = await _authHttp.post(url, payload, {
+      params,
+      headers,
+    });
 
+    return response.data;
+  } catch (error: any) {
+    throw new Error(getErrorFromApi(error));
+  }
+};
+
+export const usePostData = (key: string[], queryKeys: string[] = []) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: key,
-    mutationFn: async () => {
-      const response = await fetch(url, { ...defaultConfig, ...config });
-      return await response.json();
+    mutationFn: async ({
+      url,
+      payload = {},
+      params = {},
+      headers = {},
+    }: {
+      url: string;
+      payload: UnknownObject;
+      params?: Params;
+      headers?: Headers;
+    }) => {
+      try {
+        const response: AxiosResponse = await postData(
+          url,
+          payload,
+          params,
+          headers,
+        );
+        return response;
+      } catch (error: any) {
+        throw new Error(getErrorFromApi(error));
+      }
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [...queryKeys] });
     },
   });
 };

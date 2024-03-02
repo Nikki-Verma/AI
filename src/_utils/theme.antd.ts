@@ -1,7 +1,7 @@
 export const PRIMARY_BRAND_COLOR = "#602EDF";
 export const PRIMARY_ACTIVE_BRAND_COLOR = "#3A1C86";
 export const DEFAULT_BUTTON_HOVER = "#E8DDFF";
-export const LAYOUT_BG_COLOR = "#F6F8F8";
+export const LAYOUT_BG_COLOR = "#fff";
 export const TERTIARY_LAYOUT_BG_COLOR = "#F3F5FB";
 export const TEXT_HOVER_BG_COLOR = "#F9F9FF";
 export const LINK_COLOR = "#722ED1";

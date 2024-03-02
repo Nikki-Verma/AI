@@ -44,10 +44,10 @@ import {
   TableRowSelection,
 } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import ImportFilesFromDatasetModal from "../ImportFilesFromDatasetModal";
-import KnowledgebasePlaygroundDrawer from "../KnowledgebasePlaygroundDrawer";
 
 import { KnowledgeBaseDetailsContainer } from "./style";
 const { Text } = Typography;
@@ -301,14 +301,16 @@ const KnowledgeBaseDetails = (props: any) => {
                 >
                   Import from Dataset
                 </Button>
-                <Button
-                  size="middle"
-                  type="default"
-                  icon={<PlayCircleOutlined />}
-                  onClick={toggleKbPlayground}
-                >
-                  Knowledge base playground
-                </Button>
+                <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
+                  <Button
+                    size="middle"
+                    type="default"
+                    icon={<PlayCircleOutlined />}
+                    onClick={toggleKbPlayground}
+                  >
+                    Knowledge base playground
+                  </Button>
+                </Link>
               </Space>
             </Col>
           </Row>
@@ -339,11 +341,6 @@ const KnowledgeBaseDetails = (props: any) => {
         onClose={toggleAddFileModal}
         addFilesHandler={addFilesHandler}
         knowledgebaseId={knowledgebaseId}
-      />
-      <KnowledgebasePlaygroundDrawer
-        open={displayKbPlayground}
-        onClose={toggleKbPlayground}
-        kbDetails={knowledgebaseConfig?.result?.[0] || {}}
       />
     </KnowledgeBaseDetailsContainer>
   );
