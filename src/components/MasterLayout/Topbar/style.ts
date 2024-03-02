@@ -1,7 +1,7 @@
-import { Layout } from "antd";
+import { Layout, Typography } from "antd";
 import { styled } from "styled-components";
 const { Header } = Layout;
-
+const { Text } = Typography;
 export const DashboardHeader = styled(Header)`
   display: flex !important;
   justify-content: space-between !important;
@@ -21,7 +21,8 @@ export const DashboardHeader = styled(Header)`
 
 export const PageHeader = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   width: max-content;
   height: 100%;
   justify-content: center;
@@ -66,4 +67,29 @@ export const IconContainer = styled.div`
   font-weight: 500;
   line-height: 24px; /* 200% */
   letter-spacing: 0.12px;
+`;
+
+export const BetaTag = styled.div`
+  display: flex;
+  padding: 2px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid var(--blue-purple-600, #602edf);
+  background: #fff;
+
+  /* drop-shadow/button-secondary */
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+`;
+
+export const BetaTagTitle = styled(Text)`
+  color: var(--New-Main-Color, #602edf) !important;
+  text-align: center;
+  font-family: "DM Sans";
+  font-size: 12px !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 183.333% */
 `;

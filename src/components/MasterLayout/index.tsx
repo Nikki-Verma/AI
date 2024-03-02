@@ -4,7 +4,6 @@ import useAuthorization from "@/Hooks/useAuthorization";
 import { useAppStore } from "@/store";
 import { Layout, Menu, Typography } from "antd";
 import useToken from "antd/es/theme/useToken";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import CollapseSiderIcon from "../Icons/CollapseSiderIcon";
 import ExpandSiderIcon from "../Icons/ExpandSiderIcon";
@@ -83,20 +82,6 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
           width={195}
           collapsedWidth={65}
         >
-          <div className={styles.logo_container}>
-            <Image
-              src="/assets/Logos/simplaiLogo.svg"
-              width={38}
-              height={38}
-              style={{
-                margin: "16px 10px",
-              }}
-              alt="SimplAI"
-            />
-            <Title level={3} style={{ color: token.colorPrimary }}>
-              SimplAI
-            </Title>
-          </div>
           <Menu
             theme="light"
             mode="inline"
@@ -106,7 +91,7 @@ const MasterLayout = ({ children }: { children: React.ReactNode }) => {
             openKeys={openItemKey}
             style={{
               overflow: "auto",
-              height: "calc(100% - 120px)",
+              height: "calc(100% - 46px)",
             }}
             items={menuItems}
             onOpenChange={handleOpenChange}
