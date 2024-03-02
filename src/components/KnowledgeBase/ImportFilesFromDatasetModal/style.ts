@@ -1,4 +1,4 @@
-import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
+import { PRIMARY_BRAND_COLOR, TEXT_HOVER_BG_COLOR } from "@/_utils/theme.antd";
 import { Card, CardProps, Typography } from "antd";
 import { styled } from "styled-components";
 
@@ -6,6 +6,7 @@ const { Text } = Typography;
 
 interface RadioOptionContainerProps extends CardProps {
   checked: boolean;
+  disabled: boolean;
 }
 
 export const PreviewSection = styled.div`
@@ -29,21 +30,18 @@ export const RadioOptionContainer = styled(Card)<RadioOptionContainerProps>`
         return `1.5px solid transparent`;
     }
   }};
-  background: ${(props: any) => {
-    switch (props.checked) {
+  margin: 6px 0 !important;
+  cursor: ${(props: any) => {
+    switch (props.disabled) {
       case true:
-        return `rgb(249, 249, 255) !important`;
+        return `no-drop`;
       case false:
-        return `inherit`;
+        return `pointer`;
       default:
-        return `inherit`;
+        return `pointer`;
     }
   }};
-  width: 100%;
-  margin: 6px 0 !important;
-
   &:hover {
-    background: rgb(249, 249, 255) !important;
-    box-shadow: 0.2px 0.2px 0.5px;
+    background: ${TEXT_HOVER_BG_COLOR};
   }
 `;

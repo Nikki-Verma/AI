@@ -1,5 +1,6 @@
 import { getFileChunksApi } from "@/api/knowledgebase";
-import ChunkPreview from "@/components/ChunkPreview";
+import ChunksPreview from "@/components/ChunksPreview";
+import KbDefaultIcon from "@/components/Icons/KbDefaultIcon";
 import { nonZeroPositiveInteger } from "@/utils/regex";
 import { UnknownObject } from "@/utils/types";
 import {
@@ -16,6 +17,11 @@ import {
 } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import {
+  KbSettingsIconsContainer,
+  KbSettingsRadioDescription,
+  KbSettingsRadioTitle,
+} from "../CreateKnowledgeBaseForm/style";
 
 import { PreviewSection, PreviewTitle, RadioOptionContainer } from "./style";
 
@@ -99,7 +105,7 @@ const ImportDatasetFilesConfig = ({
 
   return (
     <Row gutter={[20, 20]}>
-      <Col span={24} md={14}>
+      <Col span={24} md={10}>
         <Form
           form={form}
           preserve={false}
@@ -131,18 +137,42 @@ const ImportDatasetFilesConfig = ({
                           form.getFieldValue("chunk_setting") === "AUTOMATIC"
                         }
                         size="small"
+                        disabled={chunkLoading}
+                        onClick={() => {
+                          form.getFieldValue("chunk_setting") === "AUTOMATIC" ||
+                          chunkLoading
+                            ? null
+                            : form.setFields([
+                                {
+                                  name: "chunk_setting",
+                                  value: "AUTOMATIC",
+                                  errors: [],
+                                },
+                              ]);
+                          setFormUpdated((prev: boolean) => !prev);
+                        }}
                       >
-                        <Radio
-                          value="AUTOMATIC"
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
-                          <Flex gap="6px" vertical>
-                            <Text>Automatic</Text>
-                            <Paragraph style={{ margin: 0 }}>
-                              Automatically set chunk and pre-processing rules.
-                            </Paragraph>
+                        <Flex gap="24px" align="center" justify="space-between">
+                          <Flex align="center" gap="12px">
+                            <KbSettingsIconsContainer>
+                              <KbDefaultIcon />
+                            </KbSettingsIconsContainer>
+                            <Flex gap="2px" vertical>
+                              <KbSettingsRadioTitle>
+                                Automatic
+                              </KbSettingsRadioTitle>
+                              <KbSettingsRadioDescription>
+                                Automatically establishing chunk and
+                                preprocessing rules is advisable for users who
+                                are not familiar with them.
+                              </KbSettingsRadioDescription>
+                            </Flex>
                           </Flex>
-                        </Radio>
+                          <Radio
+                            value="AUTOMATIC"
+                            style={{ display: "flex", alignItems: "center" }}
+                          ></Radio>
+                        </Flex>
                       </RadioOptionContainer>
                     </Col>
                     <Col span={24}>
@@ -151,18 +181,41 @@ const ImportDatasetFilesConfig = ({
                           form.getFieldValue("chunk_setting") === "MANUAL"
                         }
                         size="small"
+                        disabled={chunkLoading}
+                        onClick={() => {
+                          form.getFieldValue("chunk_setting") === "MANUAL" ||
+                          chunkLoading
+                            ? null
+                            : form.setFields([
+                                {
+                                  name: "chunk_setting",
+                                  value: "MANUAL",
+                                  errors: [],
+                                },
+                              ]);
+                          setFormUpdated((prev: boolean) => !prev);
+                        }}
                       >
-                        <Radio
-                          value="MANUAL"
-                          style={{ display: "flex", alignItems: "center" }}
-                        >
-                          <Flex gap="6px" vertical>
-                            <Text>Manual</Text>
-                            <Paragraph style={{ margin: 0 }}>
-                              Customize chunk size, preprocessing rules, etc.
-                            </Paragraph>
+                        <Flex gap="24px" align="center" justify="space-between">
+                          <Flex align="center" gap="12px">
+                            <KbSettingsIconsContainer>
+                              <KbDefaultIcon />
+                            </KbSettingsIconsContainer>
+                            <Flex gap="2px" vertical>
+                              <KbSettingsRadioTitle>
+                                Manual
+                              </KbSettingsRadioTitle>
+                              <KbSettingsRadioDescription>
+                                Manually set chunk and preprocessing rules.
+                                Unfamiliar users are recommended to select.
+                              </KbSettingsRadioDescription>
+                            </Flex>
                           </Flex>
-                        </Radio>
+                          <Radio
+                            value="MANUAL"
+                            style={{ display: "flex", alignItems: "center" }}
+                          ></Radio>
+                        </Flex>
                       </RadioOptionContainer>
                     </Col>
                   </Row>
@@ -171,7 +224,7 @@ const ImportDatasetFilesConfig = ({
             </Col>
             {form.getFieldValue("chunk_setting") === "MANUAL" && (
               <>
-                <Col span={24} md={8}>
+                <Col span={24}>
                   <Form.Item
                     name="segment_identifier"
                     label="Segment Identifier"
@@ -185,7 +238,7 @@ const ImportDatasetFilesConfig = ({
                     <Input placeholder="Enter segment identifier"></Input>
                   </Form.Item>
                 </Col>
-                <Col span={24} md={8}>
+                <Col span={24} md={12}>
                   <Form.Item
                     name="chunk_size"
                     label="Chunk size"
@@ -217,7 +270,7 @@ const ImportDatasetFilesConfig = ({
                     ></InputNumber>
                   </Form.Item>
                 </Col>
-                <Col span={24} md={8}>
+                <Col span={24} md={12}>
                   <Form.Item
                     name="chunk_overlap"
                     label="Chunk overlap"
@@ -253,10 +306,10 @@ const ImportDatasetFilesConfig = ({
           </Row>
         </Form>
       </Col>
-      <Col span={24} md={10}>
+      <Col span={24} md={14}>
         <PreviewSection>
           <PreviewTitle strong>Chunk Preview</PreviewTitle>
-          <ChunkPreview chunks={chunks} loading={chunkLoading} />
+          <ChunksPreview chunks={chunks} loading={chunkLoading} />
         </PreviewSection>
       </Col>
     </Row>

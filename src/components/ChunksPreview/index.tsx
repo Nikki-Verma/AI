@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Col,
+  Flex,
   Modal,
   Result,
   Row,
@@ -11,16 +12,16 @@ import {
 } from "antd";
 import { useState } from "react";
 import MarkdownComponent from "../Markdown";
-import { ChunkPreviewContainer } from "./style";
+import { ChunkCount, ChunkPreview, ChunkPreviewContainer } from "./style";
 
-const { Paragraph } = Typography;
+const { Paragraph, Text } = Typography;
 
 type ChunkPreviewProps = {
   chunks: string[];
   loading?: boolean;
 };
 
-const ChunkPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
+const ChunksPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChunk, setSelectedChunk] = useState("");
 
@@ -41,17 +42,20 @@ const ChunkPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
       ) : chunks?.length > 0 ? (
         chunks?.map((chunk: string) => (
           <>
-            <Card
-              size="small"
+            <ChunkPreview
               key={chunk}
-              hoverable
               onClick={() => {
                 setIsModalOpen(true);
                 setSelectedChunk(chunk);
               }}
             >
               <Paragraph ellipsis={{ rows: 2 }}>{chunk}</Paragraph>
-            </Card>
+              <Flex justify="flex-end">
+                <ChunkCount
+                  disabled
+                >{`${chunk?.length} characters`}</ChunkCount>
+              </Flex>
+            </ChunkPreview>
           </>
         ))
       ) : (
@@ -99,4 +103,4 @@ const ChunkPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
   );
 };
 
-export default ChunkPreview;
+export default ChunksPreview;
