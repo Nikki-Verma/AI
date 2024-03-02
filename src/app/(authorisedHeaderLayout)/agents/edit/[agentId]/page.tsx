@@ -119,7 +119,7 @@ const AgentEdit = () => {
         ...(data?.result || {}),
         ...values,
         kb : values?.kb?.kb_name ? values?.kb : null,
-        tools : ['65df05b1f402ca4e373f940d'],
+        // tools : ['65df05b1f402ca4e373f940d'],
         agent_state: type,
         pipeline_id: agentId,
       };
@@ -134,7 +134,7 @@ const AgentEdit = () => {
           message: "Agent successfully Published",
           description: "Now you can proceed with integration with several apps",
         });
-        // setIntegrateAgentModalOpen(true)
+        setIntegrateAgentModalOpen(true)
         // router.push(`/agents/view/${agentId}`);
       }
     } catch (error) {
