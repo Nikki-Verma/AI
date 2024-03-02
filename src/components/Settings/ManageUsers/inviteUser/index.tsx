@@ -24,9 +24,9 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
     { roles: form.getFieldValue("role_id") },
     {},
     !!form.getFieldValue("role_name")
-    );
+  );
 
-  console.log('data',data)
+  console.log("data", data);
 
   console.log(inviteDataUser, "inviteDataUserinviteDataUser");
 
@@ -67,7 +67,7 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
           form={form}
           layout="vertical"
           preserve={false}
-          onValuesChange={() => setformUpdated((prev:boolean) => !prev)}
+          onValuesChange={() => setformUpdated((prev: boolean) => !prev)}
         >
           <Form.Item
             name="user_full_name"
@@ -104,6 +104,33 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
           <Form.Item name="role_id" hidden>
             <Input />
           </Form.Item>
+
+          {Object.keys(data?.result).length > 0 && (
+            <Form.Item name="role_name" label="Accessible Permissions">
+              {Object.keys(data?.result)?.map((items: any) => {
+                console.log(data?.result[items], 'itemsitems');
+                return (
+                  <Select
+                    // key={roleName?.name}
+                    //   defaultValue={{ value: 'Please select user role', label: 'Lucy (101)' }}
+                    optionFilterProp="label"
+                    style={{ width: "100%" }}
+                    onChange={roleDefine}
+                    placeholder="Please select user role"
+                    value={data?.result[items].role_name}
+                    // options={
+                    //   inviteDataUser?.result?.map((data: any) => ({
+                    //     label: data?.name,
+                    //     value: data?.name,
+                    //     ...data,
+                    //   })) || []
+                    // }
+                  />
+                );
+              })}
+            </Form.Item>
+          )}
+          
         </Form>
       </Drawer>
     </>
