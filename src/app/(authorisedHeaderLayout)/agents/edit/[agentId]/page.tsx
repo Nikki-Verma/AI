@@ -23,6 +23,7 @@ import { updateAgentApi } from "@/api/agents";
 import PipelineInfo from "@/components/PipelineInfo";
 import ChatBot from "@/components/ChatBot";
 import useChatStream from "@/Hooks/useChatStream";
+import IntegrateModal from "@/components/IntegrateModal";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
@@ -35,8 +36,11 @@ const AgentEdit = () => {
   const { updateHeaderTitle } = useAppStore();
   const { agentId } = useParams();
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [agentPublishing,setAgentPublishing] = useState(false)
+  const [formValues,setFormValues] = useState()
   const [filters, setFilters] = useState(initialFilters());
   const [current, setCurrent] = useState(-1);
+  const [integrateAgentModalOpen,setIntegrateAgentModalOpen] = useState(false)
   const { data, isError, error, isLoading, refetch } = useFetchData(
     `${config.agents.details}/${agentId}`,
     filters,
@@ -76,9 +80,6 @@ const AgentEdit = () => {
 
   useEffect(() => {
     if (!isError && !isLoading) {
-      if (data?.result?.agent_state === AgentStatus.COMPLETED) {
-        router.push(`/agents/view/${agentId}`);
-      }
       //   CREATED,
       // MODEL_ADDED,
       // KB_ADDED,
@@ -88,11 +89,10 @@ const AgentEdit = () => {
       // COMPLETED
       const currentStep =
         data?.result?.agent_state === AgentStatus.CREATED
-        || data?.result?.agent_state === AgentStatus.MODEL_ADDED 
-            || data?.result?.agent_state === AgentStatus.KB_ADDED 
-              || data?.result?.agent_state === AgentStatus.KB_SKIPPED
-          ? 1
-              : -1;
+        || data?.result?.agent_state === AgentStatus.MODEL_ADDED
+        || data?.result?.agent_state === AgentStatus.COMPLETED
+          ? 1 : 
+            -1;
 
       if (currentStep === -1) {
         router.push(`/agents`);
@@ -109,7 +109,11 @@ const AgentEdit = () => {
 
   const updateAgent = async (values: any, type: AgentStatusType) => {
     try {
-      setFormSubmitting(true);
+      if(type === AgentStatus.COMPLETED){
+        setAgentPublishing(true)
+      }else{
+        setFormSubmitting(true);
+      }
 
       const payload = {
         ...(data?.result || {}),
@@ -127,10 +131,11 @@ const AgentEdit = () => {
       }
       if (type === AgentStatus.COMPLETED) {
         notification.success({
-          message: "Agent successfully created",
+          message: "Agent successfully Published",
           description: "Now you can proceed with integration with several apps",
         });
-        router.push(`/agents/view/${agentId}`);
+        // setIntegrateAgentModalOpen(true)
+        // router.push(`/agents/view/${agentId}`);
       }
     } catch (error) {
       notification.error({
@@ -139,6 +144,7 @@ const AgentEdit = () => {
       });
     } finally {
       setFormSubmitting(false);
+      setAgentPublishing(false)
     }
   };
 
@@ -186,10 +192,28 @@ const AgentEdit = () => {
             }
             setCustAtrr = {setCustAtrr}
             isChatLoading={isChatLoading}
+            setFormValues = {setFormValues}
           />
         </Col>
         <Col span={12}>
         {custAtrr?.model_detail?.model_name ?
+        <div>
+          <Row justify="end" style={{width : '100%',marginBottom : '20px'}}>
+          <Col>
+            <Button
+              type="primary"
+              onClick={()=>{
+                updateAgent(formValues,AgentStatus.COMPLETED)
+              }}
+              loading={agentPublishing}
+              disabled = {isChatLoading}
+            >
+              Save and publish
+            </Button>
+          </Col>
+        </Row>
+        
+        <div style={{overflowY : 'auto',height : 'calc(100vh - 155px)'}}>
         <ChatBot
           messages={messages}
           changeConversationLoading={changeConversationLoading}
@@ -199,6 +223,8 @@ const AgentEdit = () => {
           setInput={setInput}
           isLoading={isChatLoading}
         />
+        </div>
+        </div>
         :
         <>
         Please select a model to start testing
@@ -206,6 +232,11 @@ const AgentEdit = () => {
         }
         </Col>
       </Row>
+      <IntegrateModal
+      open = {integrateAgentModalOpen}
+      setIsOpen = {setIntegrateAgentModalOpen}
+      details = {data}
+      />
     </AgentEditContainer>
   );
 };
