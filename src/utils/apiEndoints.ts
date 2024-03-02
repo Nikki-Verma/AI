@@ -8,6 +8,7 @@ const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 const __CHANNEL_AGGREGATOR_BASE_URL__ =
   process.env.NEXT_PUBLIC_CHANNEL_AGGREGATOR_BASE_URL;
 const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL
+
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
   model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
@@ -16,6 +17,7 @@ export const BASE_URLS = {
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
   intract: __INTRACT_BASE_URL__,
   agents : __AGENT_BASE_URL__,
+  
 };
 
 const config = {
@@ -37,6 +39,8 @@ const config = {
     updatePassword: `${BASE_URLS.identity}/password/update`,
     authenticateEmail: `${BASE_URLS.identity}/authenticate/email`,
     resendOTP: `${BASE_URLS.identity}/authenticate/resend_otp`,
+    userRole: `${__EDGE_URL__}/authorize/user/role`,
+    userPermissionRole: `${__EDGE_URL__}/authorize/role/permissions`,
   },
   intract: {
     initiateConversation: `${BASE_URLS.intract}/api/v1/intract/conversation`,
