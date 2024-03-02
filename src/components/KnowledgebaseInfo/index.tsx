@@ -46,15 +46,14 @@ const KnowledgebaseInfo = ({
 
   return (
     <Row gutter={[6, 20]}>
-      <Col>
+      <Col span={24}>
         <KnowledgebaseInfoFormContainer>
           <KnowledgebaseInfoFormTitle>
             Knowledge base
           </KnowledgebaseInfoFormTitle>
           <KnowledgebaseInfoFormDescription>
-            The knowledge base serves as a repository of structured or
-            unstructured information that an AI system can access to enhance its
-            understanding and generate informed responses.
+            Database of facts and information the AI searches to enrich
+            responses with accurate and relevant content.
           </KnowledgebaseInfoFormDescription>
           <Form
             preserve={false}

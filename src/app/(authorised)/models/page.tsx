@@ -23,7 +23,7 @@ import {
 } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Heading, SearchInpuContainer } from "./style";
+import { Heading, RadioButton, SearchInpuContainer } from "./style";
 
 const { Title } = Typography;
 
@@ -154,8 +154,8 @@ const Models = () => {
         size="large"
         buttonStyle="solid"
       >
-        <Radio.Button value="OPEN">Open Source</Radio.Button>
-        <Radio.Button value="CLOSED">Closed Source</Radio.Button>
+        <RadioButton value="OPEN">Open Source</RadioButton>
+        <RadioButton value="CLOSED">Closed Source</RadioButton>
       </Radio.Group>
       <SearchInpuContainer>
         <Row gutter={[12, 12]}>

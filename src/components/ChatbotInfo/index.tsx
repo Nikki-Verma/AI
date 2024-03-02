@@ -21,6 +21,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EditIcon from "../Icons/EditIcon";
+import InfoIconTooltip from "../InfoIconTooltip";
 import {
   AdvancedOptionsContainer,
   SelectOptionDescription,
@@ -64,7 +65,10 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
             <Col span={24}>
               <Row justify="space-between">
                 <Col>
-                  <WorkflowName>{details?.result?.pipeline_name ?? details?.result?.agent_name}</WorkflowName>
+                  <WorkflowName>
+                    {details?.result?.pipeline_name ??
+                      details?.result?.agent_name}
+                  </WorkflowName>
                 </Col>
                 <Col>
                   <EditIcon style={{ cursor: "no-drop" }} />
@@ -73,7 +77,8 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
             </Col>
             <Col>
               <WorkflowDescription>
-                {details?.result?.pipeline_description ?? details?.result?.agent_description}
+                {details?.result?.pipeline_description ??
+                  details?.result?.agent_description}
               </WorkflowDescription>
             </Col>
           </Row>
@@ -83,9 +88,8 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
         <WorkflowInfoFormContainer>
           <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
           <WorkflowInfoFormDescription>
-            The knowledge base serves as a repository of structured or
-            unstructured information that an AI system can access to enhance its
-            understanding and generate informed responses.
+            Select the core AI that generates text, using retrieved information
+            to enhance accuracy and creativity.
           </WorkflowInfoFormDescription>
           <Form
             preserve={false}
@@ -193,7 +197,12 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "temp"]}
-                    label="Temperature"
+                    label={
+                      <Space>
+                        <Text>Temperature</Text>
+                        <InfoIconTooltip title="Controls creativity of outputs. Low values make text predictable; high values increase novelty and diversity. Example: 0.1 (very predictable) vs 1.0 (highly creative, but possibly nonsensical.)." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -207,19 +216,33 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "top_k"]}
-                    label="Top K sampling"
+                    label={
+                      <Space>
+                        <Text>Top K sampling</Text>
+                        <InfoIconTooltip title="Limits the model to consider only the top k predictions, enhancing relevance and coherence. Example: 0.1 (very restrictive, less diverse) vs 1.0 (more options considered, greater diversity)." />
+                      </Space>
+                    }
                   >
-                    <InputNumber 
-                    style={{...fullWidth}}
-                    placeholder="Top K sampling"
-                    precision = {0}
+                    <InputNumber
+                      style={{ ...fullWidth }}
+                      placeholder="Top K sampling"
+                      precision={0}
                     />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item
-                    name={["model_detail", "model_parameters", "repeat_penalty"]}
-                    label="Repeat penalty"
+                    name={[
+                      "model_detail",
+                      "model_parameters",
+                      "repeat_penalty",
+                    ]}
+                    label={
+                      <Space>
+                        <Text>Repeat penalty</Text>
+                        <InfoIconTooltip title="Reduces likelihood of repeating the same words or phrases. Higher values decrease repetitions, making text more diverse." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -231,7 +254,12 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "min_p"]}
-                    label="Min P sampling"
+                    label={
+                      <Space>
+                        <Text>Min P sampling</Text>
+                        <InfoIconTooltip title="Minimum probability cutoff to consider a word for selection, filtering out less likely options. Helps balance creativity and relevance." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -243,12 +271,17 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "top_p"]}
-                    label="Top P sampling"
+                    label={
+                      <Space>
+                        <Text>Top P sampling</Text>
+                        <InfoIconTooltip title="Sets the threshold for selecting most likely words. Lower values increase focus, higher values allow more variety. Example: 0.8 (focused) vs 0.95 (varied)." />
+                      </Space>
+                    }
                   >
-                    <InputNumber 
-                    style={{ ...fullWidth }}
-                    placeholder="Top P sampling"
-                    precision={2} 
+                    <InputNumber
+                      style={{ ...fullWidth }}
+                      placeholder="Top P sampling"
+                      precision={2}
                     />
                   </Form.Item>
                 </Col>
@@ -257,8 +290,7 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                     name={["model_detail", "model_parameters", "do_sample"]}
                     label="DO sample"
                   >
-                    <Switch
-                    />
+                    <Switch />
                   </Form.Item>
                 </Col>
               </Row>

@@ -299,14 +299,14 @@ const Workflow = () => {
               </Space>
             ) : (
               <Space>
-                {/* <Link
+                <Link
                   prefetch
                   href={`/workflow/edit/${workflowData?.pipeline_id}`}
-                > */}
-                <Button block type="default" icon={<EditOutlined />}>
-                  Edit
-                </Button>
-                {/* </Link> */}
+                >
+                  <Button block type="default" icon={<EditOutlined />}>
+                    Edit
+                  </Button>
+                </Link>
               </Space>
             )}
           </>

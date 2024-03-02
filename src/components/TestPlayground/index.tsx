@@ -105,6 +105,7 @@ const TestPlayground = ({
             input={input}
             setInput={setInput}
             isLoading={isLoading}
+            stopStream={stopStream}
           />
         </div>
         <div style={{ height: "100%", width: "25%" }}>

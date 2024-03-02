@@ -190,7 +190,8 @@ const theme = {
       colorSuccess: LINK_COLOR,
     },
     Tooltip: {
-      colorBgSpotlight: PRIMARY_ACTIVE_BRAND_COLOR,
+      colorBgSpotlight: TEXT_HOVER_BG_COLOR,
+      colorTextLightSolid: DARK_TEXT_COLOR,
     },
     Tree: {
       directoryNodeSelectedBg: LINK_COLOR,

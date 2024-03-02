@@ -17,13 +17,14 @@ import {
   Switch,
   Typography,
 } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import EditIcon from "../Icons/EditIcon";
+import InfoIconTooltip from "../InfoIconTooltip";
 import {
   AdvancedOptionsContainer,
-  KnowledgebaseInfoFormContainer,
   KnowledgebaseInfoFormDescription,
   KnowledgebaseInfoFormTitle,
   PipelineCardContainer,
@@ -36,107 +37,130 @@ import {
   WorkflowInfoFormTitle,
   WorkflowName,
 } from "./style";
-import TextArea from "antd/es/input/TextArea";
 
 const { Text } = Typography;
 const fullWidth = { width: "100%" };
 
 type AgentInfoProps = {
   details: UnknownObject | undefined | null;
-  formSubmitting : boolean;
+  formSubmitting: boolean;
   form: FormInstance;
   onFininsh: (values: any) => void;
-  setCustAtrr:(values: any) => void;
-  isChatLoading : boolean;
-  setFormValues ?:(values: any) => void
+  setCustAtrr: (values: any) => void;
+  isChatLoading: boolean;
+  setFormValues?: (values: any) => void;
 };
 
-const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isChatLoading ,setFormValues}: AgentInfoProps) => {
+const PipelineInfo = ({
+  details,
+  formSubmitting,
+  form,
+  setCustAtrr,
+  onFininsh,
+  isChatLoading,
+  setFormValues,
+}: AgentInfoProps) => {
   const router = useRouter();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
-  const { data , isLoading } = useFetchData(config.workspace.models, {
+  const { data, isLoading } = useFetchData(config.workspace.models, {
     modelStatus: "DEPLOYED",
     page: DEFAULT_PAGE,
     size: ALL_DATA_PAGE_SIZE,
   });
 
-  const handleValueChange = (values : UnknownObject,formValues : UnknownObject) => {
+  const handleValueChange = (
+    values: UnknownObject,
+    formValues: UnknownObject,
+  ) => {
     // set custom attribute on runtime to set data in chatbot without saving config
     // setCustAtrr(formValues)
-    if(setFormValues){
-      setFormValues(formValues)
+    if (setFormValues) {
+      setFormValues(formValues);
     }
-  }
-  const { data : knowledgeBaseData, isLoading : knowledgeBaseLoading } = useFetchData(config.knowledgebase.list, {
-    page: DEFAULT_PAGE,
-    size: ALL_DATA_PAGE_SIZE,
-  });
+  };
+  const { data: knowledgeBaseData, isLoading: knowledgeBaseLoading } =
+    useFetchData(config.knowledgebase.list, {
+      page: DEFAULT_PAGE,
+      size: ALL_DATA_PAGE_SIZE,
+    });
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
 
-
-  useEffect(()=>{
-    if(details?.result){
+  useEffect(() => {
+    if (details?.result) {
       form.setFieldsValue({
-        ...details?.result
-      })
-      setCustAtrr(details?.result)
+        ...details?.result,
+      });
+      setCustAtrr(details?.result);
     }
-  },[details?.result])
+  }, [details?.result]);
 
   return (
-    
     <Form
       preserve={false}
       layout="vertical"
       form={form}
       onFinish={onFininsh}
       onValuesChange={handleValueChange}
-      disabled = {isChatLoading}
+      disabled={isChatLoading}
     >
-      <Row justify="end" style={{width : '100%',marginBottom : '20px',paddingRight: '17px'}}>
-          <Col>
-            <Button
-              type="primary"
-              htmlType="submit"
-              // onClick={form.submit}
-              loading={formSubmitting}
-            >
-              Save and test
-            </Button>
-          </Col>
-        </Row>
-      <Row gutter={[6, 20]} style={{overflowY : 'auto',height : 'calc(100vh - 155px)',paddingRight: '17px'}}>
-      <Col span={24}>
-        <PipelineCardContainer>
-          <Row gutter={[6, 16]}>
-            <Col span={24}>
-              <Row justify="space-between">
-                <Col>
-                  <WorkflowName>{details?.result?.pipeline_name ?? details?.result?.agent_name}</WorkflowName>
-                </Col>
-                <Col>
-                  <EditIcon style={{ cursor: "no-drop" }} />
-                </Col>
-              </Row>
-            </Col>
-            <Col>
-              <WorkflowDescription>
-                {details?.result?.pipeline_description ?? details?.result?.agent_description}
-              </WorkflowDescription>
-            </Col>
-          </Row>
-        </PipelineCardContainer>
-      </Col>
-      <Col span={24}>
-        <PipelineFormCardContainer>
-          <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
-          <WorkflowInfoFormDescription>
-            The knowledge base serves as a repository of structured or
-            unstructured information that an AI system can access to enhance its
-            understanding and generate informed responses.
-          </WorkflowInfoFormDescription>
+      <Row
+        justify="end"
+        style={{ width: "100%", marginBottom: "20px", paddingRight: "17px" }}
+      >
+        <Col>
+          <Button
+            type="primary"
+            htmlType="submit"
+            // onClick={form.submit}
+            loading={formSubmitting}
+          >
+            Save and test
+          </Button>
+        </Col>
+      </Row>
+      <Row
+        gutter={[6, 20]}
+        style={{
+          overflowY: "auto",
+          height: "calc(100vh - 155px)",
+          paddingRight: "17px",
+        }}
+      >
+        <Col span={24}>
+          <PipelineCardContainer>
+            <Row gutter={[6, 16]}>
+              <Col span={24}>
+                <Row justify="space-between">
+                  <Col>
+                    <WorkflowName>
+                      {details?.result?.pipeline_name ??
+                        details?.result?.agent_name}
+                    </WorkflowName>
+                  </Col>
+                  <Col>
+                    <EditIcon style={{ cursor: "no-drop" }} />
+                  </Col>
+                </Row>
+              </Col>
+              <Col>
+                <WorkflowDescription>
+                  {details?.result?.pipeline_description ??
+                    details?.result?.agent_description}
+                </WorkflowDescription>
+              </Col>
+            </Row>
+          </PipelineCardContainer>
+        </Col>
+        <Col span={24}>
+          <PipelineFormCardContainer>
+            <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
+            <WorkflowInfoFormDescription>
+              The knowledge base serves as a repository of structured or
+              unstructured information that an AI system can access to enhance
+              its understanding and generate informed responses.
+            </WorkflowInfoFormDescription>
             <Form.Item
               name={["model_detail", "model_name"]}
               rules={[{ required: true, message: "Model is required" }]}
@@ -187,7 +211,7 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                   </div>
                 )}
                 onChange={(val: any, option: any) => {
-                  console.log(`dropdown options`,option)
+                  console.log(`dropdown options`, option);
                   form.setFields([
                     {
                       name: ["model_detail", "model_id"],
@@ -238,7 +262,12 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "temp"]}
-                    label="Temperature"
+                    label={
+                      <Space>
+                        <Text>Temperature</Text>
+                        <InfoIconTooltip title="Controls creativity of outputs. Low values make text predictable; high values increase novelty and diversity. Example: 0.1 (very predictable) vs 1.0 (highly creative, but possibly nonsensical.)." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -252,19 +281,33 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "top_k"]}
-                    label="Top K sampling"
+                    label={
+                      <Space>
+                        <Text>Top K sampling</Text>
+                        <InfoIconTooltip title="Limits the model to consider only the top k predictions, enhancing relevance and coherence. Example: 0.1 (very restrictive, less diverse) vs 1.0 (more options considered, greater diversity)." />
+                      </Space>
+                    }
                   >
-                    <InputNumber 
-                    style={{...fullWidth}}
-                    placeholder="Top K sampling"
-                    precision = {0}
+                    <InputNumber
+                      style={{ ...fullWidth }}
+                      placeholder="Top K sampling"
+                      precision={0}
                     />
                   </Form.Item>
                 </Col>
                 <Col span={6}>
                   <Form.Item
-                    name={["model_detail", "model_parameters", "repeat_penalty"]}
-                    label="Repeat penalty"
+                    name={[
+                      "model_detail",
+                      "model_parameters",
+                      "repeat_penalty",
+                    ]}
+                    label={
+                      <Space>
+                        <Text>Repeat penalty</Text>
+                        <InfoIconTooltip title="Reduces likelihood of repeating the same words or phrases. Higher values decrease repetitions, making text more diverse." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -276,7 +319,12 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "min_p"]}
-                    label="Min P sampling"
+                    label={
+                      <Space>
+                        <Text>Min P sampling</Text>
+                        <InfoIconTooltip title="Minimum probability cutoff to consider a word for selection, filtering out less likely options. Helps balance creativity and relevance." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -288,12 +336,17 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "top_p"]}
-                    label="Top P sampling"
+                    label={
+                      <Space>
+                        <Text>Top P sampling</Text>
+                        <InfoIconTooltip title="Sets the threshold for selecting most likely words. Lower values increase focus, higher values allow more variety. Example: 0.8 (focused) vs 0.95 (varied)." />
+                      </Space>
+                    }
                   >
-                    <InputNumber 
-                    style={{ ...fullWidth }}
-                    placeholder="Top P sampling"
-                    precision={2} 
+                    <InputNumber
+                      style={{ ...fullWidth }}
+                      placeholder="Top P sampling"
+                      precision={2}
                     />
                   </Form.Item>
                 </Col>
@@ -302,42 +355,36 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                     name={["model_detail", "model_parameters", "do_sample"]}
                     label="DO sample"
                   >
-                    <Switch 
-                    />
+                    <Switch />
                   </Form.Item>
                 </Col>
               </Row>
             </AdvancedOptionsContainer>
-        </PipelineFormCardContainer>
-      </Col>
-      <Col span={24}>
-        <PipelineFormCardContainer>
-        <WorkflowInfoFormTitle>Base instruction</WorkflowInfoFormTitle>
-        <Form.Item
-          name={'base_instructions'}
-        >
-        <TextArea
-        style={{resize : 'none'}}
-        autoSize={{ minRows: 4, maxRows: 6 }}
-        placeholder="Preamble"
-        />
-        </Form.Item>
-        </PipelineFormCardContainer>
-      </Col>
-      <Col span={24}>
-        <PipelineFormCardContainer>
-          <KnowledgebaseInfoFormTitle>
-            Knowledge base
-          </KnowledgebaseInfoFormTitle>
-          <KnowledgebaseInfoFormDescription>
-            The knowledge base serves as a repository of structured or
-            unstructured information that an AI system can access to enhance its
-            understanding and generate informed responses.
-          </KnowledgebaseInfoFormDescription>
-            <Form.Item
-              name={["kb", "kb_id"]}
-              label="Knowledge base"
-            >
+          </PipelineFormCardContainer>
+        </Col>
+        <Col span={24}>
+          <PipelineFormCardContainer>
+            <WorkflowInfoFormTitle>Base instruction</WorkflowInfoFormTitle>
+            <Form.Item name={"base_instructions"}>
+              <TextArea
+                style={{ resize: "none" }}
+                autoSize={{ minRows: 4, maxRows: 6 }}
+                placeholder="Preamble"
+              />
+            </Form.Item>
+          </PipelineFormCardContainer>
+        </Col>
+        <Col span={24}>
+          <PipelineFormCardContainer>
+            <KnowledgebaseInfoFormTitle>
+              Knowledge base
+            </KnowledgebaseInfoFormTitle>
+            <KnowledgebaseInfoFormDescription>
+              The knowledge base serves as a repository of structured or
+              unstructured information that an AI system can access to enhance
+              its understanding and generate informed responses.
+            </KnowledgebaseInfoFormDescription>
+            <Form.Item name={["kb", "kb_id"]} label="Knowledge base">
               <Select
                 placeholder="Select knowledge base"
                 loading={isLoading}
@@ -382,7 +429,7 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
                   ]);
                 }}
                 options={
-                    knowledgeBaseData?.result?.map((data: any) => ({
+                  knowledgeBaseData?.result?.map((data: any) => ({
                     label: data?.name,
                     value: data?.id,
                     id: data?.id,
@@ -397,23 +444,23 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
             <Form.Item name={["kb", "kb_version"]} hidden>
               <Input></Input>
             </Form.Item>
-        </PipelineFormCardContainer>
-      </Col>
-      <Col span={24}>
-        <PipelineFormCardContainer>
-        <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
-        <Form.Item
-          name={['welcome_message', "message"]}
-          label = {'Welcome message'}
-        >
-        <TextArea
-        style={{resize : 'none'}}
-        autoSize={{ minRows: 2, maxRows: 4 }}
-        placeholder="How do you want you agent to greet the user"
-        />
-        </Form.Item>
-        </PipelineFormCardContainer>
-      </Col>
+          </PipelineFormCardContainer>
+        </Col>
+        <Col span={24}>
+          <PipelineFormCardContainer>
+            <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
+            <Form.Item
+              name={["welcome_message", "message"]}
+              label={"Welcome message"}
+            >
+              <TextArea
+                style={{ resize: "none" }}
+                autoSize={{ minRows: 2, maxRows: 4 }}
+                placeholder="How do you want you agent to greet the user"
+              />
+            </Form.Item>
+          </PipelineFormCardContainer>
+        </Col>
       </Row>
     </Form>
   );

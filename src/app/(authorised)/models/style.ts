@@ -1,3 +1,4 @@
+import { Radio } from "antd";
 import styled from "styled-components";
 
 export const SearchInpuContainer = styled.div`
@@ -130,4 +131,11 @@ export const ModelCardDetail = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 164%; /* 22.96px */
+`;
+
+export const RadioButton = styled(Radio.Button)`
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 157.143% */
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
 `;

@@ -6,15 +6,16 @@ import {
   Flex,
   Form,
   FormInstance,
-  Input,
   InputNumber,
   Row,
+  Space,
   Switch,
   Typography,
 } from "antd";
 import { useEffect } from "react";
 import ExpandIcon from "../Icons/ExpandIcon";
 import ParameterIcon from "../Icons/ParameterIcon";
+import InfoIconTooltip from "../InfoIconTooltip";
 import {
   ParameterTitle,
   ParamterCollapse,
@@ -83,7 +84,12 @@ const PlaygroundConfig = ({
             </Form.Item>
             <Form.Item
               name={["model_parameters", "temp"]}
-              label="Temperature"
+              label={
+                <Space>
+                  <Text>Temperature</Text>
+                  <InfoIconTooltip title="Controls creativity of outputs. Low values make text predictable; high values increase novelty and diversity. Example: 0.1 (very predictable) vs 1.0 (highly creative, but possibly nonsensical.)." />
+                </Space>
+              }
             >
               <InputNumber
                 style={{ ...fullWidth }}
@@ -95,17 +101,27 @@ const PlaygroundConfig = ({
             </Form.Item>
             <Form.Item
               name={["model_parameters", "top_k"]}
-              label="Top K sampling"
+              label={
+                <Space>
+                  <Text>Top K sampling</Text>
+                  <InfoIconTooltip title="Limits the model to consider only the top k predictions, enhancing relevance and coherence. Example: 0.1 (very restrictive, less diverse) vs 1.0 (more options considered, greater diversity)." />
+                </Space>
+              }
             >
               <InputNumber
-              style={{...fullWidth}}
-              placeholder="Top K sampling" 
-              precision = {0}
+                style={{ ...fullWidth }}
+                placeholder="Top K sampling"
+                precision={0}
               />
             </Form.Item>
             <Form.Item
               name={["model_parameters", "repeat_penalty"]}
-              label="Repeat penalty"
+              label={
+                <Space>
+                  <Text>Repeat penalty</Text>
+                  <InfoIconTooltip title="Reduces likelihood of repeating the same words or phrases. Higher values decrease repetitions, making text more diverse." />
+                </Space>
+              }
             >
               <InputNumber
                 style={{ ...fullWidth }}
@@ -115,7 +131,12 @@ const PlaygroundConfig = ({
             </Form.Item>
             <Form.Item
               name={["model_parameters", "min_p"]}
-              label="Min P sampling"
+              label={
+                <Space>
+                  <Text>Min P sampling</Text>
+                  <InfoIconTooltip title="Minimum probability cutoff to consider a word for selection, filtering out less likely options. Helps balance creativity and relevance." />
+                </Space>
+              }
             >
               <InputNumber
                 style={{ ...fullWidth }}
@@ -125,7 +146,12 @@ const PlaygroundConfig = ({
             </Form.Item>
             <Form.Item
               name={["model_parameters", "top_p"]}
-              label="Top P sampling"
+              label={
+                <Space>
+                  <Text>Top P sampling</Text>
+                  <InfoIconTooltip title="Sets the threshold for selecting most likely words. Lower values increase focus, higher values allow more variety. Example: 0.8 (focused) vs 0.95 (varied)." />
+                </Space>
+              }
             >
               <InputNumber
                 style={{ ...fullWidth }}
@@ -137,8 +163,7 @@ const PlaygroundConfig = ({
               name={["model_detail", "model_parameters", "do_sample"]}
               label="DO sample"
             >
-              <Switch
-              />
+              <Switch />
             </Form.Item>
           </Flex>
         </>

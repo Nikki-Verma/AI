@@ -144,7 +144,9 @@ const useChatStream = (input: UseChatStreamInput) => {
       for await (const message of decodeStreamToJson(streamRef.current)) {
         console.log("🚀 ~ forawait ~ message:", message);
         if (message === "refetch") {
-          fetchAndUpdateAIResponse(messageID, conversationID);
+          setTimeout(() => {
+            fetchAndUpdateAIResponse(messageID, conversationID);
+          }, 2000);
           break;
         }
         setIsLoading(false);
@@ -157,11 +159,12 @@ const useChatStream = (input: UseChatStreamInput) => {
     }
   };
 
-  const stopStream = () => {
-    if (!streamRef.current) {
+  const stopStream = async () => {
+    console.log("🚀 ~ stopStream ~ streamRef.current:", streamRef.current);
+    if (!streamRef?.current) {
       return null;
     } else {
-      streamRef?.current?.cancel();
+      await streamRef?.current?.cancel();
       streamRef.current = undefined;
     }
   };

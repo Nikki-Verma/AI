@@ -3,11 +3,8 @@
 import { Input } from "antd";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
-import AttachIcon from "../Icons/AttachIcon";
 import SendIcon from "../Icons/SendIcon";
-import TemplateIcon from "../Icons/TemplateIcon";
 import {
-  ActionContainer,
   BottomControls,
   BottonLeftControl,
   BottonRightControl,
@@ -22,6 +19,7 @@ type Props = {
   input: string;
   setInput: (val: string) => void;
   loading: boolean;
+  stopStream: () => void;
 };
 
 function ChatInput({
@@ -30,6 +28,7 @@ function ChatInput({
   input,
   setInput,
   handleInputChange,
+  stopStream,
 }: Props) {
   const { data: session } = useSession();
   const [prompt, setPrompt] = useState("");
@@ -54,14 +53,14 @@ function ChatInput({
       />
       <BottomControls>
         <BottonLeftControl>
-          <ActionContainer>
+          {/* <ActionContainer>
             <AttachIcon />
             Attach
           </ActionContainer>
           <ActionContainer>
             <TemplateIcon />
             Browse templates
-          </ActionContainer>
+          </ActionContainer> */}
         </BottonLeftControl>
         <BottonRightControl>
           <div
@@ -70,7 +69,7 @@ function ChatInput({
               fontSize: "12px",
             }}
           >
-            0/1000
+            {input?.length}
           </div>
           <SendIcon
             onClick={() => submitHandler({})}

@@ -13,6 +13,7 @@ type ChatBotProps = {
   handleInputChange: (val: any) => void;
   input: string;
   setInput: (val: string) => void;
+  stopStream: () => void;
 };
 
 const ChatBot = ({
@@ -23,6 +24,7 @@ const ChatBot = ({
   handleInputChange,
   input,
   setInput,
+  stopStream,
 }: ChatBotProps) => {
   return (
     <Container>
@@ -37,6 +39,7 @@ const ChatBot = ({
         input={input}
         setInput={setInput}
         loading={isLoading}
+        stopStream={stopStream}
       />
     </Container>
   );

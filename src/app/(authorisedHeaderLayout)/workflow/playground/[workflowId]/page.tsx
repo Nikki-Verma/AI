@@ -92,6 +92,7 @@ const WorkflowPlayground = () => {
         handleInputChange={handleInputChange}
         input={input}
         setInput={setInput}
+        stopStream={stopStream}
         isLoading={isLoading}
       />
     </WorkflowPlaygroundContainer>

@@ -87,6 +87,7 @@ const ModelPlayground = () => {
     <ModelPlaygroundContainer>
       <ChatBot
         messages={messages}
+        stopStream={stopStream}
         changeConversationLoading={changeConversationLoading}
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
