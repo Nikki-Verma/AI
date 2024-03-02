@@ -77,12 +77,16 @@ const PipelineInfo = ({
     if (setFormValues) {
       setFormValues(formValues);
     }
-  };
-  const { data: knowledgeBaseData, isLoading: knowledgeBaseLoading } =
-    useFetchData(config.knowledgebase.list, {
-      page: DEFAULT_PAGE,
-      size: ALL_DATA_PAGE_SIZE,
-    });
+  }
+  const { data : knowledgeBaseData, isLoading : knowledgeBaseLoading } = useFetchData(config.knowledgebase.list, {
+    page: DEFAULT_PAGE,
+    size: ALL_DATA_PAGE_SIZE,
+  });
+
+  const { data : toolsData, isLoading : toolsLoading } = useFetchData(config.tools.list, {
+    page: DEFAULT_PAGE,
+    size: ALL_DATA_PAGE_SIZE,
+  });
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
@@ -387,9 +391,10 @@ const PipelineInfo = ({
             <Form.Item name={["kb", "kb_id"]} label="Knowledge base">
               <Select
                 placeholder="Select knowledge base"
-                loading={isLoading}
+                loading={knowledgeBaseLoading}
                 showSearch
                 optionFilterProp="label"
+                allowClear
                 dropdownRender={(menu) => (
                   <>
                     {menu}
@@ -444,23 +449,78 @@ const PipelineInfo = ({
             <Form.Item name={["kb", "kb_version"]} hidden>
               <Input></Input>
             </Form.Item>
-          </PipelineFormCardContainer>
-        </Col>
-        <Col span={24}>
-          <PipelineFormCardContainer>
-            <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
+        </PipelineFormCardContainer>
+      </Col>
+      <Col span={24}>
+        <PipelineFormCardContainer>
+          <KnowledgebaseInfoFormTitle>
+            Tools
+          </KnowledgebaseInfoFormTitle>
+          <KnowledgebaseInfoFormDescription>
+            Tools description TBA
+          </KnowledgebaseInfoFormDescription>
             <Form.Item
-              name={["welcome_message", "message"]}
-              label={"Welcome message"}
+              name={['tools']}
+              // label="Knowledge base"
             >
-              <TextArea
-                style={{ resize: "none" }}
-                autoSize={{ minRows: 2, maxRows: 4 }}
-                placeholder="How do you want you agent to greet the user"
+              <Select
+                placeholder="Select tool"
+                mode="multiple"
+                loading={toolsLoading}
+                showSearch
+                allowClear
+                optionFilterProp="label"
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    {/* <Divider style={{ margin: "8px 0" }} />
+
+                    <Button
+                      block
+                      style={{ width: "100%" }}
+                      type="dashed"
+                      icon={<PlusOutlined />}
+                      onClick={() => router.push("/knowledge-base")}
+                    >
+                      Create Tools
+                    </Button> */}
+                  </>
+                )}
+                optionRender={(option: any) => (
+                  <SelectOptionDetail key={option?.data?.id}>
+                    <SelectOptionName>{option?.data?.name}</SelectOptionName>
+                    <SelectOptionDescription>
+                      {option?.data?.description}
+                    </SelectOptionDescription>
+                  </SelectOptionDetail>
+                )}
+                options={
+                    toolsData?.result?.map((data: any) => ({
+                    label: data?.name,
+                    value: data?.id,
+                    id: data?.id,
+                    ...data,
+                  })) || []
+                }
               />
             </Form.Item>
-          </PipelineFormCardContainer>
-        </Col>
+        </PipelineFormCardContainer>
+      </Col>
+      <Col span={24}>
+        <PipelineFormCardContainer>
+        <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
+        <Form.Item
+          name={['welcome_message', "message"]}
+          label = {'Welcome message'}
+        >
+        <TextArea
+        style={{resize : 'none'}}
+        autoSize={{ minRows: 2, maxRows: 4 }}
+        placeholder="How do you want you agent to greet the user"
+        />
+        </Form.Item>
+        </PipelineFormCardContainer>
+      </Col>
       </Row>
     </Form>
   );

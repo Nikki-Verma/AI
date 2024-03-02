@@ -14,8 +14,8 @@ export const BASE_URLS = {
   data: `${__EDGE_URL__}${__DATA_BASE_URL__}`,
   rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
+  agent: __AGENT_BASE_URL__,
   intract: __INTRACT_BASE_URL__,
-  agents : __AGENT_BASE_URL__,
 };
 
 const config = {
@@ -66,6 +66,9 @@ const config = {
     create: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
 
+  },
+  tools: {
+    list: `${BASE_URLS.agent}/tools/`,
   },
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,

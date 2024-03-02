@@ -37,6 +37,7 @@ import {
     MoreOutlined,
     PlayCircleOutlined,
     PlusOutlined,
+    EyeFilled
   } from "@ant-design/icons";
 import { LinkContainer } from "./style";
 import Link from "next/link";
@@ -250,31 +251,44 @@ const Agents = () => {
       width: 160,
       fixed: "right",
       render: (_: any, agentData: UnknownObject) => {
-        const completedItems: MenuProps["items"] = [
+        const completedItems: MenuProps["items"] =[
           {
-            key: "integration",
+            key: "edit",
             label: (
               <Link
                 prefetch
-                href={`/integration/agent/${agentData?.pipeline_id}`}
+                  href={`/agents/edit/${agentData?.pipeline_id}`}
               >
-                <Button type="text" icon={<ApiOutlined />}>
-                  Integration
+                <Button type="text" icon={<EditOutlined />}>
+                  Edit
                 </Button>
               </Link>
             ),
           },
-        ];
+          {
+            key: "view",
+            label: (
+              <Link
+                prefetch
+                  href={`/agents/view/${agentData?.pipeline_id}`}
+              >
+                <Button type="text" icon={<EyeFilled />}>
+                  View
+                </Button>
+              </Link>
+            ),
+          },
+        ]
         return (
           <>
-            {agentData?.agent_state === AgentStatuses.COMPLETED ? (
+            {agentData?.agent_state === AgentStatus.COMPLETED ? (
               <Space>
                 <Link
                   prefetch
-                  href={`/agents/playground/${agentData?.pipeline_id}`}
+                  href={`/integration/agents/${agentData?.pipeline_id}`}
                 >
-                  <Button type="primary" icon={<PlayCircleOutlined />}>
-                    Playground
+                  <Button block type="default" icon={<ApiOutlined />}>
+                    Integrate
                   </Button>
                 </Link>
                 <Dropdown
@@ -290,15 +304,12 @@ const Agents = () => {
               <Space>
                 <Link
                   prefetch
-                  href={`/agents/edit/${agentData?.pipeline_id}`}
+                    href={`/agents/edit/${agentData?.pipeline_id}`}
                 >
-                  <Button type="primary" icon={<EditOutlined />}>
-                    Continue Edit
-                  </Button>
+                <Button block type="default" icon={<EditOutlined />}>
+                  Edit
+                </Button>
                 </Link>
-                <MoreOutlined
-                  style={{ fontSize: "28px", fontWeight: "bold" }}
-                />
               </Space>
             )}
           </>

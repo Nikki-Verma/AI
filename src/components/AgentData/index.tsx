@@ -68,25 +68,22 @@ const AgentData = ({ agentId }: AgentDataParams) => {
             gap: "20px",
           }}
         >
-          {data?.result?.agent_state === AgentStatus.COMPLETED ? (
+          <Link prefetch href={`/agents/edit/${data?.result?.pipeline_id}`}>
+            <Button type="default" icon={<EditOutlined />}>
+              Continue Edit
+            </Button>
+          </Link>
+          {data?.result?.agent_state === AgentStatus.COMPLETED && (
             <Space>
-              <Button type="default">Integration</Button>
               <Link
                 prefetch
-                href={`/agents/playground/${data?.result?.pipeline_id}`}
+                href={`/integration/agents/${data?.result?.pipeline_id}`}
               >
-                <Button type="primary" icon={<PlayCircleOutlined />}>
-                  Playground
-                </Button>
+              <Button type="primary">Integrate</Button>
               </Link>
             </Space>
-          ) : (
-            <Link prefetch href={`/agents/edit/${data?.result?.pipeline_id}`}>
-              <Button type="primary" icon={<EditOutlined />}>
-                Continue Edit
-              </Button>
-            </Link>
-          )}
+          )
+          }
         </Col>
         <Col span={24}>
           <Row gutter={[0, 10]}>
