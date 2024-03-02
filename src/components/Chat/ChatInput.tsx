@@ -9,6 +9,7 @@ import {
   BottonLeftControl,
   BottonRightControl,
   ChatInputContainer,
+  RightControls,
 } from "./style";
 
 const { TextArea } = Input;
@@ -43,7 +44,7 @@ function ChatInput({
           handleInputChange(e);
         }}
         style={{ resize: "none" }}
-        autoSize={{ minRows: 2, maxRows: 6 }}
+        autoSize={{ minRows: 1, maxRows: 6 }}
         onKeyPress={(event: any) => {
           if (event.which === 13) {
             event.preventDefault();
@@ -51,16 +52,22 @@ function ChatInput({
           }
         }}
       />
-      <BottomControls>
+      <RightControls>
+        <SendIcon
+          onClick={() => submitHandler({})}
+          style={{ cursor: "pointer" }}
+        />
+      </RightControls>
+      {/* <BottomControls>
         <BottonLeftControl>
-          {/* <ActionContainer>
+          <ActionContainer>
             <AttachIcon />
             Attach
           </ActionContainer>
           <ActionContainer>
             <TemplateIcon />
             Browse templates
-          </ActionContainer> */}
+          </ActionContainer>
         </BottonLeftControl>
         <BottonRightControl>
           <div
@@ -76,7 +83,7 @@ function ChatInput({
             style={{ cursor: "pointer" }}
           />
         </BottonRightControl>
-      </BottomControls>
+      </BottomControls> */}
     </ChatInputContainer>
   );
 }
