@@ -51,6 +51,12 @@ export const ModelCardContainer = styled.div`
   border-radius: 10px;
   border: 0.8px solid var(--Text-Color-150, #d5d5d5);
   background: #fdfeff;
+  &:hover {
+    box-shadow:
+      0 1px 2px -2px rgba(0, 0, 0, 0.16),
+      0 3px 6px 0 rgba(0, 0, 0, 0.12),
+      0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  }
 `;
 
 export const ModelCard = styled.div`
