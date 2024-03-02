@@ -2,6 +2,8 @@
 
 import KbCustomIcon from "@/components/Icons/KbCustomIcon";
 import KbDefaultIcon from "@/components/Icons/KbDefaultIcon";
+import { PAGE_MODE } from "@/utils/constants";
+import { PageModeEnum, UnknownObject } from "@/utils/types";
 import {
   Col,
   Flex,
@@ -14,7 +16,7 @@ import {
   Select,
   Typography,
 } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { embeddingModelsOptions, vectorDbOptions } from "./constant";
 import {
   CustomFieldsContainer,
@@ -30,6 +32,8 @@ interface CreateKnowledgeBaseFormProps {
   createKnowledgeBaseHandler: (values: { [key: string]: any }) => void;
   form: FormInstance;
   type?: createTypeEnum;
+  mode?: PageModeEnum;
+  kbDetails?: UnknownObject;
 }
 
 export enum createTypeEnum {
@@ -48,8 +52,60 @@ const CreateKnowledgeBaseForm = ({
   form,
   createKnowledgeBaseHandler,
   type = KnowledgeBaseCreateType.ADD_AND_UPDATE,
+  mode = PAGE_MODE.CREATE,
+  kbDetails = {},
 }: CreateKnowledgeBaseFormProps) => {
   const [formUpdated, setFormUpdated] = useState(false);
+  const kbSetting = Form.useWatch("kb_setting", form);
+  useEffect(() => {
+    if (mode === PAGE_MODE.EDIT) {
+      console.log("knowledgee base details", kbDetails);
+
+      form.setFields([
+        {
+          name: "name",
+          value: kbDetails?.name,
+          errors: [],
+        },
+        {
+          name: "desciption",
+          value: kbDetails?.description,
+          errors: [],
+        },
+        {
+          name: "kb_setting",
+          value: kbDetails?.kb_setting,
+          errors: [],
+        },
+        {
+          name: "vector_db",
+          value: kbDetails?.vector_db,
+          errors: [],
+        },
+        {
+          name: "embed_model_name",
+          value: kbDetails?.embed_model_name,
+          errors: [],
+        },
+        {
+          name: "index_key",
+          value: kbDetails?.index_key,
+          errors: [],
+        },
+        {
+          name: "size",
+          value: kbDetails?.size,
+          errors: [],
+        },
+        {
+          name: "allowed_size",
+          value: kbDetails?.allowed_size,
+          errors: [],
+        },
+      ]);
+      setFormUpdated((prev: boolean) => !prev);
+    }
+  }, [mode, kbSetting]);
 
   return (
     <Form
@@ -99,10 +155,10 @@ const CreateKnowledgeBaseForm = ({
               <Row justify="space-between" gutter={[12, 7]}>
                 <Col span={24}>
                   <RadioOptionContainer
-                    checked={form.getFieldValue("kb_setting") === "DEFAULT"}
+                    checked={kbSetting === "DEFAULT"}
                     size="small"
                     onClick={() => {
-                      form.getFieldValue("kb_setting") === "DEFAULT"
+                      kbSetting === "DEFAULT"
                         ? null
                         : form.setFields([
                             {
@@ -136,10 +192,10 @@ const CreateKnowledgeBaseForm = ({
                 </Col>
                 <Col span={24}>
                   <RadioOptionContainer
-                    checked={form.getFieldValue("kb_setting") === "CUSTOM"}
+                    checked={kbSetting === "CUSTOM"}
                     size="small"
                     onClick={() => {
-                      form.getFieldValue("kb_setting") === "CUSTOM"
+                      kbSetting === "CUSTOM"
                         ? null
                         : form.setFields([
                             {
@@ -176,10 +232,8 @@ const CreateKnowledgeBaseForm = ({
           </Form.Item>
         </Col>
         <Col span={24}>
-          <CustomFieldsContainer
-            open={form.getFieldValue("kb_setting") === "CUSTOM"}
-          >
-            {form.getFieldValue("kb_setting") === "CUSTOM" && (
+          <CustomFieldsContainer open={kbSetting === "CUSTOM"}>
+            {kbSetting === "CUSTOM" && (
               <Row justify="space-between" gutter={[12, 0]}>
                 <Col span={24} md={12}>
                   <Form.Item

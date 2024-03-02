@@ -15,12 +15,7 @@ import {
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import {
-  DatabaseFilled,
-  EyeFilled,
-  MoreOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { DatabaseFilled, EyeFilled, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -186,7 +181,6 @@ const KnowledgeBaseList = () => {
             <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
               <Button icon={<EyeFilled />}>View</Button>
             </Link>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
           </Space>
         );
       },

@@ -50,18 +50,18 @@ const ImportDatasetFilesConfig = ({
   const [formUpdated, setFormUpdated] = useState(false);
   const [chunkLoading, setChunkLoading] = useState(false);
   const [chunks, setChunks] = useState<string[]>([]);
-
+  const chunkSetting = Form.useWatch("chunk_setting", form);
   useEffect(() => {
-    if (form.getFieldValue("chunk_setting") === "AUTOMATIC") getChunksDetails();
-  }, [formUpdated]);
+    if (chunkSetting === "AUTOMATIC") getChunksDetails();
+  }, [chunkSetting]);
 
   const getChunksDetails = async () => {
     try {
-      if (!form.getFieldValue("chunk_setting")) {
+      if (!chunkSetting) {
         return setChunks([]);
       }
 
-      if (form.getFieldValue("chunk_setting") === "MANUAL") {
+      if (chunkSetting === "MANUAL") {
         await form.validateFields();
       }
 
@@ -72,15 +72,15 @@ const ImportDatasetFilesConfig = ({
         bucket_name: bucketname,
         object_name: selectedRowDetails?.[0]?.file_name,
         chunk_size:
-          form.getFieldValue("chunk_setting") !== "AUTOMATIC"
+          chunkSetting !== "AUTOMATIC"
             ? form.getFieldValue("chunk_size")
             : undefined,
         chunk_overlap:
-          form.getFieldValue("chunk_setting") !== "AUTOMATIC"
+          chunkSetting !== "AUTOMATIC"
             ? form.getFieldValue("chunk_overlap")
             : undefined,
         segment_identifier:
-          form.getFieldValue("chunk_setting") !== "AUTOMATIC" &&
+          chunkSetting !== "AUTOMATIC" &&
           !!form.getFieldValue("segment_identifier")
             ? form.getFieldValue("segment_identifier")
             : undefined,
@@ -133,14 +133,11 @@ const ImportDatasetFilesConfig = ({
                   <Row justify="space-between" gutter={[12, 0]}>
                     <Col span={24}>
                       <RadioOptionContainer
-                        checked={
-                          form.getFieldValue("chunk_setting") === "AUTOMATIC"
-                        }
+                        checked={chunkSetting === "AUTOMATIC"}
                         size="small"
                         disabled={chunkLoading}
                         onClick={() => {
-                          form.getFieldValue("chunk_setting") === "AUTOMATIC" ||
-                          chunkLoading
+                          chunkSetting === "AUTOMATIC" || chunkLoading
                             ? null
                             : form.setFields([
                                 {
@@ -177,14 +174,11 @@ const ImportDatasetFilesConfig = ({
                     </Col>
                     <Col span={24}>
                       <RadioOptionContainer
-                        checked={
-                          form.getFieldValue("chunk_setting") === "MANUAL"
-                        }
+                        checked={chunkSetting === "MANUAL"}
                         size="small"
                         disabled={chunkLoading}
                         onClick={() => {
-                          form.getFieldValue("chunk_setting") === "MANUAL" ||
-                          chunkLoading
+                          chunkSetting === "MANUAL" || chunkLoading
                             ? null
                             : form.setFields([
                                 {
@@ -222,7 +216,7 @@ const ImportDatasetFilesConfig = ({
                 </Radio.Group>
               </Form.Item>
             </Col>
-            {form.getFieldValue("chunk_setting") === "MANUAL" && (
+            {chunkSetting === "MANUAL" && (
               <>
                 <Col span={24}>
                   <Form.Item

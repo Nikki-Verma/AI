@@ -97,6 +97,7 @@ export const authOptions: AuthOptions = {
 
           return { error: "RefreshAccessTokenError" as const };
         } catch (error) {
+          console.log("🚀 ~ jwt ~ error:", error);
           console.error(
             "Error refreshing access token",
             getErrorFromApi(error),
