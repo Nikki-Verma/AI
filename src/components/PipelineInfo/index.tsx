@@ -47,10 +47,11 @@ type AgentInfoProps = {
   form: FormInstance;
   onFininsh: (values: any) => void;
   setCustAtrr:(values: any) => void;
-  isChatLoading : boolean
+  isChatLoading : boolean;
+  setFormValues ?:(values: any) => void
 };
 
-const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isChatLoading }: AgentInfoProps) => {
+const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isChatLoading ,setFormValues}: AgentInfoProps) => {
   const router = useRouter();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
   const { data , isLoading } = useFetchData(config.workspace.models, {
@@ -62,6 +63,9 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
   const handleValueChange = (values : UnknownObject,formValues : UnknownObject) => {
     // set custom attribute on runtime to set data in chatbot without saving config
     // setCustAtrr(formValues)
+    if(setFormValues){
+      setFormValues(formValues)
+    }
   }
   const { data : knowledgeBaseData, isLoading : knowledgeBaseLoading } = useFetchData(config.knowledgebase.list, {
     page: DEFAULT_PAGE,
@@ -91,7 +95,7 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
       onValuesChange={handleValueChange}
       disabled = {isChatLoading}
     >
-      <Row justify="end" style={{width : '100%',marginBottom : '20px'}}>
+      <Row justify="end" style={{width : '100%',marginBottom : '20px',paddingRight: '17px'}}>
           <Col>
             <Button
               type="primary"
@@ -99,11 +103,11 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
               // onClick={form.submit}
               loading={formSubmitting}
             >
-              Test
+              Save and test
             </Button>
           </Col>
         </Row>
-      <Row gutter={[6, 20]} style={{height : 'calc(100vh - 104px)',overflowY : 'auto',paddingRight: '17px'}}>
+      <Row gutter={[6, 20]} style={{overflowY : 'auto',height : 'calc(100vh - 155px)',paddingRight: '17px'}}>
       <Col span={24}>
         <PipelineCardContainer>
           <Row gutter={[6, 16]}>
@@ -399,7 +403,7 @@ const PipelineInfo = ({ details,formSubmitting, form,setCustAtrr, onFininsh,isCh
         <PipelineFormCardContainer>
         <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
         <Form.Item
-          name={['Welcome message', "message"]}
+          name={['welcome_message', "message"]}
           label = {'Welcome message'}
         >
         <TextArea
