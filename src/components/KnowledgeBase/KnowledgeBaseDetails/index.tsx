@@ -20,9 +20,9 @@ import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
+  AimOutlined,
   CloudDownloadOutlined,
   MoreOutlined,
-  PlayCircleOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -76,7 +76,7 @@ const KnowledgeBaseDetails = (props: any) => {
   // const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   // const [addFilesLoading, setAddFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [displayKbPlayground, setDisplayKbPlayground] = useState(false);
+  const [displayKbSettings, setDisplayKbSettings] = useState(false);
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.knowledgebase.files,
     { ...filters, knowledgebase_id: knowledgebaseId },
@@ -156,8 +156,8 @@ const KnowledgeBaseDetails = (props: any) => {
     }
   };
 
-  const toggleKbPlayground = () => {
-    setDisplayKbPlayground((prev: boolean) => !prev);
+  const toggleKbSettings = () => {
+    setDisplayKbSettings((prev: boolean) => !prev);
   };
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -268,11 +268,25 @@ const KnowledgeBaseDetails = (props: any) => {
         </Row>
       )}
       {!isError && !data?.document_details?.length && !isLoading && (
-        <EmptyUpload
-          buttonText="Add files from dataset"
-          message="The knowledgebase is empty"
-          onClick={toggleAddFileModal}
-        />
+        <>
+          {/* <Row justify="end">
+            <Col>
+              <Button
+                size="middle"
+                type="default"
+                icon={<SettingOutlined />}
+                onClick={toggleKbSettings}
+              >
+                Setting
+              </Button>
+            </Col>
+          </Row> */}
+          <EmptyUpload
+            buttonText="Add files from dataset"
+            message="The knowledgebase is empty"
+            onClick={toggleAddFileModal}
+          />
+        </>
       )}
       {!isError && (isLoading || !!data?.document_details?.length) && (
         <>
@@ -302,15 +316,18 @@ const KnowledgeBaseDetails = (props: any) => {
                   Import from Dataset
                 </Button>
                 <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
-                  <Button
-                    size="middle"
-                    type="default"
-                    icon={<PlayCircleOutlined />}
-                    onClick={toggleKbPlayground}
-                  >
-                    Knowledge base playground
+                  <Button size="middle" type="default" icon={<AimOutlined />}>
+                    Data Retrieval
                   </Button>
                 </Link>
+                {/* <Button
+                  size="middle"
+                  type="default"
+                  icon={<SettingOutlined />}
+                  onClick={toggleKbSettings}
+                >
+                  Setting
+                </Button> */}
               </Space>
             </Col>
           </Row>
@@ -342,6 +359,11 @@ const KnowledgeBaseDetails = (props: any) => {
         addFilesHandler={addFilesHandler}
         knowledgebaseId={knowledgebaseId}
       />
+      {/* <KbSettingsModal
+        open={displayKbSettings}
+        onClose={toggleKbSettings}
+        kbDetails={knowledgebaseConfig?.result?.[0] || {}}
+      /> */}
     </KnowledgeBaseDetailsContainer>
   );
 };
