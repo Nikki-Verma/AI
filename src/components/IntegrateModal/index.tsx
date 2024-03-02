@@ -25,7 +25,7 @@ const IntegrateModal = ({open,setIsOpen,details} : IntegrateModalProps) => {
         destroyOnClose = {true}
         >
             <ModalDescription>
-            The OpenAI API key is a unique alphanumeric code provided to users by OpenAI, granting access to their powerful language models and artificial intelligence services.
+            Your agent is now live! Integrate it seamlessly with platforms like Slack, WhatsApp, Telegram, or use our API for custom integrations.
             </ModalDescription>
             <Row gutter={[12,16]} style={{display : 'flex',justifyContent : 'space-evenly',marginTop : '30px'}}>
             <Col span={6}>
