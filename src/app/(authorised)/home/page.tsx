@@ -11,6 +11,7 @@ import Link from "next/link";
 import ModelsIcon from "@/components/Icons/ModelsIcon";
 import PipelineIcon from "@/components/Icons/AgentPipelineIcon";
 import KnowledgeBaseIcon from "@/components/Icons/KnowledgeBaseIcon";
+import HomePageHeading from "@/components/HomePageHeading";
 
 type Props = {
   params: {
@@ -31,7 +32,7 @@ function HomePage() {
 
   return (
     <HomeContainer>
-      <PageHeading
+      <HomePageHeading
       title = {`Hi, ${session?.user?.details?.name ?? 'User'}`}
       subHeading = 'Start experimenting with our platform'
       />

@@ -170,7 +170,7 @@ export const WelcomeText = styled.div`
 
 export const GetStartedText = styled.div`
   display: flex;
-  color: var(--Text-Color-850, #222);
+  color:  #1414148f;
   text-align: center;
   font-size: 18px;
   font-style: normal;

@@ -44,7 +44,7 @@ const SignUpForm = () => {
                 },
               ]}
             >
-              <Input placeholder="Enter work email address" />
+              <Input style ={{height : '40px'}} placeholder="Enter work email address" />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -58,7 +58,7 @@ const SignUpForm = () => {
                 },
               ]}
             >
-              <Input placeholder="Enter password" />
+              <Input style ={{height : '40px'}} type="password" placeholder="Enter password" />
             </Form.Item>
           </Col>
           <Col
@@ -86,12 +86,12 @@ const SignUpForm = () => {
         </Row>
         <Button
           type="primary"
-          style={{ width: "100%", margin: "28px 0px" }}
+          style={{ width: "100%", margin: "28px 0px", height : '45px'  }}
           onClick={signUpForm.submit}
         >
           Create Account
         </Button>
-        <Button type="default" style={{ width: "100%", marginBottom: "16px" }}>
+        <Button type="default" style={{ width: "100%", marginBottom: "16px", height : '45px'  }}>
           <Space align="center">
             <div
               style={{

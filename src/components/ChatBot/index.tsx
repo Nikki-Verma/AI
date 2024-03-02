@@ -14,6 +14,7 @@ type ChatBotProps = {
   input: string;
   setInput: (val: string) => void;
   stopStream: () => void;
+  WelcomeMessage : string;
 };
 
 const ChatBot = ({
@@ -25,6 +26,7 @@ const ChatBot = ({
   input,
   setInput,
   stopStream,
+  WelcomeMessage
 }: ChatBotProps) => {
   return (
     <Container>
@@ -32,6 +34,7 @@ const ChatBot = ({
         messages={messages}
         loading={isLoading}
         chatLoading={changeConversationLoading}
+        WelcomeMessage = {WelcomeMessage}
       />
       <ChatInput
         submitHandler={handleSubmit}
