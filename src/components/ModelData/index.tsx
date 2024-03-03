@@ -201,8 +201,8 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         >
           {page === ModelPage.MODELS ? (
             <>
-              {data?.result?.added ? (
-                <Flex gap="12px" align="center">
+            {data?.result?.type === "Closed source" &&
+                data?.result?.status === "DEPLOYED" && (
                   <Tag
                     style={{
                       display: "flex",
@@ -213,8 +213,12 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                     color="success"
                     icon={<CheckCircleOutlined />}
                   >
-                    Added To workspace
+                    Connected
                   </Tag>
+                )
+              }
+              {data?.result?.added ? (
+                <Flex gap="12px" align="center">
                   <Link
                     prefetch
                     href={`/workspace/${data?.result?.user_model_id}/${modelId}`}
@@ -236,7 +240,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                 </>
               )}
               {data?.result?.type === "Closed source" &&
-                (data?.result?.status !== "DEPLOYED" ? (
+                data?.result?.status !== "DEPLOYED" && (
                   <Button
                     type="primary"
                     onClick={connectModel}
@@ -244,20 +248,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                   >
                     Connect
                   </Button>
-                ) : (
-                  <Tag
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "32px",
-                    }}
-                    color="success"
-                    icon={<CheckCircleOutlined />}
-                  >
-                    Connected
-                  </Tag>
-                ))}
+                )}
             </>
           ) : data?.result?.status !== "DEPLOYED" ? (
             data?.result?.type === "Open source" ? (

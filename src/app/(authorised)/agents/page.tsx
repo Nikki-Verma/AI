@@ -344,9 +344,7 @@ const Agents = () => {
       >
         <PageHeading
           title="Agents"
-          subHeading="Explore a vast array of meticulously trained and readily deployable
-        machine learning models all conveniently centralized in a single
-        location."
+          subHeading="Craft intelligent automations using Large Language Models to streamline tasks and enhance decision-making."
         />
       </Row>
       <Col span={24}>

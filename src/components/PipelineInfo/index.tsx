@@ -104,6 +104,7 @@ const PipelineInfo = ({
       size: ALL_DATA_PAGE_SIZE,
     },
   );
+  console.log(toolsData,'toolsdata')
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
@@ -225,16 +226,13 @@ const PipelineInfo = ({
         </Col>
         <Col span={24}>
           <PipelineFormCardContainer>
-            {/* <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle> */}
+            <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
             <WorkflowInfoFormDescription>
-              The knowledge base serves as a repository of structured or
-              unstructured information that an AI system can access to enhance
-              its understanding and generate informed responses.
+            Select the core AI that generates text, using retrieved information to enhance accuracy and creativity.
             </WorkflowInfoFormDescription>
             <Form.Item
               name={["model_detail", "model_name"]}
               rules={[{ required: true, message: "Model is required" }]}
-              label="Model"
             >
               <Select
                 placeholder="Select Model"
@@ -321,7 +319,12 @@ const PipelineInfo = ({
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "n_predict"]}
-                    label="Max tokens"
+                    label={
+                      <Space>
+                        <Text>Max tokens</Text>
+                        <InfoIconTooltip title="Specifies the maximum number of tokens (words or characters) the model generates for each response. Limits output length for conciseness and focus." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
@@ -440,7 +443,7 @@ const PipelineInfo = ({
               <TextArea
                 style={{ resize: "none" }}
                 autoSize={{ minRows: 4, maxRows: 6 }}
-                placeholder="Preamble"
+                placeholder="Be a considerate and honest assistant. Also, please ensure not to give out false information when you're unsure of an answer."
               />
             </Form.Item>
           </PipelineFormCardContainer>
@@ -451,9 +454,7 @@ const PipelineInfo = ({
               Knowledge base
             </KnowledgebaseInfoFormTitle>
             <KnowledgebaseInfoFormDescription>
-              The knowledge base serves as a repository of structured or
-              unstructured information that an AI system can access to enhance
-              its understanding and generate informed responses.
+            Database of facts and information the AI searches to enrich responses with accurate and relevant content.
             </KnowledgebaseInfoFormDescription>
             <Form.Item name={["kb", "kb_name"]} label="Knowledge base">
               <Select
@@ -524,9 +525,9 @@ const PipelineInfo = ({
         <Col span={24}>
           <PipelineFormCardContainer>
             <KnowledgebaseInfoFormTitle>Tools</KnowledgebaseInfoFormTitle>
-            <KnowledgebaseInfoFormDescription>
+            {/* <KnowledgebaseInfoFormDescription>
               Tools description TBA
-            </KnowledgebaseInfoFormDescription>
+            </KnowledgebaseInfoFormDescription> */}
             <Form.Item
               name={["tools"]}
               // label="Knowledge base"
@@ -563,7 +564,7 @@ const PipelineInfo = ({
                   </SelectOptionDetail>
                 )}
                 options={
-                  toolsData?.result?.map((data: any) => ({
+                  toolsData?.map((data: any) => ({
                     label: data?.name,
                     value: data?.id,
                     id: data?.id,

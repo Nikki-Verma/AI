@@ -34,6 +34,7 @@ import {
   WorkflowInfoContainer,
   WorkflowInfoFormContainer,
   WorkflowInfoFormDescription,
+  WorkflowInfoFormTitle,
   WorkflowName,
 } from "./style";
 
@@ -145,7 +146,7 @@ const WorkflowInfo = ({
       </Col>
       <Col>
         <WorkflowInfoFormContainer>
-          {/* <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle> */}
+          <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
           <WorkflowInfoFormDescription>
             Select the core AI that generates text, using retrieved information
             to enhance accuracy and creativity.
@@ -159,7 +160,7 @@ const WorkflowInfo = ({
             <Form.Item
               name={["model_detail", "model_name"]}
               rules={[{ required: true, message: "Model is required" }]}
-              label="Model"
+              // label="Model"
             >
               <Select
                 placeholder="Select Model"
@@ -244,7 +245,12 @@ const WorkflowInfo = ({
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "n_predict"]}
-                    label="Max tokens"
+                    label={
+                      <Space>
+                        <Text>Max tokens</Text>
+                        <InfoIconTooltip title="Specifies the maximum number of tokens (words or characters) the model generates for each response. Limits output length for conciseness and focus." />
+                      </Space>
+                    }
                   >
                     <InputNumber
                       style={{ ...fullWidth }}

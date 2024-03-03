@@ -17,7 +17,8 @@ import { useForm } from "antd/es/form/Form";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { AgentStatus, AgentStatusType } from "../../constants";
-import { AgentEditContainer } from "./style";
+import { AgentEditContainer, EmptyChatContainer, EmptyChattitle } from "./style";
+import EmptyChatIcon from "@/components/Icons/EmptyChatIcon";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
@@ -227,7 +228,18 @@ const AgentEdit = () => {
               </div>
             </div>
           ) : (
-            <>Please select a model to start testing</>
+            <EmptyChatContainer>
+                <EmptyChatIcon
+                  style={{
+                    fontSize: "86px",
+                    color: "var(--Text-Color-900, #171717)",
+                    opacity: "0.5",
+                  }}
+                />
+                <EmptyChattitle>
+                Please select a model to start testing
+                </EmptyChattitle>
+              </EmptyChatContainer>
           )}
         </Col>
       </Row>

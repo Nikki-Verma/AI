@@ -87,6 +87,7 @@ const ImportDatasetFileList = ({
       setSelectedRowKeys(newSelectedRowKeys);
       setSelectedRowDetails(selectedRows);
     },
+    columnWidth : 40
   };
 
   const columns: TableProps<any>["columns"] = [

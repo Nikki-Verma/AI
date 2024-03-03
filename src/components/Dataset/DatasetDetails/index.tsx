@@ -301,6 +301,7 @@ const DatasetDetails = (props: any) => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
+    columnWidth : 40
   };
 
   const columns: TableProps<DataType>["columns"] = [

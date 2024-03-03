@@ -90,7 +90,12 @@ const PlaygroundConfig = ({
             </Flex>
             <Form.Item
               name={["model_parameters", "n_predict"]}
-              label="Max tokens"
+              label={
+                <Space>
+                  <Text>Max tokens</Text>
+                  <InfoIconTooltip title="Specifies the maximum number of tokens (words or characters) the model generates for each response. Limits output length for conciseness and focus." />
+                </Space>
+              }
             >
               <InputNumber
                 style={{ ...fullWidth }}

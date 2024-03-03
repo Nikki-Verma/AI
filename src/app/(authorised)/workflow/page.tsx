@@ -271,7 +271,7 @@ const Workflow = () => {
                 href={`/integration/workflow/${workflowData?.pipeline_id}`}
               >
                 <Button style={{color : '#000000b3'}} type="text">
-                  Integration
+                  Integrate
                 </Button>
               </Link>
             ),

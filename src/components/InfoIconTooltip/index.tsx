@@ -4,7 +4,7 @@ import InfoIcon from "../Icons/InfoIcon";
 const InfoIconTooltip = ({ title }: { title: string }) => {
   return (
     <Tooltip trigger="hover" title={title}>
-      <div style={{ padding: "2px" }}>
+      <div>
         <InfoIcon />
       </div>
     </Tooltip>

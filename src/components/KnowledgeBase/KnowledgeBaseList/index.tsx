@@ -196,6 +196,7 @@ const KnowledgeBaseList = () => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
+    columnWidth : 40
   };
 
   return (
