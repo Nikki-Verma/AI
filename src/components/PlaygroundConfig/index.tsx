@@ -11,6 +11,7 @@ import {
   Space,
   Typography,
 } from "antd";
+import Image from "next/image";
 import { useEffect } from "react";
 import ExpandIcon from "../Icons/ExpandIcon";
 import ParameterIcon from "../Icons/ParameterIcon";
@@ -18,6 +19,7 @@ import InfoIconTooltip from "../InfoIconTooltip";
 import {
   ParameterTitle,
   ParamterCollapse,
+  ParamTitle,
   PlaygroundActionContainer,
   PlaygroundConfigCollapseContainer,
   PlaygroundConfigContainer,
@@ -32,6 +34,7 @@ type PlaygroundConfigProps = {
     kb_parameters: UnknownObject;
   };
   form: FormInstance;
+  details: UnknownObject | null | undefined;
   changeConfigHandler: (values: UnknownObject) => void;
   savePlaygroundConfig: (values: UnknownObject) => void;
 };
@@ -42,9 +45,12 @@ const PlaygroundConfig = ({
   canLaunch = false,
   playgroundConfigDetails,
   form,
+  details,
   changeConfigHandler,
   savePlaygroundConfig,
 }: PlaygroundConfigProps) => {
+  console.log("🚀 ~ details:", details);
+  console.log("🚀 ~ playgroundConfigDetails:", playgroundConfigDetails);
   useEffect(() => {
     form.setFields([
       {
@@ -65,12 +71,23 @@ const PlaygroundConfig = ({
       label: (
         <Flex gap={8} align="start">
           <ParameterIcon />
-          <ParameterTitle>Model Parameters</ParameterTitle>
+          <ParameterTitle>{`Model Parameters `}</ParameterTitle>
         </Flex>
       ),
       children: (
         <>
           <Flex gap={0} vertical>
+            <Flex gap="8px" align="center">
+              <Image
+                src="/assets/Images/dummyModel.png"
+                width={24}
+                height={24}
+                alt="model"
+              />
+              <ParamTitle>
+                {details?.result?.model_detail?.model_name ?? ""}
+              </ParamTitle>
+            </Flex>
             <Form.Item
               name={["model_parameters", "n_predict"]}
               label="Max tokens"

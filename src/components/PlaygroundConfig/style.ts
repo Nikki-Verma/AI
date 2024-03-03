@@ -1,5 +1,7 @@
-import { Collapse } from "antd";
+import { Collapse, Typography } from "antd";
 import { styled } from "styled-components";
+
+const { Text } = Typography;
 
 export const PlaygroundConfigContainer = styled.div`
   display: flex;
@@ -42,4 +44,13 @@ export const ParamterCollapse = styled(Collapse)`
   .ant-collapse-content-box {
     padding: 12px !important;
   }
+`;
+
+export const ParamTitle = styled(Text)`
+  color: var(--Text-Color-900, #171717) !important;
+  font-size: 16px !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 20px 0;
 `;

@@ -116,6 +116,7 @@ const TestPlayground = ({
             changeConfigHandler={changeConfigHandler}
             form={form}
             savePlaygroundConfig={savePlaygroundConfig}
+            details={details}
           />
         </div>
       </TestPlaygroundContainer>
