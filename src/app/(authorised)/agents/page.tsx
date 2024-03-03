@@ -62,6 +62,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 const Agents = () => {
   const { updatePageConfig } = useAppStore();
   const router = useRouter();
+  const fullWidth = { width: "100%" };
 
   const { data: session }: any = useSession();
   const { notification } = useNotify();
@@ -260,8 +261,11 @@ const Agents = () => {
           {
             key: "edit",
             label: (
-              <Link prefetch href={`/agents/edit/${agentData?.pipeline_id}`}>
-                <Button type="text" icon={<EditOutlined />}>
+              <Link
+                prefetch
+                  href={`/agents/edit/${agentData?.pipeline_id}`}
+              >
+                <Button style={{color : '#000000b3'}} type="text">
                   Edit
                 </Button>
               </Link>
@@ -270,8 +274,11 @@ const Agents = () => {
           {
             key: "view",
             label: (
-              <Link prefetch href={`/agents/view/${agentData?.pipeline_id}`}>
-                <Button type="text" icon={<EyeFilled />}>
+              <Link
+                prefetch
+                  href={`/agents/view/${agentData?.pipeline_id}`}
+              >
+                <Button style={{color : '#000000b3'}} type="text" >
                   View
                 </Button>
               </Link>
@@ -281,32 +288,43 @@ const Agents = () => {
         return (
           <>
             {agentData?.agent_state === AgentStatus.COMPLETED ? (
-              <Space>
+              // <Space>
+              <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+                <Col span={20}>
                 <Link
                   prefetch
                   href={`/integration/agents/${agentData?.pipeline_id}`}
                 >
-                  <Button block type="default" icon={<ApiOutlined />}>
+                  <Button style={{...fullWidth}} block type="default" icon={<ApiOutlined />}>
                     Integrate
                   </Button>
                 </Link>
+                </Col>
+                <Col span={3} style={{display : 'flex',justifyContent : 'center'}}>
                 <Dropdown
                   menu={{ items: completedItems }}
                   placement="bottomLeft"
                 >
                   <MoreOutlined
-                    style={{ fontSize: "28px", fontWeight: "bold" }}
+                    style={{ fontSize: "21px", fontWeight: "bold",cursor : 'pointer' }}
                   />
                 </Dropdown>
-              </Space>
+                </Col>
+                </Row>
+              // </Space>
             ) : (
-              <Space>
-                <Link prefetch href={`/agents/edit/${agentData?.pipeline_id}`}>
-                  <Button block type="default" icon={<EditOutlined />}>
-                    Edit
-                  </Button>
+              // <Space>
+              <Col span={20}>
+                <Link
+                  prefetch
+                    href={`/agents/edit/${agentData?.pipeline_id}`}
+                >
+                <Button style={{...fullWidth}} block type="default" icon={<EditOutlined />}>
+                  Edit
+                </Button>
                 </Link>
-              </Space>
+                </Col>
+              // </Space>
             )}
           </>
         );

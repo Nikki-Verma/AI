@@ -170,16 +170,20 @@ const KnowledgeBaseList = () => {
     {
       title: "Actions",
       dataIndex: "",
-      align: "center",
+      align: "left",
       key: "actions",
-      width: 100,
+      width: 160,
       render: (_: any, knowledgebase: UnknownObject) => {
         return (
-          <Space>
+          // <Space>
+          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+          <Col span={20}>
             <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
-              <Button icon={<EyeFilled />}>View</Button>
+              <Button style={{width : '100%'}}  icon={<EyeFilled />}>View</Button>
             </Link>
-          </Space>
+            </Col>
+            </Row>
+          // </Space>
         );
       },
     },

@@ -176,17 +176,24 @@ const DatasetList = () => {
     {
       title: "Actions",
       dataIndex: "",
-      align: "center",
+      align: "left",
       key: "actions",
-      width: 20,
+      width: 160,
+      fixed: "right",
       render: (_: any, dataset: UnknownObject) => {
         return (
-          <Space>
+          // <Space>
+          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+                <Col span={20}>
             <Link prefetch href={`/dataset/${dataset?.id}`}>
-              <Button icon={<EyeFilled />}>View</Button>
+              <Button style={{width : '100%'}} icon={<EyeFilled />}>View</Button>
             </Link>
-            {/* <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} /> */}
-          </Space>
+            </Col>
+            {/* <Col span={3} style={{display : 'flex',justifyContent : 'center'}}>
+            <MoreOutlined style={{ fontSize: "21px", fontWeight: "bold", cursor : 'pointer' }} />
+            </Col> */}
+            </Row>
+          // </Space>
         );
       },
     },
