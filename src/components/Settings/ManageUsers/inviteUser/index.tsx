@@ -243,10 +243,8 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
   };
 
   const inviteUserFormHandler = async () => {
-    console.log(fullName, "full name");
-    console.log(email, "email name");
     try {
-      //setCreateDatasetLoading(true);
+      setCreateDatasetLoading(true);
       console.log("hello", fullName)
       const payload = {
         email: email,

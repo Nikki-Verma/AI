@@ -12,6 +12,7 @@ import {
   Tag,
 } from "antd";
 
+import { changeStatusApi } from "@/api/dataset";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
@@ -23,7 +24,8 @@ import PageHeading from "@/components/PageHeading";
 import { useSession } from "next-auth/react";
 import Tags from "@/components/Tags";
 import InviteUser from "./inviteUser";
-
+import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
+import { useNotify } from "@/providers/notificationProvider";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
@@ -32,19 +34,18 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
 });
 
-
-
 const ManageUsers = () => {
   const { data: session }: any = useSession();
+  const { notification } = useNotify();
   const [intiveDataUser, intiveSetUser] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
-  
+  const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
+  const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
 
   let { data, isError, error, isLoading, refetch } = useFetchData(
     `${config.identity.getUsers}?`,
     filters
   );
-  
 
   let {
     data: inviteDataUser,
@@ -52,11 +53,12 @@ const ManageUsers = () => {
     error: inviteErrorUser,
     isLoading: inviteisLoadingUser,
     refetch: inviterefetchUser,
-  } = useFetchData(`${config.identity.userRole}`, {user_id: session?.user?.details?.userId,
-    user_group_id: session?.user?.details?.userGroup,});
+  } = useFetchData(`${config.identity.userRole}`, {
+    user_id: session?.user?.details?.userId,
+    user_group_id: session?.user?.details?.userGroup,
+  });
 
-
-    console.log('inviteDataUser',inviteDataUser)
+  console.log("inviteDataUser", inviteDataUser);
 
   // data = data?.result?.users;
 
@@ -99,6 +101,42 @@ const ManageUsers = () => {
   // ];
 
   // console.log(data, "dataasdasd");
+
+  const showDatasetModal = () => {
+    setCreateDatasetOpen(true);
+  };
+
+  const closeDatasetModel = () => {
+    setCreateDatasetOpen(false);
+  };
+
+  const changeStatusHandler = async (tags: any) => {
+    try {
+      setCreateDatasetLoading(true);
+      const payload = {
+        user_id: session?.user?.details?.userId,
+        status: tags ? "INACTIVE" : "ACTIVE",
+      };
+
+      const datasetResponse = await changeStatusApi({ payload });
+
+      if (datasetResponse?.status === 200) {
+        setCreateDatasetOpen(false);
+        notification.success({
+          message: "Status Changed",
+        });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while changing status",
+        //description: getErrorFromApi(error),
+      });
+      console.log(error);
+    } finally {
+      setCreateDatasetLoading(false);
+    }
+  };
 
   const columns: TableProps<any>["columns"] = [
     {
@@ -145,9 +183,12 @@ const ManageUsers = () => {
             label: "Dummy",
           },
         ];
+
         return (
           <>
-            <Tags tag={tags ? "Active" : "Deactivated"} />
+            <span onClick={changeStatusHandler}>
+              <Tags tag={tags ? "Active" : "Deactivated"} />
+            </span>
             <Dropdown menu={{ items: actionsItems }} placement="bottomLeft">
               <MoreOutlined
                 style={{ fontSize: "18px", fontWeight: "bolder" }}
@@ -186,7 +227,7 @@ const ManageUsers = () => {
               type="primary"
               icon={<PlusOutlined />}
               onClick={toggleAddFileModal}
-              >
+            >
               Invite User
             </Button>
           </Col>
@@ -215,6 +256,13 @@ const ManageUsers = () => {
           onClose={toggleAddFileModal}
         ></InviteUser>
       )}
+      <CreateDatasetModal
+        open={createDatasetOpen}
+        loading={createDatasetLoading}
+        onClose={closeDatasetModel}
+        createDatasetHandler={changeStatusHandler}
+        title="Create your data collection set"
+      />
     </>
   );
 };
