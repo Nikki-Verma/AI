@@ -17,7 +17,6 @@ import {
   Row,
   Select,
   Space,
-  Switch,
   Typography,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
@@ -225,7 +224,7 @@ const PipelineInfo = ({
         </Col>
         <Col span={24}>
           <PipelineFormCardContainer>
-            <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
+            {/* <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle> */}
             <WorkflowInfoFormDescription>
               The knowledge base serves as a repository of structured or
               unstructured information that an AI system can access to enhance
@@ -320,11 +319,11 @@ const PipelineInfo = ({
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "n_predict"]}
-                    label="Tokens to generate"
+                    label="Max tokens"
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
-                      placeholder="Tokens to generate"
+                      placeholder="Max tokens"
                       precision={0}
                     />
                   </Form.Item>
@@ -420,14 +419,14 @@ const PipelineInfo = ({
                     />
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+                {/* <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "do_sample"]}
                     label="DO sample"
                   >
                     <Switch />
                   </Form.Item>
-                </Col>
+                </Col> */}
               </Row>
             </AdvancedOptionsContainer>
           </PipelineFormCardContainer>

@@ -15,6 +15,7 @@ import {
   Button,
   Card,
   Col,
+  Flex,
   Result,
   Row,
   Skeleton,
@@ -45,6 +46,9 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
     { id: modelId },
     {},
   );
+
+  console.log("data", data);
+
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
   const [deploymentLoading, setDeploymentLoading] = useState(false);
   const [connectModelVisible, setConnectModelVisible] = useState(false);
@@ -198,18 +202,26 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
           {page === ModelPage.MODELS ? (
             <>
               {data?.result?.added ? (
-                <Tag
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "32px",
-                  }}
-                  color="success"
-                  icon={<CheckCircleOutlined />}
-                >
-                  Added To workspace
-                </Tag>
+                <Flex gap="12px" align="center">
+                  <Tag
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "32px",
+                    }}
+                    color="success"
+                    icon={<CheckCircleOutlined />}
+                  >
+                    Added To workspace
+                  </Tag>
+                  <Link
+                    prefetch
+                    href={`/workspace/${data?.result?.user_model_id}/${modelId}`}
+                  >
+                    <Button type="primary">Go to workspace</Button>
+                  </Link>
+                </Flex>
               ) : (
                 <>
                   {data?.result?.type === "Open source" && (

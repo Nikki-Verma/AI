@@ -19,7 +19,6 @@ import { DatabaseFilled, EyeFilled, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  Input,
   Result,
   Row,
   Space,
@@ -36,7 +35,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateKnowledgeBaseModal from "../CreateKnowledgeBaseModal";
 
@@ -262,10 +260,10 @@ const KnowledgeBaseList = () => {
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">

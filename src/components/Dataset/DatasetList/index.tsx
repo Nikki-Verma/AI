@@ -15,11 +15,10 @@ import {
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { EyeFilled, MoreOutlined, PlusOutlined } from "@ant-design/icons";
+import { EyeFilled, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  Input,
   Result,
   Row,
   Space,
@@ -37,7 +36,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import FolderIcon from "../../Icons/FolderIcon";
-import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateDatasetModal from "../CreateDatasetModal";
 import { DatasetListContainer } from "./style";
@@ -187,7 +185,7 @@ const DatasetList = () => {
             <Link prefetch href={`/dataset/${dataset?.id}`}>
               <Button icon={<EyeFilled />}>View</Button>
             </Link>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
+            {/* <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} /> */}
           </Space>
         );
       },
@@ -223,10 +221,10 @@ const DatasetList = () => {
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by Dataset name, file name"
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">

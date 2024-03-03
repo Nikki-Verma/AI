@@ -326,9 +326,7 @@ const Workflow = () => {
       >
         <PageHeading
           title="Workflows"
-          subHeading="Explore a vast array of meticulously trained and readily deployable
-        machine learning models all conveniently centralized in a single
-        location."
+          subHeading="Set up workflows to orchestrate task automation and data processing, enhancing productivity and insights."
         />
       </Row>
       <Col span={24}>

@@ -9,7 +9,6 @@ import {
   InputNumber,
   Row,
   Space,
-  Switch,
   Typography,
 } from "antd";
 import { useEffect } from "react";
@@ -74,11 +73,11 @@ const PlaygroundConfig = ({
           <Flex gap={0} vertical>
             <Form.Item
               name={["model_parameters", "n_predict"]}
-              label="Tokens to generate"
+              label="Max tokens"
             >
               <InputNumber
                 style={{ ...fullWidth }}
-                placeholder="Tokens to generate"
+                placeholder="Max tokens"
                 precision={0}
               />
             </Form.Item>
@@ -159,12 +158,12 @@ const PlaygroundConfig = ({
                 precision={2}
               />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name={["model_detail", "model_parameters", "do_sample"]}
               label="DO sample"
             >
               <Switch />
-            </Form.Item>
+            </Form.Item> */}
           </Flex>
         </>
       ),

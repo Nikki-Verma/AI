@@ -1,7 +1,6 @@
 import { addFileToKnowledgeBaseApi } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
-import SearchIcon from "@/components/Icons/SearchIcon";
 import SaDate from "@/components/SaDate/Index";
 import {
   PageAbout,
@@ -19,16 +18,11 @@ import {
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import {
-  AimOutlined,
-  CloudDownloadOutlined,
-  MoreOutlined,
-} from "@ant-design/icons";
+import { AimOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
   Col,
-  Input,
   Result,
   Row,
   Skeleton,
@@ -200,20 +194,20 @@ const KnowledgeBaseDetails = (props: any) => {
       width: 200,
       render: (val) => (val ? <Text>{val} MB</Text> : "--"),
     },
-    {
-      title: "Actions",
-      dataIndex: "",
-      align: "center",
-      key: "actions",
-      width: 100,
-      render: (_: any, knowledgebase: UnknownObject) => {
-        return (
-          <Space>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-          </Space>
-        );
-      },
-    },
+    // {
+    //   title: "Actions",
+    //   dataIndex: "",
+    //   align: "center",
+    //   key: "actions",
+    //   width: 100,
+    //   render: (_: any, knowledgebase: UnknownObject) => {
+    //     return (
+    //       <Space>
+    //         <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
+    //       </Space>
+    //     );
+    //   },
+    // },
   ];
 
   if (knowledgebaseLoading) {
@@ -292,7 +286,7 @@ const KnowledgeBaseDetails = (props: any) => {
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
                 value={searchValue}
@@ -303,7 +297,7 @@ const KnowledgeBaseDetails = (props: any) => {
                   //update filters once it is implemented
                   console.log("enter pressed")
                 }
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">
@@ -317,7 +311,7 @@ const KnowledgeBaseDetails = (props: any) => {
                 </Button>
                 <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
                   <Button size="middle" type="default" icon={<AimOutlined />}>
-                    Data Retrieval
+                    Retrieval Testing
                   </Button>
                 </Link>
                 {/* <Button

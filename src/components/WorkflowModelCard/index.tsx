@@ -28,7 +28,7 @@ const WorkflowModelCard = ({ modelDetails }: WorkflowModelCardProps) => {
 
   const ModelParameterColumns: DescriptionItemType[] = [
     {
-      label: "Tokens to generate",
+      label: "Max tokens",
       key: "n_predict",
     },
     {
@@ -51,10 +51,10 @@ const WorkflowModelCard = ({ modelDetails }: WorkflowModelCardProps) => {
       label: "Top P sampling",
       key: "top_p",
     },
-    {
-      label: "DO sample",
-      key: "do_sample",
-    },
+    // {
+    //   label: "DO sample",
+    //   key: "do_sample",
+    // },
   ];
 
   return (

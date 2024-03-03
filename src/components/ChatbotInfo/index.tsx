@@ -17,7 +17,6 @@ import {
   Row,
   Select,
   Space,
-  Switch,
   Typography,
 } from "antd";
 import Image from "next/image";
@@ -35,7 +34,6 @@ import {
   WorkflowInfoContainer,
   WorkflowInfoFormContainer,
   WorkflowInfoFormDescription,
-  WorkflowInfoFormTitle,
   WorkflowName,
 } from "./style";
 
@@ -147,7 +145,7 @@ const WorkflowInfo = ({
       </Col>
       <Col>
         <WorkflowInfoFormContainer>
-          <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
+          {/* <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle> */}
           <WorkflowInfoFormDescription>
             Select the core AI that generates text, using retrieved information
             to enhance accuracy and creativity.
@@ -246,11 +244,11 @@ const WorkflowInfo = ({
                 <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "n_predict"]}
-                    label="Tokens to generate"
+                    label="Max tokens"
                   >
                     <InputNumber
                       style={{ ...fullWidth }}
-                      placeholder="Tokens to generate"
+                      placeholder="Max tokens"
                       precision={0}
                     />
                   </Form.Item>
@@ -346,14 +344,14 @@ const WorkflowInfo = ({
                     />
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+                {/* <Col span={6}>
                   <Form.Item
                     name={["model_detail", "model_parameters", "do_sample"]}
                     label="DO sample"
                   >
                     <Switch />
                   </Form.Item>
-                </Col>
+                </Col> */}
               </Row>
             </AdvancedOptionsContainer>
           </Form>
