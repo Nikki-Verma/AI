@@ -29,6 +29,8 @@ import config from "@/utils/apiEndoints";
 import { useFetchData } from "@/Hooks/useApi";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
+import { useNotify } from "@/providers/notificationProvider";
 
 //scss
 
@@ -61,9 +63,12 @@ const homePermissionData = [
 const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
   // const [formUpdated, setformUpdated] = useState<Boolean>(false);
   const { data: session }: any = useSession();
+  const { notification } = useNotify();
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
+  const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
 
   const { Panel } = Collapse;
 
@@ -120,6 +125,14 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
 
   const onCheckAllHomePermission: CheckboxProps["onChange"] = (e) => {
     setHomeCheckedList(e.target.checked ? homePermissionData : []);
+  };
+
+  const showDatasetModal = () => {
+    setCreateDatasetOpen(true);
+  };
+
+  const closeDatasetModel = () => {
+    setCreateDatasetOpen(false);
   };
 
   // const homePermissionSwitch = (checked: boolean) => {
@@ -234,9 +247,9 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
     console.log(email, "email name");
     try {
       //setCreateDatasetLoading(true);
-
+      console.log("hello", fullName)
       const payload = {
-        email: fullName,
+        email: email,
         tenant_id: DUMMY_TENANT_ID,
         user_group_id: session?.user?.details?.userGroup,
         user_profiles: [
@@ -260,21 +273,21 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
       console.log(datasetResponse, "datasetResponse")
 
       if (datasetResponse?.status === 200) {
-        //setCreateDatasetOpen(false);
-        // notification.success({
-        //   message: "Dataset created successfully",
-        // });
-        // refetch();
+        setCreateDatasetOpen(false);
+        notification.success({
+          message: "User Invited Successfully",
+        });
+        refetch();
         onClose();
       }
     } catch (error) {
-      // notification.error({
-      //   message: "Error while creating dataset",
-      //   description: getErrorFromApi(error),
-      // });
+      notification.error({
+        message: "Error while invited user",
+        //description: getErrorFromApi(error),
+      });
       console.log(error);
     } finally {
-      //setCreateDatasetLoading(false);
+      setCreateDatasetLoading(false);
     }
   };
 
@@ -435,6 +448,13 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
             </Button>
           </Form.Item>
         </Form>
+      <CreateDatasetModal
+        open={createDatasetOpen}
+        loading={createDatasetLoading}
+        onClose={closeDatasetModel}
+        createDatasetHandler={inviteUserFormHandler}
+        title="Create your data collection set"
+      />
       </Drawer>
     </>
   );
