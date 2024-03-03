@@ -65,38 +65,38 @@ const ManageUsers = () => {
     console.log("sdfsd");
   };
 
-  data = [
-    {
-      id: "f5bdf2af-8ce6-43ba-a34b-47c01479a027",
-      user_id: 1,
-      name: "Rohit Dhariwal",
-      email: "rohit.dhariwal@simplai.ai",
-      country_code: "+91",
-      mobile_no: "9873591147",
-      user_group_id: "71675958-c5de-425c-8590-0c64934ccddd",
-      user_group_name: "Super Admin",
-      is_active: true,
-      deactivation_reason: null,
-      is_editable: true,
-      is_email_verified: true,
-      is_mobile_verified: true,
-    },
-    {
-      id: "f5bdf2af-8ce6-43ba-a34b-47c01479a021",
-      user_id: 2,
-      name: "Nikhil Verma",
-      email: "nikhil.verma@simplai.ai",
-      country_code: "+91",
-      mobile_no: "9773241773",
-      user_group_id: "71675958-c5de-425c-8590-0c64934ccddd",
-      user_group_name: "Super Admin",
-      is_active: false,
-      deactivation_reason: null,
-      is_editable: false,
-      is_email_verified: false,
-      is_mobile_verified: false,
-    },
-  ];
+  // data = [
+  //   {
+  //     id: "f5bdf2af-8ce6-43ba-a34b-47c01479a027",
+  //     user_id: 1,
+  //     name: "Rohit Dhariwal",
+  //     email: "rohit.dhariwal@simplai.ai",
+  //     country_code: "+91",
+  //     mobile_no: "9873591147",
+  //     user_group_id: "71675958-c5de-425c-8590-0c64934ccddd",
+  //     user_group_name: "Super Admin",
+  //     is_active: true,
+  //     deactivation_reason: null,
+  //     is_editable: true,
+  //     is_email_verified: true,
+  //     is_mobile_verified: true,
+  //   },
+  //   {
+  //     id: "f5bdf2af-8ce6-43ba-a34b-47c01479a021",
+  //     user_id: 2,
+  //     name: "Nikhil Verma",
+  //     email: "nikhil.verma@simplai.ai",
+  //     country_code: "+91",
+  //     mobile_no: "9773241773",
+  //     user_group_id: "71675958-c5de-425c-8590-0c64934ccddd",
+  //     user_group_name: "Super Admin",
+  //     is_active: false,
+  //     deactivation_reason: null,
+  //     is_editable: false,
+  //     is_email_verified: false,
+  //     is_mobile_verified: false,
+  //   },
+  // ];
 
   // console.log(data, "dataasdasd");
 
@@ -203,7 +203,7 @@ const ManageUsers = () => {
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
-            dataSource={data || []}
+            dataSource={data?.result?.users || []}
           ></Table>
         )}
       </PageContainer>
