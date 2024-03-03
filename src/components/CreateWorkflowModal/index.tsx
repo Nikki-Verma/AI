@@ -12,11 +12,7 @@ interface CreateWorkflowModalProps {
   onClose: () => void;
   createWorkflowHandler: (values: { [key: string]: any }) => void;
   mode?: PageModeEnum;
-  workflowDetails?: {
-    id?: string | number | undefined;
-    name: string;
-    description?: string | undefined | null;
-  };
+  workflowDetails?: any;
 }
 
 const CreateWorkflowModal = ({
@@ -27,19 +23,20 @@ const CreateWorkflowModal = ({
   mode = PAGE_MODE.CREATE,
   workflowDetails,
 }: CreateWorkflowModalProps) => {
+  console.log("🚀 ~ workflowDetails:", workflowDetails);
   const [form] = useForm();
 
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
       form.setFields([
         {
-          name: "name",
-          value: workflowDetails?.name,
+          name: "pipeline_name",
+          value: workflowDetails?.pipeline_name,
           errors: [],
         },
         {
-          name: "description",
-          value: workflowDetails?.description,
+          name: "pipeline_description",
+          value: workflowDetails?.pipeline_description,
           errors: [],
         },
       ]);

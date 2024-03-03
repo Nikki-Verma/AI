@@ -187,6 +187,8 @@ const AgentEdit = () => {
             setCustAtrr={setCustAtrr}
             isChatLoading={isChatLoading}
             setFormValues={setFormValues}
+            agentId={agentId}
+            refetch={refetch}
           />
         </Col>
         <Col span={12}>

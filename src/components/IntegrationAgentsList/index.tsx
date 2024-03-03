@@ -1,3 +1,4 @@
+import { AgentStatus } from "@/app/(authorisedHeaderLayout)/agents/constants";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
@@ -18,7 +19,6 @@ import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Link from "next/link";
 import { useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
-import { AgentStatus } from "@/app/(authorisedHeaderLayout)/agents/constants";
 const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
@@ -134,10 +134,7 @@ const IntegrationAgentsList = () => {
       render: (_: any, dataset: UnknownObject) => {
         return (
           <Space>
-            <Link
-              prefetch
-              href={`/integration/agents/${dataset?.pipeline_id}`}
-            >
+            <Link prefetch href={`/integration/agents/${dataset?.pipeline_id}`}>
               <Button type="primary">View Details</Button>
             </Link>
           </Space>
@@ -185,6 +182,7 @@ const IntegrationAgentsList = () => {
             y: deployedAgents?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
+            hideOnSinglePage: true,
             current: filters?.page + 1,
             pageSize: filters?.size,
             total: deployedAgents?.totalElements,

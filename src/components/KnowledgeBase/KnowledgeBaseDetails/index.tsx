@@ -342,6 +342,7 @@ const KnowledgeBaseDetails = (props: any) => {
               y: data?.document_details?.length > 0 ? 600 : undefined,
             }}
             pagination={{
+              hideOnSinglePage: true,
               current: +filters?.page + 1,
               pageSize: +filters?.size,
               total: data?.total_elements,

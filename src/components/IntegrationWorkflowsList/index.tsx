@@ -185,6 +185,7 @@ const IntegrationWorkflowsList = () => {
             y: deployedWorkflows?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
+            hideOnSinglePage: true,
             current: filters?.page + 1,
             pageSize: filters?.size,
             total: deployedWorkflows?.totalElements,

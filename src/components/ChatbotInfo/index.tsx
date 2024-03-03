@@ -1,6 +1,9 @@
+import { updatePipelineApi } from "@/api/workflow";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
-import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
+import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE, PAGE_MODE } from "@/utils/constants";
+import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import {
@@ -20,6 +23,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import CreateWorkflowModal from "../CreateWorkflowModal";
 import EditIcon from "../Icons/EditIcon";
 import InfoIconTooltip from "../InfoIconTooltip";
 import {
@@ -42,19 +46,63 @@ type WorkflowInfoProps = {
   details: UnknownObject | undefined | null;
   form: FormInstance;
   onFininsh: (values: any) => void;
+  refetch: () => void;
+  onUpdateWorkflowBasicDetails: (values: any) => void;
+  workflowId: string | string[];
 };
 
-const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
+const WorkflowInfo = ({
+  details,
+  form,
+  onFininsh,
+  onUpdateWorkflowBasicDetails,
+  refetch,
+  workflowId,
+}: WorkflowInfoProps) => {
   const router = useRouter();
+  const { notification } = useNotify();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
   const { data, isLoading } = useFetchData(config.workspace.models, {
     modelStatus: "DEPLOYED",
     page: DEFAULT_PAGE,
     size: ALL_DATA_PAGE_SIZE,
   });
+  const [showEditDetails, setShowEditDetails] = useState(false);
+  const [updateDetailsLoading, setUpdateDetailsLoading] = useState(false);
 
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
+  };
+
+  const toggleEditDetailsModal = () => {
+    setShowEditDetails((prev: boolean) => !prev);
+  };
+
+  const updateWorkflowDetails = async (values: any) => {
+    try {
+      console.log("🚀 ~ updateAgentDetails ~ values:", values);
+      setUpdateDetailsLoading(true);
+
+      const payload = {
+        ...(details?.result || {}),
+        ...values,
+        pipeline_id: workflowId,
+      };
+
+      const updatePipelineResponse = await updatePipelineApi({ payload });
+
+      if (updatePipelineResponse?.status === 200) {
+        toggleEditDetailsModal();
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "error updating agent details",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setUpdateDetailsLoading(false);
+    }
   };
 
   return (
@@ -71,7 +119,20 @@ const WorkflowInfo = ({ details, form, onFininsh }: WorkflowInfoProps) => {
                   </WorkflowName>
                 </Col>
                 <Col>
-                  <EditIcon style={{ cursor: "no-drop" }} />
+                  <EditIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={toggleEditDetailsModal}
+                  />
+                  {showEditDetails && (
+                    <CreateWorkflowModal
+                      loading={updateDetailsLoading}
+                      onClose={toggleEditDetailsModal}
+                      open={showEditDetails}
+                      workflowDetails={details?.result || {}}
+                      mode={PAGE_MODE.EDIT}
+                      createWorkflowHandler={updateWorkflowDetails}
+                    />
+                  )}
                 </Col>
               </Row>
             </Col>

@@ -29,12 +29,12 @@ const { Text } = Typography;
 enum ChannelListPageType {
   MODEL = "MODEL",
   WORKFLOW = "WORKFLOW",
-  AGENT = "AGENT"
+  AGENT = "AGENT",
 }
 export const CHANNEL_PAGE_TYPE = {
   MODEL: ChannelListPageType.MODEL,
   WORKFLOW: ChannelListPageType.WORKFLOW,
-  AGENT: ChannelListPageType.AGENT
+  AGENT: ChannelListPageType.AGENT,
 };
 
 type ChannelsListProps = {
@@ -72,7 +72,11 @@ const ChannelsList = ({
     refetch,
   } = useFetchData(config.integrate.channels, {
     pipelineIdOrModelId:
-      pageType === CHANNEL_PAGE_TYPE.MODEL ? userModelId : pageType === CHANNEL_PAGE_TYPE.WORKFLOW ? workflowId : agentId,
+      pageType === CHANNEL_PAGE_TYPE.MODEL
+        ? userModelId
+        : pageType === CHANNEL_PAGE_TYPE.WORKFLOW
+          ? workflowId
+          : agentId,
   });
 
   useEffect(() => {
@@ -200,6 +204,7 @@ const ChannelsList = ({
             y: ChannelData?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
+            hideOnSinglePage: true,
             current: filters?.page + 1,
             pageSize: filters?.size,
             total: ChannelData?.totalElements,

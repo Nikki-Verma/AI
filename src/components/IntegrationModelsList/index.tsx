@@ -179,6 +179,7 @@ const IntegrationModelsList = () => {
             y: deployedModels?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
+            hideOnSinglePage: true,
             current: filters?.page + 1,
             pageSize: filters?.size,
             total: deployedModels?.totalElements,

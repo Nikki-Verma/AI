@@ -264,6 +264,7 @@ const DatasetList = () => {
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
             pagination={{
+              hideOnSinglePage: true,
               current: +filters?.page + 1,
               pageSize: +filters?.size,
               total: data?.totalElements,

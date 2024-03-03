@@ -1,6 +1,9 @@
+import { updateAgentApi } from "@/api/agents";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
-import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
+import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE, PAGE_MODE } from "@/utils/constants";
+import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import {
@@ -21,6 +24,7 @@ import TextArea from "antd/es/input/TextArea";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import CreateAgentModal from "../CreateAgentModal";
 import EditIcon from "../Icons/EditIcon";
 import InfoIconTooltip from "../InfoIconTooltip";
 import {
@@ -49,6 +53,8 @@ type AgentInfoProps = {
   setCustAtrr: (values: any) => void;
   isChatLoading: boolean;
   setFormValues?: (values: any) => void;
+  refetch: () => void;
+  agentId: string | string[];
 };
 
 const PipelineInfo = ({
@@ -59,14 +65,20 @@ const PipelineInfo = ({
   onFininsh,
   isChatLoading,
   setFormValues,
+  agentId,
+  refetch,
 }: AgentInfoProps) => {
+  console.log("🚀 ~ details:", details);
   const router = useRouter();
+  const { notification } = useNotify();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
   const { data, isLoading } = useFetchData(config.workspace.models, {
     modelStatus: "DEPLOYED",
     page: DEFAULT_PAGE,
     size: ALL_DATA_PAGE_SIZE,
   });
+  const [showEditDetails, setShowEditDetails] = useState(false);
+  const [updateDetailsLoading, setUpdateDetailsLoading] = useState(false);
 
   const handleValueChange = (
     values: UnknownObject,
@@ -77,16 +89,21 @@ const PipelineInfo = ({
     if (setFormValues) {
       setFormValues(formValues);
     }
-  }
-  const { data : knowledgeBaseData, isLoading : knowledgeBaseLoading } = useFetchData(config.knowledgebase.list, {
-    page: DEFAULT_PAGE,
-    size: ALL_DATA_PAGE_SIZE,
-  });
+  };
 
-  const { data : toolsData, isLoading : toolsLoading } = useFetchData(config.tools.list, {
-    page: DEFAULT_PAGE,
-    size: ALL_DATA_PAGE_SIZE,
-  });
+  const { data: knowledgeBaseData, isLoading: knowledgeBaseLoading } =
+    useFetchData(config.knowledgebase.list, {
+      page: DEFAULT_PAGE,
+      size: ALL_DATA_PAGE_SIZE,
+    });
+
+  const { data: toolsData, isLoading: toolsLoading } = useFetchData(
+    config.tools.list,
+    {
+      page: DEFAULT_PAGE,
+      size: ALL_DATA_PAGE_SIZE,
+    },
+  );
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
@@ -99,6 +116,42 @@ const PipelineInfo = ({
       setCustAtrr(details?.result);
     }
   }, [details?.result]);
+
+  const toggleEditDetailsModal = () => {
+    setShowEditDetails((prev: boolean) => !prev);
+  };
+
+  const updateAgentDetails = async (values: any) => {
+    try {
+      console.log("🚀 ~ updateAgentDetails ~ values:", values);
+      setUpdateDetailsLoading(true);
+
+      const payload = {
+        ...(details?.result || {}),
+        ...values,
+        pipeline_id: agentId,
+      };
+
+      console.log("🚀 ~ updateAgentDetails ~ payload:", payload);
+      const updateAgentResponse = await updateAgentApi({ payload });
+      console.log(
+        "🚀 ~ updateAgentDetails ~ updateAgentResponse:",
+        updateAgentResponse,
+      );
+
+      if (updateAgentResponse?.status === 200) {
+        toggleEditDetailsModal();
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "error updating agent details",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setUpdateDetailsLoading(false);
+    }
+  };
 
   return (
     <Form
@@ -144,7 +197,10 @@ const PipelineInfo = ({
                     </WorkflowName>
                   </Col>
                   <Col>
-                    <EditIcon style={{ cursor: "no-drop" }} />
+                    <EditIcon
+                      style={{ cursor: "pointer" }}
+                      onClick={toggleEditDetailsModal}
+                    />
                   </Col>
                 </Row>
               </Col>
@@ -155,6 +211,16 @@ const PipelineInfo = ({
                 </WorkflowDescription>
               </Col>
             </Row>
+            {showEditDetails && (
+              <CreateAgentModal
+                loading={updateDetailsLoading}
+                onClose={toggleEditDetailsModal}
+                open={showEditDetails}
+                agentFlowDetails={details?.result || {}}
+                mode={PAGE_MODE.EDIT}
+                createAgentHandler={updateAgentDetails}
+              />
+            )}
           </PipelineCardContainer>
         </Col>
         <Col span={24}>
@@ -449,18 +515,16 @@ const PipelineInfo = ({
             <Form.Item name={["kb", "kb_version"]} hidden>
               <Input></Input>
             </Form.Item>
-        </PipelineFormCardContainer>
-      </Col>
-      <Col span={24}>
-        <PipelineFormCardContainer>
-          <KnowledgebaseInfoFormTitle>
-            Tools
-          </KnowledgebaseInfoFormTitle>
-          <KnowledgebaseInfoFormDescription>
-            Tools description TBA
-          </KnowledgebaseInfoFormDescription>
+          </PipelineFormCardContainer>
+        </Col>
+        <Col span={24}>
+          <PipelineFormCardContainer>
+            <KnowledgebaseInfoFormTitle>Tools</KnowledgebaseInfoFormTitle>
+            <KnowledgebaseInfoFormDescription>
+              Tools description TBA
+            </KnowledgebaseInfoFormDescription>
             <Form.Item
-              name={['tools']}
+              name={["tools"]}
               // label="Knowledge base"
             >
               <Select
@@ -495,7 +559,7 @@ const PipelineInfo = ({
                   </SelectOptionDetail>
                 )}
                 options={
-                    toolsData?.result?.map((data: any) => ({
+                  toolsData?.result?.map((data: any) => ({
                     label: data?.name,
                     value: data?.id,
                     id: data?.id,
@@ -504,23 +568,23 @@ const PipelineInfo = ({
                 }
               />
             </Form.Item>
-        </PipelineFormCardContainer>
-      </Col>
-      <Col span={24}>
-        <PipelineFormCardContainer>
-        <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
-        <Form.Item
-          name={['welcome_message', "message"]}
-          label = {'Welcome message'}
-        >
-        <TextArea
-        style={{resize : 'none'}}
-        autoSize={{ minRows: 2, maxRows: 4 }}
-        placeholder="How do you want you agent to greet the user"
-        />
-        </Form.Item>
-        </PipelineFormCardContainer>
-      </Col>
+          </PipelineFormCardContainer>
+        </Col>
+        <Col span={24}>
+          <PipelineFormCardContainer>
+            <WorkflowInfoFormTitle>Additional settings</WorkflowInfoFormTitle>
+            <Form.Item
+              name={["welcome_message", "message"]}
+              label={"Welcome message"}
+            >
+              <TextArea
+                style={{ resize: "none" }}
+                autoSize={{ minRows: 2, maxRows: 4 }}
+                placeholder="How do you want you agent to greet the user"
+              />
+            </Form.Item>
+          </PipelineFormCardContainer>
+        </Col>
       </Row>
     </Form>
   );
