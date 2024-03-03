@@ -96,6 +96,7 @@ const PipelineInfo = ({
       size: ALL_DATA_PAGE_SIZE,
     });
 
+  console.log("🚀 ~ knowledgeBaseData:", knowledgeBaseData);
   const { data: toolsData, isLoading: toolsLoading } = useFetchData(
     config.tools.list,
     {
@@ -299,6 +300,7 @@ const PipelineInfo = ({
                     label: data?.name,
                     value: data?.name,
                     id: data?.id,
+                    key: data?.id,
                     ...data,
                   })) || []
                 }
@@ -453,7 +455,7 @@ const PipelineInfo = ({
               unstructured information that an AI system can access to enhance
               its understanding and generate informed responses.
             </KnowledgebaseInfoFormDescription>
-            <Form.Item name={["kb", "kb_id"]} label="Knowledge base">
+            <Form.Item name={["kb", "kb_name"]} label="Knowledge base">
               <Select
                 placeholder="Select knowledge base"
                 loading={knowledgeBaseLoading}
@@ -485,10 +487,12 @@ const PipelineInfo = ({
                   </SelectOptionDetail>
                 )}
                 onChange={(val: any, option: any) => {
+                  console.log("🚀 ~ option:", option);
+                  console.log("🚀 ~ val:", val);
                   form.setFields([
                     {
-                      name: ["kb", "kb_name"],
-                      value: option?.label,
+                      name: ["kb", "kb_id"],
+                      value: option?.id,
                       errors: [],
                     },
                     {
@@ -501,14 +505,15 @@ const PipelineInfo = ({
                 options={
                   knowledgeBaseData?.result?.map((data: any) => ({
                     label: data?.name,
-                    value: data?.id,
+                    value: data?.name,
                     id: data?.id,
+                    key: data?.id,
                     ...data,
                   })) || []
                 }
               />
             </Form.Item>
-            <Form.Item name={["kb", "kb_name"]} hidden>
+            <Form.Item name={["kb", "kb_id"]} hidden>
               <Input></Input>
             </Form.Item>
             <Form.Item name={["kb", "kb_version"]} hidden>
@@ -562,6 +567,7 @@ const PipelineInfo = ({
                     label: data?.name,
                     value: data?.id,
                     id: data?.id,
+                    key: data?.id,
                     ...data,
                   })) || []
                 }

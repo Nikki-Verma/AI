@@ -87,7 +87,6 @@ export const BetaTag = styled.div`
 export const BetaTagTitle = styled(Text)`
   color: var(--New-Main-Color, #602edf) !important;
   text-align: center;
-  font-family: "DM Sans";
   font-size: 12px !important;
   font-style: normal;
   font-weight: 500;

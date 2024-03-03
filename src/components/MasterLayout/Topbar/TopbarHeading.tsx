@@ -20,7 +20,7 @@ const TopbarHeading = () => {
         SimplAI
       </Title>
       <BetaTag>
-        <BetaTagTitle>Beta</BetaTagTitle>
+        <BetaTagTitle>BETA</BetaTagTitle>
       </BetaTag>
     </PageHeader>
   );
