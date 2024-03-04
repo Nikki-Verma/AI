@@ -1,3 +1,5 @@
+import { AgentStatuses } from "@/app/(authorised)/agents/constants";
+import { AgentStatusType } from "@/app/(authorisedHeaderLayout)/agents/constants";
 import {
   dateFormatForFrontend,
   dateTimeFormatWithMillisecondsWithoutTimeZone,
@@ -6,8 +8,6 @@ import {
 import dayjs from "@/utils/date";
 import WorkflowKnowledgebaseCard from "../WorkflowKnowledgebaseCard";
 import WorkflowModelCard from "../WorkflowModelCard";
-import { AgentStatusType } from "@/app/(authorisedHeaderLayout)/agents/constants";
-import { AgentStatuses } from "@/app/(authorised)/agents/constants";
 export const items = (data: any) => [
   {
     key: "model_details",

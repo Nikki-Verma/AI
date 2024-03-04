@@ -14,6 +14,7 @@ import {
   Select,
   Typography,
 } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   KnowledgebaseInfoFormContainer,
@@ -77,16 +78,16 @@ const KnowledgebaseInfo = ({
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
-
-                    <Button
-                      block
-                      style={{ width: "100%" }}
-                      type="dashed"
-                      icon={<PlusOutlined />}
-                      onClick={() => router.push("/knowledge-base")}
-                    >
-                      Create knowledge base
-                    </Button>
+                    <Link prefetch href="/knowledge-base">
+                      <Button
+                        block
+                        style={{ width: "100%" }}
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                      >
+                        Create knowledge base
+                      </Button>
+                    </Link>
                   </>
                 )}
                 optionRender={(option: any) => (

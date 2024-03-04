@@ -20,6 +20,7 @@ import {
   Typography,
 } from "antd";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateWorkflowModal from "../CreateWorkflowModal";
@@ -172,15 +173,16 @@ const WorkflowInfo = ({
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
 
-                    <Button
-                      block
-                      style={{ width: "100%" }}
-                      type="dashed"
-                      icon={<PlusOutlined />}
-                      onClick={() => router.push("/workspace")}
-                    >
-                      Deploy new Model or connect model API
-                    </Button>
+                    <Link prefetch href="/workspace">
+                      <Button
+                        block
+                        style={{ width: "100%" }}
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                      >
+                        Deploy new Model or connect model API
+                      </Button>
+                    </Link>
                   </>
                 )}
                 optionRender={(option: any) => (
