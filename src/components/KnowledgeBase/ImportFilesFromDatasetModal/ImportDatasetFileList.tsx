@@ -8,7 +8,7 @@ import {
   DEFAULT_PAGE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getFilters } from "@/utils/helperFunction";
+import { formatSizeUnits, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
   Form,
@@ -126,7 +126,12 @@ const ImportDatasetFileList = ({
       title: "File Size",
       dataIndex: "size",
       key: "size",
-      render: (val) => (val ? <Text>{val} MB</Text> : "--"),
+      render : (val) => {
+        return(
+          val ? formatSizeUnits(val) : '-'
+
+        )
+      },
     },
   ];
 

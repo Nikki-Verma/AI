@@ -188,7 +188,7 @@ const PipelineInfo = ({
       >
         <Col span={24}>
           <PipelineCardContainer>
-            <Row gutter={[6, 16]}>
+            <Row gutter={[6, 12]}>
               <Col span={24}>
                 <Row justify="space-between">
                   <Col>
@@ -456,7 +456,7 @@ const PipelineInfo = ({
             <KnowledgebaseInfoFormDescription>
             Database of facts and information the AI searches to enrich responses with accurate and relevant content.
             </KnowledgebaseInfoFormDescription>
-            <Form.Item name={["kb", "kb_name"]} label="Knowledge base">
+            <Form.Item name={["kb", "kb_name"]}>
               <Select
                 placeholder="Select knowledge base"
                 loading={knowledgeBaseLoading}

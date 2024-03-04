@@ -13,7 +13,7 @@ import {
   DEFAULT_PAGE_SIZE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { formatSizeUnits, getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { DatabaseFilled, EyeFilled, PlusOutlined } from "@ant-design/icons";
 import {
@@ -148,6 +148,73 @@ const KnowledgeBaseList = () => {
       ),
     },
     {
+      title: "File Size",
+      dataIndex: "size",
+      key: "size",
+      width : 200,
+      render : (val) => {
+        return(
+          val ? formatSizeUnits(val) : '-'
+
+        )
+      },
+    },
+    {
+      title: "KB setting",
+      dataIndex: "kb_setting",
+      key: "kb_setting",
+      width: 200,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
+    },
+    {
+      title: "Embedding model",
+      dataIndex: "embed_model_name",
+      key: "embed_model_name",
+      width: 250,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
+    },
+    {
+      title: "Vector DB",
+      dataIndex: "vector_db",
+      key: "vector_db",
+      width: 250,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
+    },
+    {
+      title: "Top K Results",
+      dataIndex: "top_kresults",
+      key: "top_kresults",
+      width: 150,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
+    },
+    {
+      title: "Similarities percentage",
+      dataIndex: "similarities_percentage",
+      key: "similarities_percentage",
+      width: 250,
+      render: (val) => {
+        return(
+          val ? `${val}%` : '-'
+        )
+      },
+    },
+    {
       title: "Created At",
       dataIndex: "created_at",
       key: "createdAt",
@@ -163,15 +230,48 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
+      title: "Created by",
+      dataIndex: "username",
+      key: "username",
+      width: 250,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
+    },
+    {
+      title: "Last updated At",
+      dataIndex: "updated_at",
+      key: "updated_at",
+      width: 250,
+      render: (val) => {
+        return (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMilliseconds)}
+            inline
+            time={true}
+          />
+        );
+      },
+    },
+    {
+      title: "Last updated by",
+      dataIndex: "updated_by_name",
+      key: "updated_by_name",
+      width: 250,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
     },
     {
       title: "Actions",
       dataIndex: "",
       align: "left",
       key: "actions",
+      fixed : 'right',
       width: 160,
       render: (_: any, knowledgebase: UnknownObject) => {
         return (

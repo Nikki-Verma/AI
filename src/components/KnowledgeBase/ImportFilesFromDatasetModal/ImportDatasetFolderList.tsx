@@ -8,7 +8,7 @@ import {
   DEFAULT_PAGE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getFilters } from "@/utils/helperFunction";
+import { formatSizeUnits, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { Button, Space, Table, TablePaginationConfig, TableProps } from "antd";
 import { FilterValue } from "antd/es/table/interface";
@@ -88,6 +88,12 @@ const ImportDatasetFolderList = ({
       title: "File Size",
       dataIndex: "size",
       key: "size",
+      render : (val) => {
+        return(
+          val ? formatSizeUnits(val) : '-'
+
+        )
+      },
     },
     {
       title: "Actions",

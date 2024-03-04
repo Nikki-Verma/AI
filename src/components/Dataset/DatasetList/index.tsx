@@ -13,7 +13,7 @@ import {
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { formatSizeUnits, getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { EyeFilled, PlusOutlined } from "@ant-design/icons";
 import {
@@ -143,10 +143,10 @@ const DatasetList = () => {
 
   const columns: TableProps<DataType>["columns"] = [
     {
-      title: "File Name",
+      title: "File name",
       dataIndex: "name",
       key: "name",
-      width: 400,
+      width: 300,
       render: (val) => (
         <Space size="small">
           <FolderIcon /> {val}
@@ -154,7 +154,31 @@ const DatasetList = () => {
       ),
     },
     {
-      title: "Created At",
+      title: "File size",
+      dataIndex: "size",
+      key: "size",
+      width : 200,
+      render : (val) => {
+        return(
+          val ? formatSizeUnits(val) : '-'
+
+        )
+      }
+    },
+    {
+      title: "File count",
+      dataIndex: "files_count",
+      key: "files_count",
+      width : 200,
+      render : (val) => {
+        return(
+          val ??  '-'
+
+        )
+      }
+    },
+    {
+      title: "Created at",
       dataIndex: "created_at",
       key: "createdAt",
       width: 250,
@@ -169,9 +193,41 @@ const DatasetList = () => {
       },
     },
     {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
+      title: "Created by",
+      dataIndex: "username",
+      key: "username",
+      width: 250,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
+    },
+    {
+      title: "Last updated At",
+      dataIndex: "updated_at",
+      key: "updated_at",
+      width: 250,
+      render: (val) => {
+        return (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMilliseconds)}
+            inline
+            time={true}
+          />
+        );
+      },
+    },
+    {
+      title: "Last updated by",
+      dataIndex: "updated_by_name",
+      key: "updated_by_name",
+      width: 250,
+      render: (val) => {
+        return(
+          val ?? '-'
+        )
+      },
     },
     {
       title: "Actions",

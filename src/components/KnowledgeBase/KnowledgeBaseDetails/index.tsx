@@ -16,7 +16,7 @@ import {
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { formatSizeUnits, getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { AimOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import {
@@ -192,7 +192,12 @@ const KnowledgeBaseDetails = (props: any) => {
       dataIndex: "size",
       key: "size",
       width: 200,
-      render: (val) => (val ? <Text>{val} MB</Text> : "--"),
+      render : (val) => {
+        return(
+          val ? formatSizeUnits(val) : '-'
+
+        )
+      },
     },
     // {
     //   title: "Actions",

@@ -23,6 +23,7 @@ import {
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
+  formatSizeUnits,
   getErrorFromApi,
   getFilters,
   uploadDatasetFiles,
@@ -340,7 +341,12 @@ const DatasetDetails = (props: any) => {
       title: "File Size",
       dataIndex: "size",
       key: "size",
-      render: (val) => (val ? <Text>{val} MB</Text> : "--"),
+      render : (val) => {
+        return(
+          val ? formatSizeUnits(val) : '-'
+
+        )
+      },
     },
     // {
     //   title: "Actions",
