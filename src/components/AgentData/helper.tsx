@@ -6,6 +6,7 @@ import {
   timeFormatForFrontend,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
+import ToolsDetails from "../ToolsDetails";
 import WorkflowKnowledgebaseCard from "../WorkflowKnowledgebaseCard";
 import WorkflowModelCard from "../WorkflowModelCard";
 export const items = (data: any) => [
@@ -18,6 +19,11 @@ export const items = (data: any) => [
     key: "kb_details",
     label: "Knowledge Base Details",
     children: <WorkflowKnowledgebaseCard kbDetails={data?.result?.kb} />,
+  },
+  {
+    key: "tool_details",
+    label: "Tool Details",
+    children: <ToolsDetails toolDetails={data?.result?.tools} />,
   },
   {
     key: "integrations",

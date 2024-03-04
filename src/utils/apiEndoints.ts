@@ -7,7 +7,7 @@ const __RAG_BASE_URL__ = process.env.NEXT_PUBLIC_RAG_BASE_URL;
 const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 const __CHANNEL_AGGREGATOR_BASE_URL__ =
   process.env.NEXT_PUBLIC_CHANNEL_AGGREGATOR_BASE_URL;
-const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL
+const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL;
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
   model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
@@ -65,10 +65,10 @@ const config = {
     details: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
-
   },
   tools: {
     list: `${BASE_URLS.agent}/tools/`,
+    details: `${BASE_URLS.agent}/tools`,
   },
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,
