@@ -3,6 +3,7 @@ import { Radio } from "antd";
 import styled from "styled-components";
 
 export const SearchInpuContainer = styled.div`
+  display: block;
   .ant-select-selection-placeholder {
     color: #202124 !important;
   }
@@ -61,6 +62,10 @@ export const SearchInpuContainer = styled.div`
     inset-inline-start: auto;
     inset-inline-end: 20px !important;
     margin-top: -4px !important;
+  }
+
+  .ant-select {
+    height: 36px !important;
   }
 
   .ant-select-single .ant-select-selector .ant-select-selection-search {
@@ -164,4 +169,10 @@ export const RadioButton = styled(Radio.Button)`
   font-weight: 500;
   line-height: 22px; /* 157.143% */
   box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+`;
+
+export const ModelDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;

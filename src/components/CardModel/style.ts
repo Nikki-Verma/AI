@@ -1,4 +1,3 @@
-import { TEXT_HOVER_BG_COLOR } from "@/_utils/theme.antd";
 import styled from "styled-components";
 
 export const ModelContainer = styled.div`
@@ -63,14 +62,14 @@ export const ModelCard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 19px 19px 8px 19px;
-  gap: 10px;
+  gap: 2px;
   height: 100%;
 `;
 
 export const ModalTags = styled.div<any>`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 12px 5.5px;
   padding: 8px;
   border-radius: 0px 0px 10px 10px;
   // border-top: 0.2px solid var(--Text-Color-150, #d5d5d5);
@@ -83,14 +82,14 @@ export const ModalTags = styled.div<any>`
   .ant-tag {
     display: flex;
     height: 26px;
-    padding: 0px 14px;
+    padding: 0px 8px;
     justify-content: center;
     align-items: center;
     gap: 6px;
     flex-shrink: 0;
     border-radius: 10px;
     border: 0.3px solid var(--Text-Color-150, #d5d5d5);
-    background: ${TEXT_HOVER_BG_COLOR};
+    background: #fff;
     // // }};
 
     /* drop-shadow/button-secondary */

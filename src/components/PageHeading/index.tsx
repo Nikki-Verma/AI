@@ -17,7 +17,7 @@ const PageHeading = ({ title, subHeading }: PageHeadingProps) => {
       md={20}
       sm={24}
       xs={24}
-      style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+      style={{ display: "flex", flexDirection: "column", gap: "8px" }}
     >
       <Title>{title}</Title>
       {subHeading && <PageSubHeading>{subHeading}</PageSubHeading>}
