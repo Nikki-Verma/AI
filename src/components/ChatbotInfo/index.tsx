@@ -173,7 +173,7 @@ const WorkflowInfo = ({
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
 
-                    <Link prefetch href="/workspace">
+                    <Link prefetch href="/workspace" target="_blank">
                       <Button
                         block
                         style={{ width: "100%" }}

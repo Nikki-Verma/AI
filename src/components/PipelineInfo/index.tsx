@@ -245,7 +245,7 @@ const PipelineInfo = ({
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
-                    <Link prefetch href="/workspace">
+                    <Link prefetch href="/workspace" target="_blank">
                       <Button
                         block
                         style={{ width: "100%" }}
@@ -470,7 +470,7 @@ const PipelineInfo = ({
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
-                    <Link prefetch href="/knowledge-base">
+                    <Link prefetch href="/knowledge-base" target="_blank">
                       <Button
                         block
                         style={{ width: "100%" }}
