@@ -38,7 +38,7 @@ const Workspace = () => {
   const { data: session }: any = useSession();
 
   const [filters, setFilters] = usePersistedQueryParams(
-    initialFilters({ modelStatus: "ADDED" }),
+    initialFilters({ modelStatus: "" }),
   );
 
   const { data, isLoading, isError, error } = useFetchData(
@@ -77,7 +77,7 @@ const Workspace = () => {
         buttonStyle="solid"
         size="large"
       >
-        <RadioButton value="ADDED">Added Models</RadioButton>
+        <RadioButton value="">Added Models</RadioButton>
         {/* <Radio.Button value="TRAINED">Trained Models</Radio.Button> */}
         <RadioButton value="DEPLOYED" style={{ borderLeft: "0px !important" }}>
           Deployed Models

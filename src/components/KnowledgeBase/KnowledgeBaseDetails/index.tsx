@@ -2,6 +2,7 @@ import { addFileToKnowledgeBaseApi } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
 import SaDate from "@/components/SaDate/Index";
+import Tags from "@/components/Tags";
 import {
   PageAbout,
   PageTitle,
@@ -11,12 +12,13 @@ import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
+  dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { formatSizeUnits, getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { AimOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import {
@@ -42,6 +44,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import ImportFilesFromDatasetModal from "../ImportFilesFromDatasetModal";
+import { INJESTION_STATUS } from "./constant";
 
 import { KnowledgeBaseDetailsContainer } from "./style";
 const { Text } = Typography;
@@ -179,24 +182,55 @@ const KnowledgeBaseDetails = (props: any) => {
       ),
     },
     {
+      title: "Remarks",
+      dataIndex: "remarks",
+      key: "remarks",
+      width: 200,
+      render: (val) => (
+        <Space size="small">
+          <Text ellipsis style={{ width: 200 }}>
+            {val}
+          </Text>
+        </Space>
+      ),
+    },
+    {
+      title: "Injestion status",
+      dataIndex: "injestion_status",
+      key: "injestion_status",
+      width: 200,
+      render: (val: any) => {
+        return val ? (
+          <Tags
+            tag={INJESTION_STATUS?.[val]?.text ?? val}
+            tagProps={{
+              color: INJESTION_STATUS?.[val]?.color || "",
+              background: INJESTION_STATUS?.[val]?.background,
+              border: INJESTION_STATUS?.[val]?.border,
+            }}
+          />
+        ) : (
+          ""
+        );
+      },
+    },
+    {
       title: "Created At",
       dataIndex: "created_at",
       key: "createdAt",
       width: 250,
-      render: (val) => {
-        return val ? <SaDate date={dayjs(val)} inline time={true} /> : "--";
-      },
-    },
-    {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
-      width: 200,
-      render : (val) => {
-        return(
-          val ? formatSizeUnits(val) : '-'
-
-        )
+      render: (val: any, row: any) => {
+        console.log("🚀 ~ KnowledgeBaseDetails ~ row:", row);
+        console.log("🚀 ~ KnowledgeBaseDetails ~ val:", val);
+        return val ? (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMilliseconds)}
+            inline
+            time={true}
+          />
+        ) : (
+          "--"
+        );
       },
     },
     // {

@@ -23,7 +23,6 @@ import {
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
-  formatSizeUnits,
   getErrorFromApi,
   getFilters,
   uploadDatasetFiles,
@@ -302,7 +301,7 @@ const DatasetDetails = (props: any) => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
-    columnWidth : 40
+    columnWidth: 40,
   };
 
   const columns: TableProps<DataType>["columns"] = [
@@ -337,17 +336,15 @@ const DatasetDetails = (props: any) => {
         );
       },
     },
-    {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
-      render : (val) => {
-        return(
-          val ? formatSizeUnits(val) : '-'
-
-        )
-      },
-    },
+    // {
+    //   title: "File Size",
+    //   dataIndex: "size",
+    //   key: "size",
+    //   render: (val, row) => {
+    //     console.log("🚀 ~ DatasetDetails ~ row:", row);
+    //     return val ? formatSizeUnits(val) : "-";
+    //   },
+    // },
     // {
     //   title: "Actions",
     //   dataIndex: "",

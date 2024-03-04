@@ -13,7 +13,7 @@ import {
   DEFAULT_PAGE_SIZE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { formatSizeUnits, getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { DatabaseFilled, EyeFilled, PlusOutlined } from "@ant-design/icons";
 import {
@@ -37,6 +37,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import SaDate from "../../SaDate/Index";
 import CreateKnowledgeBaseModal from "../CreateKnowledgeBaseModal";
+import { KNOWLEDGEBASE_SETTING } from "./constant";
 
 import { KnowledgeBaseListContainer } from "./style";
 
@@ -147,27 +148,25 @@ const KnowledgeBaseList = () => {
         </Space>
       ),
     },
-    {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
-      width : 200,
-      render : (val) => {
-        return(
-          val ? formatSizeUnits(val) : '-'
+    // {
+    //   title: "File Size",
+    //   dataIndex: "size",
+    //   key: "size",
+    //   width : 200,
+    //   render : (val) => {
+    //     return(
+    //       val ? formatSizeUnits(val) : '-'
 
-        )
-      },
-    },
+    //     )
+    //   },
+    // },
     {
       title: "KB setting",
       dataIndex: "kb_setting",
       key: "kb_setting",
       width: 200,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ? KNOWLEDGEBASE_SETTING[val] ?? val : "-";
       },
     },
     {
@@ -176,9 +175,7 @@ const KnowledgeBaseList = () => {
       key: "embed_model_name",
       width: 250,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -187,9 +184,7 @@ const KnowledgeBaseList = () => {
       key: "vector_db",
       width: 250,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -198,9 +193,7 @@ const KnowledgeBaseList = () => {
       key: "top_kresults",
       width: 150,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -209,9 +202,7 @@ const KnowledgeBaseList = () => {
       key: "similarities_percentage",
       width: 250,
       render: (val) => {
-        return(
-          val ? `${val}%` : '-'
-        )
+        return val ? `${val}%` : "-";
       },
     },
     {
@@ -235,9 +226,7 @@ const KnowledgeBaseList = () => {
       key: "username",
       width: 250,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -261,9 +250,7 @@ const KnowledgeBaseList = () => {
       key: "updated_by_name",
       width: 250,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -271,18 +258,23 @@ const KnowledgeBaseList = () => {
       dataIndex: "",
       align: "left",
       key: "actions",
-      fixed : 'right',
+      fixed: "right",
       width: 160,
       render: (_: any, knowledgebase: UnknownObject) => {
         return (
           // <Space>
-          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
-          <Col span={20}>
-            <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
-              <Button style={{width : '100%'}}  icon={<EyeFilled />}>View</Button>
-            </Link>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
+                <Button style={{ width: "100%" }} icon={<EyeFilled />}>
+                  View
+                </Button>
+              </Link>
             </Col>
-            </Row>
+          </Row>
           // </Space>
         );
       },
@@ -296,7 +288,7 @@ const KnowledgeBaseList = () => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
-    columnWidth : 40
+    columnWidth: 40,
   };
 
   return (
