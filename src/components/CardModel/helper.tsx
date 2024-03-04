@@ -8,7 +8,7 @@ import ONNXIcon from "../Icons/ONNXIcon";
 import PyTorchIcon from "../Icons/PyTorchIcon";
 import SafeTensorsIcon from "../Icons/SafeTensorsIcon";
 import TensorFlowIcon from "../Icons/TensorFlowIcon";
-import TextGenerationIcon from "../Icons/textGenerationIcon";
+import TextGenerationIcon from "../Icons/TextGenerationIcon";
 import TextToImageIcon from "../Icons/TextToImageIcon";
 
 export const tagIcons: any = {
