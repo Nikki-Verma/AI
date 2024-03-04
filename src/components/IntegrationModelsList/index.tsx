@@ -3,9 +3,11 @@ import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
+import { EyeFilled } from "@ant-design/icons";
 import {
   Button,
   Col,
+  Image as AntImage,
   Result,
   Row,
   Space,
@@ -19,7 +21,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
-import { EyeFilled } from "@ant-design/icons";
 
 const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
@@ -71,14 +72,26 @@ const IntegrationModelsList = () => {
       dataIndex: "name",
       key: "name",
       width: 250,
-      render: (val) => (
+      render: (val, data) => (
         <Space size="small" align="center">
-          <Image
-            src={"/assets/Images/dummyModel.png"}
-            height={32}
-            width={32}
-            alt="Model"
-          />{" "}
+          {data?.model_params?.weights_file_s3_url ? (
+            <AntImage
+              src={data?.model_params?.weights_file_s3_url}
+              preview={false}
+              alt="Model"
+              style={{
+                width: "32px",
+                height: "32px",
+              }}
+            />
+          ) : (
+            <Image
+              height={32}
+              width={32}
+              src={"/assets/Images/dummyModel.png"}
+              alt="Model"
+            />
+          )}{" "}
           <Text ellipsis style={{ width: 200 }}>
             {val}
           </Text>
@@ -130,16 +143,26 @@ const IntegrationModelsList = () => {
       render: (_: any, dataset: UnknownObject) => {
         return (
           // <Space>
-          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
-                <Col span={20}>
-            <Link
-              prefetch
-              href={`/integration/model/${dataset?.model_id}/${dataset?.id}`}
-            >
-              <Button style={{width : '100%'}} block type="default" icon={<EyeFilled />}>View</Button>
-            </Link>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <Link
+                prefetch
+                href={`/integration/model/${dataset?.model_id}/${dataset?.id}`}
+              >
+                <Button
+                  style={{ width: "100%" }}
+                  block
+                  type="default"
+                  icon={<EyeFilled />}
+                >
+                  View
+                </Button>
+              </Link>
             </Col>
-            </Row>
+          </Row>
           // </Space>
         );
       },

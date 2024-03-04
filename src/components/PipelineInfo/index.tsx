@@ -12,6 +12,7 @@ import {
   Divider,
   Form,
   FormInstance,
+  Image as AntImage,
   Input,
   InputNumber,
   Row,
@@ -21,6 +22,7 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Image from "next/image";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -257,29 +259,47 @@ const PipelineInfo = ({
                     </Link>
                   </>
                 )}
-                optionRender={(option: any) => (
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      gap: "6px",
-                      // alignItems: "center",
-                    }}
-                  >
-                    <Image
-                      height={36}
-                      width={36}
-                      src={"/assets/Images/dummyModel.png"}
-                      alt="model image"
-                    />
-                    <SelectOptionDetail>
-                      <SelectOptionName>{option?.data?.name}</SelectOptionName>
-                      <SelectOptionDescription>
-                        {option?.data?.desc}
-                      </SelectOptionDescription>
-                    </SelectOptionDetail>
-                  </div>
-                )}
+                optionRender={(option: any) => {
+                  console.log("🚀 ~ option:", option);
+                  return (
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        gap: "6px",
+                        // alignItems: "center",
+                      }}
+                    >
+                      {option?.data?.model_params?.weights_file_s3_url ? (
+                        <AntImage
+                          src={option?.data?.model_params?.weights_file_s3_url}
+                          preview={false}
+                          alt="model image"
+                          style={{
+                            width: "36px",
+                            height: "36px",
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          height={36}
+                          width={36}
+                          src={"/assets/Images/dummyModel.png"}
+                          alt="model image"
+                        />
+                      )}
+
+                      <SelectOptionDetail>
+                        <SelectOptionName>
+                          {option?.data?.name}
+                        </SelectOptionName>
+                        <SelectOptionDescription>
+                          {option?.data?.desc}
+                        </SelectOptionDescription>
+                      </SelectOptionDetail>
+                    </div>
+                  );
+                }}
                 onChange={(val: any, option: any) => {
                   console.log(`dropdown options`, option);
                   form.setFields([

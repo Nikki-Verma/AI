@@ -16,6 +16,7 @@ import {
   Card,
   Col,
   Flex,
+  Image as AntImage,
   Result,
   Row,
   Skeleton,
@@ -167,16 +168,30 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
               justifyContent: "flex-start",
             }}
           >
-            <Image
-              src={"/assets/Images/dummyModel.png"}
-              alt="models"
-              height={96}
-              width={96}
-              style={{
-                display: "flex",
-                marginRight: "12px",
-              }}
-            />
+            {data?.result?.weights_file_s3_url ? (
+              <AntImage
+                src={data?.result?.weights_file_s3_url}
+                preview={false}
+                alt="Model"
+                style={{
+                  width: "96px",
+                  height: "96px",
+                  display: "flex",
+                  marginRight: "12px",
+                }}
+              />
+            ) : (
+              <Image
+                height={96}
+                width={96}
+                src={"/assets/Images/dummyModel.png"}
+                alt="Model"
+                style={{
+                  display: "flex",
+                  marginRight: "12px",
+                }}
+              />
+            )}
             <div
               style={{
                 display: "flex",
@@ -201,7 +216,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         >
           {page === ModelPage.MODELS ? (
             <>
-            {data?.result?.type === "Closed source" &&
+              {data?.result?.type === "Closed source" &&
                 data?.result?.status === "DEPLOYED" && (
                   <Tag
                     style={{
@@ -215,8 +230,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                   >
                     Connected
                   </Tag>
-                )
-              }
+                )}
               {data?.result?.added ? (
                 <Flex gap="12px" align="center">
                   <Link

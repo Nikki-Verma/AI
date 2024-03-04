@@ -6,6 +6,7 @@ import {
   Flex,
   Form,
   FormInstance,
+  Image as AntImage,
   InputNumber,
   Row,
   Space,
@@ -78,12 +79,24 @@ const PlaygroundConfig = ({
         <>
           <Flex gap={0} vertical>
             <Flex gap="8px" align="center">
-              <Image
-                src="/assets/Images/dummyModel.png"
-                width={24}
-                height={24}
-                alt="model"
-              />
+              {details?.result?.model_detail?.weights_file_s3_url ? (
+                <AntImage
+                  src={details?.result?.model_detail?.weights_file_s3_url}
+                  preview={false}
+                  alt="model image"
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                  }}
+                />
+              ) : (
+                <Image
+                  height={24}
+                  width={24}
+                  src={"/assets/Images/dummyModel.png"}
+                  alt="model image"
+                />
+              )}
               <ParamTitle>
                 {details?.result?.model_detail?.model_name ?? ""}
               </ParamTitle>

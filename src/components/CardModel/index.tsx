@@ -1,5 +1,5 @@
 import { UnknownObject } from "@/utils/types";
-import { Space, Tag } from "antd";
+import { Image as AntdImage, Space, Tag } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { tagIcons } from "./helper";
@@ -24,12 +24,28 @@ const CardModel = ({
   imageUrl,
   index,
 }: CardModelProps) => {
+  console.log("🚀 ~ modelData:", modelData);
   return (
     <Link prefetch href={redirectUrl}>
       <ModelCardContainer>
         <ModelCard>
           {/* <ModelHeaderContainer> */}
-          <Image src={imageUrl} height={28} width={28} alt="Model-img" />
+          {modelData?.weights_file_s3_url ||
+          modelData?.model_params?.weights_file_s3_url ? (
+            <AntdImage
+              preview={false}
+              src={
+                modelData?.weights_file_s3_url ??
+                modelData?.model_params?.weights_file_s3_url
+              }
+              height={28}
+              width={28}
+              alt="Model-img"
+            />
+          ) : (
+            <Image src={imageUrl} height={28} width={28} alt="Model-img" />
+          )}
+
           <ModelCardHeading>
             {modelData?.name || modelData?.model_name}
           </ModelCardHeading>
@@ -42,10 +58,7 @@ const CardModel = ({
             const tagText = Object.keys(tagIcons)?.find((tagIconText: string) =>
               tag?.toUpperCase()?.includes(tagIconText?.toUpperCase()),
             );
-            console.log("🚀 ~ {[... ~ tagText:", tagText);
             const tagIcon = tagText ? tagIcons?.[tagText] : null;
-            console.log("🚀 ~ tagIcon:", tagIcon);
-            console.log("🚀 ~ {[... ~ tagIcon:", tagIcon);
             return (
               <Tag key={tag}>
                 <Space size={2}>
