@@ -22,8 +22,7 @@ import {
   DEFAULT_PAGE_SIZE,
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
-import { inviteUserApi } from "@/api/dataset";
-import type { CSSProperties } from "react";
+import { inviteUserApi } from "@/api/userManagement";
 import { useForm } from "antd/es/form/Form";
 import config from "@/utils/apiEndoints";
 import { useFetchData } from "@/Hooks/useApi";
@@ -32,41 +31,17 @@ import { useSession } from "next-auth/react";
 import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
 import { useNotify } from "@/providers/notificationProvider";
 
-//scss
-
-import styles from "./InviteUser.module.scss";
-
 type InviteUserProps = {
   open: boolean;
   onClose: () => void;
   inviteDataUser?: any;
 };
 
-type CheckboxValueType = GetProp<typeof Checkbox.Group, "value">[number];
-
-const CheckboxGroup = Checkbox.Group;
-
-const homePermissionData = [
-  "sample1",
-  "sample2",
-  "sample3",
-  "sample4",
-  "sample5",
-  "sample6",
-  "sample7",
-  "sample8",
-  "sample9",
-  "sample10",
-  "sample11",
-];
-
 const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
   // const [formUpdated, setformUpdated] = useState<Boolean>(false);
   const { data: session }: any = useSession();
   const { notification } = useNotify();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
 
@@ -101,153 +76,15 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
     ]);
   };
 
-  const onChange = (key: string | string[]) => {
-    console.log(key);
-  };
-
-  const panelStyle: React.CSSProperties = {
-    // marginBottom: 24,
-  };
-
-  const [homeCheckedList, setHomeCheckedList] = useState<CheckboxValueType[]>(
-    []
-  );
-
-  const homeCheckAll = homePermissionData.length === homeCheckedList.length;
-
-  const indeterminate =
-    homeCheckedList.length > 0 &&
-    homeCheckedList.length < homePermissionData.length;
-
-  const onChangeHomeCheckList = (list: CheckboxValueType[]) => {
-    setHomeCheckedList(list);
-  };
-
-  const onCheckAllHomePermission: CheckboxProps["onChange"] = (e) => {
-    setHomeCheckedList(e.target.checked ? homePermissionData : []);
-  };
-
-  const showDatasetModal = () => {
-    setCreateDatasetOpen(true);
-  };
-
   const closeDatasetModel = () => {
     setCreateDatasetOpen(false);
   };
 
-  // const homePermissionSwitch = (checked: boolean) => {
-  //   // console.log(event.target)
-  //   // setHomeCheckedList(event.target.checked ? homePermissionData : []);
-  //   if (checked) {
-  //   }
-  // };
-
-  // const homePermissionHeading = (
-  //   <div className={styles.permissionHeading}>
-  //     <span>Home</span> <Switch onChange={homePermissionSwitch} />
-  //   </div>
-  // );
-
-  // const playgroundPermissionSwitch = (checked: boolean) => {
-  //   console.log(`switch to ${checked}`);
-  // };
-
-  // const playgroundPermissionHeading = (
-  //   <div className={styles.permissionHeading}>
-  //     <span>Playground</span> <Switch onChange={playgroundPermissionSwitch} />
-  //   </div>
-  // );
-
-  // const modelsPermissionSwitch = (checked: boolean) => {
-  //   console.log(`switch to ${checked}`);
-  // };
-
-  // const modelsPermissionHeading = (
-  //   <div className={styles.permissionHeading}>
-  //     <span>Models</span> <Switch onChange={modelsPermissionSwitch} />
-  //   </div>
-  // );
-
-  // const integrationPermissionSwitch = (checked: boolean) => {
-  //   console.log(`switch to ${checked}`);
-  // };
-
-  // const integrationPermissionHeading = (
-  //   <div className={styles.permissionHeading}>
-  //     <span>Integration</span> <Switch onChange={integrationPermissionSwitch} />
-  //   </div>
-  // );
-
-  // const settingsPermissionSwitch = (checked: boolean) => {
-  //   console.log(`switch to ${checked}`);
-  // };
-
-  // const settingsPermissionHeading = (
-  //   <div className={styles.permissionHeading}>
-  //     <span>Settings</span> <Switch onChange={settingsPermissionSwitch} />
-  //   </div>
-  // );
-
-  // const text = `
-  //   A dog is a type of domesticated animal.
-  //   Known for its loyalty and faithfulness,
-  //   it can be found as a welcome guest in many households across the world.
-  // `;
-
-  // const permissionData = data
-
-  // const items: (roleItems: any) => CollapseProps["items"] = (roleItems) => [
-  //   {
-  //     key: "1",
-  //     label: roleItems?.permission_list.name,
-  //     children: (
-  //       <>
-  //         <CheckboxGroup
-  //           options={homePermissionData}
-  //           value={homeCheckedList}
-  //           onChange={onChangeHomeCheckList}
-  //         />
-  //       </>
-  //     ),
-  //   },
-  // {
-  //   key: "2",
-  //   label: playgroundPermissionHeading,
-  //   children: <p>{text}</p>,
-  //   style: panelStyle,
-  // },
-  // {
-  //   key: "3",
-  //   label: modelsPermissionHeading,
-  //   children: <p>{text}</p>,
-  //   style: panelStyle,
-  // },
-  // {
-  //   key: "4",
-  //   label: integrationPermissionHeading,
-  //   children: <p>{text}</p>,
-  //   style: panelStyle,
-  // },
-  // {
-  //   key: "5",
-  //   label: settingsPermissionHeading,
-  //   children: <p>{text}</p>,
-  //   style: panelStyle,
-  // },
-  //];
-
-  //console.log(roleItems, "roleItems")
-
-  const dataToggle = (checked: boolean, index: any) => {
-    console.log(`switch to ${checked}`);
-  };
-
-  const inviteUserFormHandler = async () => {
+  const inviteUserFormHandler = async (values: any) => {
     try {
       setCreateDatasetLoading(true);
-      console.log("hello", fullName)
       const payload = {
-        email: email,
+        ...values,
         tenant_id: DUMMY_TENANT_ID,
         user_group_id: session?.user?.details?.userGroup,
         user_profiles: [
@@ -268,7 +105,7 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
 
       const datasetResponse = await inviteUserApi({ payload });
 
-      console.log(datasetResponse, "datasetResponse")
+      console.log(datasetResponse, "datasetResponse");
 
       if (datasetResponse?.status === 200) {
         setCreateDatasetOpen(false);
@@ -292,7 +129,6 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
   return (
     <>
       <Drawer
-        className={styles.inviteUserPanel}
         closable={false}
         title="Invite User"
         width={"60%"}
@@ -322,29 +158,15 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
             name="user_full_name"
             label="User full name"
             rules={[{ required: true, message: "Please enter user full name" }]}
-            //   rules={[
-            //     {
-            //       required: true,
-            //       message: "Dataset name is required",
-            //     },
-            //   ]}
           >
-            <Input
-              placeholder="Please enter user full name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
+            <Input placeholder="Please enter user full name" />
           </Form.Item>
           <Form.Item
             name="email"
             label="Email"
             rules={[{ required: true, message: "Please enter email" }]}
           >
-            <Input
-              placeholder="Please enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Input placeholder="Please enter email" />
           </Form.Item>
           <Form.Item name="role_name" label="Select user role">
             <Select
@@ -366,25 +188,6 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
           <Form.Item name="role_id" hidden>
             <Input />
           </Form.Item>
-          {/* {data && Object?.keys(data?.result).length > 0 && (
-            <Form.Item name="role_name" label="Accessible Permissions">
-              {Object.keys(data?.result)?.map((roleData: any) => {
-                const roleItems = data?.result[roleData];
-                console.log(roleItems, "itemsitems");
-                return (
-                  // <Collapse items={getItems(roleItems)} defaultActiveKey={['1']} onChange={roleChecked} />
-
-                  <Collapse
-                    collapsible="icon"
-                    defaultActiveKey={["1"]}
-                    onChange={onChange}
-                    expandIconPosition="end"
-                    items={items(roleItems)}
-                    className={styles.accordionWrapper}
-                  />
-                );
-              })}
-            </Form.Item> */}
           {data && Object?.keys(data?.result).length > 0 && (
             <Form.Item
               name="accessible_permissions"
@@ -392,7 +195,7 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
             >
               <Collapse
                 accordion
-                className={styles.accordionWrapper}
+                style={{ backgroundColor: "transparent", border: "none" }}
                 expandIconPosition="end"
                 collapsible="icon"
               >
@@ -408,8 +211,22 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
                     ) => {
                       return (
                         <Panel
+                          style={{
+                            border: "1px solid #d5d5d5",
+                            borderRadius: "10px",
+                            marginBottom: "14px",
+                            overflow: "hidden",
+                            background: "#fafbfc",
+                          }}
                           header={
-                            <>
+                            <div
+                              style={{
+                                maxWidth: "100%",
+                                display: "flex",
+                                marginRight: "25px",
+                                justifyContent: "space-between",
+                              }}
+                            >
                               {permissionList?.name}{" "}
                               <span>
                                 <Switch
@@ -417,19 +234,10 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
                                   // onChange={dataToggle[index]}
                                 />
                               </span>
-                            </>
+                            </div>
                           }
                           key={permissionList?.id}
-                        >
-                          <CheckboxGroup
-                            options={homePermissionData}
-                            value={homeCheckedList}
-                            disabled={
-                              !permissionList?.is_active_for_user && true
-                            }
-                            onChange={onChangeHomeCheckList}
-                          />
-                        </Panel>
+                        ></Panel>
                       );
                     }
                   );
@@ -439,20 +247,27 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
           )}
           {/* )} */}
 
-          <Form.Item className={styles.btnGroup}>
+          <Form.Item
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
             {/* <Button size="large">Save</Button> */}
-            <Button type="primary" size="large" htmlType="submit">
+            <Button
+              type="primary"
+              size="large"
+              htmlType="submit"
+              style={{ width: "140px" }}
+            >
               Invite User
             </Button>
           </Form.Item>
         </Form>
-      <CreateDatasetModal
-        open={createDatasetOpen}
-        loading={createDatasetLoading}
-        onClose={closeDatasetModel}
-        createDatasetHandler={inviteUserFormHandler}
-        title="Create your data collection set"
-      />
+        <CreateDatasetModal
+          open={createDatasetOpen}
+          loading={createDatasetLoading}
+          onClose={closeDatasetModel}
+          createDatasetHandler={inviteUserFormHandler}
+          title="Create your data collection set"
+        />
       </Drawer>
     </>
   );

@@ -12,7 +12,7 @@ import {
   Tag,
 } from "antd";
 
-import { changeStatusApi } from "@/api/dataset";
+import { changeStatusApi } from "@/api/userManagement";
 import { useFetchData } from "@/Hooks/useApi";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
@@ -115,7 +115,7 @@ const ManageUsers = () => {
       setCreateDatasetLoading(true);
       const payload = {
         user_id: session?.user?.details?.userId,
-        status: tags ? "INACTIVE" : "ACTIVE",
+        status: tags ? "INACTIVE" : "ACTIVE" || tags ? "ACTIVE" : "INACTIVE",
       };
 
       const datasetResponse = await changeStatusApi({ payload });
