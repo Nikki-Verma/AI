@@ -21,6 +21,7 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CreateAgentModal from "../CreateAgentModal";
@@ -104,7 +105,7 @@ const PipelineInfo = ({
       size: ALL_DATA_PAGE_SIZE,
     },
   );
-  console.log(toolsData,'toolsdata')
+  console.log(toolsData, "toolsdata");
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
@@ -228,7 +229,8 @@ const PipelineInfo = ({
           <PipelineFormCardContainer>
             <WorkflowInfoFormTitle>Model</WorkflowInfoFormTitle>
             <WorkflowInfoFormDescription>
-            Select the core AI that generates text, using retrieved information to enhance accuracy and creativity.
+              Select the core AI that generates text, using retrieved
+              information to enhance accuracy and creativity.
             </WorkflowInfoFormDescription>
             <Form.Item
               name={["model_detail", "model_name"]}
@@ -243,16 +245,16 @@ const PipelineInfo = ({
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
-
-                    <Button
-                      block
-                      style={{ width: "100%" }}
-                      type="dashed"
-                      icon={<PlusOutlined />}
-                      onClick={() => router.push("/workspace")}
-                    >
-                      Deploy new Model or connect model API
-                    </Button>
+                    <Link prefetch href="/workspace">
+                      <Button
+                        block
+                        style={{ width: "100%" }}
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                      >
+                        Deploy new Model or connect model API
+                      </Button>
+                    </Link>
                   </>
                 )}
                 optionRender={(option: any) => (
@@ -454,7 +456,8 @@ const PipelineInfo = ({
               Knowledge base
             </KnowledgebaseInfoFormTitle>
             <KnowledgebaseInfoFormDescription>
-            Database of facts and information the AI searches to enrich responses with accurate and relevant content.
+              Database of facts and information the AI searches to enrich
+              responses with accurate and relevant content.
             </KnowledgebaseInfoFormDescription>
             <Form.Item name={["kb", "kb_name"]}>
               <Select
@@ -467,16 +470,16 @@ const PipelineInfo = ({
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
-
-                    <Button
-                      block
-                      style={{ width: "100%" }}
-                      type="dashed"
-                      icon={<PlusOutlined />}
-                      onClick={() => router.push("/knowledge-base")}
-                    >
-                      Create knowledge base
-                    </Button>
+                    <Link prefetch href="/knowledge-base">
+                      <Button
+                        block
+                        style={{ width: "100%" }}
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                      >
+                        Create knowledge base
+                      </Button>
+                    </Link>
                   </>
                 )}
                 optionRender={(option: any) => (

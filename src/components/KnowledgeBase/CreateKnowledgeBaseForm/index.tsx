@@ -269,11 +269,11 @@ const CreateKnowledgeBaseForm = ({
                     />
                   </Form.Item>
                 </Col>
-                <Col span={24} md={12}>
+                {/* <Col span={24} md={12}>
                   <Form.Item name="index_key" label="Index Key">
                     <Input placeholder="Enter index key" />
                   </Form.Item>
-                </Col>
+                </Col> */}
                 {type === KnowledgeBaseCreateType.ADD_AND_UPDATE && (
                   <>
                     <Col span={24} md={12}>
