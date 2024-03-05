@@ -4,12 +4,12 @@ import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
+import { EyeFilled } from "@ant-design/icons";
 import {
   Button,
   Col,
   Result,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
@@ -19,7 +19,6 @@ import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Link from "next/link";
 import { useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
-import { EyeFilled } from "@ant-design/icons";
 
 const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
@@ -67,7 +66,7 @@ const IntegrationAgentsList = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Agent name",
+      title: "Agent Name",
       dataIndex: "agent_name",
       key: "agent_name",
       width: 250,
@@ -106,7 +105,7 @@ const IntegrationAgentsList = () => {
         ),
     },
     {
-      title: "Knowledge base",
+      title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb",
       width: 200,
@@ -120,7 +119,7 @@ const IntegrationAgentsList = () => {
         ),
     },
     {
-      title: "Integrated channels",
+      title: "Integrated Channels",
       dataIndex: "channels",
       key: "channels",
       width: 200,
@@ -136,13 +135,23 @@ const IntegrationAgentsList = () => {
       render: (_: any, dataset: UnknownObject) => {
         return (
           // <Space>
-          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
             <Col span={20}>
               <Link
                 prefetch
                 href={`/integration/agents/${dataset?.pipeline_id}`}
               >
-                <Button style={{width : '100%'}} block type="default" icon={<EyeFilled />}>View</Button>
+                <Button
+                  style={{ width: "100%" }}
+                  block
+                  type="default"
+                  icon={<EyeFilled />}
+                >
+                  View
+                </Button>
               </Link>
             </Col>
           </Row>

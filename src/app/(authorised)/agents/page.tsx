@@ -165,7 +165,7 @@ const Agents = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Agent name",
+      title: "Agent Name",
       dataIndex: "agent_name",
       key: "agent_name",
       width: 200,
@@ -211,7 +211,7 @@ const Agents = () => {
         ),
     },
     {
-      title: "Model name",
+      title: "Model Name",
       dataIndex: "model_detail",
       key: "model_name",
       width: 200,
@@ -222,7 +222,7 @@ const Agents = () => {
       ),
     },
     {
-      title: "Model version",
+      title: "Model Version",
       dataIndex: "model_detail",
       key: "model_version",
       width: 200,
@@ -233,7 +233,7 @@ const Agents = () => {
       ),
     },
     {
-      title: "Knowledge base",
+      title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb_name",
       width: 200,

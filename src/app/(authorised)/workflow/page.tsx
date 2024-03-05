@@ -165,7 +165,7 @@ const Workflow = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Workflow name",
+      title: "Workflow Name",
       dataIndex: "pipeline_name",
       key: "pipeline_name",
       width: 200,
@@ -211,7 +211,7 @@ const Workflow = () => {
         ),
     },
     {
-      title: "Model name",
+      title: "Model Name",
       dataIndex: "model_detail",
       key: "model_name",
       width: 150,
@@ -224,7 +224,7 @@ const Workflow = () => {
       ),
     },
     {
-      title: "Model version",
+      title: "Model Version",
       dataIndex: "model_detail",
       key: "model_version",
       width: 150,
@@ -237,7 +237,7 @@ const Workflow = () => {
       ),
     },
     {
-      title: "Knowledge base",
+      title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb_name",
       width: 150,

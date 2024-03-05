@@ -197,7 +197,7 @@ const KnowledgeBaseList = () => {
     //   },
     // },
     {
-      title: "KB setting",
+      title: "KB Setting",
       dataIndex: "kb_setting",
       key: "kb_setting",
       width: 200,
@@ -206,7 +206,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Embedding model",
+      title: "Embedding Model",
       dataIndex: "embed_model_name",
       key: "embed_model_name",
       width: 250,
@@ -233,7 +233,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Similarities percentage",
+      title: "Similarities Percentage",
       dataIndex: "similarities_percentage",
       key: "similarities_percentage",
       width: 250,
@@ -257,7 +257,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Created by",
+      title: "Created By",
       dataIndex: "username",
       key: "username",
       width: 250,
@@ -266,7 +266,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Last updated At",
+      title: "Last Updated At",
       dataIndex: "updated_at",
       key: "updated_at",
       width: 250,
@@ -281,7 +281,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Last updated by",
+      title: "Last Updated by",
       dataIndex: "updated_by_name",
       key: "updated_by_name",
       width: 250,

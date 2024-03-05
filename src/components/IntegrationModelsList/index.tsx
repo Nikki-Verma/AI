@@ -68,7 +68,7 @@ const IntegrationModelsList = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Model name",
+      title: "Model Name",
       dataIndex: "name",
       key: "name",
       width: 250,
@@ -127,7 +127,7 @@ const IntegrationModelsList = () => {
         ),
     },
     {
-      title: "Integrated channels",
+      title: "Integrated Channels",
       dataIndex: "channels",
       key: "channels",
       width: 200,

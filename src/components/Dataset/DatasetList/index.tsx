@@ -172,7 +172,7 @@ const DatasetList = () => {
 
   const columns: TableProps<DataType>["columns"] = [
     {
-      title: "File name",
+      title: "File Name",
       dataIndex: "name",
       key: "name",
       width: 300,
@@ -183,7 +183,7 @@ const DatasetList = () => {
       ),
     },
     {
-      title: "File size",
+      title: "File Size",
       dataIndex: "size",
       key: "size",
       width: 200,
@@ -192,7 +192,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "File count",
+      title: "File Count",
       dataIndex: "files_count",
       key: "files_count",
       width: 200,
@@ -201,7 +201,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Created at",
+      title: "Created At",
       dataIndex: "created_at",
       key: "createdAt",
       width: 250,
@@ -216,7 +216,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Created by",
+      title: "Created By",
       dataIndex: "username",
       key: "username",
       width: 250,
@@ -225,7 +225,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Last updated At",
+      title: "Last Updated At",
       dataIndex: "updated_at",
       key: "updated_at",
       width: 250,
@@ -240,7 +240,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Last updated by",
+      title: "Last Updated By",
       dataIndex: "updated_by_name",
       key: "updated_by_name",
       width: 250,
