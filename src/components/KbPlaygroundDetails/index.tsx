@@ -10,6 +10,7 @@ import { HddOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
+  Empty,
   Flex,
   Form,
   Input,
@@ -61,6 +62,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [chunks, setChunks] = useState<UnknownObject[]>([]);
+  const [chunkNotFound, setChunkNotFound] = useState(false);
   console.log("🚀 ~ KbPlaygroundDetails ~ chunks:", chunks);
   const [chunkLoading, setChunkLoading] = useState(false);
 
@@ -87,7 +89,13 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
           })) || [];
 
         setChunks([...newChunks]);
+        if (newChunks?.length > 0) {
+          setChunkNotFound(false);
+        } else {
+          setChunkNotFound(true);
+        }
       } else {
+        setChunkNotFound(true);
         setChunks([]);
       }
       console.log(
@@ -96,6 +104,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
       );
     } catch (error) {
       setChunks([]);
+      setChunkNotFound(true);
       notification.error({
         message: "Error while fetching chunks",
         description: getErrorFromApi(error),
@@ -173,18 +182,31 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
         <Col span={24} md={{ span: 11 }}>
           <KbChatResponseContainer>
             {!chunkLoading && chunks?.length < 1 ? (
-              <EmptyChatContainer>
-                <HddOutlined
-                  style={{
-                    fontSize: "86px",
-                    color: "var(--Text-Color-900, #171717)",
-                    opacity: "0.5",
-                  }}
-                />
-                <EmptyChattitle>
-                  Knowledge base playground results will show here
-                </EmptyChattitle>
-              </EmptyChatContainer>
+              chunkNotFound ? (
+                <EmptyChatContainer>
+                  <Empty
+                    description={
+                      <EmptyChattitle>
+                        No chunks found. Please verify file content and chunk
+                        settings
+                      </EmptyChattitle>
+                    }
+                  />
+                </EmptyChatContainer>
+              ) : (
+                <EmptyChatContainer>
+                  <HddOutlined
+                    style={{
+                      fontSize: "86px",
+                      color: "var(--Text-Color-900, #171717)",
+                      opacity: "0.5",
+                    }}
+                  />
+                  <EmptyChattitle>
+                    Knowledge base playground results will show here
+                  </EmptyChattitle>
+                </EmptyChatContainer>
+              )
             ) : (
               <Skeleton loading={chunkLoading} active paragraph={{ rows: 12 }}>
                 <ChunkDetailsContainer>
