@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import styled from "styled-components";
 
 export const DatasetDetailsContainer = styled.div`
@@ -19,5 +20,14 @@ export const DatasetDetailsContainer = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+  }
+`;
+
+export const DeleteDatasetFileButton = styled(Button)`
+  color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  &:hover {
+    background-color: #ff0000 !important;
+    color: #fff !important;
   }
 `;

@@ -1,6 +1,6 @@
 "use client";
 
-import { createDatasetApi } from "@/api/dataset";
+import { createDatasetApi, deleteDatasetApi } from "@/api/dataset";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData, usePostData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
@@ -13,12 +13,18 @@ import {
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { formatSizeUnits, getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import {
+  formatSizeUnits,
+  getErrorFromApi,
+  getFilters,
+} from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { EyeFilled, PlusOutlined } from "@ant-design/icons";
+import { EyeFilled, MoreOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
+  Dropdown,
+  MenuProps,
   Result,
   Row,
   Space,
@@ -59,6 +65,7 @@ const DatasetList = () => {
   const { notification } = useNotify();
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
+  const [datasetDeleteLoading, setDatasetDeleteLoading] = useState();
   const { mutate } = usePostData(["createDataset"]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
@@ -141,6 +148,28 @@ const DatasetList = () => {
     );
   };
 
+  const deleteDatasetHandler = async (dataset: UnknownObject) => {
+    try {
+      setDatasetDeleteLoading(dataset?.id);
+
+      const deleteDatasetResponse = await deleteDatasetApi({
+        params: { id: dataset?.id },
+      });
+
+      if (deleteDatasetResponse?.status == 200) {
+        notification.success({ message: "Dataset deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting dataset",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setDatasetDeleteLoading(undefined);
+    }
+  };
+
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "File name",
@@ -157,25 +186,19 @@ const DatasetList = () => {
       title: "File size",
       dataIndex: "size",
       key: "size",
-      width : 200,
-      render : (val) => {
-        return(
-          val ? formatSizeUnits(val) : '-'
-
-        )
-      }
+      width: 200,
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
+      },
     },
     {
       title: "File count",
       dataIndex: "files_count",
       key: "files_count",
-      width : 200,
-      render : (val) => {
-        return(
-          val ??  '-'
-
-        )
-      }
+      width: 200,
+      render: (val) => {
+        return val ?? "-";
+      },
     },
     {
       title: "Created at",
@@ -198,9 +221,7 @@ const DatasetList = () => {
       key: "username",
       width: 250,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -224,9 +245,7 @@ const DatasetList = () => {
       key: "updated_by_name",
       width: 250,
       render: (val) => {
-        return(
-          val ?? '-'
-        )
+        return val ?? "-";
       },
     },
     {
@@ -237,19 +256,52 @@ const DatasetList = () => {
       width: 160,
       fixed: "right",
       render: (_: any, dataset: UnknownObject) => {
+        console.log("🚀 ~ DatasetList ~ dataset:", dataset);
+        const extraItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteDatasetHandler(dataset)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={datasetDeleteLoading === dataset?.id}
+                disabled={!!datasetDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
+
         return (
-          // <Space>
-          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
-                <Col span={20}>
-            <Link prefetch href={`/dataset/${dataset?.id}`}>
-              <Button style={{width : '100%'}} icon={<EyeFilled />}>View</Button>
-            </Link>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <Link prefetch href={`/dataset/${dataset?.id}`}>
+                <Button
+                  style={{ width: "100%" }}
+                  icon={<EyeFilled />}
+                  disabled={!!datasetDeleteLoading}
+                >
+                  View
+                </Button>
+              </Link>
             </Col>
-            {/* <Col span={3} style={{display : 'flex',justifyContent : 'center'}}>
-            <MoreOutlined style={{ fontSize: "21px", fontWeight: "bold", cursor : 'pointer' }} />
-            </Col> */}
-            </Row>
-          // </Space>
+            <Col span={3} style={{ display: "flex", justifyContent: "center" }}>
+              <Dropdown menu={{ items: extraItems }} placement="bottomLeft">
+                <MoreOutlined
+                  style={{
+                    fontSize: "21px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                />
+              </Dropdown>
+            </Col>
+          </Row>
         );
       },
     },
@@ -262,7 +314,7 @@ const DatasetList = () => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
-    columnWidth : 40
+    columnWidth: 40,
   };
 
   return (

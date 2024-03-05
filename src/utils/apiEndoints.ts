@@ -75,8 +75,10 @@ const config = {
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,
     create: `${BASE_URLS.data}/api/v1/dataset/collection`,
+    delete: `${BASE_URLS.data}/api/v1/dataset/collection`,
     uploadFile: `${BASE_URLS.data}/api/v1/storage/upload`,
     files: `${BASE_URLS.data}/api/v1/dataset/collection/files`,
+    fileDelete: `${BASE_URLS.data}/api/v1/dataset/collection/document`,
   },
   dataConnectors: {
     connectConfluence: `${BASE_URLS.channelAggregator}/api/v1/data-connector`,

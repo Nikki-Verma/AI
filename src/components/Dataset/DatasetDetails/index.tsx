@@ -1,4 +1,7 @@
-import { addConfluenceFilesToDatasetApi } from "@/api/dataset";
+import {
+  addConfluenceFilesToDatasetApi,
+  deleteDatasetFilesApi,
+} from "@/api/dataset";
 import {
   addFileToKnowledgeBaseApi,
   createKnowledgeBaseApi,
@@ -27,6 +30,7 @@ import {
   getFilters,
   uploadDatasetFiles,
 } from "@/utils/helperFunction";
+import { UnknownObject } from "@/utils/types";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -51,7 +55,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { v4 } from "uuid";
 import DatasetAddFileModal from "../DatasetAddFileModal";
-import { DatasetDetailsContainer } from "./style";
+import { DatasetDetailsContainer, DeleteDatasetFileButton } from "./style";
 const { Text } = Typography;
 
 interface DataType {
@@ -75,6 +79,7 @@ const DatasetDetails = (props: any) => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [addFileModalOpen, setAddFileModalOpen] = useState(false);
+  const [datasetFilesDeleteLoading, setDatasetFilesDeleteLoading] = useState();
   const [addFileToKnowledgebaseOpen, setAddFileToKnowledgebaseOpen] =
     useState(false);
   const [addFilesLoading, setAddFilesLoading] = useState(false);
@@ -294,6 +299,28 @@ const DatasetDetails = (props: any) => {
     }
   };
 
+  const deleteDatasetFilesHandler = async (dataset: UnknownObject) => {
+    try {
+      setDatasetFilesDeleteLoading(dataset?.id);
+
+      const deleteDatasetFilesResponse = await deleteDatasetFilesApi({
+        params: { resource_id: dataset?.resource_id },
+      });
+
+      if (deleteDatasetFilesResponse?.status == 200) {
+        notification.success({ message: "Dataset files deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting dataset",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setDatasetFilesDeleteLoading(undefined);
+    }
+  };
+
   const rowSelection: TableRowSelection<DataType> = {
     type: "checkbox",
     preserveSelectedRowKeys: true,
@@ -345,20 +372,33 @@ const DatasetDetails = (props: any) => {
     //     return val ? formatSizeUnits(val) : "-";
     //   },
     // },
-    // {
-    //   title: "Actions",
-    //   dataIndex: "",
-    //   align: "center",
-    //   key: "actions",
-    //   width: 100,
-    //   render: (_: any, dataset: UnknownObject) => {
-    //     return (
-    //       <Space>
-    //         <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-    //       </Space>
-    //     );
-    //   },
-    // },
+    {
+      title: "Actions",
+      dataIndex: "",
+      align: "center",
+      key: "actions",
+      width: 100,
+      render: (_: any, dataset: UnknownObject) => {
+        console.log("🚀 ~ DatasetDetails ~ dataset:", dataset);
+        return (
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <DeleteDatasetFileButton
+                onClick={() => deleteDatasetFilesHandler(dataset)}
+                type="default"
+                loading={datasetFilesDeleteLoading === dataset?.id}
+                disabled={!!datasetFilesDeleteLoading}
+              >
+                Delete
+              </DeleteDatasetFileButton>
+            </Col>
+          </Row>
+        );
+      },
+    },
   ];
 
   if (datasetLoading) {
