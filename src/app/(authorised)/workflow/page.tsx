@@ -81,6 +81,10 @@ const Workflow = () => {
       pageTitle: "Workspace",
       pageDescription: "Models are your AI powered automations & skills",
     });
+    router.prefetch(`/workflow/view/[workflowId]`);
+    router.prefetch(`/integration/workflow/[workflowId]`);
+    router.prefetch(`/workflow/playground/[workflowId]`);
+    router.prefetch(`/workflow/edit/[workflowId]`);
   }, []);
 
   const toggleCreateWorkflowHandler = () => {
@@ -170,9 +174,7 @@ const Workflow = () => {
       key: "pipeline_name",
       width: 200,
       render: (val: any, data: any) => (
-        <Link prefetch href={`/workflow/view/${data?.pipeline_id}`}>
-          {val}
-        </Link>
+        <Link href={`/workflow/view/${data?.pipeline_id}`}>{val}</Link>
       ),
     },
     {
@@ -289,10 +291,7 @@ const Workflow = () => {
           {
             key: "integration",
             label: (
-              <Link
-                prefetch
-                href={`/integration/workflow/${workflowData?.pipeline_id}`}
-              >
+              <Link href={`/integration/workflow/${workflowData?.pipeline_id}`}>
                 <Button
                   style={{ color: "#000000b3" }}
                   type="text"
@@ -349,7 +348,6 @@ const Workflow = () => {
               >
                 <Col span={20}>
                   <Link
-                    prefetch
                     href={`/workflow/playground/${workflowData?.pipeline_id}`}
                   >
                     <Button
@@ -391,10 +389,7 @@ const Workflow = () => {
                 }}
               >
                 <Col span={20}>
-                  <Link
-                    prefetch
-                    href={`/workflow/edit/${workflowData?.pipeline_id}`}
-                  >
+                  <Link href={`/workflow/edit/${workflowData?.pipeline_id}`}>
                     <Button
                       style={{ ...fullWidth }}
                       block
