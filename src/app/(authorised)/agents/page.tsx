@@ -1,6 +1,6 @@
 "use client";
 
-import { createAgentApi } from "@/api/agents";
+import { createAgentApi, deleteAgentApi } from "@/api/agents";
 import {
   AgentStatus,
   AgentStatusType,
@@ -27,7 +27,6 @@ import { UnknownObject } from "@/utils/types";
 import {
   ApiOutlined,
   EditOutlined,
-  EyeFilled,
   MoreOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -38,7 +37,6 @@ import {
   MenuProps,
   Result,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
@@ -67,6 +65,7 @@ const Agents = () => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createAgentLoading, setCreateAgentLoading] = useState(false);
+  const [agentDeleteLoading, setAgentDeleteLoading] = useState();
   const [isCreateAgentModalVisible, setIsCreateAgentModalVisible] =
     useState<boolean>(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
@@ -139,6 +138,28 @@ const Agents = () => {
         page: (pagination?.current ?? 1) - 1,
         size: pagination?.pageSize,
       }));
+    }
+  };
+
+  const deleteAgentHandler = async (agent: UnknownObject) => {
+    try {
+      setAgentDeleteLoading(agent?.agent_id);
+
+      const deleteAgentResponse = await deleteAgentApi({
+        agentId: agent?.pipeline_id,
+      });
+
+      if (deleteAgentResponse?.status == 200) {
+        notification.success({ message: "Agent deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting agent",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setAgentDeleteLoading(undefined);
     }
   };
 
@@ -261,11 +282,12 @@ const Agents = () => {
           {
             key: "edit",
             label: (
-              <Link
-                prefetch
-                  href={`/agents/edit/${agentData?.pipeline_id}`}
-              >
-                <Button style={{color : '#000000b3'}} type="text">
+              <Link prefetch href={`/agents/edit/${agentData?.pipeline_id}`}>
+                <Button
+                  style={{ color: "#000000b3" }}
+                  type="text"
+                  disabled={!!agentDeleteLoading}
+                >
                   Edit
                 </Button>
               </Link>
@@ -274,14 +296,46 @@ const Agents = () => {
           {
             key: "view",
             label: (
-              <Link
-                prefetch
-                  href={`/agents/view/${agentData?.pipeline_id}`}
-              >
-                <Button style={{color : '#000000b3'}} type="text" >
+              <Link prefetch href={`/agents/view/${agentData?.pipeline_id}`}>
+                <Button
+                  style={{ color: "#000000b3" }}
+                  type="text"
+                  disabled={!!agentDeleteLoading}
+                >
                   View
                 </Button>
               </Link>
+            ),
+          },
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteAgentHandler(agentData)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={agentDeleteLoading === agentData?.agent_id}
+                disabled={!!agentDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
+
+        const ProgressItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteAgentHandler(agentData)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={agentDeleteLoading === agentData?.agent_id}
+                disabled={!!agentDeleteLoading}
+              >
+                Delete
+              </Button>
             ),
           },
         ];
@@ -289,42 +343,90 @@ const Agents = () => {
           <>
             {agentData?.agent_state === AgentStatus.COMPLETED ? (
               // <Space>
-              <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+              <Row
+                gutter={[0, 0]}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Col span={20}>
-                <Link
-                  prefetch
-                  href={`/integration/agents/${agentData?.pipeline_id}`}
-                >
-                  <Button style={{...fullWidth}} block type="default" icon={<ApiOutlined />}>
-                    Integrate
-                  </Button>
-                </Link>
+                  <Link
+                    prefetch
+                    href={`/integration/agents/${agentData?.pipeline_id}`}
+                  >
+                    <Button
+                      style={{ ...fullWidth }}
+                      block
+                      type="default"
+                      icon={<ApiOutlined />}
+                      disabled={!!agentDeleteLoading}
+                    >
+                      Integrate
+                    </Button>
+                  </Link>
                 </Col>
-                <Col span={3} style={{display : 'flex',justifyContent : 'center'}}>
-                <Dropdown
-                  menu={{ items: completedItems }}
-                  placement="bottomLeft"
+                <Col
+                  span={3}
+                  style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <MoreOutlined
-                    style={{ fontSize: "21px", fontWeight: "bold",cursor : 'pointer' }}
-                  />
-                </Dropdown>
+                  <Dropdown
+                    menu={{ items: completedItems }}
+                    placement="bottomLeft"
+                  >
+                    <MoreOutlined
+                      style={{
+                        fontSize: "21px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Dropdown>
                 </Col>
-                </Row>
-              // </Space>
+              </Row>
             ) : (
-              // <Space>
-              <Col span={20}>
-                <Link
-                  prefetch
-                    href={`/agents/edit/${agentData?.pipeline_id}`}
-                >
-                <Button style={{...fullWidth}} block type="default" icon={<EditOutlined />}>
-                  Edit
-                </Button>
-                </Link>
-                </Col>
               // </Space>
+              <Row
+                gutter={[0, 0]}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Col span={20}>
+                  <Link
+                    prefetch
+                    href={`/agents/edit/${agentData?.pipeline_id}`}
+                  >
+                    <Button
+                      style={{ ...fullWidth }}
+                      block
+                      type="default"
+                      icon={<EditOutlined />}
+                      disabled={!!agentDeleteLoading}
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                </Col>
+                <Col
+                  span={3}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <Dropdown
+                    menu={{ items: ProgressItems }}
+                    placement="bottomLeft"
+                  >
+                    <MoreOutlined
+                      style={{
+                        fontSize: "21px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Dropdown>
+                </Col>
+              </Row>
             )}
           </>
         );
@@ -355,6 +457,7 @@ const Agents = () => {
               type="primary"
               icon={<PlusOutlined />}
               onClick={toggleCreateAgentHandler}
+              disabled={!!agentDeleteLoading}
             >
               Create Agent
             </Button>
