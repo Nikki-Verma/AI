@@ -7,7 +7,7 @@ const __RAG_BASE_URL__ = process.env.NEXT_PUBLIC_RAG_BASE_URL;
 const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
 const __CHANNEL_AGGREGATOR_BASE_URL__ =
   process.env.NEXT_PUBLIC_CHANNEL_AGGREGATOR_BASE_URL;
-const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL
+const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL;
 
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
@@ -15,9 +15,8 @@ export const BASE_URLS = {
   data: `${__EDGE_URL__}${__DATA_BASE_URL__}`,
   rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
+  agent: __AGENT_BASE_URL__,
   intract: __INTRACT_BASE_URL__,
-  agents : __AGENT_BASE_URL__,
-  
 };
 
 const config = {
@@ -63,19 +62,26 @@ const config = {
     details: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
+    delete: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
   },
   agents: {
     list: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     details: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
-
+    delete: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
+  },
+  tools: {
+    list: `${BASE_URLS.agent}/tools/`,
+    details: `${BASE_URLS.agent}/tools`,
   },
   dataset: {
     list: `${BASE_URLS.data}/api/v1/dataset/collections`,
     create: `${BASE_URLS.data}/api/v1/dataset/collection`,
+    delete: `${BASE_URLS.data}/api/v1/dataset/collection`,
     uploadFile: `${BASE_URLS.data}/api/v1/storage/upload`,
     files: `${BASE_URLS.data}/api/v1/dataset/collection/files`,
+    fileDelete: `${BASE_URLS.data}/api/v1/dataset/collection/document`,
   },
   dataConnectors: {
     connectConfluence: `${BASE_URLS.channelAggregator}/api/v1/data-connector`,
@@ -84,8 +90,10 @@ const config = {
   knowledgebase: {
     list: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     create: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
+    delete: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     addFiles: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/add-file`,
     files: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/files`,
+    fileDelete: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/document`,
   },
   rag: {
     chat: `${BASE_URLS.rag}/retrieve/context/`,

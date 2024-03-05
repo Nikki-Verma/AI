@@ -23,7 +23,12 @@ import {
 } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Heading, SearchInpuContainer } from "./style";
+import {
+  Heading,
+  ModelDetailsContainer,
+  RadioButton,
+  SearchInpuContainer,
+} from "./style";
 
 const { Title } = Typography;
 
@@ -154,11 +159,12 @@ const Models = () => {
         size="large"
         buttonStyle="solid"
       >
-        <Radio.Button value="OPEN">Open Source</Radio.Button>
-        <Radio.Button value="CLOSED">Closed Source</Radio.Button>
+        <RadioButton value="OPEN">Open Source</RadioButton>
+        <RadioButton value="CLOSED">Closed Source</RadioButton>
       </Radio.Group>
+
       <SearchInpuContainer>
-        <Row gutter={[12, 12]}>
+        <Row gutter={[12, 16]}>
           <Col span={24}>
             <Input
               prefix={
@@ -229,45 +235,51 @@ const Models = () => {
           </Col>
         </Row>
       </SearchInpuContainer>
-      <Col span={24}>
-        <Heading>Trending Models</Heading>
-      </Col>
-      <Row gutter={[16, 16]} style={{ display: "flex", margin: "flex-start" }}>
-        {isLoading &&
-          Array.from({ length: +filters?.size }).map((_, i) => (
-            <Col
-              key={i}
-              span={8}
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <Card key={i}>
-                <Skeleton loading active avatar round></Skeleton>
-              </Card>
-            </Col>
-          ))}
-        {(data?.result || [])?.map(
-          (
-            model: { name: string; desc: "string"; [key: string]: any },
-            index: number,
-          ) => {
-            return (
+      <ModelDetailsContainer>
+        <Col span={24}>
+          <Heading>Trending Models</Heading>
+        </Col>
+        <Row
+          gutter={[28, 16]}
+          style={{ display: "flex", margin: "flex-start" }}
+        >
+          {isLoading &&
+            Array.from({ length: +filters?.size }).map((_, i) => (
               <Col
-                key={model?.id}
+                key={i}
                 span={8}
                 style={{ display: "flex", flexDirection: "column" }}
               >
-                <CardModel
-                  index={index}
-                  key={model?.name}
-                  imageUrl={"/assets/Images/dummyModel.png"}
-                  modelData={model}
-                  redirectUrl={`/models/${model?.id}`}
-                />
+                <Card key={i}>
+                  <Skeleton loading active avatar round></Skeleton>
+                </Card>
               </Col>
-            );
-          },
-        )}
-      </Row>
+            ))}
+          {(data?.result || [])?.map(
+            (
+              model: { name: string; desc: "string"; [key: string]: any },
+              index: number,
+            ) => {
+              console.log("🚀 ~ Models ~ model:", model);
+              return (
+                <Col
+                  key={model?.id}
+                  span={8}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
+                  <CardModel
+                    index={index}
+                    key={model?.name}
+                    imageUrl={"/assets/Images/dummyModel.png"}
+                    modelData={model}
+                    redirectUrl={`/models/${model?.id}`}
+                  />
+                </Col>
+              );
+            },
+          )}
+        </Row>
+      </ModelDetailsContainer>
 
       <Row justify="end">
         <Col>

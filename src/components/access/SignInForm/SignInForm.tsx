@@ -66,7 +66,7 @@ const SignInForm = () => {
             className={styles.main_heading}
             style={{ color: token.colorPrimary }}
           >
-            SimplAi
+            SimplAI
           </div>
           <div className={styles.form_heading}>Sign in to your account</div>
           <Row gutter={[20, 0]}>
@@ -82,7 +82,7 @@ const SignInForm = () => {
                   },
                 ]}
               >
-                <Input placeholder="Enter work email address" />
+                <Input style ={{height : '40px'}} placeholder="Enter work email address" />
               </Item>
             </Col>
             <Col span={24}>
@@ -96,7 +96,7 @@ const SignInForm = () => {
                   },
                 ]}
               >
-                <Input placeholder="Enter password" />
+                <Input style ={{height : '40px'}} type="password" placeholder="Enter password" />
               </Item>
             </Col>
           </Row>
@@ -111,7 +111,7 @@ const SignInForm = () => {
           <Item noStyle>
             <Button
               type="primary"
-              style={{ width: "100%", margin: "28px 0px" }}
+              style={{ width: "100%", margin: "28px 0px", height : '45px' }}
               htmlType="submit"
               loading={loading}
             >
@@ -121,7 +121,7 @@ const SignInForm = () => {
 
           <Button
             type="default"
-            style={{ width: "100%", marginBottom: "16px" }}
+            style={{ width: "100%", marginBottom: "16px", height : '45px'  }}
           >
             <Space align="center">
               <div
@@ -164,7 +164,7 @@ const SignInForm = () => {
             className={styles.main_heading}
             style={{ color: token.colorPrimary }}
           >
-            SimplAi
+            SimplAI
           </div>
           {!passwordSent ? (
             <>
@@ -203,7 +203,7 @@ const SignInForm = () => {
                       },
                     ]}
                   >
-                    <Input placeholder="Enter work email address" />
+                    <Input style ={{height : '40px'}} placeholder="Enter work email address" />
                   </Item>
                 </Col>
               </Row>
@@ -212,7 +212,7 @@ const SignInForm = () => {
                 onClick={() => {
                   setPasswordSent(true);
                 }}
-                style={{ width: "100%", margin: "28px 0px" }}
+                style={{ width: "100%", margin: "28px 0px", height : '45px'  }}
               >
                 Continue
               </Button>
@@ -222,6 +222,8 @@ const SignInForm = () => {
               <Image
                 src={"/assets/Images/mailSent.svg"}
                 alt="check-icon"
+                width={100}
+                height={100}
                 style={{ width: "50%" }}
               />
               <div

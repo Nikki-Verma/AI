@@ -1,18 +1,20 @@
-import { Radio } from "antd";
 import { useState } from "react";
+import IntegrationAgentsList from "../IntegrationAgentsList";
 import IntegrationModelsList from "../IntegrationModelsList";
 import IntegrationWorkflowsList from "../IntegrationWorkflowsList";
 import { MediumRadioGroup } from "../UIComponents/UIComponents.style";
-import { IntegrationTabsContainer } from "./style";
+import { IntegrationTabsContainer, RadioButton } from "./style";
 
 enum IntegrationTabType {
   "MODELS" = "MODELS",
   "WORKFLOWS" = "WORKFLOWS",
+  "AGENTS" = "AGENTS",
 }
 
 const IntegrationTab = {
   MODELS: IntegrationTabType.MODELS,
   WORKFLOWS: IntegrationTabType.WORKFLOWS,
+  AGENTS: IntegrationTabType.AGENTS,
 };
 
 const IntegrationTabs = () => {
@@ -25,6 +27,9 @@ const IntegrationTabs = () => {
 
       case IntegrationTab.WORKFLOWS:
         return <IntegrationWorkflowsList />;
+
+      case IntegrationTab.AGENTS:
+        return <IntegrationAgentsList />;
 
       default:
         return <div> models</div>;
@@ -40,8 +45,9 @@ const IntegrationTabs = () => {
         }}
         buttonStyle="solid"
       >
-        <Radio.Button value={IntegrationTab.MODELS}>Models</Radio.Button>
-        <Radio.Button value={IntegrationTab.WORKFLOWS}>Workflows</Radio.Button>
+        <RadioButton value={IntegrationTab.MODELS}>Models</RadioButton>
+        <RadioButton value={IntegrationTab.WORKFLOWS}>Workflows</RadioButton>
+        <RadioButton value={IntegrationTab.AGENTS}>Agents</RadioButton>
       </MediumRadioGroup>
       {getCurrentTabDetails()}
     </IntegrationTabsContainer>

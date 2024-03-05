@@ -29,16 +29,19 @@ const { Text } = Typography;
 enum ChannelListPageType {
   MODEL = "MODEL",
   WORKFLOW = "WORKFLOW",
+  AGENT = "AGENT",
 }
 export const CHANNEL_PAGE_TYPE = {
   MODEL: ChannelListPageType.MODEL,
   WORKFLOW: ChannelListPageType.WORKFLOW,
+  AGENT: ChannelListPageType.AGENT,
 };
 
 type ChannelsListProps = {
   data?: any;
   userModelId?: string | string[];
   workflowId?: string | string[];
+  agentId?: string | string[];
   integrateChannel: () => void;
   isRefetching: boolean;
   pageType: ChannelListPageType;
@@ -53,6 +56,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 const ChannelsList = ({
   userModelId,
   workflowId,
+  agentId,
   data,
   integrateChannel,
   isRefetching,
@@ -68,7 +72,11 @@ const ChannelsList = ({
     refetch,
   } = useFetchData(config.integrate.channels, {
     pipelineIdOrModelId:
-      pageType === CHANNEL_PAGE_TYPE.MODEL ? userModelId : workflowId,
+      pageType === CHANNEL_PAGE_TYPE.MODEL
+        ? userModelId
+        : pageType === CHANNEL_PAGE_TYPE.WORKFLOW
+          ? workflowId
+          : agentId,
   });
 
   useEffect(() => {
@@ -196,6 +204,7 @@ const ChannelsList = ({
             y: ChannelData?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
+            hideOnSinglePage: true,
             current: filters?.page + 1,
             pageSize: filters?.size,
             total: ChannelData?.totalElements,

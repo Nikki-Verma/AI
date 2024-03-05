@@ -66,3 +66,17 @@ export const addConfluenceFilesToDatasetApi = ({
     },
   );
 };
+
+export const deleteDatasetApi = ({ params = {}, headers = {} }: any) => {
+  return _authHttp.delete(config.dataset.delete, {
+    params,
+    headers,
+  });
+};
+
+export const deleteDatasetFilesApi = ({ params = {}, headers = {} }: any) => {
+  return _authHttp.delete(config.dataset.fileDelete, {
+    params,
+    headers,
+  });
+};

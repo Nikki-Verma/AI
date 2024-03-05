@@ -15,9 +15,10 @@ type Props = {
   messages: ChatMessage[];
   loading: boolean;
   chatLoading: boolean;
+  WelcomeMessage :string
 };
 
-function Chat({ messages, loading, chatLoading }: Props) {
+function Chat({ messages, loading, chatLoading,WelcomeMessage }: Props) {
   const { data: session } = useSession();
   const messageEndRef = useRef<null | HTMLDivElement>(null);
 
@@ -33,30 +34,15 @@ function Chat({ messages, loading, chatLoading }: Props) {
             style={{ display: "flex", width: "100%", justifyContent: "center" }}
           >
             <Col
-              span={18}
+              span={20}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
               }}
             >
-              <Image
-                src={"/assets/Logos/simplaiLogo.svg"}
-                height={47}
-                width={47}
-                alt=""
-              />
-              <WelcomeText>
-                Welcome to Assistant by{" "}
-                <Link prefetch href="" style={{ color: "#602EDF" }}>
-                  {"        "}
-                  SimplAI
-                </Link>
-              </WelcomeText>
               <GetStartedText>
-                Get started by writing a task and Assistant can do the rest. Not
-                sure where to start? Check out the Prompt Library for
-                inspiration.
+               {WelcomeMessage}
               </GetStartedText>
             </Col>
           </Row>

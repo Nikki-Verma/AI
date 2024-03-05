@@ -4,7 +4,7 @@ import { PAGE_MODE } from "@/utils/constants";
 import { PageModeEnum } from "@/utils/types";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface CreateAgentflowModalProps {
   open: boolean;
@@ -12,11 +12,7 @@ interface CreateAgentflowModalProps {
   onClose: () => void;
   createAgentHandler: (values: { [key: string]: any }) => void;
   mode?: PageModeEnum;
-  agentFlowDetails?: {
-    id?: string | number | undefined;
-    name: string;
-    description?: string | undefined | null;
-  };
+  agentFlowDetails?: any;
 }
 
 const CreateAgentModal = ({
@@ -27,31 +23,40 @@ const CreateAgentModal = ({
   mode = PAGE_MODE.CREATE,
   agentFlowDetails,
 }: CreateAgentflowModalProps) => {
+  console.log("🚀 ~ agentFlowDetails:", agentFlowDetails);
   const [form] = useForm();
+  const [formUpdated, setFormUpdated] = useState(false);
+
+  const agentName = Form.useWatch("agent_name", form);
+  console.log("🚀 ~ agentName:", agentName);
 
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
+      console.log("🚀 ~ agentFlowDetails useeffect:", agentFlowDetails);
       form.setFields([
         {
-          name: "name",
-          value: agentFlowDetails?.name,
+          name: "agent_name",
+          value: agentFlowDetails?.agent_name,
           errors: [],
         },
         {
-          name: "description",
-          value: agentFlowDetails?.description,
+          name: "agent_description",
+          value: agentFlowDetails?.agent_description,
           errors: [],
         },
       ]);
     }
-  }, [mode]);
+    setFormUpdated((prev: boolean) => !prev);
+  }, [mode, open]);
+
+  console.log("agent form details", form.getFieldsValue());
 
   return (
     <Modal
       title={
         mode === PAGE_MODE.CREATE
           ? "Create agent"
-          : mode === PAGE_MODE.CREATE
+          : mode === PAGE_MODE.EDIT
             ? "Edit agent details"
             : ""
       }
@@ -62,6 +67,7 @@ const CreateAgentModal = ({
         }
       }}
       centered
+      width="40%"
       maskClosable={false}
       destroyOnClose
       closable
@@ -89,7 +95,7 @@ const CreateAgentModal = ({
               {mode === PAGE_MODE.CREATE
                 ? "Create"
                 : mode === PAGE_MODE.EDIT
-                  ? "Edit"
+                  ? "Update"
                   : ""}
             </Button>
           </Col>

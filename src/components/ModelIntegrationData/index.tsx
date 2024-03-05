@@ -5,7 +5,16 @@ import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { ApiOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Result, Row, Skeleton, Tabs } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Image as AntImage,
+  Result,
+  Row,
+  Skeleton,
+  Tabs,
+} from "antd";
 import { useForm } from "antd/es/form/Form";
 import Image from "next/image";
 import { useState } from "react";
@@ -99,16 +108,30 @@ const ModelIntegrationData = ({
               justifyContent: "flex-start",
             }}
           >
-            <Image
-              src={"/assets/Images/dummyModel.png"}
-              alt="models"
-              height={96}
-              width={96}
-              style={{
-                display: "flex",
-                marginRight: "12px",
-              }}
-            />
+            {data?.result?.weights_file_s3_url ? (
+              <AntImage
+                src={data?.result?.weights_file_s3_url}
+                preview={false}
+                alt="Model"
+                style={{
+                  width: "96px",
+                  height: "96px",
+                  display: "flex",
+                  marginRight: "12px",
+                }}
+              />
+            ) : (
+              <Image
+                height={96}
+                width={96}
+                src={"/assets/Images/dummyModel.png"}
+                alt="Model"
+                style={{
+                  display: "flex",
+                  marginRight: "12px",
+                }}
+              />
+            )}
             <div
               style={{
                 display: "flex",

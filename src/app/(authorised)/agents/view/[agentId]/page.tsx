@@ -6,9 +6,10 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Col } from "antd";
 import { useParams, useRouter } from "next/navigation";
 import { AgentDetailsContainer } from "./style";
+import AgentData from "@/components/AgentData";
 
 const AgentDetails = ({ params }: any) => {
-  const { workflowId } = useParams();
+  const { agentId } = useParams();
   const router = useRouter();
   return (
     <AgentDetailsContainer>
@@ -20,7 +21,7 @@ const AgentDetails = ({ params }: any) => {
           <ArrowLeftOutlined />
         </div>
       </Col>
-      <WorkflowData workflowId={workflowId} />
+      <AgentData agentId={agentId} />
     </AgentDetailsContainer>
   );
 };

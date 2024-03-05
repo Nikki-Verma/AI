@@ -1,8 +1,12 @@
-import { addFileToKnowledgeBaseApi } from "@/api/knowledgebase";
+import {
+  addFileToKnowledgeBaseApi,
+  deleteKnowledgebaseFilesApi,
+} from "@/api/knowledgebase";
+import { DeleteDatasetFileButton } from "@/components/Dataset/DatasetDetails/style";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
-import SearchIcon from "@/components/Icons/SearchIcon";
 import SaDate from "@/components/SaDate/Index";
+import Tags from "@/components/Tags";
 import {
   PageAbout,
   PageTitle,
@@ -12,6 +16,7 @@ import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import {
+  dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   DUMMY_TENANT_ID,
@@ -19,16 +24,11 @@ import {
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import {
-  CloudDownloadOutlined,
-  MoreOutlined,
-  PlayCircleOutlined,
-} from "@ant-design/icons";
+import { AimOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
   Col,
-  Input,
   Result,
   Row,
   Skeleton,
@@ -48,6 +48,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import ImportFilesFromDatasetModal from "../ImportFilesFromDatasetModal";
+import { INJESTION_STATUS } from "./constant";
 
 import { KnowledgeBaseDetailsContainer } from "./style";
 const { Text } = Typography;
@@ -72,11 +73,13 @@ const KnowledgeBaseDetails = (props: any) => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const [importDatasetOpen, setImportDatasetOpen] = useState(false);
   const [importDatasetLoading, setImportDatasetLoading] = useState(false);
+  const [knowledgebaseFilesDeleteLoading, setKnowledgebaseFilesDeleteLoading] =
+    useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   // const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   // const [addFilesLoading, setAddFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [displayKbPlayground, setDisplayKbPlayground] = useState(false);
+  const [displayKbSettings, setDisplayKbSettings] = useState(false);
   const { data, isLoading, isError, error, refetch } = useFetchData(
     config.knowledgebase.files,
     { ...filters, knowledgebase_id: knowledgebaseId },
@@ -156,8 +159,36 @@ const KnowledgeBaseDetails = (props: any) => {
     }
   };
 
-  const toggleKbPlayground = () => {
-    setDisplayKbPlayground((prev: boolean) => !prev);
+  const toggleKbSettings = () => {
+    setDisplayKbSettings((prev: boolean) => !prev);
+  };
+
+  const deleteKnowledgebaseFilesHandler = async (
+    knowledgebase: UnknownObject,
+  ) => {
+    console.log("🚀 ~ KnowledgeBaseDetails ~ knowledgebase:", knowledgebase);
+    try {
+      setKnowledgebaseFilesDeleteLoading(knowledgebase?.id);
+
+      const deleteKnowledgebaseFilesResponse =
+        await deleteKnowledgebaseFilesApi({
+          params: { kb_id: knowledgebaseId, document_id: knowledgebase?.id },
+        });
+
+      if (deleteKnowledgebaseFilesResponse?.status == 200) {
+        notification.success({
+          message: "Knowledge base files deleted successfully",
+        });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting knowledge base files",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setKnowledgebaseFilesDeleteLoading(undefined);
+    }
   };
 
   const rowSelection: TableRowSelection<DataType> = {
@@ -185,20 +216,56 @@ const KnowledgeBaseDetails = (props: any) => {
       ),
     },
     {
+      title: "Remarks",
+      dataIndex: "remarks",
+      key: "remarks",
+      width: 200,
+      render: (val) => (
+        <Space size="small">
+          <Text ellipsis style={{ width: 200 }}>
+            {val}
+          </Text>
+        </Space>
+      ),
+    },
+    {
+      title: "Injestion status",
+      dataIndex: "injestion_status",
+      key: "injestion_status",
+      width: 200,
+      render: (val: any) => {
+        return val ? (
+          <Tags
+            tag={INJESTION_STATUS?.[val]?.text ?? val}
+            tagProps={{
+              color: INJESTION_STATUS?.[val]?.color || "",
+              background: INJESTION_STATUS?.[val]?.background,
+              border: INJESTION_STATUS?.[val]?.border,
+            }}
+          />
+        ) : (
+          ""
+        );
+      },
+    },
+    {
       title: "Created At",
       dataIndex: "created_at",
       key: "createdAt",
       width: 250,
-      render: (val) => {
-        return val ? <SaDate date={dayjs(val)} inline time={true} /> : "--";
+      render: (val: any, row: any) => {
+        console.log("🚀 ~ KnowledgeBaseDetails ~ row:", row);
+        console.log("🚀 ~ KnowledgeBaseDetails ~ val:", val);
+        return val ? (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMilliseconds)}
+            inline
+            time={true}
+          />
+        ) : (
+          "--"
+        );
       },
-    },
-    {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
-      width: 200,
-      render: (val) => (val ? <Text>{val} MB</Text> : "--"),
     },
     {
       title: "Actions",
@@ -208,9 +275,21 @@ const KnowledgeBaseDetails = (props: any) => {
       width: 100,
       render: (_: any, knowledgebase: UnknownObject) => {
         return (
-          <Space>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-          </Space>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <DeleteDatasetFileButton
+                onClick={() => deleteKnowledgebaseFilesHandler(knowledgebase)}
+                type="default"
+                loading={knowledgebaseFilesDeleteLoading === knowledgebase?.id}
+                disabled={!!knowledgebaseFilesDeleteLoading}
+              >
+                Delete
+              </DeleteDatasetFileButton>
+            </Col>
+          </Row>
         );
       },
     },
@@ -268,17 +347,31 @@ const KnowledgeBaseDetails = (props: any) => {
         </Row>
       )}
       {!isError && !data?.document_details?.length && !isLoading && (
-        <EmptyUpload
-          buttonText="Add files from dataset"
-          message="The knowledgebase is empty"
-          onClick={toggleAddFileModal}
-        />
+        <>
+          {/* <Row justify="end">
+            <Col>
+              <Button
+                size="middle"
+                type="default"
+                icon={<SettingOutlined />}
+                onClick={toggleKbSettings}
+              >
+                Setting
+              </Button>
+            </Col>
+          </Row> */}
+          <EmptyUpload
+            buttonText="Add files from dataset"
+            message="The knowledgebase is empty"
+            onClick={toggleAddFileModal}
+          />
+        </>
       )}
       {!isError && (isLoading || !!data?.document_details?.length) && (
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
                 value={searchValue}
@@ -289,7 +382,7 @@ const KnowledgeBaseDetails = (props: any) => {
                   //update filters once it is implemented
                   console.log("enter pressed")
                 }
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">
@@ -302,15 +395,18 @@ const KnowledgeBaseDetails = (props: any) => {
                   Import from Dataset
                 </Button>
                 <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
-                  <Button
-                    size="middle"
-                    type="default"
-                    icon={<PlayCircleOutlined />}
-                    onClick={toggleKbPlayground}
-                  >
-                    Knowledge base playground
+                  <Button size="middle" type="default" icon={<AimOutlined />}>
+                    Retrieval Testing
                   </Button>
                 </Link>
+                {/* <Button
+                  size="middle"
+                  type="default"
+                  icon={<SettingOutlined />}
+                  onClick={toggleKbSettings}
+                >
+                  Setting
+                </Button> */}
               </Space>
             </Col>
           </Row>
@@ -325,6 +421,7 @@ const KnowledgeBaseDetails = (props: any) => {
               y: data?.document_details?.length > 0 ? 600 : undefined,
             }}
             pagination={{
+              hideOnSinglePage: true,
               current: +filters?.page + 1,
               pageSize: +filters?.size,
               total: data?.total_elements,
@@ -342,6 +439,11 @@ const KnowledgeBaseDetails = (props: any) => {
         addFilesHandler={addFilesHandler}
         knowledgebaseId={knowledgebaseId}
       />
+      {/* <KbSettingsModal
+        open={displayKbSettings}
+        onClose={toggleKbSettings}
+        kbDetails={knowledgebaseConfig?.result?.[0] || {}}
+      /> */}
     </KnowledgeBaseDetailsContainer>
   );
 };

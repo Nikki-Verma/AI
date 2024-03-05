@@ -153,6 +153,11 @@ const WorkflowEdit = () => {
             onFininsh={(values) =>
               updatePipeline(values, WorkflowStatus.MODEL_ADDED)
             }
+            workflowId={workflowId}
+            onUpdateWorkflowBasicDetails={(values) =>
+              updatePipeline(values, WorkflowStatus.CREATED)
+            }
+            refetch={refetch}
           />
         );
       case 2:

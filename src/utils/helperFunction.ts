@@ -101,3 +101,13 @@ export const userCredentialsFromName = (name: string) => {
       .join("") || "You"
   );
 };
+
+export const formatSizeUnits = (val : any) => {
+    if      (val >= 1073741824) { val = (val / 1073741824).toFixed(2) + " GB"; }
+    else if (val >= 1048576)    { val = (val / 1048576).toFixed(2) + " MB"; }
+    else if (val >= 1024)       { val = (val / 1024).toFixed(2) + " KB"; }
+    else if (val > 1)           { val = val + " bytes"; }
+    else if (val == 1)          { val = val + " byte"; }
+    else                          { val = "0 bytes"; }
+    return val;
+}

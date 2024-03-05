@@ -186,13 +186,13 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link prefetch href="/billing_usage">
+      <Link prefetch href="/billing">
         <Text style={{ color: "inherit" }}>Billing & Usage</Text>
       </Link>
     ),
-    key: "billing_usage",
-    keyPath: ["billing_usage"],
-    url: "/billing_usage",
+    key: "billing",
+    keyPath: ["billing"],
+    url: "/billing",
     icon: <BillingIcon />,
   },
   {

@@ -6,6 +6,7 @@ import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
+import { HddOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -21,7 +22,6 @@ import { useForm } from "antd/es/form/Form";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Chunk from "../Chunk";
-import EmptyChatIcon from "../Icons/EmptyChatIcon";
 import { PageSubHeading } from "../UIComponents/UIComponents.style";
 import {
   ChunkDetailsContainer,
@@ -174,7 +174,13 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
           <KbChatResponseContainer>
             {!chunkLoading && chunks?.length < 1 ? (
               <EmptyChatContainer>
-                <EmptyChatIcon />
+                <HddOutlined
+                  style={{
+                    fontSize: "86px",
+                    color: "var(--Text-Color-900, #171717)",
+                    opacity: "0.5",
+                  }}
+                />
                 <EmptyChattitle>
                   Knowledge base playground results will show here
                 </EmptyChattitle>

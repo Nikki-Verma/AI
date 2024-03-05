@@ -3,15 +3,13 @@
 import { Input } from "antd";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
-import AttachIcon from "../Icons/AttachIcon";
 import SendIcon from "../Icons/SendIcon";
-import TemplateIcon from "../Icons/TemplateIcon";
 import {
-  ActionContainer,
   BottomControls,
   BottonLeftControl,
   BottonRightControl,
   ChatInputContainer,
+  RightControls,
 } from "./style";
 
 const { TextArea } = Input;
@@ -22,6 +20,7 @@ type Props = {
   input: string;
   setInput: (val: string) => void;
   loading: boolean;
+  stopStream: () => void;
 };
 
 function ChatInput({
@@ -30,6 +29,7 @@ function ChatInput({
   input,
   setInput,
   handleInputChange,
+  stopStream,
 }: Props) {
   const { data: session } = useSession();
   const [prompt, setPrompt] = useState("");
@@ -44,7 +44,7 @@ function ChatInput({
           handleInputChange(e);
         }}
         style={{ resize: "none" }}
-        autoSize={{ minRows: 2, maxRows: 6 }}
+        autoSize={{ minRows: 1, maxRows: 6 }}
         onKeyPress={(event: any) => {
           if (event.which === 13) {
             event.preventDefault();
@@ -52,7 +52,13 @@ function ChatInput({
           }
         }}
       />
-      <BottomControls>
+      <RightControls>
+        <SendIcon
+          onClick={() => submitHandler({})}
+          style={{ cursor: "pointer" }}
+        />
+      </RightControls>
+      {/* <BottomControls>
         <BottonLeftControl>
           <ActionContainer>
             <AttachIcon />
@@ -70,14 +76,14 @@ function ChatInput({
               fontSize: "12px",
             }}
           >
-            0/1000
+            {input?.length}
           </div>
           <SendIcon
             onClick={() => submitHandler({})}
             style={{ cursor: "pointer" }}
           />
         </BottonRightControl>
-      </BottomControls>
+      </BottomControls> */}
     </ChatInputContainer>
   );
 }

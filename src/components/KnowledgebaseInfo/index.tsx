@@ -14,6 +14,7 @@ import {
   Select,
   Typography,
 } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   KnowledgebaseInfoFormContainer,
@@ -46,15 +47,14 @@ const KnowledgebaseInfo = ({
 
   return (
     <Row gutter={[6, 20]}>
-      <Col>
+      <Col span={24}>
         <KnowledgebaseInfoFormContainer>
           <KnowledgebaseInfoFormTitle>
             Knowledge base
           </KnowledgebaseInfoFormTitle>
           <KnowledgebaseInfoFormDescription>
-            The knowledge base serves as a repository of structured or
-            unstructured information that an AI system can access to enhance its
-            understanding and generate informed responses.
+            Database of facts and information the AI searches to enrich
+            responses with accurate and relevant content.
           </KnowledgebaseInfoFormDescription>
           <Form
             preserve={false}
@@ -78,16 +78,16 @@ const KnowledgebaseInfo = ({
                   <>
                     {menu}
                     <Divider style={{ margin: "8px 0" }} />
-
-                    <Button
-                      block
-                      style={{ width: "100%" }}
-                      type="dashed"
-                      icon={<PlusOutlined />}
-                      onClick={() => router.push("/knowledge-base")}
-                    >
-                      Create knowledge base
-                    </Button>
+                    <Link prefetch href="/knowledge-base" target="_blank">
+                      <Button
+                        block
+                        style={{ width: "100%" }}
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                      >
+                        Create knowledge base
+                      </Button>
+                    </Link>
                   </>
                 )}
                 optionRender={(option: any) => (

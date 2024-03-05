@@ -1,67 +1,73 @@
 "use client";
 
-import EmptyUpload from "@/components/EmptyUpload";
+import { createAgentApi, deleteAgentApi } from "@/api/agents";
 import {
-  PageContainer,
-} from "@/components/UIComponents/UIComponents.style";
+  AgentStatus,
+  AgentStatusType,
+} from "@/app/(authorisedHeaderLayout)/agents/constants";
+import CreateAgentModal from "@/components/CreateAgentModal";
+import EmptyUpload from "@/components/EmptyUpload";
+import PageHeading from "@/components/PageHeading";
+import SaDate from "@/components/SaDate/Index";
+import Tags from "@/components/Tags";
+import { PageContainer } from "@/components/UIComponents/UIComponents.style";
+import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
 import { useAppStore } from "@/store";
+import config from "@/utils/apiEndoints";
 import {
-    Button,
-    Col,
-    Dropdown,
+  dateTimeFormatWithMillisecondsWithoutTimeZone,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
+} from "@/utils/constants";
+import dayjs from "@/utils/date";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { UnknownObject } from "@/utils/types";
+import {
+  ApiOutlined,
+  EditOutlined,
+  MoreOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Dropdown,
   MenuProps,
   Result,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
   Typography,
 } from "antd";
+import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import PageHeading from "@/components/PageHeading";
-import CreateAgentModal from "@/components/CreateAgentModal";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
-import { UnknownObject } from "@/utils/types";
-import { createAgentApi } from "@/api/agents";
-import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, dateTimeFormatWithMillisecondsWithoutTimeZone } from "@/utils/constants";
-import { useFetchData } from "@/Hooks/useApi";
-import config from "@/utils/apiEndoints";
-import {
-    ApiOutlined,
-    EditOutlined,
-    MoreOutlined,
-    PlayCircleOutlined,
-    PlusOutlined,
-  } from "@ant-design/icons";
-import { LinkContainer } from "./style";
-import Link from "next/link";
 import { AgentStatuses } from "./constants";
-import Tags from "@/components/Tags";
-import { AgentStatus, AgentStatusType } from "@/app/(authorisedHeaderLayout)/agents/constants";
-import SaDate from "@/components/SaDate/Index";
-import dayjs from "@/utils/date";
-import { FilterValue, SorterResult } from "antd/es/table/interface";
+import { LinkContainer } from "./style";
 
 const { Title, Text, Link: TypographyLink } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
-    page: DEFAULT_PAGE,
-    size: DEFAULT_PAGE_SIZE,
-    ...dynamicState,
-  });
-  
+  page: DEFAULT_PAGE,
+  size: DEFAULT_PAGE_SIZE,
+  ...dynamicState,
+});
+
 const Agents = () => {
   const { updatePageConfig } = useAppStore();
   const router = useRouter();
+  const fullWidth = { width: "100%" };
 
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createAgentLoading, setCreateAgentLoading] = useState(false);
-  const [isCreateAgentModalVisible, setIsCreateAgentModalVisible] = useState<boolean>(false)
+  const [agentDeleteLoading, setAgentDeleteLoading] = useState();
+  const [isCreateAgentModalVisible, setIsCreateAgentModalVisible] =
+    useState<boolean>(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   console.log("🚀 ~ Workflow ~ filters:", filters);
   const { data, isLoading, isError, error, refetch } = useFetchData(
@@ -90,7 +96,7 @@ const Agents = () => {
       };
 
       const createAgentResponse = await createAgentApi({ payload });
-      console.log(`agent creation response`,createAgentResponse)
+      console.log(`agent creation response`, createAgentResponse);
 
       if (createAgentResponse?.status == 200) {
         notification.success({ message: "Agent created successfully" });
@@ -135,6 +141,28 @@ const Agents = () => {
     }
   };
 
+  const deleteAgentHandler = async (agent: UnknownObject) => {
+    try {
+      setAgentDeleteLoading(agent?.agent_id);
+
+      const deleteAgentResponse = await deleteAgentApi({
+        agentId: agent?.pipeline_id,
+      });
+
+      if (deleteAgentResponse?.status == 200) {
+        notification.success({ message: "Agent deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting agent",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setAgentDeleteLoading(undefined);
+    }
+  };
+
   const columns: TableProps<any>["columns"] = [
     {
       title: "Agent name",
@@ -143,9 +171,9 @@ const Agents = () => {
       width: 200,
       render: (val: any, data: any) => (
         <LinkContainer>
-        <Link prefetch href={`/agents/view/${data?.pipeline_id}`}>
-          {val}
-        </Link>
+          <Link prefetch href={`/agents/view/${data?.pipeline_id}`}>
+            {val}
+          </Link>
         </LinkContainer>
       ),
     },
@@ -168,17 +196,17 @@ const Agents = () => {
       render: (val: AgentStatusType) =>
         val ? (
           <Tags
-          tag={AgentStatuses?.[val]?.text ?? val}
-          tagProps={
-            {color :AgentStatuses?.[val]?.color || "", 
-            background : AgentStatuses?.[val]?.background, 
-            border : AgentStatuses?.[val]?.border}
-          }
+            tag={AgentStatuses?.[val]?.text ?? val}
+            tagProps={{
+              color: AgentStatuses?.[val]?.color || "",
+              background: AgentStatuses?.[val]?.background,
+              border: AgentStatuses?.[val]?.border,
+            }}
           />
+        ) : (
           // <Tags color={WorkflowStatuses?.[val]?.color || ""}>
           //   {WorkflowStatuses?.[val]?.text ?? val}
           // </TTagsag>
-        ) : (
           "--"
         ),
     },
@@ -252,61 +280,159 @@ const Agents = () => {
       render: (_: any, agentData: UnknownObject) => {
         const completedItems: MenuProps["items"] = [
           {
-            key: "integration",
+            key: "edit",
             label: (
-              <Link
-                prefetch
-                href={`/integration/agent/${agentData?.pipeline_id}`}
-              >
-                <Button type="text" icon={<ApiOutlined />}>
-                  Integration
+              <Link prefetch href={`/agents/edit/${agentData?.pipeline_id}`}>
+                <Button
+                  style={{ color: "#000000b3" }}
+                  type="text"
+                  disabled={!!agentDeleteLoading}
+                >
+                  Edit
                 </Button>
               </Link>
+            ),
+          },
+          {
+            key: "view",
+            label: (
+              <Link prefetch href={`/agents/view/${agentData?.pipeline_id}`}>
+                <Button
+                  style={{ color: "#000000b3" }}
+                  type="text"
+                  disabled={!!agentDeleteLoading}
+                >
+                  View
+                </Button>
+              </Link>
+            ),
+          },
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteAgentHandler(agentData)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={agentDeleteLoading === agentData?.agent_id}
+                disabled={!!agentDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
+
+        const progressItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteAgentHandler(agentData)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={agentDeleteLoading === agentData?.agent_id}
+                disabled={!!agentDeleteLoading}
+              >
+                Delete
+              </Button>
             ),
           },
         ];
         return (
           <>
-            {agentData?.agent_state === AgentStatuses.COMPLETED ? (
-              <Space>
-                <Link
-                  prefetch
-                  href={`/agents/playground/${agentData?.pipeline_id}`}
+            {agentData?.agent_state === AgentStatus.COMPLETED ? (
+              // <Space>
+              <Row
+                gutter={[0, 0]}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Col span={20}>
+                  <Link
+                    prefetch
+                    href={`/integration/agents/${agentData?.pipeline_id}`}
+                  >
+                    <Button
+                      style={{ ...fullWidth }}
+                      block
+                      type="default"
+                      icon={<ApiOutlined />}
+                      disabled={!!agentDeleteLoading}
+                    >
+                      Integrate
+                    </Button>
+                  </Link>
+                </Col>
+                <Col
+                  span={3}
+                  style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Button type="primary" icon={<PlayCircleOutlined />}>
-                    Playground
-                  </Button>
-                </Link>
-                <Dropdown
-                  menu={{ items: completedItems }}
-                  placement="bottomLeft"
-                >
-                  <MoreOutlined
-                    style={{ fontSize: "28px", fontWeight: "bold" }}
-                  />
-                </Dropdown>
-              </Space>
+                  <Dropdown
+                    menu={{ items: completedItems }}
+                    placement="bottomLeft"
+                  >
+                    <MoreOutlined
+                      style={{
+                        fontSize: "21px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Dropdown>
+                </Col>
+              </Row>
             ) : (
-              <Space>
-                <Link
-                  prefetch
-                  href={`/agents/edit/${agentData?.pipeline_id}`}
+              // </Space>
+              <Row
+                gutter={[0, 0]}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Col span={20}>
+                  <Link
+                    prefetch
+                    href={`/agents/edit/${agentData?.pipeline_id}`}
+                  >
+                    <Button
+                      style={{ ...fullWidth }}
+                      block
+                      type="default"
+                      icon={<EditOutlined />}
+                      disabled={!!agentDeleteLoading}
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                </Col>
+                <Col
+                  span={3}
+                  style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <Button type="primary" icon={<EditOutlined />}>
-                    Continue Edit
-                  </Button>
-                </Link>
-                <MoreOutlined
-                  style={{ fontSize: "28px", fontWeight: "bold" }}
-                />
-              </Space>
+                  <Dropdown
+                    menu={{ items: progressItems }}
+                    placement="bottomLeft"
+                  >
+                    <MoreOutlined
+                      style={{
+                        fontSize: "21px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Dropdown>
+                </Col>
+              </Row>
             )}
           </>
         );
       },
     },
   ];
-
 
   return (
     <PageContainer>
@@ -318,23 +444,20 @@ const Agents = () => {
           marginBottom: "24px",
         }}
       >
-      <PageHeading
-        title="Agents"
-        subHeading="Explore a vast array of meticulously trained and readily deployable
-        machine learning models all conveniently centralized in a single
-        location."
-      />
+        <PageHeading
+          title="Agents"
+          subHeading="Craft intelligent automations using Large Language Models to streamline tasks and enhance decision-making."
+        />
       </Row>
       <Col span={24}>
         <Row justify="space-between" align="middle">
-          <Col>
-          
-          </Col>
+          <Col></Col>
           <Col>
             <Button
               type="primary"
               icon={<PlusOutlined />}
               onClick={toggleCreateAgentHandler}
+              disabled={!!agentDeleteLoading}
             >
               Create Agent
             </Button>
@@ -352,42 +475,42 @@ const Agents = () => {
           </Col>
         </Row>
       )}
-        {!isError && !data?.result?.length && !isLoading && (
-            <EmptyUpload
-            buttonText="Create agent"
-            message="You do not have any agents yet"
-            onClick={toggleCreateAgentHandler}
-            />
-        )}
-        {!isError && (isLoading || !!data?.result?.length) && (
-            <>
-            <Table
-                columns={columns}
-                dataSource={data?.result || []}
-                rowKey={(data: any) => data?.pipeline_id}
-                loading={isLoading}
-                scroll={{
-                x: "max-content",
-                y: data?.result?.length > 0 ? 600 : undefined,
-                }}
-                pagination={{
-                current: +filters?.page + 1,
-                pageSize: +filters?.size,
-                total: data?.totalElements,
-                showSizeChanger: false,
-                }}
-                onChange={tableChangeHandler}
-            />
-            </>
-        )}
+      {!isError && !data?.result?.length && !isLoading && (
+        <EmptyUpload
+          buttonText="Create agent"
+          message="You do not have any agents yet"
+          onClick={toggleCreateAgentHandler}
+        />
+      )}
+      {!isError && (isLoading || !!data?.result?.length) && (
+        <>
+          <Table
+            columns={columns}
+            dataSource={data?.result || []}
+            rowKey={(data: any) => data?.pipeline_id}
+            loading={isLoading}
+            scroll={{
+              x: "max-content",
+              y: data?.result?.length > 0 ? 600 : undefined,
+            }}
+            pagination={{
+              hideOnSinglePage: true,
+              current: +filters?.page + 1,
+              pageSize: +filters?.size,
+              total: data?.totalElements,
+              showSizeChanger: false,
+            }}
+            onChange={tableChangeHandler}
+          />
+        </>
+      )}
 
-
-        <CreateAgentModal
+      <CreateAgentModal
         open={isCreateAgentModalVisible}
         onClose={toggleCreateAgentHandler}
         loading={createAgentLoading}
         createAgentHandler={createAgentHandler}
-        />
+      />
     </PageContainer>
   );
 };

@@ -19,6 +19,8 @@ import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Link from "next/link";
 import { useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
+import { EyeFilled } from "@ant-design/icons";
+
 const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
@@ -130,17 +132,21 @@ const IntegrationWorkflowsList = () => {
       align: "left",
       fixed: "right",
       key: "actions",
-      width: 100,
+      width: 160,
       render: (_: any, dataset: UnknownObject) => {
         return (
-          <Space>
+          // <Space>
+          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+                <Col span={20}>
             <Link
               prefetch
               href={`/integration/workflow/${dataset?.pipeline_id}`}
             >
-              <Button type="primary">View Details</Button>
+              <Button style={{width : '100%'}} block type="default" icon={<EyeFilled />}>View </Button>
             </Link>
-          </Space>
+            </Col>
+            </Row>
+          // </Space>
         );
       },
     },
@@ -185,6 +191,7 @@ const IntegrationWorkflowsList = () => {
             y: deployedWorkflows?.result?.length > 0 ? 600 : undefined,
           }}
           pagination={{
+            hideOnSinglePage: true,
             current: filters?.page + 1,
             pageSize: filters?.size,
             total: deployedWorkflows?.totalElements,

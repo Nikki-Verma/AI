@@ -10,3 +10,9 @@ export const createWorkFlowApi = ({ payload = {}, headers = {} }: any) => {
 export const updatePipelineApi = ({ payload = {}, headers = {} }: any) => {
   return _authHttp.put(config.workflow.update, payload, { headers });
 };
+
+export const deletePipelineApi = ({ pipelineId, headers = {} }: any) => {
+  return _authHttp.delete(`${config.workflow.delete}/${pipelineId}`, {
+    headers,
+  });
+};

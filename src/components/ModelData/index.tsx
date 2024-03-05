@@ -15,6 +15,8 @@ import {
   Button,
   Card,
   Col,
+  Flex,
+  Image as AntImage,
   Result,
   Row,
   Skeleton,
@@ -45,6 +47,9 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
     { id: modelId },
     {},
   );
+
+  console.log("data", data);
+
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
   const [deploymentLoading, setDeploymentLoading] = useState(false);
   const [connectModelVisible, setConnectModelVisible] = useState(false);
@@ -163,16 +168,30 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
               justifyContent: "flex-start",
             }}
           >
-            <Image
-              src={"/assets/Images/dummyModel.png"}
-              alt="models"
-              height={96}
-              width={96}
-              style={{
-                display: "flex",
-                marginRight: "12px",
-              }}
-            />
+            {data?.result?.weights_file_s3_url ? (
+              <AntImage
+                src={data?.result?.weights_file_s3_url}
+                preview={false}
+                alt="Model"
+                style={{
+                  width: "96px",
+                  height: "96px",
+                  display: "flex",
+                  marginRight: "12px",
+                }}
+              />
+            ) : (
+              <Image
+                height={96}
+                width={96}
+                src={"/assets/Images/dummyModel.png"}
+                alt="Model"
+                style={{
+                  display: "flex",
+                  marginRight: "12px",
+                }}
+              />
+            )}
             <div
               style={{
                 display: "flex",
@@ -197,19 +216,30 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         >
           {page === ModelPage.MODELS ? (
             <>
+              {data?.result?.type === "Closed source" &&
+                data?.result?.status === "DEPLOYED" && (
+                  <Tag
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "32px",
+                    }}
+                    color="success"
+                    icon={<CheckCircleOutlined />}
+                  >
+                    Connected
+                  </Tag>
+                )}
               {data?.result?.added ? (
-                <Tag
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "32px",
-                  }}
-                  color="success"
-                  icon={<CheckCircleOutlined />}
-                >
-                  Added To workspace
-                </Tag>
+                <Flex gap="12px" align="center">
+                  <Link
+                    prefetch
+                    href={`/workspace/${data?.result?.user_model_id}/${modelId}`}
+                  >
+                    <Button type="primary">Go to workspace</Button>
+                  </Link>
+                </Flex>
               ) : (
                 <>
                   {data?.result?.type === "Open source" && (
@@ -224,7 +254,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                 </>
               )}
               {data?.result?.type === "Closed source" &&
-                (data?.result?.status !== "DEPLOYED" ? (
+                data?.result?.status !== "DEPLOYED" && (
                   <Button
                     type="primary"
                     onClick={connectModel}
@@ -232,20 +262,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                   >
                     Connect
                   </Button>
-                ) : (
-                  <Tag
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height: "32px",
-                    }}
-                    color="success"
-                    icon={<CheckCircleOutlined />}
-                  >
-                    Connected
-                  </Tag>
-                ))}
+                )}
             </>
           ) : data?.result?.status !== "DEPLOYED" ? (
             data?.result?.type === "Open source" ? (

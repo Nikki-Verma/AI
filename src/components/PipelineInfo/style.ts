@@ -31,15 +31,15 @@ export const WorkflowInfoFormTitle = styled(Text)`
   font-feature-settings:
     "clig" off,
     "liga" off;
-  font-size: 16px;
+  font-size: 16px !important;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 `;
 export const WorkflowInfoFormDescription = styled(Text)`
   overflow: hidden;
-  color: var(--Primary-Color, #141414);
-  font-size: 16px;
+  color: #1414148f !important;
+  font-size: 16px !important;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -51,7 +51,7 @@ export const WorkflowName = styled(Text)`
     "clig" off,
     "liga" off;
   text-overflow: ellipsis;
-  font-size: 16px;
+  font-size: 16px !important;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -64,7 +64,7 @@ export const WorkflowDescription = styled(Text)`
     "clig" off,
     "liga" off;
   text-overflow: ellipsis;
-  font-size: 14px;
+  font-size: 16px !important;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -112,7 +112,7 @@ export const KnowledgebaseInfoFormTitle = styled(Text)`
 `;
 export const KnowledgebaseInfoFormDescription = styled(Text)`
   overflow: hidden;
-  color: var(--Primary-Color, #141414);
+  color: #1414148f;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

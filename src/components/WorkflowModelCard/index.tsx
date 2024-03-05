@@ -28,29 +28,33 @@ const WorkflowModelCard = ({ modelDetails }: WorkflowModelCardProps) => {
 
   const ModelParameterColumns: DescriptionItemType[] = [
     {
-      label: "Chunk size",
-      key: "chunk_size",
-    },
-    {
-      label: "Decay rate",
-      key: "decay_rate",
-    },
-    {
-      label: "Output style",
-      key: "output_style",
-    },
-    {
-      label: "Sample",
-      key: "sample",
+      label: "Max tokens",
+      key: "n_predict",
     },
     {
       label: "Temperature",
-      key: "temperature",
+      key: "temp",
     },
     {
-      label: "Token length",
-      key: "token_length",
+      label: "Top K sampling",
+      key: "top_k",
     },
+    {
+      label: "Repeat penalty",
+      key: "repeat_penalty",
+    },
+    {
+      label: "Min P sampling",
+      key: "min_p",
+    },
+    {
+      label: "Top P sampling",
+      key: "top_p",
+    },
+    // {
+    //   label: "DO sample",
+    //   key: "do_sample",
+    // },
   ];
 
   return (

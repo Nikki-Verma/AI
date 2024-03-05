@@ -12,7 +12,7 @@ import StyledComponentsRegistry from "@/providers/syledComponentsProvider";
 const dm_sans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
-  title: "SimplAi",
+  title: "SimplAI",
   description: "Simplifying your AI journey",
 };
 

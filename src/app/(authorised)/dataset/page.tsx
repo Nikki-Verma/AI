@@ -24,7 +24,7 @@ const datset = () => {
       <PageHeading
         title="Datasets"
         subHeading="Explore, analyze, and share quality data. you can select your data
-            collection while training your ai model, multi data collection can
+            collection while training your AI model, multi data collection can
             be added in one AI model."
       />
       <DatasetList />

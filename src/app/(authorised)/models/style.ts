@@ -1,12 +1,28 @@
+import { PRIMARY_BRAND_COLOR, TEXT_HOVER_BG_COLOR } from "@/_utils/theme.antd";
+import { Radio } from "antd";
 import styled from "styled-components";
 
 export const SearchInpuContainer = styled.div`
+  display: block;
+  .ant-select-selection-placeholder {
+    color: #202124 !important;
+  }
+
+  .ant-select-arrow {
+    color: #202124 !important;
+  }
+
+  .ant-select-selection-item {
+    color: ${PRIMARY_BRAND_COLOR};
+  }
+
   .ant-input-affix-wrapper {
     border-radius: 20px;
     border: 1px solid var(--Text-Color-150, #d5d5d5);
     background: #fff;
     height: 60px;
   }
+
   .ant-input-affix-wrapper > input.ant-input {
     color: var(--Text-Color-900, #171717);
     font-family: var(--font-dm-sans);
@@ -15,6 +31,7 @@ export const SearchInpuContainer = styled.div`
     font-weight: 400;
     line-height: normal;
   }
+
   .ant-select-selector {
     display: flex;
     height: 36px !important;
@@ -29,13 +46,28 @@ export const SearchInpuContainer = styled.div`
 
     /* drop-shadow/button-secondary */
     box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02) !important;
+
+    &:hover {
+      border: 1px solid #202124 !important;
+    }
+
+    &:has(.ant-select-selection-item) {
+      background: ${TEXT_HOVER_BG_COLOR} !important;
+      border: 1px solid ${PRIMARY_BRAND_COLOR} !important;
+    }
   }
+
   .ant-select .ant-select-arrow,
   .ant-select .ant-select-clear {
     inset-inline-start: auto;
     inset-inline-end: 20px !important;
     margin-top: -4px !important;
   }
+
+  .ant-select {
+    height: 36px !important;
+  }
+
   .ant-select-single .ant-select-selector .ant-select-selection-search {
     inset-inline-start: 20px;
     inset-inline-end: 20px;
@@ -130,4 +162,17 @@ export const ModelCardDetail = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 164%; /* 22.96px */
+`;
+
+export const RadioButton = styled(Radio.Button)`
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 157.143% */
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.02);
+`;
+
+export const ModelDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;

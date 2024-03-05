@@ -1,6 +1,9 @@
 "use client";
 
-import { createKnowledgeBaseApi } from "@/api/knowledgebase";
+import {
+  createKnowledgeBaseApi,
+  deleteKnowledgebaseApi,
+} from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
@@ -24,7 +27,8 @@ import {
 import {
   Button,
   Col,
-  Input,
+  Dropdown,
+  MenuProps,
   Result,
   Row,
   Space,
@@ -41,9 +45,9 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateKnowledgeBaseModal from "../CreateKnowledgeBaseModal";
+import { KNOWLEDGEBASE_SETTING } from "./constant";
 
 import { KnowledgeBaseListContainer } from "./style";
 
@@ -66,6 +70,8 @@ const KnowledgeBaseList = () => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createKnowledgeBaseOpen, setCreateKnowledgeBaseOpen] = useState(false);
+  const [knowledgebaseDeleteLoading, setKnowledgebaseDeleteLoading] =
+    useState();
   const [createKnowledgeBaseLoading, setCreateKnowledgeBaseLoading] =
     useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
@@ -134,11 +140,35 @@ const KnowledgeBaseList = () => {
       }
     } catch (error) {
       notification.error({
-        message: "Error while creating dataset",
+        message: "Error while creating knowledge base",
         description: getErrorFromApi(error),
       });
     } finally {
       setCreateKnowledgeBaseLoading(false);
+    }
+  };
+
+  const knowledgebaseDatasetHandler = async (knowledgebase: UnknownObject) => {
+    try {
+      setKnowledgebaseDeleteLoading(knowledgebase?.id);
+
+      const deleteKnowledgebaseResponse = await deleteKnowledgebaseApi({
+        params: { id: knowledgebase?.id },
+      });
+
+      if (deleteKnowledgebaseResponse?.status == 200) {
+        notification.success({
+          message: "Knowledge base deleted successfully",
+        });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting knowledge base",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setKnowledgebaseDeleteLoading(undefined);
     }
   };
 
@@ -153,6 +183,63 @@ const KnowledgeBaseList = () => {
           <DatabaseFilled /> {val}
         </Space>
       ),
+    },
+    // {
+    //   title: "File Size",
+    //   dataIndex: "size",
+    //   key: "size",
+    //   width : 200,
+    //   render : (val) => {
+    //     return(
+    //       val ? formatSizeUnits(val) : '-'
+
+    //     )
+    //   },
+    // },
+    {
+      title: "KB setting",
+      dataIndex: "kb_setting",
+      key: "kb_setting",
+      width: 200,
+      render: (val) => {
+        return val ? KNOWLEDGEBASE_SETTING[val] ?? val : "-";
+      },
+    },
+    {
+      title: "Embedding model",
+      dataIndex: "embed_model_name",
+      key: "embed_model_name",
+      width: 250,
+      render: (val) => {
+        return val ?? "-";
+      },
+    },
+    {
+      title: "Vector DB",
+      dataIndex: "vector_db",
+      key: "vector_db",
+      width: 250,
+      render: (val) => {
+        return val ?? "-";
+      },
+    },
+    {
+      title: "Top K Results",
+      dataIndex: "top_kresults",
+      key: "top_kresults",
+      width: 150,
+      render: (val) => {
+        return val ?? "-";
+      },
+    },
+    {
+      title: "Similarities percentage",
+      dataIndex: "similarities_percentage",
+      key: "similarities_percentage",
+      width: 250,
+      render: (val) => {
+        return val ? `${val}%` : "-";
+      },
     },
     {
       title: "Created At",
@@ -170,24 +257,93 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
+      title: "Created by",
+      dataIndex: "username",
+      key: "username",
+      width: 250,
+      render: (val) => {
+        return val ?? "-";
+      },
+    },
+    {
+      title: "Last updated At",
+      dataIndex: "updated_at",
+      key: "updated_at",
+      width: 250,
+      render: (val) => {
+        return (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMilliseconds)}
+            inline
+            time={true}
+          />
+        );
+      },
+    },
+    {
+      title: "Last updated by",
+      dataIndex: "updated_by_name",
+      key: "updated_by_name",
+      width: 250,
+      render: (val) => {
+        return val ?? "-";
+      },
     },
     {
       title: "Actions",
       dataIndex: "",
-      align: "center",
+      align: "left",
       key: "actions",
-      width: 100,
+      fixed: "right",
+      width: 160,
       render: (_: any, knowledgebase: UnknownObject) => {
+        console.log("🚀 ~ DatasetList ~ dataset:", knowledgebase);
+        const extraItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => knowledgebaseDatasetHandler(knowledgebase)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={knowledgebaseDeleteLoading === knowledgebase?.id}
+                disabled={!!knowledgebaseDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
         return (
-          <Space>
-            <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
-              <Button icon={<EyeFilled />}>View</Button>
-            </Link>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-          </Space>
+          // <Space>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
+                <Button
+                  style={{ width: "100%" }}
+                  icon={<EyeFilled />}
+                  disabled={!!knowledgebaseDeleteLoading}
+                >
+                  View
+                </Button>
+              </Link>
+            </Col>
+            <Col span={3} style={{ display: "flex", justifyContent: "center" }}>
+              <Dropdown menu={{ items: extraItems }} placement="bottomLeft">
+                <MoreOutlined
+                  style={{
+                    fontSize: "21px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                />
+              </Dropdown>
+            </Col>
+          </Row>
+          // </Space>
         );
       },
     },
@@ -200,6 +356,7 @@ const KnowledgeBaseList = () => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
+    columnWidth: 40,
   };
 
   return (
@@ -268,10 +425,10 @@ const KnowledgeBaseList = () => {
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">
@@ -298,6 +455,7 @@ const KnowledgeBaseList = () => {
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
             pagination={{
+              hideOnSinglePage: true,
               current: +filters?.page + 1,
               pageSize: +filters?.size,
               total: data?.totalElements,

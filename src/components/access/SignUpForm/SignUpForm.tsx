@@ -28,7 +28,7 @@ const SignUpForm = () => {
           className={styles.main_heading}
           style={{ color: token.colorPrimary }}
         >
-          SimplAi
+          SimplAI
         </div>
         <div className={styles.form_heading}>Create your account</div>
         <Row gutter={[20, 0]} style={{ display: "flex" }}>
@@ -44,7 +44,7 @@ const SignUpForm = () => {
                 },
               ]}
             >
-              <Input placeholder="Enter work email address" />
+              <Input style ={{height : '40px'}} placeholder="Enter work email address" />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -58,7 +58,7 @@ const SignUpForm = () => {
                 },
               ]}
             >
-              <Input placeholder="Enter password" />
+              <Input style ={{height : '40px'}} type="password" placeholder="Enter password" />
             </Form.Item>
           </Col>
           <Col
@@ -72,7 +72,7 @@ const SignUpForm = () => {
           >
             <Checkbox></Checkbox>
             <div className={styles.checkbox_label}>
-              I agree to SimplAi's{" "}
+              I agree to SimplAI's{" "}
               <a style={{ color: "#602EDF", cursor: "pointer" }}>
                 terms and conditions
               </a>{" "}
@@ -86,12 +86,12 @@ const SignUpForm = () => {
         </Row>
         <Button
           type="primary"
-          style={{ width: "100%", margin: "28px 0px" }}
+          style={{ width: "100%", margin: "28px 0px", height : '45px'  }}
           onClick={signUpForm.submit}
         >
           Create Account
         </Button>
-        <Button type="default" style={{ width: "100%", marginBottom: "16px" }}>
+        <Button type="default" style={{ width: "100%", marginBottom: "16px", height : '45px'  }}>
           <Space align="center">
             <div
               style={{

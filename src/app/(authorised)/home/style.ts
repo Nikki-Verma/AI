@@ -25,6 +25,7 @@ export const HomeNavigateCards = styled(Card)`
     height : 100%;
     width : 100%;
     align-items: flex-start;
+    padding : 24px 12px !important;
   }
 `
 
@@ -48,7 +49,7 @@ export const CardHeading = styled.div`
 
 export const CardDescription = styled.div`
   display: flex;
-  color: #878484;
+  color: #14141480;
   font-family: var(--font-dm-sans);
   font-size: 14px;
   font-style: normal;
@@ -62,4 +63,5 @@ export const ModelDetails = styled.div`
   align-items : space-between;
   width : 100%;
   margin-left : 8px;
+  gap : 5px;
 `

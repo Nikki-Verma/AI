@@ -1,6 +1,6 @@
 "use client";
 
-import { createDatasetApi } from "@/api/dataset";
+import { createDatasetApi, deleteDatasetApi } from "@/api/dataset";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData, usePostData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
@@ -13,13 +13,18 @@ import {
   DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import {
+  formatSizeUnits,
+  getErrorFromApi,
+  getFilters,
+} from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { EyeFilled, MoreOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  Input,
+  Dropdown,
+  MenuProps,
   Result,
   Row,
   Space,
@@ -37,7 +42,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import FolderIcon from "../../Icons/FolderIcon";
-import SearchIcon from "../../Icons/SearchIcon";
 import SaDate from "../../SaDate/Index";
 import CreateDatasetModal from "../CreateDatasetModal";
 import { DatasetListContainer } from "./style";
@@ -61,6 +65,7 @@ const DatasetList = () => {
   const { notification } = useNotify();
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
+  const [datasetDeleteLoading, setDatasetDeleteLoading] = useState();
   const { mutate } = usePostData(["createDataset"]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
@@ -143,12 +148,34 @@ const DatasetList = () => {
     );
   };
 
+  const deleteDatasetHandler = async (dataset: UnknownObject) => {
+    try {
+      setDatasetDeleteLoading(dataset?.id);
+
+      const deleteDatasetResponse = await deleteDatasetApi({
+        params: { id: dataset?.id },
+      });
+
+      if (deleteDatasetResponse?.status == 200) {
+        notification.success({ message: "Dataset deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting dataset",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setDatasetDeleteLoading(undefined);
+    }
+  };
+
   const columns: TableProps<DataType>["columns"] = [
     {
-      title: "File Name",
+      title: "File name",
       dataIndex: "name",
       key: "name",
-      width: 400,
+      width: 300,
       render: (val) => (
         <Space size="small">
           <FolderIcon /> {val}
@@ -156,7 +183,25 @@ const DatasetList = () => {
       ),
     },
     {
-      title: "Created At",
+      title: "File size",
+      dataIndex: "size",
+      key: "size",
+      width: 200,
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
+      },
+    },
+    {
+      title: "File count",
+      dataIndex: "files_count",
+      key: "files_count",
+      width: 200,
+      render: (val) => {
+        return val ?? "-";
+      },
+    },
+    {
+      title: "Created at",
       dataIndex: "created_at",
       key: "createdAt",
       width: 250,
@@ -171,24 +216,92 @@ const DatasetList = () => {
       },
     },
     {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
+      title: "Created by",
+      dataIndex: "username",
+      key: "username",
+      width: 250,
+      render: (val) => {
+        return val ?? "-";
+      },
+    },
+    {
+      title: "Last updated At",
+      dataIndex: "updated_at",
+      key: "updated_at",
+      width: 250,
+      render: (val) => {
+        return (
+          <SaDate
+            date={dayjs(val, dateTimeFormatWithMilliseconds)}
+            inline
+            time={true}
+          />
+        );
+      },
+    },
+    {
+      title: "Last updated by",
+      dataIndex: "updated_by_name",
+      key: "updated_by_name",
+      width: 250,
+      render: (val) => {
+        return val ?? "-";
+      },
     },
     {
       title: "Actions",
       dataIndex: "",
-      align: "center",
+      align: "left",
       key: "actions",
-      width: 20,
+      width: 160,
+      fixed: "right",
       render: (_: any, dataset: UnknownObject) => {
+        console.log("🚀 ~ DatasetList ~ dataset:", dataset);
+        const extraItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteDatasetHandler(dataset)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={datasetDeleteLoading === dataset?.id}
+                disabled={!!datasetDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
+
         return (
-          <Space>
-            <Link prefetch href={`/dataset/${dataset?.id}`}>
-              <Button icon={<EyeFilled />}>View</Button>
-            </Link>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-          </Space>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <Link prefetch href={`/dataset/${dataset?.id}`}>
+                <Button
+                  style={{ width: "100%" }}
+                  icon={<EyeFilled />}
+                  disabled={!!datasetDeleteLoading}
+                >
+                  View
+                </Button>
+              </Link>
+            </Col>
+            <Col span={3} style={{ display: "flex", justifyContent: "center" }}>
+              <Dropdown menu={{ items: extraItems }} placement="bottomLeft">
+                <MoreOutlined
+                  style={{
+                    fontSize: "21px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                />
+              </Dropdown>
+            </Col>
+          </Row>
         );
       },
     },
@@ -201,6 +314,7 @@ const DatasetList = () => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
+    columnWidth: 40,
   };
 
   return (
@@ -223,10 +337,10 @@ const DatasetList = () => {
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by Dataset name, file name"
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">
@@ -264,6 +378,7 @@ const DatasetList = () => {
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
             pagination={{
+              hideOnSinglePage: true,
               current: +filters?.page + 1,
               pageSize: +filters?.size,
               total: data?.totalElements,

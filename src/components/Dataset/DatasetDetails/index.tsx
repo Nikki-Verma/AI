@@ -1,11 +1,13 @@
-import { addConfluenceFilesToDatasetApi } from "@/api/dataset";
+import {
+  addConfluenceFilesToDatasetApi,
+  deleteDatasetFilesApi,
+} from "@/api/dataset";
 import {
   addFileToKnowledgeBaseApi,
   createKnowledgeBaseApi,
 } from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
-import SearchIcon from "@/components/Icons/SearchIcon";
 import AddFilesToKnowledgeBaseModal from "@/components/KnowledgeBase/AddFilesToKnowledgebaseModal";
 import SaDate from "@/components/SaDate/Index";
 import {
@@ -29,12 +31,11 @@ import {
   uploadDatasetFiles,
 } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
   Col,
-  Input,
   Result,
   Row,
   Skeleton,
@@ -54,7 +55,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { v4 } from "uuid";
 import DatasetAddFileModal from "../DatasetAddFileModal";
-import { DatasetDetailsContainer } from "./style";
+import { DatasetDetailsContainer, DeleteDatasetFileButton } from "./style";
 const { Text } = Typography;
 
 interface DataType {
@@ -78,6 +79,7 @@ const DatasetDetails = (props: any) => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [addFileModalOpen, setAddFileModalOpen] = useState(false);
+  const [datasetFilesDeleteLoading, setDatasetFilesDeleteLoading] = useState();
   const [addFileToKnowledgebaseOpen, setAddFileToKnowledgebaseOpen] =
     useState(false);
   const [addFilesLoading, setAddFilesLoading] = useState(false);
@@ -297,6 +299,28 @@ const DatasetDetails = (props: any) => {
     }
   };
 
+  const deleteDatasetFilesHandler = async (dataset: UnknownObject) => {
+    try {
+      setDatasetFilesDeleteLoading(dataset?.id);
+
+      const deleteDatasetFilesResponse = await deleteDatasetFilesApi({
+        params: { resource_id: dataset?.resource_id },
+      });
+
+      if (deleteDatasetFilesResponse?.status == 200) {
+        notification.success({ message: "Dataset files deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting dataset files",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setDatasetFilesDeleteLoading(undefined);
+    }
+  };
+
   const rowSelection: TableRowSelection<DataType> = {
     type: "checkbox",
     preserveSelectedRowKeys: true,
@@ -304,6 +328,7 @@ const DatasetDetails = (props: any) => {
     onChange: (newSelectedRowKeys: any) => {
       setSelectedRowKeys(newSelectedRowKeys);
     },
+    columnWidth: 40,
   };
 
   const columns: TableProps<DataType>["columns"] = [
@@ -325,7 +350,7 @@ const DatasetDetails = (props: any) => {
       title: "Created At",
       dataIndex: "created_at",
       key: "createdAt",
-      width: 250,
+      width: 300,
       render: (val) => {
         return val ? (
           <SaDate
@@ -338,12 +363,15 @@ const DatasetDetails = (props: any) => {
         );
       },
     },
-    {
-      title: "File Size",
-      dataIndex: "size",
-      key: "size",
-      render: (val) => (val ? <Text>{val} MB</Text> : "--"),
-    },
+    // {
+    //   title: "File Size",
+    //   dataIndex: "size",
+    //   key: "size",
+    //   render: (val, row) => {
+    //     console.log("🚀 ~ DatasetDetails ~ row:", row);
+    //     return val ? formatSizeUnits(val) : "-";
+    //   },
+    // },
     {
       title: "Actions",
       dataIndex: "",
@@ -351,10 +379,23 @@ const DatasetDetails = (props: any) => {
       key: "actions",
       width: 100,
       render: (_: any, dataset: UnknownObject) => {
+        console.log("🚀 ~ DatasetDetails ~ dataset:", dataset);
         return (
-          <Space>
-            <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-          </Space>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <DeleteDatasetFileButton
+                onClick={() => deleteDatasetFilesHandler(dataset)}
+                type="default"
+                loading={datasetFilesDeleteLoading === dataset?.id}
+                disabled={!!datasetFilesDeleteLoading}
+              >
+                Delete
+              </DeleteDatasetFileButton>
+            </Col>
+          </Row>
         );
       },
     },
@@ -421,7 +462,7 @@ const DatasetDetails = (props: any) => {
         <>
           <Row justify="space-between" align="middle">
             <Col span={24} sm={6} md={4}>
-              <Input
+              {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
                 value={searchValue}
@@ -432,7 +473,7 @@ const DatasetDetails = (props: any) => {
                   //update filters once it is implemented
                   console.log("enter pressed")
                 }
-              />
+              /> */}
             </Col>
             <Col>
               <Space size="middle" align="center">
@@ -468,6 +509,7 @@ const DatasetDetails = (props: any) => {
               y: data?.result?.length > 0 ? 600 : undefined,
             }}
             pagination={{
+              hideOnSinglePage: true,
               current: +filters?.page + 1,
               pageSize: +filters?.size,
               total: data?.totalElements,
