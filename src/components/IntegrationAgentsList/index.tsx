@@ -17,7 +17,8 @@ import {
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
 
 const { Text } = Typography;
@@ -29,6 +30,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const IntegrationAgentsList = () => {
+  const router = useRouter();
   const [filters, setFilters] = useState(initialFilters());
   const {
     data: deployedAgents,
@@ -38,6 +40,11 @@ const IntegrationAgentsList = () => {
   } = useFetchData(config.agents.list, {
     ...filters,
   });
+
+  useEffect(() => {
+    router.prefetch(`/agents`);
+    router.prefetch(`/integration/agents/[agentId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -140,10 +147,7 @@ const IntegrationAgentsList = () => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <Link
-                prefetch
-                href={`/integration/agents/${dataset?.pipeline_id}`}
-              >
+              <Link href={`/integration/agents/${dataset?.pipeline_id}`}>
                 <Button
                   style={{ width: "100%" }}
                   block
@@ -177,7 +181,7 @@ const IntegrationAgentsList = () => {
         status={403}
         title="No published Agents available"
         extra={
-          <Link prefetch href={`/agents`}>
+          <Link href={`/agents`}>
             <Button type="primary" icon={<DeployIcon />}>
               Publish models
             </Button>

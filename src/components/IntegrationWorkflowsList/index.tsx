@@ -17,7 +17,8 @@ import {
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
 
 const { Text } = Typography;
@@ -29,6 +30,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const IntegrationWorkflowsList = () => {
+  const router = useRouter();
   const [filters, setFilters] = useState(initialFilters());
   const {
     data: deployedWorkflows,
@@ -38,6 +40,11 @@ const IntegrationWorkflowsList = () => {
   } = useFetchData(config.workflow.list, {
     ...filters,
   });
+
+  useEffect(() => {
+    router.prefetch(`/workspace`);
+    router.prefetch(`/integration/workflow/[workflowId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -178,7 +185,7 @@ const IntegrationWorkflowsList = () => {
         status={403}
         title="No deployed models available"
         extra={
-          <Link prefetch href={`/workspace`}>
+          <Link href={`/workspace`}>
             <Button type="primary" icon={<DeployIcon />}>
               Deploy Models
             </Button>
