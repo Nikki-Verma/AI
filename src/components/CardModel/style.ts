@@ -62,7 +62,7 @@ export const ModelCard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 19px 19px 8px 19px;
-  gap: 2px;
+  gap: 8px;
   height: 100%;
 `;
 
