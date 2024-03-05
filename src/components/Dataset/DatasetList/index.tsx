@@ -5,6 +5,7 @@ import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData, usePostData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
+import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import {
   dateTimeFormatWithMilliseconds,
@@ -40,7 +41,8 @@ import {
 } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import FolderIcon from "../../Icons/FolderIcon";
 import SaDate from "../../SaDate/Index";
 import CreateDatasetModal from "../CreateDatasetModal";
@@ -61,6 +63,8 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const DatasetList = () => {
+  const { updatePageConfig } = useAppStore();
+  const router = useRouter();
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
@@ -74,6 +78,10 @@ const DatasetList = () => {
     { ...filters },
     {},
   );
+
+  useEffect(() => {
+    router.prefetch(`/dataset/[datasetId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -280,7 +288,7 @@ const DatasetList = () => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <Link prefetch href={`/dataset/${dataset?.id}`}>
+              <Link href={`/dataset/${dataset?.id}`}>
                 <Button
                   style={{ width: "100%" }}
                   icon={<EyeFilled />}
