@@ -321,7 +321,7 @@ const KnowledgeBaseList = () => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
+              <Link href={`/knowledge-base/${knowledgebase?.id}`}>
                 <Button
                   style={{ width: "100%" }}
                   icon={<EyeFilled />}
