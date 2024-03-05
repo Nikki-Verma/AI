@@ -3,6 +3,7 @@
 import { updateAgentApi } from "@/api/agents";
 import ChatBot from "@/components/ChatBot";
 import FullScreenLoader from "@/components/FullScreenLoader/FullScreenLoader";
+import EmptyChatIcon from "@/components/Icons/EmptyChatIcon";
 import IntegrateModal from "@/components/IntegrateModal";
 import PipelineInfo from "@/components/PipelineInfo";
 import TestPlayground from "@/components/TestPlayground";
@@ -17,8 +18,11 @@ import { useForm } from "antd/es/form/Form";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { AgentStatus, AgentStatusType } from "../../constants";
-import { AgentEditContainer, EmptyChatContainer, EmptyChattitle } from "./style";
-import EmptyChatIcon from "@/components/Icons/EmptyChatIcon";
+import {
+  AgentEditContainer,
+  EmptyChatContainer,
+  EmptyChattitle,
+} from "./style";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   ...dynamicState,
@@ -136,6 +140,10 @@ const AgentEdit = () => {
         });
         setIntegrateAgentModalOpen(true);
         // router.push(`/agents/view/${agentId}`);
+      } else {
+        notification.success({
+          message: "Agent details updated successfully",
+        });
       }
     } catch (error) {
       notification.error({
@@ -229,17 +237,17 @@ const AgentEdit = () => {
             </div>
           ) : (
             <EmptyChatContainer>
-                <EmptyChatIcon
-                  style={{
-                    fontSize: "86px",
-                    color: "var(--Text-Color-900, #171717)",
-                    opacity: "0.5",
-                  }}
-                />
-                <EmptyChattitle>
+              <EmptyChatIcon
+                style={{
+                  fontSize: "86px",
+                  color: "var(--Text-Color-900, #171717)",
+                  opacity: "0.5",
+                }}
+              />
+              <EmptyChattitle>
                 Please select a model to start testing
-                </EmptyChattitle>
-              </EmptyChatContainer>
+              </EmptyChattitle>
+            </EmptyChatContainer>
           )}
         </Col>
       </Row>
