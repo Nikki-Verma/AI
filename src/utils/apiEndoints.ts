@@ -59,6 +59,7 @@ const config = {
     details: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
+    delete: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
   },
   agents: {
     list: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,

@@ -1,6 +1,6 @@
 "use client";
 
-import { createWorkFlowApi } from "@/api/workflow";
+import { createWorkFlowApi, deletePipelineApi } from "@/api/workflow";
 import {
   WorkflowStatus,
   WorkflowStatusType,
@@ -25,7 +25,6 @@ import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
-  ApiOutlined,
   EditOutlined,
   MoreOutlined,
   PlayCircleOutlined,
@@ -38,7 +37,6 @@ import {
   MenuProps,
   Result,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
@@ -59,7 +57,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   size: DEFAULT_PAGE_SIZE,
   ...dynamicState,
 });
-  const fullWidth = { width: "100%" };
+const fullWidth = { width: "100%" };
 
 const Workflow = () => {
   const { updatePageConfig } = useAppStore();
@@ -68,6 +66,7 @@ const Workflow = () => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
+  const [workflowDeleteLoading, setWorkflowDeleteLoading] = useState();
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
 
@@ -138,6 +137,29 @@ const Workflow = () => {
         page: (pagination?.current ?? 1) - 1,
         size: pagination?.pageSize,
       }));
+    }
+  };
+
+  const deleteWorkflowHandler = async (workflow: UnknownObject) => {
+    console.log("🚀 ~ deleteWorkflowHandler ~ workflow:", workflow);
+    try {
+      setWorkflowDeleteLoading(workflow?.pipeline_id);
+
+      const deleteWorkflowResponse = await deletePipelineApi({
+        pipelineId: workflow?.pipeline_id,
+      });
+
+      if (deleteWorkflowResponse?.status == 200) {
+        notification.success({ message: "Workflow deleted successfully" });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting workflow",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setWorkflowDeleteLoading(undefined);
     }
   };
 
@@ -262,6 +284,7 @@ const Workflow = () => {
       width: 160,
       fixed: "right",
       render: (_: any, workflowData: UnknownObject) => {
+        console.log("🚀 ~ Workflow ~ workflowData:", workflowData);
         const completedItems: MenuProps["items"] = [
           {
             key: "integration",
@@ -270,54 +293,137 @@ const Workflow = () => {
                 prefetch
                 href={`/integration/workflow/${workflowData?.pipeline_id}`}
               >
-                <Button style={{color : '#000000b3'}} type="text">
+                <Button
+                  style={{ color: "#000000b3" }}
+                  type="text"
+                  disabled={!!workflowDeleteLoading}
+                >
                   Integrate
                 </Button>
               </Link>
             ),
           },
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteWorkflowHandler(workflowData)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={workflowDeleteLoading === workflowData?.pipeline_id}
+                disabled={!!workflowDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
         ];
+
+        const progressItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => deleteWorkflowHandler(workflowData)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={workflowDeleteLoading === workflowData?.pipeline_id}
+                disabled={!!workflowDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
+
         return (
           <>
             {workflowData?.pipeline_state === WorkflowStatus.COMPLETED ? (
               // <Space>
-              <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
+              <Row
+                gutter={[0, 0]}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Col span={20}>
-                <Link
-                  prefetch
-                  href={`/workflow/playground/${workflowData?.pipeline_id}`}
-                >
-                  <Button style={{...fullWidth}} block type="default" icon={<PlayCircleOutlined />}>
-                    Chat
-                  </Button>
-                </Link>
+                  <Link
+                    prefetch
+                    href={`/workflow/playground/${workflowData?.pipeline_id}`}
+                  >
+                    <Button
+                      style={{ ...fullWidth }}
+                      block
+                      type="default"
+                      icon={<PlayCircleOutlined />}
+                      disabled={!!workflowDeleteLoading}
+                    >
+                      Chat
+                    </Button>
+                  </Link>
                 </Col>
-                <Col span={3} style={{display : 'flex',justifyContent : 'center'}}>
-                <Dropdown
-                  menu={{ items: completedItems }}
-                  placement="bottomLeft"
-
+                <Col
+                  span={3}
+                  style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <MoreOutlined
-                    style={{ fontSize: "21px", fontWeight: "bold",cursor : 'pointer' }}
-                  />
-                </Dropdown>
+                  <Dropdown
+                    menu={{ items: completedItems }}
+                    placement="bottomLeft"
+                  >
+                    <MoreOutlined
+                      style={{
+                        fontSize: "21px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Dropdown>
                 </Col>
-                </Row>
-              // </Space>
+              </Row>
             ) : (
-              // <Space>
-              <Col span={20}>
-                <Link
-                  prefetch
-                  href={`/workflow/edit/${workflowData?.pipeline_id}`}
-                >
-                  <Button style={{...fullWidth}} block type="default" icon={<EditOutlined />}>
-                    Edit
-                  </Button>
-                </Link>
-                </Col>
               // </Space>
+              <Row
+                gutter={[0, 0]}
+                style={{
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Col span={20}>
+                  <Link
+                    prefetch
+                    href={`/workflow/edit/${workflowData?.pipeline_id}`}
+                  >
+                    <Button
+                      style={{ ...fullWidth }}
+                      block
+                      type="default"
+                      icon={<EditOutlined />}
+                      disabled={!!workflowDeleteLoading}
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                </Col>
+                <Col
+                  span={3}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <Dropdown
+                    menu={{ items: progressItems }}
+                    placement="bottomLeft"
+                  >
+                    <MoreOutlined
+                      style={{
+                        fontSize: "21px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Dropdown>
+                </Col>
+              </Row>
             )}
           </>
         );
@@ -347,6 +453,7 @@ const Workflow = () => {
               type="primary"
               icon={<PlusOutlined />}
               onClick={toggleCreateWorkflowHandler}
+              disabled={!!workflowDeleteLoading}
             >
               Create Workflow
             </Button>

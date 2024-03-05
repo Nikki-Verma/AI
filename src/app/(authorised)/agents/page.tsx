@@ -323,7 +323,7 @@ const Agents = () => {
           },
         ];
 
-        const ProgressItems: MenuProps["items"] = [
+        const progressItems: MenuProps["items"] = [
           {
             key: "delete",
             label: (
@@ -414,7 +414,7 @@ const Agents = () => {
                   style={{ display: "flex", justifyContent: "center" }}
                 >
                   <Dropdown
-                    menu={{ items: ProgressItems }}
+                    menu={{ items: progressItems }}
                     placement="bottomLeft"
                   >
                     <MoreOutlined
