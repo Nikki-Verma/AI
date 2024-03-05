@@ -87,8 +87,10 @@ const config = {
   knowledgebase: {
     list: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     create: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
+    delete: `${BASE_URLS.data}/api/v1/dataset/knowledgebase`,
     addFiles: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/add-file`,
     files: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/files`,
+    fileDelete: `${BASE_URLS.data}/api/v1/dataset/knowledgebase/document`,
   },
   rag: {
     chat: `${BASE_URLS.rag}/retrieve/context/`,

@@ -30,3 +30,20 @@ export const getFileChunksApi = ({ payload = {}, headers = {} }: any) => {
     headers,
   });
 };
+
+export const deleteKnowledgebaseApi = ({ params = {}, headers = {} }: any) => {
+  return _authHttp.delete(config.knowledgebase.delete, {
+    params,
+    headers,
+  });
+};
+
+export const deleteKnowledgebaseFilesApi = ({
+  params = {},
+  headers = {},
+}: any) => {
+  return _authHttp.delete(config.knowledgebase.fileDelete, {
+    params,
+    headers,
+  });
+};

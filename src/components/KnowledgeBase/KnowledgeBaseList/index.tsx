@@ -1,6 +1,9 @@
 "use client";
 
-import { createKnowledgeBaseApi } from "@/api/knowledgebase";
+import {
+  createKnowledgeBaseApi,
+  deleteKnowledgebaseApi,
+} from "@/api/knowledgebase";
 import EmptyUpload from "@/components/EmptyUpload";
 import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
@@ -15,10 +18,17 @@ import {
 import dayjs from "@/utils/date";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { DatabaseFilled, EyeFilled, PlusOutlined } from "@ant-design/icons";
+import {
+  DatabaseFilled,
+  EyeFilled,
+  MoreOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
+  Dropdown,
+  MenuProps,
   Result,
   Row,
   Space,
@@ -60,6 +70,8 @@ const KnowledgeBaseList = () => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createKnowledgeBaseOpen, setCreateKnowledgeBaseOpen] = useState(false);
+  const [knowledgebaseDeleteLoading, setKnowledgebaseDeleteLoading] =
+    useState();
   const [createKnowledgeBaseLoading, setCreateKnowledgeBaseLoading] =
     useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
@@ -128,11 +140,35 @@ const KnowledgeBaseList = () => {
       }
     } catch (error) {
       notification.error({
-        message: "Error while creating dataset",
+        message: "Error while creating knowledge base",
         description: getErrorFromApi(error),
       });
     } finally {
       setCreateKnowledgeBaseLoading(false);
+    }
+  };
+
+  const knowledgebaseDatasetHandler = async (knowledgebase: UnknownObject) => {
+    try {
+      setKnowledgebaseDeleteLoading(knowledgebase?.id);
+
+      const deleteKnowledgebaseResponse = await deleteKnowledgebaseApi({
+        params: { id: knowledgebase?.id },
+      });
+
+      if (deleteKnowledgebaseResponse?.status == 200) {
+        notification.success({
+          message: "Knowledge base deleted successfully",
+        });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting knowledge base",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setKnowledgebaseDeleteLoading(undefined);
     }
   };
 
@@ -261,6 +297,23 @@ const KnowledgeBaseList = () => {
       fixed: "right",
       width: 160,
       render: (_: any, knowledgebase: UnknownObject) => {
+        console.log("🚀 ~ DatasetList ~ dataset:", knowledgebase);
+        const extraItems: MenuProps["items"] = [
+          {
+            key: "delete",
+            label: (
+              <Button
+                onClick={() => knowledgebaseDatasetHandler(knowledgebase)}
+                style={{ color: "#FF0000" }}
+                type="text"
+                loading={knowledgebaseDeleteLoading === knowledgebase?.id}
+                disabled={!!knowledgebaseDeleteLoading}
+              >
+                Delete
+              </Button>
+            ),
+          },
+        ];
         return (
           // <Space>
           <Row
@@ -269,10 +322,25 @@ const KnowledgeBaseList = () => {
           >
             <Col span={20}>
               <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
-                <Button style={{ width: "100%" }} icon={<EyeFilled />}>
+                <Button
+                  style={{ width: "100%" }}
+                  icon={<EyeFilled />}
+                  disabled={!!knowledgebaseDeleteLoading}
+                >
                   View
                 </Button>
               </Link>
+            </Col>
+            <Col span={3} style={{ display: "flex", justifyContent: "center" }}>
+              <Dropdown menu={{ items: extraItems }} placement="bottomLeft">
+                <MoreOutlined
+                  style={{
+                    fontSize: "21px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                />
+              </Dropdown>
             </Col>
           </Row>
           // </Space>

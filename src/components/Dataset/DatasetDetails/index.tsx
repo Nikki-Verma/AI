@@ -313,7 +313,7 @@ const DatasetDetails = (props: any) => {
       }
     } catch (error) {
       notification.error({
-        message: "Error while deleting dataset",
+        message: "Error while deleting dataset files",
         description: getErrorFromApi(error),
       });
     } finally {

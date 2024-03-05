@@ -1,4 +1,8 @@
-import { addFileToKnowledgeBaseApi } from "@/api/knowledgebase";
+import {
+  addFileToKnowledgeBaseApi,
+  deleteKnowledgebaseFilesApi,
+} from "@/api/knowledgebase";
+import { DeleteDatasetFileButton } from "@/components/Dataset/DatasetDetails/style";
 import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
 import SaDate from "@/components/SaDate/Index";
@@ -69,6 +73,8 @@ const KnowledgeBaseDetails = (props: any) => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
   const [importDatasetOpen, setImportDatasetOpen] = useState(false);
   const [importDatasetLoading, setImportDatasetLoading] = useState(false);
+  const [knowledgebaseFilesDeleteLoading, setKnowledgebaseFilesDeleteLoading] =
+    useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   // const [addFileModalOpen, setAddFileModalOpen] = useState(false);
   // const [addFilesLoading, setAddFilesLoading] = useState(false);
@@ -157,6 +163,34 @@ const KnowledgeBaseDetails = (props: any) => {
     setDisplayKbSettings((prev: boolean) => !prev);
   };
 
+  const deleteKnowledgebaseFilesHandler = async (
+    knowledgebase: UnknownObject,
+  ) => {
+    console.log("🚀 ~ KnowledgeBaseDetails ~ knowledgebase:", knowledgebase);
+    try {
+      setKnowledgebaseFilesDeleteLoading(knowledgebase?.id);
+
+      const deleteKnowledgebaseFilesResponse =
+        await deleteKnowledgebaseFilesApi({
+          params: { kb_id: knowledgebaseId, document_id: knowledgebase?.id },
+        });
+
+      if (deleteKnowledgebaseFilesResponse?.status == 200) {
+        notification.success({
+          message: "Knowledge base files deleted successfully",
+        });
+        refetch();
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while deleting knowledge base files",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setKnowledgebaseFilesDeleteLoading(undefined);
+    }
+  };
+
   const rowSelection: TableRowSelection<DataType> = {
     type: "checkbox",
     preserveSelectedRowKeys: true,
@@ -233,20 +267,32 @@ const KnowledgeBaseDetails = (props: any) => {
         );
       },
     },
-    // {
-    //   title: "Actions",
-    //   dataIndex: "",
-    //   align: "center",
-    //   key: "actions",
-    //   width: 100,
-    //   render: (_: any, knowledgebase: UnknownObject) => {
-    //     return (
-    //       <Space>
-    //         <MoreOutlined style={{ fontSize: "28px", fontWeight: "bold" }} />
-    //       </Space>
-    //     );
-    //   },
-    // },
+    {
+      title: "Actions",
+      dataIndex: "",
+      align: "center",
+      key: "actions",
+      width: 100,
+      render: (_: any, knowledgebase: UnknownObject) => {
+        return (
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <DeleteDatasetFileButton
+                onClick={() => deleteKnowledgebaseFilesHandler(knowledgebase)}
+                type="default"
+                loading={knowledgebaseFilesDeleteLoading === knowledgebase?.id}
+                disabled={!!knowledgebaseFilesDeleteLoading}
+              >
+                Delete
+              </DeleteDatasetFileButton>
+            </Col>
+          </Row>
+        );
+      },
+    },
   ];
 
   if (knowledgebaseLoading) {
