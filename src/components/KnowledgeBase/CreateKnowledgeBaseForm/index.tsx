@@ -2,7 +2,9 @@
 
 import KbCustomIcon from "@/components/Icons/KbCustomIcon";
 import KbDefaultIcon from "@/components/Icons/KbDefaultIcon";
+import InfoIconTooltip from "@/components/InfoIconTooltip";
 import { PAGE_MODE } from "@/utils/constants";
+import { alphanumericWithUnderscore } from "@/utils/regex";
 import { PageModeEnum, UnknownObject } from "@/utils/types";
 import {
   Col,
@@ -14,6 +16,7 @@ import {
   Radio,
   Row,
   Select,
+  Space,
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
@@ -120,11 +123,20 @@ const CreateKnowledgeBaseForm = ({
         <Col span={24} md={12}>
           <Form.Item
             name="name"
-            label="Knowledge base name"
+            label={
+              <Space>
+                <Text>Knowledge base name</Text>
+                <InfoIconTooltip title="Knowledge base can only contain _(underscore) and no other special characters" />
+              </Space>
+            }
             rules={[
               {
                 required: true,
                 message: "Knowledge base name is required",
+              },
+              {
+                pattern: alphanumericWithUnderscore,
+                message: "Enter valid knowledge base name",
               },
             ]}
           >

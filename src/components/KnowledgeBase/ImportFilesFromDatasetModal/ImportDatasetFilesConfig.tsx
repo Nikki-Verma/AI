@@ -1,5 +1,6 @@
 import { getFileChunksApi } from "@/api/knowledgebase";
 import ChunksPreview from "@/components/ChunksPreview";
+import KbCustomIcon from "@/components/Icons/KbCustomIcon";
 import KbDefaultIcon from "@/components/Icons/KbDefaultIcon";
 import { nonZeroPositiveInteger } from "@/utils/regex";
 import { UnknownObject } from "@/utils/types";
@@ -193,7 +194,7 @@ const ImportDatasetFilesConfig = ({
                         <Flex gap="24px" align="center" justify="space-between">
                           <Flex align="center" gap="12px">
                             <KbSettingsIconsContainer>
-                              <KbDefaultIcon />
+                              <KbCustomIcon />
                             </KbSettingsIconsContainer>
                             <Flex gap="2px" vertical>
                               <KbSettingsRadioTitle>
