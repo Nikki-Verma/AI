@@ -81,6 +81,9 @@ const Agents = () => {
       pageTitle: "Agent",
       pageDescription: "Models are your AI powered automations & skills",
     });
+    router.prefetch(`/agents/view/[agentId]`);
+    router.prefetch(`/agents/edit/[agentId]`);
+    router.prefetch(`/integration/agents/[agentId]`);
   }, []);
 
   const toggleCreateAgentHandler = () => {
@@ -171,9 +174,7 @@ const Agents = () => {
       width: 200,
       render: (val: any, data: any) => (
         <LinkContainer>
-          <Link prefetch href={`/agents/view/${data?.pipeline_id}`}>
-            {val}
-          </Link>
+          <Link href={`/agents/view/${data?.pipeline_id}`}>{val}</Link>
         </LinkContainer>
       ),
     },
@@ -282,7 +283,7 @@ const Agents = () => {
           {
             key: "edit",
             label: (
-              <Link prefetch href={`/agents/edit/${agentData?.pipeline_id}`}>
+              <Link href={`/agents/edit/${agentData?.pipeline_id}`}>
                 <Button
                   style={{ color: "#000000b3" }}
                   type="text"
@@ -296,7 +297,7 @@ const Agents = () => {
           {
             key: "view",
             label: (
-              <Link prefetch href={`/agents/view/${agentData?.pipeline_id}`}>
+              <Link href={`/agents/view/${agentData?.pipeline_id}`}>
                 <Button
                   style={{ color: "#000000b3" }}
                   type="text"
@@ -351,10 +352,7 @@ const Agents = () => {
                 }}
               >
                 <Col span={20}>
-                  <Link
-                    prefetch
-                    href={`/integration/agents/${agentData?.pipeline_id}`}
-                  >
+                  <Link href={`/integration/agents/${agentData?.pipeline_id}`}>
                     <Button
                       style={{ ...fullWidth }}
                       block
@@ -394,10 +392,7 @@ const Agents = () => {
                 }}
               >
                 <Col span={20}>
-                  <Link
-                    prefetch
-                    href={`/agents/edit/${agentData?.pipeline_id}`}
-                  >
+                  <Link href={`/agents/edit/${agentData?.pipeline_id}`}>
                     <Button
                       style={{ ...fullWidth }}
                       block
