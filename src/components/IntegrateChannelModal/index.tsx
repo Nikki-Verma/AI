@@ -4,6 +4,7 @@ import { useState } from "react";
 import ChannelOptions from "../ChannelOptions";
 import IntegrateSlackCard from "../IntegrateSlackCard";
 import IntegrateTelegramCard from "../IntegrateTelegramCard";
+import IntegrateWhatsappCard from "../IntegrateWhatsappCard";
 import { ChannelType, CHANNEL_TYPES } from "./constant";
 import { Integration_Available_Channels } from "./helper";
 
@@ -41,6 +42,14 @@ const IntegrateChannelModal = ({
       case CHANNEL_TYPES.TELEGRAM:
         return (
           <IntegrateTelegramCard
+            form={form}
+            integrateChannelHandler={integrateChannelHandler}
+          />
+        );
+
+      case CHANNEL_TYPES.KALEYRAWHATSAPP:
+        return (
+          <IntegrateWhatsappCard
             form={form}
             integrateChannelHandler={integrateChannelHandler}
           />
