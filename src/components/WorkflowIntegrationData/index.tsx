@@ -47,7 +47,10 @@ const WorkflowIntegrationData = ({
         });
       }
     } catch (error) {
-      notification.error({ message: "Error while integrating channel" });
+      notification.error({
+        message: "Error while integrating channel",
+        description: getErrorFromApi(error),
+      });
     } finally {
       setIntegratechannelLoading(false);
     }
