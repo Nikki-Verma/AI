@@ -22,6 +22,7 @@ type DescriptionListProps = {
   data: UnknownObject;
   gapBetweenItems?: FlexProps["gap"];
   gapBetweenLabelAndValue?: FlexProps["gap"];
+  vertical?: boolean;
 };
 
 export type DescriptionItemType = {
@@ -41,9 +42,10 @@ const DescriptionList = ({
   data = {},
   gapBetweenItems = "small",
   gapBetweenLabelAndValue = "small",
+  vertical = false,
 }: DescriptionListProps) => {
   return (
-    <Flex gap={gapBetweenItems} wrap="wrap">
+    <Flex gap={gapBetweenItems} wrap="wrap" vertical={vertical}>
       {columns?.map((DescriptionItem: DescriptionItemType) => {
         return (
           <Flex
