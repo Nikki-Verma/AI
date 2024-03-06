@@ -1,11 +1,18 @@
-import { Tag, TagProps } from "antd";
+import { Space, Tag, TagProps } from "antd";
+import { tagIcons } from "../CardModel/helper";
 import { ModelTagContainer } from "./style";
 
 function ModelTag({ tag, tagProps }: { tag: string; tagProps?: TagProps }) {
+  const tagText = Object.keys(tagIcons)?.find((tagIconText: string) =>
+    tag?.toUpperCase()?.includes(tagIconText?.toUpperCase()),
+  );
+  const tagIcon = tagText ? tagIcons?.[tagText] : null;
   return (
     <ModelTagContainer>
       <Tag key={tag} {...tagProps}>
-        {tag}
+        <Space size={2}>
+          {tagIcon} {tag}
+        </Space>
       </Tag>
     </ModelTagContainer>
   );
