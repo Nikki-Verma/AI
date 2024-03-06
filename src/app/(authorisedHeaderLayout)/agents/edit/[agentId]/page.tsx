@@ -123,7 +123,9 @@ const AgentEdit = () => {
         ...(data?.result || {}),
         ...values,
         kb: values?.kb?.kb_name ? values?.kb : null,
-        // tools : ['65df05b1f402ca4e373f940d'],
+        tools: values?.tools ? values?.tools : null,
+        is_kb_attached: values?.kb?.kb_name ? true : false,
+        is_tools_attached: values?.tools ? true : false,
         agent_state: type,
         pipeline_id: agentId,
       };
