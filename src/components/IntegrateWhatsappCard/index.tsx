@@ -1,6 +1,6 @@
 import { UnknownObject } from "@/utils/types";
 import { Flex, Form, FormInstance, Input } from "antd";
-import WhatsappIcon from "../Icons/Whatsapp";
+import WhatsappIcon from "../Icons/WhatsApp";
 import {
   IntegrateWhatsappCardContainer,
   IntegrateWhatsappCardTitle,
