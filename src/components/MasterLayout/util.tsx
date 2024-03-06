@@ -13,6 +13,7 @@ import KnowledgeBaseIcon from "../Icons/KnowledgeBaseIcon";
 import ModelsIcon from "../Icons/ModelsIcon";
 import PlaygroundIcon from "../Icons/PlaygroundIcon";
 import SettingsIcon from "../Icons/Settings";
+import WorkspaceIcon from "../Icons/WorkspaceIcon";
 const { Text } = Typography;
 interface NavItem {
   id: number;
@@ -133,7 +134,7 @@ export const items: any = [
     key: "workspace",
     keyPath: ["workspace"],
     url: "/workspace",
-    icon: <AgentsIcon />,
+    icon: <WorkspaceIcon />,
   },
   {
     id: 100,
