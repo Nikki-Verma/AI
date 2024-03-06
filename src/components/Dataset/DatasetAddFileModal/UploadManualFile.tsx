@@ -34,7 +34,7 @@ const UploadManualFile = ({
   addFilesHandler,
   maxCount = undefined,
   multiple = true,
-  accept = ".pdf,.html,.docx",
+  accept = ".pdf,.html,.docx,.txt",
   loading = false,
 }: any) => {
   const uploadProps = {
@@ -149,7 +149,7 @@ const UploadManualFile = ({
                     Drop and Drag your files here or Browse
                   </UploadTextContainer>
                   <UploadSubTextContainer>
-                    Supported formats: .html, .docx & .pdf
+                    Supported formats: .html, .txt, .docx & .pdf
                   </UploadSubTextContainer>
                 </div>
               </div>
