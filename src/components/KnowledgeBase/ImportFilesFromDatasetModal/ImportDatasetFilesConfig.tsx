@@ -256,7 +256,7 @@ const ImportDatasetFilesConfig = ({
                         validator(_, value) {
                           if (value < 128) {
                             return Promise.reject(
-                              "Value should be greated than 128",
+                              "Value should be greater than 128",
                             );
                           }
                           return Promise.resolve();
@@ -288,7 +288,7 @@ const ImportDatasetFilesConfig = ({
                         validator(_, value) {
                           if (value < 20) {
                             return Promise.reject(
-                              "Value should be greated than 20",
+                              "Value should be greater than 20",
                             );
                           }
                           return Promise.resolve();

@@ -242,7 +242,7 @@ const KnowledgeBaseDetails = (props: any) => {
       ),
     },
     {
-      title: "Injestion Status",
+      title: "Ingestion Status",
       dataIndex: "injestion_status",
       key: "injestion_status",
       width: 200,
