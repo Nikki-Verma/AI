@@ -65,9 +65,7 @@ const Workspace = () => {
     <PageContainer>
       <PageHeading
         title="Workspace"
-        subHeading="Explore a vast array of meticulously trained and readily deployable
-          machine learning models all conveniently centralized in a single
-          location."
+        subHeading="Discover deployed models and those added from the marketplace in your workspace here."
       />
       <Radio.Group
         value={filters?.modelStatus}
