@@ -9,3 +9,8 @@ export const FilesFromDatasetOptions = {
   FILES: FilesFromDatasetStep.FILES,
   FILE_CONFIG: FilesFromDatasetStep.FILE_CONFIG,
 };
+
+export const SegmentIdentifierOptions = [
+  { id: "\\n", label: "Next Line(\\n)", value: "\n" },
+  { id: "space", label: "Space( )", value: " " },
+];

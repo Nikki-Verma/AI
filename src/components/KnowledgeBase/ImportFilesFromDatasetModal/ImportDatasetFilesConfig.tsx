@@ -10,10 +10,10 @@ import {
   Flex,
   Form,
   FormInstance,
-  Input,
   InputNumber,
   Radio,
   Row,
+  Select,
   Typography,
 } from "antd";
 import { useSession } from "next-auth/react";
@@ -23,6 +23,7 @@ import {
   KbSettingsRadioDescription,
   KbSettingsRadioTitle,
 } from "../CreateKnowledgeBaseForm/style";
+import { SegmentIdentifierOptions } from "./constant";
 
 import { PreviewSection, PreviewTitle, RadioOptionContainer } from "./style";
 
@@ -230,7 +231,12 @@ const ImportDatasetFilesConfig = ({
                       },
                     ]}
                   >
-                    <Input placeholder="Enter segment identifier"></Input>
+                    <Select
+                      placeholder="Select segment identifier"
+                      showSearch
+                      optionFilterProp="label"
+                      options={SegmentIdentifierOptions}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={24} md={12}>
@@ -278,6 +284,16 @@ const ImportDatasetFilesConfig = ({
                         pattern: nonZeroPositiveInteger,
                         message: "Please enter positive value",
                       },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (value < 20) {
+                            return Promise.reject(
+                              "Value should be greated than 20",
+                            );
+                          }
+                          return Promise.resolve();
+                        },
+                      }),
                     ]}
                   >
                     <InputNumber
