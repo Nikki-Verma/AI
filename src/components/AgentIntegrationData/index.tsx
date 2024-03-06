@@ -18,9 +18,7 @@ type AgentIntegrationDataProps = {
   agentId: string | string[];
 };
 
-const AgentIntegrationData = ({
-    agentId,
-}: AgentIntegrationDataProps) => {
+const AgentIntegrationData = ({ agentId }: AgentIntegrationDataProps) => {
   const { notification } = useNotify();
   const [form] = useForm();
   const [showIntegrateChannel, setShowIntegrateChannel] = useState(false);
@@ -47,7 +45,10 @@ const AgentIntegrationData = ({
         });
       }
     } catch (error) {
-      notification.error({ message: "Error while integrating channel" });
+      notification.error({
+        message: "Error while integrating channel",
+        description: getErrorFromApi(error),
+      });
     } finally {
       setIntegratechannelLoading(false);
     }
