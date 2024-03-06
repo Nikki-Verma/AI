@@ -4,6 +4,7 @@ import { getKbPlaygroundResponseApi } from "@/api/knowledgebase";
 import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
+import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { HddOutlined } from "@ant-design/icons";
@@ -21,7 +22,8 @@ import {
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Chunk from "../Chunk";
 import { PageSubHeading } from "../UIComponents/UIComponents.style";
 import {
@@ -47,6 +49,7 @@ type KbPlaygroundDetailsProps = {
 };
 
 const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
+  const router = useRouter();
   const {
     data: knowledgebaseConfig,
     isLoading: knowledgebaseLoading,
@@ -58,6 +61,21 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
     { knowledgeBaseId: knowledgebaseId },
     {},
   );
+
+  const { data: filesData, isLoading: filesDataLoading } = useFetchData(
+    config.knowledgebase.files,
+    {
+      page: DEFAULT_PAGE,
+      size: ALL_DATA_PAGE_SIZE,
+      knowledgebase_id: knowledgebaseId,
+    },
+    {},
+  );
+
+  console.log(
+    "🚀 ~ KbPlaygroundDetails ~ knowledgebaseConfig:",
+    knowledgebaseConfig,
+  );
   const [form] = useForm();
   const { data: session }: any = useSession();
   const { notification } = useNotify();
@@ -65,6 +83,24 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
   const [chunkNotFound, setChunkNotFound] = useState(false);
   console.log("🚀 ~ KbPlaygroundDetails ~ chunks:", chunks);
   const [chunkLoading, setChunkLoading] = useState(false);
+
+  useEffect(() => {
+    router.prefetch("knowledge-base/[knowledgebaseId]");
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!filesDataLoading) {
+      const retrievalDisabled = !(
+        filesData?.document_details?.some(
+          (document: UnknownObject) =>
+            document?.injestion_status === "COMPLETED",
+        ) ?? true
+      );
+      if (retrievalDisabled) {
+        router.push(`/knowledge-base/${knowledgebaseId}`);
+      }
+    }
+  }, [filesData, filesDataLoading]);
 
   const getChunks = async (values: any) => {
     try {

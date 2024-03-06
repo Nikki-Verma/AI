@@ -204,6 +204,17 @@ const KnowledgeBaseDetails = (props: any) => {
     },
   };
 
+  const retrievalDisabled = !(
+    data?.document_details?.some(
+      (document: UnknownObject) => document?.injestion_status === "COMPLETED",
+    ) ?? true
+  );
+  console.log("files data", data);
+  console.log(
+    "🚀 ~ KnowledgeBaseDetails ~ retrievalDisabled:",
+    retrievalDisabled,
+  );
+
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "File Name",
@@ -408,7 +419,12 @@ const KnowledgeBaseDetails = (props: any) => {
                   Import from Dataset
                 </Button>
                 <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
-                  <Button size="middle" type="default" icon={<AimOutlined />}>
+                  <Button
+                    size="middle"
+                    type="default"
+                    icon={<AimOutlined />}
+                    disabled={retrievalDisabled}
+                  >
                     Retrieval Testing
                   </Button>
                 </Link>
