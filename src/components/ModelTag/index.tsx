@@ -8,7 +8,7 @@ function ModelTag({ tag, tagProps }: { tag: string; tagProps?: TagProps }) {
   );
   const tagIcon = tagText ? tagIcons?.[tagText] : null;
   return (
-    <ModelTagContainer>
+    <ModelTagContainer key={tag}>
       <Tag key={tag} {...tagProps}>
         <Space size={2}>
           {tagIcon} {tag}

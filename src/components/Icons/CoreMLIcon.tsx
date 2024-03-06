@@ -40,8 +40,8 @@ const CoreMLLogo = () => (
         y2="748.767"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#CBF3FF"></stop>
-        <stop offset="1" stop-color="#CBF3FF" stop-opacity="0"></stop>
+        <stop stopColor="#CBF3FF"></stop>
+        <stop offset="1" stopColor="#CBF3FF" stop-opacity="0"></stop>
       </linearGradient>
       <linearGradient
         id="paint1_linear_333_277"
@@ -51,8 +51,8 @@ const CoreMLLogo = () => (
         y2="473.957"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#02C5A8"></stop>
-        <stop offset="1" stop-color="#0186A7"></stop>
+        <stop stopColor="#02C5A8"></stop>
+        <stop offset="1" stopColor="#0186A7"></stop>
       </linearGradient>
     </defs>
   </svg>

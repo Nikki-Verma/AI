@@ -327,7 +327,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         <Col span={24}>
           <Row gutter={[0, 10]}>
             {(data?.result?.tags || [])?.map((tag: string) => (
-              <ModelTag tag={tag} />
+              <ModelTag tag={tag} key={tag} />
               // <Tag key={tag}>{tag}</Tag>
             ))}
           </Row>
