@@ -146,8 +146,7 @@ const UploadManualFile = ({
                   }}
                 >
                   <UploadTextContainer>
-                    Drop and Drag your files here or Browse (uplaod only .html,
-                    .docx, or .pdf format)
+                    Drop and Drag your files here or Browse
                   </UploadTextContainer>
                   <UploadSubTextContainer>
                     Supported formats: .html, .docx & .pdf
