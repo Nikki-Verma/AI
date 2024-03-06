@@ -1,16 +1,26 @@
-import { addModelToWorkspaceApi, deployModelApi } from "@/api/workspace";
+import {
+  addModelToWorkspaceApi,
+  deployModelApi,
+  markModelIdleApi,
+  removeFromWorkspaceApi,
+} from "@/api/workspace";
 import DeployIcon from "@/components/Icons/DeployIcon";
 import ModelTag from "@/components/ModelTag";
 import {
   PageAbout,
   PageTitle,
+  RemoveButton,
 } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { DUMMY_TENANT_ID } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
-import { ApiOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import {
+  ApiOutlined,
+  CheckCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -28,7 +38,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConnectModal from "../ConnectModal";
 import { ModelPage, ModelPageType } from "./constant";
 import { items } from "./helper";
@@ -42,11 +52,8 @@ type ModelDataParams = {
 const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
   const router = useRouter();
   const { data: session }: any = useSession();
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.models.detail,
-    { id: modelId },
-    {},
-  );
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    useFetchData(config.models.detail, { id: modelId }, {});
 
   console.log("data", data);
 
@@ -54,7 +61,12 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
   const [deploymentLoading, setDeploymentLoading] = useState(false);
   const [connectModelVisible, setConnectModelVisible] = useState(false);
   const [connectBtnLoading, setConnectBtnLoading] = useState(false);
+  const [removeLoading, setRemoveLoading] = useState(false);
   const { notification } = useNotify();
+
+  useEffect(() => {
+    router.prefetch("/workspace");
+  }, []);
 
   const deployHandler = async () => {
     try {
@@ -129,6 +141,57 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
     }
   };
 
+  const markIdle = async () => {
+    try {
+      setDeploymentLoading(true);
+
+      const payload = {
+        model_id: modelId,
+        user_model_id: data?.result?.user_model_id,
+      };
+
+      const markModelIdleResponse = await markModelIdleApi({ payload });
+      if (markModelIdleResponse?.status === 200) {
+        refetch();
+        notification.success({
+          message: "Model marked idle successfully",
+        });
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while model mark idle.",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setDeploymentLoading(false);
+    }
+  };
+
+  const removeFromWorkspaceHandler = async () => {
+    try {
+      setRemoveLoading(true);
+      const params = {
+        user_model_id: data?.result?.user_model_id,
+      };
+      const removeFromWorkspaceResponse = await removeFromWorkspaceApi({
+        params,
+      });
+      if (removeFromWorkspaceResponse?.status === 200) {
+        router.push("/workspace");
+        notification.success({
+          message: "Model removed from workspace successfully",
+        });
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error while removing model from workspace.",
+        description: getErrorFromApi(error),
+      });
+    } finally {
+      setRemoveLoading(true);
+    }
+  };
+
   if (isLoading) {
     return (
       <Card size="default">
@@ -150,7 +213,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
     );
   }
   return (
-    <Spin spinning={deploymentLoading}>
+    <Spin spinning={deploymentLoading || isRefetching}>
       <Row
         justify="space-between"
         gutter={[20, 20]}
@@ -275,6 +338,13 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                   >
                     Train
                   </Button> */}
+                <RemoveButton
+                  icon={<DeleteOutlined />}
+                  onClick={removeFromWorkspaceHandler}
+                  loading={removeLoading}
+                >
+                  Remove
+                </RemoveButton>
                 <Button
                   type="primary"
                   icon={<DeployIcon />}
@@ -293,6 +363,13 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
                   >
                     Train
                   </Button> */}
+                <RemoveButton
+                  icon={<DeleteOutlined />}
+                  onClick={removeFromWorkspaceHandler}
+                  loading={removeLoading}
+                >
+                  Remove
+                </RemoveButton>
                 <Button
                   type="primary"
                   icon={<DeployIcon />}
@@ -305,6 +382,9 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
             )
           ) : (
             <>
+              {data?.result?.type === "Open source" && (
+                <RemoveButton onClick={markIdle}>Mark Idle</RemoveButton>
+              )}
               <Link
                 prefetch
                 href={`/model/playground/${modelId}/${data?.result?.user_model_id}`}

@@ -94,7 +94,7 @@ const WorkflowEdit = () => {
         ) : undefined,
     },
     {
-      title: "Text & Launch",
+      title: "Test & Launch",
       icon:
         current === 3 ? (
           <CurrentStepIcon />

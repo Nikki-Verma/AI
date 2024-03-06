@@ -55,7 +55,9 @@ const config = {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
     deploy: `${BASE_URLS.model}/api/v1/user/model/deploy`,
+    remove: `${BASE_URLS.model}/api/v1/user/model`,
     connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`,
+    markIdle: `${BASE_URLS.model}/api/v1/user/model/mark-idle`,
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
