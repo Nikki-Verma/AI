@@ -16,7 +16,11 @@ import {
   DEFAULT_PAGE_SIZE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import {
+  formatSizeUnits,
+  getErrorFromApi,
+  getFilters,
+} from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
   DatabaseFilled,
@@ -183,6 +187,15 @@ const KnowledgeBaseList = () => {
           <DatabaseFilled /> {val}
         </Space>
       ),
+    },
+    {
+      title: "File Size",
+      dataIndex: "size",
+      key: "size",
+      width: 200,
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
+      },
     },
     // {
     //   title: "File Size",

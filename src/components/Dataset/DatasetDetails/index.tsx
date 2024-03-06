@@ -26,6 +26,7 @@ import {
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
+  formatSizeUnits,
   getErrorFromApi,
   getFilters,
   uploadDatasetFiles,
@@ -345,6 +346,15 @@ const DatasetDetails = (props: any) => {
           </Text>
         </Space>
       ),
+    },
+    {
+      title: "File Size",
+      dataIndex: "file_size",
+      key: "file_size",
+      width: 200,
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
+      },
     },
     {
       title: "Created At",

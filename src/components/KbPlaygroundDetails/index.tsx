@@ -145,9 +145,9 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                     : "Knowledge base playground"}
                 </Title>
                 <PageSubHeading>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s,
+                  Use this playground to vector search queries against the
+                  knowledge base and check if the most relevant chunks are
+                  retrieved.
                 </PageSubHeading>
               </KbChatConfigHeading>
               <KbInputContainer>
