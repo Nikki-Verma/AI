@@ -465,7 +465,7 @@ const DatasetDetails = (props: any) => {
           </Col>
         </Row>
       )}
-      {!data?.result?.length && !isLoading && (
+      {!data?.result?.length && !isLoading && !isError && (
         <EmptyUpload
           buttonText="Upload File"
           message="The dataset is empty"
