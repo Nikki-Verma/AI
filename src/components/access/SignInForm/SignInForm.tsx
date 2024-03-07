@@ -10,7 +10,7 @@ import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import uiStyles from "../../UIComponents/ui.module.scss";
 import styles from "../access.module.scss";
 const { Item } = Form;
@@ -24,6 +24,11 @@ const SignInForm = () => {
   const [resetForm] = Form.useForm();
   const [theme, token] = useToken();
   const { status, data } = useSession();
+
+  useEffect(() => {
+    router.prefetch(`/home`);
+  }, []);
+
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
@@ -82,7 +87,10 @@ const SignInForm = () => {
                   },
                 ]}
               >
-                <Input style ={{height : '40px'}} placeholder="Enter work email address" />
+                <Input
+                  style={{ height: "40px" }}
+                  placeholder="Enter work email address"
+                />
               </Item>
             </Col>
             <Col span={24}>
@@ -96,7 +104,11 @@ const SignInForm = () => {
                   },
                 ]}
               >
-                <Input style ={{height : '40px'}} type="password" placeholder="Enter password" />
+                <Input
+                  style={{ height: "40px" }}
+                  type="password"
+                  placeholder="Enter password"
+                />
               </Item>
             </Col>
           </Row>
@@ -111,7 +123,7 @@ const SignInForm = () => {
           <Item noStyle>
             <Button
               type="primary"
-              style={{ width: "100%", margin: "28px 0px", height : '45px' }}
+              style={{ width: "100%", margin: "28px 0px", height: "45px" }}
               htmlType="submit"
               loading={loading}
             >
@@ -121,7 +133,7 @@ const SignInForm = () => {
 
           <Button
             type="default"
-            style={{ width: "100%", marginBottom: "16px", height : '45px'  }}
+            style={{ width: "100%", marginBottom: "16px", height: "45px" }}
           >
             <Space align="center">
               <div
@@ -203,7 +215,10 @@ const SignInForm = () => {
                       },
                     ]}
                   >
-                    <Input style ={{height : '40px'}} placeholder="Enter work email address" />
+                    <Input
+                      style={{ height: "40px" }}
+                      placeholder="Enter work email address"
+                    />
                   </Item>
                 </Col>
               </Row>
@@ -212,7 +227,7 @@ const SignInForm = () => {
                 onClick={() => {
                   setPasswordSent(true);
                 }}
-                style={{ width: "100%", margin: "28px 0px", height : '45px'  }}
+                style={{ width: "100%", margin: "28px 0px", height: "45px" }}
               >
                 Continue
               </Button>

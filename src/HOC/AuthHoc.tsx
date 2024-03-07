@@ -18,6 +18,11 @@ export function AuthHoc(Component: any, PageType = Page_Type.auth) {
       }
     }, [status, data]);
 
+    useEffect(() => {
+      router.prefetch(`/home`);
+      router.prefetch(`/login`);
+    }, []);
+
     if (status === "unauthenticated" && PageType === Page_Type.auth) {
       router.push("/login");
       return <FullScreenLoader />;

@@ -53,7 +53,7 @@ import {
 } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 } from "uuid";
 import DatasetAddFileModal from "../DatasetAddFileModal";
 import { DatasetDetailsContainer, DeleteDatasetFileButton } from "./style";
@@ -99,6 +99,10 @@ const DatasetDetails = (props: any) => {
     error: datasetErrorDetail,
     refetch: refetchDataset,
   } = useFetchData(config.dataset.list, { collectionId: datasetId }, {});
+
+  useEffect(() => {
+    router.prefetch(`/knowledge-base/[knowledgebaseId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,

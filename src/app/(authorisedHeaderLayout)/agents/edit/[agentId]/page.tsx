@@ -68,6 +68,7 @@ const AgentEdit = () => {
   });
 
   useEffect(() => {
+    router.prefetch(`/agents`);
     return () => {
       stopStream();
     };

@@ -39,6 +39,11 @@ const WorkflowEdit = () => {
   );
 
   useEffect(() => {
+    router.prefetch(`/workflow/view/[workflowId]`);
+    router.prefetch(`/workflow`);
+  }, []);
+
+  useEffect(() => {
     if (!isError && !isLoading) {
       if (data?.result?.pipeline_state === WorkflowStatus.COMPLETED) {
         router.push(`/workflow/view/${workflowId}`);
