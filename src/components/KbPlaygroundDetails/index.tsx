@@ -56,6 +56,11 @@ const marks: SliderSingleProps["marks"] = {
   1: "1",
 };
 
+const topKMarks: SliderSingleProps["marks"] = {
+  1: "1",
+  10: "10",
+};
+
 const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
   const router = useRouter();
   const {
@@ -213,8 +218,8 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                   />
                 </Form.Item>
               </KbInputContainer>
-              <Row>
-                <Col span={24}>
+              <Row gutter={[16, 16]}>
+                <Col span={24} md={{ span: 12 }}>
                   <Row gutter={[12, 12]}>
                     <Col flex={1}>
                       <Form.Item name="threshold" label="Similarity Threshold">
@@ -222,7 +227,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                       </Form.Item>
                     </Col>
                     <Col>
-                      <Form.Item name="threshold" label="">
+                      <Form.Item name="threshold">
                         <InputNumber
                           min={0.5}
                           max={1}
@@ -234,15 +239,25 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                     </Col>
                   </Row>
                 </Col>
-                <Col span={24}>
-                  <Form.Item name="topK" label="Top K Results">
-                    <InputNumber
-                      style={{ width: "100%" }}
-                      step={1}
-                      min={0}
-                      placeholder="Top K Results"
-                    />
-                  </Form.Item>
+                <Col span={24} md={{ span: 12 }}>
+                  <Row gutter={[12, 12]}>
+                    <Col flex={1}>
+                      <Form.Item name="topK" label="Tok K Results">
+                        <Slider min={1} max={10} step={1} marks={topKMarks} />
+                      </Form.Item>
+                    </Col>
+                    <Col>
+                      <Form.Item name="topK">
+                        <InputNumber
+                          step={1}
+                          min={0}
+                          max={10}
+                          style={{ marginTop: "30px" }}
+                          placeholder="Top K Results"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Flex justify="flex-end">

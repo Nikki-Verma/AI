@@ -38,6 +38,11 @@ const marks: SliderSingleProps["marks"] = {
   0.5: "0.5",
   1: "1",
 };
+
+const topKMarks: SliderSingleProps["marks"] = {
+  1: "1",
+  10: "10",
+};
 interface CreateKnowledgeBaseFormProps {
   createKnowledgeBaseHandler: (values: { [key: string]: any }) => void;
   form: FormInstance;
@@ -316,14 +321,24 @@ const CreateKnowledgeBaseForm = ({
                   </Row>
                 </Col>
                 <Col span={12}>
-                  <Form.Item name="topK" label="Top K Results">
-                    <InputNumber
-                      style={{ width: "100%" }}
-                      step={1}
-                      min={0}
-                      placeholder="Top K Results"
-                    />
-                  </Form.Item>
+                  <Row gutter={[12, 12]}>
+                    <Col flex={1}>
+                      <Form.Item name="topK" label="Tok K Results">
+                        <Slider min={1} max={10} step={1} marks={topKMarks} />
+                      </Form.Item>
+                    </Col>
+                    <Col>
+                      <Form.Item name="topK">
+                        <InputNumber
+                          step={1}
+                          min={0}
+                          max={10}
+                          style={{ marginTop: "30px" }}
+                          placeholder="Top K Results"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
                 </Col>
 
                 {/* <Col span={24} md={12}>
