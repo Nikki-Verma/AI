@@ -228,6 +228,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                           max={1}
                           step={0.01}
                           style={{ marginTop: "30px" }}
+                          placeholder="Similarity Threshold"
                         />
                       </Form.Item>
                     </Col>
@@ -235,7 +236,12 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                 </Col>
                 <Col span={24}>
                   <Form.Item name="topK" label="Top K Results">
-                    <InputNumber style={{ width: "100%" }} step={1} min={0} />
+                    <InputNumber
+                      style={{ width: "100%" }}
+                      step={1}
+                      min={0}
+                      placeholder="Top K Results"
+                    />
                   </Form.Item>
                 </Col>
               </Row>

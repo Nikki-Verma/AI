@@ -16,6 +16,8 @@ import {
   Radio,
   Row,
   Select,
+  Slider,
+  SliderSingleProps,
   Space,
   Typography,
 } from "antd";
@@ -31,6 +33,11 @@ import {
 } from "./style";
 
 const { Text, Paragraph } = Typography;
+
+const marks: SliderSingleProps["marks"] = {
+  0.5: "0.5",
+  1: "1",
+};
 interface CreateKnowledgeBaseFormProps {
   createKnowledgeBaseHandler: (values: { [key: string]: any }) => void;
   form: FormInstance;
@@ -281,6 +288,44 @@ const CreateKnowledgeBaseForm = ({
                     />
                   </Form.Item>
                 </Col>
+
+                <Col span={12}>
+                  <Row gutter={12}>
+                    <Col flex={1}>
+                      <Form.Item name="threshold" label="Similarity Threshold">
+                        <Slider
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          marks={marks}
+                          style={{ margin: "11px 5px 30px 10px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col>
+                      <Form.Item name="threshold" label="">
+                        <InputNumber
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          style={{ marginTop: "30px" }}
+                          placeholder="Similarity Threshold"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={12}>
+                  <Form.Item name="topK" label="Top K Results">
+                    <InputNumber
+                      style={{ width: "100%" }}
+                      step={1}
+                      min={0}
+                      placeholder="Top K Results"
+                    />
+                  </Form.Item>
+                </Col>
+
                 {/* <Col span={24} md={12}>
                   <Form.Item name="index_key" label="Index Key">
                     <Input placeholder="Enter index key" />
