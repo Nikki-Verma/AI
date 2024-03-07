@@ -103,6 +103,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
         username: session?.user?.details?.name,
         model_id: data?.result?.id,
         model_name: data?.result?.name,
+        type: data?.result?.type,
         model_params: {
           ...data?.result,
         },
