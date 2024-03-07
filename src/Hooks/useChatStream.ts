@@ -77,6 +77,7 @@ const useChatStream = (input: UseChatStreamInput) => {
   };
 
   let streamRef = useRef<any>();
+  let stopStreamRef = useRef<boolean>(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -142,11 +143,15 @@ const useChatStream = (input: UseChatStreamInput) => {
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
-        console.log("🚀 ~ forawait ~ message:", message);
+        if (stopStreamRef.current) {
+          stopStreamRef.current = false;
+          setIsLoading(false);
+          break;
+        }
         if (message === "refetch") {
           setTimeout(() => {
             fetchAndUpdateAIResponse(messageID, conversationID);
-          }, 2000);
+          }, 50);
           break;
         }
         setIsLoading(false);
@@ -155,7 +160,6 @@ const useChatStream = (input: UseChatStreamInput) => {
     } catch (error: any) {
       appendMessageToChat(SimplAi_ERROR_MESSAGE);
       setIsLoading(false);
-    } finally {
     }
   };
 
@@ -164,6 +168,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     if (!streamRef?.current) {
       return null;
     } else {
+      stopStreamRef.current = true;
       await streamRef?.current?.cancel();
       streamRef.current = undefined;
     }
@@ -177,6 +182,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     setIsLoading(true);
     addMessageToChat(newMessage ?? message);
     setMessage("");
+    stopStreamRef.current = false;
 
     try {
       addMessageToChat("", "SimplAi");
