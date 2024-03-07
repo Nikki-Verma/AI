@@ -4,6 +4,7 @@ export const ChunkContainer = styled.div`
   border-radius: 8px;
   border: 0.5px solid #e5ebf5;
   background: #f6f9fe;
+  cursor: pointer;
 `;
 export const ChunkData = styled.div`
   padding: 10px 20px;

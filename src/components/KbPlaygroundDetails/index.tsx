@@ -15,9 +15,12 @@ import {
   Flex,
   Form,
   Input,
+  InputNumber,
   Result,
   Row,
   Skeleton,
+  Slider,
+  SliderSingleProps,
   Typography,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -46,6 +49,11 @@ const { TextArea } = Input;
 
 type KbPlaygroundDetailsProps = {
   knowledgebaseId: string | string[];
+};
+
+const marks: SliderSingleProps["marks"] = {
+  0.5: "0.5",
+  1: "1",
 };
 
 const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
@@ -107,9 +115,9 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
       setChunkLoading(true);
 
       const payload = {
+        ...values,
         vector_db_name: knowledgebaseConfig?.result?.[0]?.vector_db,
         embed_model_name: knowledgebaseConfig?.result?.[0]?.embed_model_name,
-        query_str: values?.chunkText,
         user_id: session?.user?.details?.id,
         username: session?.user?.details?.name,
         collection_name: knowledgebaseConfig?.result?.[0]?.name,
@@ -139,6 +147,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
         KbPlaygroundResponse,
       );
     } catch (error) {
+      console.log("🚀 ~ getChunks ~ error:", error);
       setChunks([]);
       setChunkNotFound(true);
       notification.error({
@@ -172,7 +181,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
     >
       <Row justify="start" gutter={[48, 24]}>
         <Col span={24} md={{ span: 12 }}>
-          <Form form={form} onFinish={getChunks}>
+          <Form form={form} onFinish={getChunks} layout="vertical">
             <KbChatConfigContainer>
               <KbChatConfigHeading>
                 <Title>
@@ -190,7 +199,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                 <KbInputTopTitleContainer>
                   <KbInputTopTitle>Source Text</KbInputTopTitle>
                 </KbInputTopTitleContainer>
-                <Form.Item name="chunkText" noStyle>
+                <Form.Item name="query_str" noStyle>
                   <TextArea
                     placeholder="Type your message here..."
                     autoSize={{ minRows: 12, maxRows: 12 }}
@@ -204,6 +213,32 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
                   />
                 </Form.Item>
               </KbInputContainer>
+              <Row>
+                <Col span={24}>
+                  <Row gutter={[12, 12]}>
+                    <Col flex={1}>
+                      <Form.Item name="threshold" label="Similarity Threshold">
+                        <Slider min={0.5} max={1} step={0.01} marks={marks} />
+                      </Form.Item>
+                    </Col>
+                    <Col>
+                      <Form.Item name="threshold" label="">
+                        <InputNumber
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          style={{ marginTop: "30px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={24}>
+                  <Form.Item name="topK" label="Top K Results">
+                    <InputNumber style={{ width: "100%" }} step={1} min={0} />
+                  </Form.Item>
+                </Col>
+              </Row>
               <Flex justify="flex-end">
                 <Form.Item noStyle>
                   <Button htmlType="submit" type="primary">

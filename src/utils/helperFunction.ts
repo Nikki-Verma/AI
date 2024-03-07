@@ -26,9 +26,11 @@ export const getErrorFromApi = (
     return res;
   }
   if (res?.response) {
-    const error = res?.response?.data?.message
-      ? res?.response?.data?.message
-      : res?.response?.data?.error?.message;
+    const error = res?.response?.data?.detail
+      ? res?.response?.data?.detail
+      : res?.response?.data?.message
+        ? res?.response?.data?.message
+        : res?.response?.data?.error?.message;
     if (error) return error;
   }
 
@@ -36,12 +38,7 @@ export const getErrorFromApi = (
     const error = res?.data?.error?.message;
     if (error) return error;
   }
-  if (res?.data?.detail) {
-    return res?.data?.detail;
-  }
-  if (res?.detail) {
-    return res?.detail;
-  }
+
   return res?.message || defaultMessage;
 };
 
