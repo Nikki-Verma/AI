@@ -47,6 +47,14 @@ export const getErrorFromApi = (
   return res?.message || defaultMessage;
 };
 
+export const getFilters = (filters: any) => {
+  const filtersObj: any = {};
+  Object.entries(filters).forEach(([key, value]: any) => {
+    filtersObj[key] = value?.[0];
+  });
+  return filtersObj;
+};
+
 // Find a way to use the meta deta content and normal content
 // export const getHtmlFromMarkdown = async (content: string) => {
 //   const matterResult = matter(content);
