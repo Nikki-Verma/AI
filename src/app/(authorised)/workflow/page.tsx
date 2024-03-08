@@ -6,9 +6,9 @@ import {
   WorkflowStatusType,
 } from "@/app/(authorisedHeaderLayout)/workflow/constant";
 import CreateWorkflowModal from "@/components/CreateWorkflowModal";
-import EmptyUpload from "@/components/EmptyUpload";
 import PageHeading from "@/components/PageHeading";
 import SaDate from "@/components/SaDate/Index";
+import TableEmptyData from "@/components/TableEmptyData";
 import Tags from "@/components/Tags";
 import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
@@ -70,11 +70,8 @@ const Workflow = () => {
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
 
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.workflow.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    useFetchData(config.workflow.list, { ...filters }, {});
 
   useEffect(() => {
     updatePageConfig({
@@ -466,20 +463,29 @@ const Workflow = () => {
           </Col>
         </Row>
       )}
-      {!isError && !data?.result?.length && !isLoading && (
-        <EmptyUpload
-          buttonText="Create Workflow"
-          message="You do not have any workflows yet"
-          onClick={toggleCreateWorkflowHandler}
-        />
-      )}
-      {!isError && (isLoading || !!data?.result?.length) && (
+      {!isError && (
         <>
           <Table
+            locale={{
+              emptyText() {
+                return (
+                  <TableEmptyData
+                    message="You do not have any workflows yet"
+                    showEmpty={
+                      !!(
+                        data?.result?.length < 1 &&
+                        !isLoading &&
+                        !isRefetching
+                      )
+                    }
+                  />
+                );
+              },
+            }}
             columns={columns}
             dataSource={data?.result || []}
             rowKey={(data: any) => data?.pipeline_id}
-            loading={isLoading}
+            loading={isLoading || isRefetching}
             scroll={{
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,
