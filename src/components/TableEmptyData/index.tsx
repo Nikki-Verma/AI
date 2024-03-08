@@ -15,19 +15,17 @@ const TableEmptyData = ({
   showEmpty = true,
 }: TableEmptyDataProps) => {
   return (
-    <>
+    <TableEmptyContainer>
       {showEmpty ? (
-        <TableEmptyContainer>
-          <EmptyUpload
-            buttonText={buttonText}
-            message={message}
-            onClick={onClick}
-          />
-        </TableEmptyContainer>
+        <EmptyUpload
+          buttonText={buttonText}
+          message={message}
+          onClick={onClick}
+        />
       ) : (
         <TableLoadingContainer />
       )}
-    </>
+    </TableEmptyContainer>
   );
 };
 
