@@ -48,6 +48,7 @@ const ImportDatasetFilesConfig = ({
 }: ImportDatasetFilesConfigProps) => {
   console.log("🚀 ~ selectedRowKeys:", selectedRowKeys);
   console.log("🚀 ~ setSelectedRowDetails:", selectedRowDetails);
+
   const { data: session }: any = useSession();
   const [formUpdated, setFormUpdated] = useState(false);
   const [chunkLoading, setChunkLoading] = useState(false);
@@ -114,6 +115,7 @@ const ImportDatasetFilesConfig = ({
           onFinish={addFilesToDataset}
           layout="vertical"
           disabled={chunkLoading}
+          initialValues={{ chunk_setting: "AUTOMATIC" }}
           onValuesChange={() => setFormUpdated((prev: boolean) => !prev)}
         >
           <Row gutter={[20, 0]} justify="end">
