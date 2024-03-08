@@ -16,7 +16,7 @@ export const BASE_URLS = {
   rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
   agent: __AGENT_BASE_URL__,
-  intract: __INTRACT_BASE_URL__,
+  intract: `${__EDGE_URL__}${__INTRACT_BASE_URL__}`,
 };
 
 const config = {

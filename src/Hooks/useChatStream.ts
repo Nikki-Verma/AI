@@ -1,5 +1,13 @@
 import { initiateConversationApi } from "@/api/intract";
-import { X_SELLER_ID, X_SELLER_PROFILE_ID, X_USER_ID } from "@/utils/constants";
+import {
+  PIM_SID,
+  X_CLIENT_ID,
+  X_DEVICE_ID,
+  X_SELLER_ID,
+  X_SELLER_PROFILE_ID,
+  X_TENANT_ID,
+  X_USER_ID,
+} from "@/utils/constants";
 import { decodeStreamToJson, getChatDetails, getStream } from "@/utils/stream";
 import { UnknownObject } from "@/utils/types";
 import { useSession } from "next-auth/react";
@@ -138,6 +146,10 @@ const useChatStream = (input: UseChatStreamInput) => {
         [X_USER_ID]: data?.user?.details?.id,
         [X_SELLER_ID]: data?.user?.details?.id,
         [X_SELLER_PROFILE_ID]: data?.user?.details?.id,
+        [X_TENANT_ID]: data?.user?.details?.tenantId,
+        [PIM_SID]: data?.accessToken,
+        [X_DEVICE_ID]: "armaze-web",
+        [X_CLIENT_ID]: data?.user?.details?.id,
       });
       if (!stream) throw new Error();
 
