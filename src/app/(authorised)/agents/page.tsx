@@ -436,7 +436,6 @@ const Agents = () => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: "24px",
         }}
       >
         <PageHeading
