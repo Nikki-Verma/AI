@@ -132,13 +132,17 @@ const DatasetList = () => {
       };
 
       const datasetResponse = await createDatasetApi({ payload });
+      console.log(
+        "🚀 ~ createDatasetHandler ~ datasetResponse:",
+        datasetResponse,
+      );
 
       if (datasetResponse?.status === 200) {
         setCreateDatasetOpen(false);
         notification.success({
           message: "Dataset created successfully",
         });
-        refetch();
+        router.push(`/dataset/${datasetResponse?.data?.result?.id}`);
       }
     } catch (error) {
       notification.error({
