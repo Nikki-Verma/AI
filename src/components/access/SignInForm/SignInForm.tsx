@@ -3,15 +3,14 @@
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, notification, Row, Space } from "antd";
+import { Button, Col, Form, Input, notification, Row } from "antd";
 import useToken from "antd/es/theme/useToken";
 import { signIn, useSession } from "next-auth/react";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import uiStyles from "../../UIComponents/ui.module.scss";
+// import uiStyles from "../../UIComponents/ui.module.scss";
 import styles from "../access.module.scss";
 const { Item } = Form;
 
@@ -112,25 +111,25 @@ const SignInForm = () => {
               </Item>
             </Col>
           </Row>
-          <div
+          {/* <div
             className={styles.forgot_password_container}
             onClick={() => {
               setShowResetPassword(true);
             }}
           >
             Forgot your password?
-          </div>
+          </div> */}
           <Item noStyle>
             <Button
               type="primary"
-              style={{ width: "100%", margin: "28px 0px", height: "45px" }}
+              style={{ width: "100%", margin: "12px 0", height: "45px" }}
               htmlType="submit"
               loading={loading}
             >
               Log in
             </Button>
           </Item>
-
+          {/* 
           <Button
             type="default"
             style={{ width: "100%", marginBottom: "16px", height: "45px" }}
@@ -163,7 +162,7 @@ const SignInForm = () => {
             >
               Sign up
             </Link>
-          </div>
+          </div> */}
         </Form>
       ) : (
         <Form
