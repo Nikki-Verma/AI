@@ -3,7 +3,7 @@
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, notification, Row } from "antd";
+import { Button, Col, Form, Input, notification, Row, Space } from "antd";
 import useToken from "antd/es/theme/useToken";
 import { signIn, useSession } from "next-auth/react";
 
@@ -70,7 +70,23 @@ const SignInForm = () => {
             className={styles.main_heading}
             style={{ color: token.colorPrimary }}
           >
-            SimplAI
+            <Space align="center">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Image
+                  src={"/assets/Logos/simplaiLogo.svg"}
+                  alt="google"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              SimplAI
+            </Space>
           </div>
           <div className={styles.form_heading}>Sign in to your account</div>
           <Row gutter={[20, 0]}>
