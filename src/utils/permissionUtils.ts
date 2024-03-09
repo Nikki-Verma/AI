@@ -6,6 +6,7 @@ export const validatePermission = (
   userPermissions: string[] = [],
   permissionType: Permissions_Types,
 ): boolean => {
+  console.log("🚀 ~ userPermissions:", userPermissions);
   if (userPermissions?.includes("SUPER_ADMIN")) {
     return true;
   }
