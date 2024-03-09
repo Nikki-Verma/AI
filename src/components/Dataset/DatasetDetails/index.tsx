@@ -529,7 +529,7 @@ const DatasetDetails = (props: any) => {
               dataSource={data?.result || []}
               rowSelection={rowSelection}
               rowKey={(data: any) => data?.id}
-              loading={isLoading}
+              loading={isLoading || isRefetching}
               scroll={{
                 x: "max-content",
                 y: data?.result?.length > 0 ? 600 : undefined,

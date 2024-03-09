@@ -3,9 +3,9 @@ import {
   deleteKnowledgebaseFilesApi,
 } from "@/api/knowledgebase";
 import { DeleteDatasetFileButton } from "@/components/Dataset/DatasetDetails/style";
-import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
 import SaDate from "@/components/SaDate/Index";
+import TableEmptyData from "@/components/TableEmptyData";
 import Tags from "@/components/Tags";
 import {
   PageAbout,
@@ -84,11 +84,12 @@ const KnowledgeBaseDetails = (props: any) => {
   // const [addFilesLoading, setAddFilesLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [displayKbSettings, setDisplayKbSettings] = useState(false);
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.knowledgebase.files,
-    { ...filters, knowledgebase_id: knowledgebaseId },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(
+      config.knowledgebase.files,
+      { ...filters, knowledgebase_id: knowledgebaseId },
+      {},
+    );
 
   const {
     data: knowledgebaseConfig,
@@ -358,44 +359,9 @@ const KnowledgeBaseDetails = (props: any) => {
           <PageAbout>{knowledgebaseConfig?.result?.[0]?.description}</PageAbout>
         </Col>
       </Row>
-      {/* TODO: Follow this pattern everywhere for loader/error/data */}
-      {isError && (
-        <Row justify="center">
-          <Col>
-            <Result
-              status="500"
-              title={getErrorFromApi(error)}
-              subTitle="Please refresh or comeback in sometime"
-            />
-          </Col>
-        </Row>
-      )}
-      {!isError && !data?.document_details?.length && !isLoading && (
-        <>
-          {/* <Row justify="end">
-            <Col>
-              <Button
-                size="middle"
-                type="default"
-                icon={<SettingOutlined />}
-                onClick={toggleKbSettings}
-              >
-                Setting
-              </Button>
-            </Col>
-          </Row> */}
-          <EmptyUpload
-            buttonText="Add files from dataset"
-            message="The knowledgebase is empty"
-            onClick={toggleAddFileModal}
-          />
-        </>
-      )}
-      {!isError && (isLoading || !!data?.document_details?.length) && (
-        <>
-          <Row justify="space-between" align="middle">
-            <Col span={24} sm={6} md={4}>
-              {/* <Input
+      <Row justify="space-between" align="middle">
+        <Col span={24} sm={6} md={4}>
+          {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
                 value={searchValue}
@@ -407,28 +373,28 @@ const KnowledgeBaseDetails = (props: any) => {
                   console.log("enter pressed")
                 }
               /> */}
-            </Col>
-            <Col>
-              <Space size="middle" align="center">
-                <Button
-                  size="middle"
-                  type="primary"
-                  icon={<CloudDownloadOutlined />}
-                  onClick={toggleAddFileModal}
-                >
-                  Import from Dataset
-                </Button>
-                <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
-                  <Button
-                    size="middle"
-                    type="default"
-                    icon={<AimOutlined />}
-                    disabled={retrievalDisabled}
-                  >
-                    Retrieval Testing
-                  </Button>
-                </Link>
-                {/* <Button
+        </Col>
+        <Col>
+          <Space size="middle" align="center">
+            <Button
+              size="middle"
+              type="primary"
+              icon={<CloudDownloadOutlined />}
+              onClick={toggleAddFileModal}
+            >
+              Import from Dataset
+            </Button>
+            <Link href={`/knowledge-base/${knowledgebaseId}/playground`}>
+              <Button
+                size="middle"
+                type="default"
+                icon={<AimOutlined />}
+                disabled={retrievalDisabled}
+              >
+                Retrieval Testing
+              </Button>
+            </Link>
+            {/* <Button
                   size="middle"
                   type="default"
                   icon={<SettingOutlined />}
@@ -436,29 +402,60 @@ const KnowledgeBaseDetails = (props: any) => {
                 >
                   Setting
                 </Button> */}
-              </Space>
-            </Col>
-          </Row>
-          <Table
-            columns={columns}
-            dataSource={data?.document_details || []}
-            // rowSelection={rowSelection}
-            rowKey={(data: any) => data?.id}
-            loading={isLoading}
-            scroll={{
-              x: "max-content",
-              y: data?.document_details?.length > 0 ? 600 : undefined,
-            }}
-            pagination={{
-              hideOnSinglePage: true,
-              current: +filters?.page + 1,
-              pageSize: +filters?.size,
-              total: data?.total_elements,
-              showSizeChanger: true,
-            }}
-            onChange={tableChangeHandler}
-          />
-        </>
+          </Space>
+        </Col>
+      </Row>
+      {isError && (
+        <Row justify="center">
+          <Col>
+            <Result
+              status="500"
+              title={getErrorFromApi(error)}
+              subTitle="Please refresh or comeback in sometime"
+            />
+          </Col>
+        </Row>
+      )}
+      {!isError && (
+        <Row>
+          <Col span={24}>
+            <Table
+              locale={{
+                emptyText() {
+                  return (
+                    <TableEmptyData
+                      message="The knowledgebase is empty"
+                      showEmpty={
+                        !!(
+                          data?.document_details?.length < 1 &&
+                          !isLoading &&
+                          !isRefetching
+                        )
+                      }
+                    />
+                  );
+                },
+              }}
+              columns={columns}
+              dataSource={data?.document_details || []}
+              // rowSelection={rowSelection}
+              rowKey={(data: any) => data?.id}
+              loading={isLoading || isRefetching}
+              scroll={{
+                x: "max-content",
+                y: data?.document_details?.length > 0 ? 600 : undefined,
+              }}
+              pagination={{
+                hideOnSinglePage: true,
+                current: +filters?.page + 1,
+                pageSize: +filters?.size,
+                total: data?.total_elements,
+                showSizeChanger: true,
+              }}
+              onChange={tableChangeHandler}
+            />
+          </Col>
+        </Row>
       )}
       <ImportFilesFromDatasetModal
         title="Import files from dataset"
