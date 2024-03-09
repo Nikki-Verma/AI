@@ -4,6 +4,7 @@ import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { Col, Divider, Result, Row } from "antd";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import DescriptionList, { DescriptionItemType } from "../DescriptionList";
 import {
@@ -39,9 +40,13 @@ const PlaygroundWorkflowConfiguration = ({
   selectedChatConfigDetails,
   setSelectedChatConfigDetails,
 }: PlaygroundWorkflowConfigurationProps) => {
+  const { data: session }: any = useSession();
+
   console.log("🚀 ~ selectedChatConfigDetails:", selectedChatConfigDetails);
   const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.workflow.list,
+    session?.user?.permissions?.includes?.("ADMIN")
+      ? config.workflow.listAll
+      : config.workflow.list,
     { page: DEFAULT_PAGE, size: ALL_DATA_PAGE_SIZE },
     {},
   );

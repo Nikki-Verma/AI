@@ -71,7 +71,13 @@ const Agents = () => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   console.log("🚀 ~ Workflow ~ filters:", filters);
   const { data, isLoading, isRefetching, isError, error, refetch } =
-    useFetchData(config.agents.list, { ...filters }, {});
+    useFetchData(
+      session?.user?.permissions?.includes?.("ADMIN")
+        ? config.agents.listAll
+        : config.agents.list,
+      { ...filters },
+      {},
+    );
 
   useEffect(() => {
     updatePageConfig({

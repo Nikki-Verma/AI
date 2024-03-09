@@ -4,6 +4,7 @@ import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { Col, Divider, Result, Row } from "antd";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import DescriptionList, { DescriptionItemType } from "../DescriptionList";
 import { AgentSelect, PlaygroundAgentConfigurationContainer } from "./style";
@@ -37,8 +38,11 @@ const PlaygroundAgentConfiguration = ({
   setSelectedChatConfigDetails,
 }: PlaygroundAgentConfigurationProps) => {
   console.log("🚀 ~ selectedChatConfigDetails:", selectedChatConfigDetails);
+  const { data: session }: any = useSession();
   const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.agents.list,
+    session?.user?.permissions?.includes?.("ADMIN")
+      ? config.agents.listAll
+      : config.agents.list,
     { page: DEFAULT_PAGE, size: ALL_DATA_PAGE_SIZE },
     {},
   );

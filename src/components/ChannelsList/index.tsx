@@ -20,6 +20,7 @@ import {
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { ChannelTableDetails } from "../IntegrateChannelModal/helper";
 import SaDate from "../SaDate/Index";
@@ -64,20 +65,28 @@ const ChannelsList = ({
 }: ChannelsListProps) => {
   const [filters, setFilters] = useState(initialFilters());
 
+  const { data: session }: any = useSession();
+  console.log("🚀 ~ session:", session?.user?.permissions);
+
   const {
     data: ChannelData,
     isLoading,
     isError,
     error,
     refetch,
-  } = useFetchData(config.integrate.channels, {
-    pipelineIdOrModelId:
-      pageType === CHANNEL_PAGE_TYPE.MODEL
-        ? userModelId
-        : pageType === CHANNEL_PAGE_TYPE.WORKFLOW
-          ? workflowId
-          : agentId,
-  });
+  } = useFetchData(
+    session?.user?.permissions?.includes?.("ADMIN")
+      ? config.integrate.allChannels
+      : config.integrate.channels,
+    {
+      pipelineIdOrModelId:
+        pageType === CHANNEL_PAGE_TYPE.MODEL
+          ? userModelId
+          : pageType === CHANNEL_PAGE_TYPE.WORKFLOW
+            ? workflowId
+            : agentId,
+    },
+  );
 
   useEffect(() => {
     refetch();

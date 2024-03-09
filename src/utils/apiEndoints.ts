@@ -61,6 +61,7 @@ const config = {
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
+    listAll: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline/all`,
     details: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,
@@ -68,6 +69,7 @@ const config = {
   },
   agents: {
     list: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
+    listAll: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline/all`,
     details: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     create: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
     update: `${BASE_URLS.channelAggregator}/api/v1/agent-pipeline`,
@@ -103,6 +105,7 @@ const config = {
   },
   integrate: {
     channels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,
+    allChannels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel/all`,
     create: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,
   },
 };

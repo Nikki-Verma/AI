@@ -16,6 +16,7 @@ import {
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -32,14 +33,20 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 const IntegrationAgentsList = () => {
   const router = useRouter();
   const [filters, setFilters] = useState(initialFilters());
+  const { data: session }: any = useSession();
   const {
     data: deployedAgents,
     isLoading,
     isError,
     error,
-  } = useFetchData(config.agents.list, {
-    ...filters,
-  });
+  } = useFetchData(
+    session?.user?.permissions?.includes?.("ADMIN")
+      ? config.agents.listAll
+      : config.agents.list,
+    {
+      ...filters,
+    },
+  );
 
   useEffect(() => {
     router.prefetch(`/agents`);
