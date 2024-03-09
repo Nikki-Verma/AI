@@ -72,7 +72,7 @@ const Agents = () => {
   console.log("🚀 ~ Workflow ~ filters:", filters);
   const { data, isLoading, isRefetching, isError, error, refetch } =
     useFetchData(
-      session?.user?.permissions?.includes?.("ADMIN")
+      session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
         ? config.agents.listAll
         : config.agents.list,
       { ...filters },

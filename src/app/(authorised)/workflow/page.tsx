@@ -72,7 +72,7 @@ const Workflow = () => {
 
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useFetchData(
-      session?.user?.permissions?.includes?.("ADMIN")
+      session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
         ? config.workflow.listAll
         : config.workflow.list,
       { ...filters },

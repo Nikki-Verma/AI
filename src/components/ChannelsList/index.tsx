@@ -75,7 +75,7 @@ const ChannelsList = ({
     error,
     refetch,
   } = useFetchData(
-    session?.user?.permissions?.includes?.("ADMIN")
+    session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
       ? config.integrate.allChannels
       : config.integrate.channels,
     {

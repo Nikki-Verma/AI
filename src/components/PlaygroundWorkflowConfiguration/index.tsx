@@ -44,7 +44,7 @@ const PlaygroundWorkflowConfiguration = ({
 
   console.log("🚀 ~ selectedChatConfigDetails:", selectedChatConfigDetails);
   const { data, isLoading, isError, error, refetch } = useFetchData(
-    session?.user?.permissions?.includes?.("ADMIN")
+    session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
       ? config.workflow.listAll
       : config.workflow.list,
     { page: DEFAULT_PAGE, size: ALL_DATA_PAGE_SIZE },

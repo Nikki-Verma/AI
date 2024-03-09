@@ -40,7 +40,7 @@ const IntegrationWorkflowsList = () => {
     isError,
     error,
   } = useFetchData(
-    session?.user?.permissions?.includes?.("ADMIN")
+    session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
       ? config.workflow.listAll
       : config.workflow.list,
     {
