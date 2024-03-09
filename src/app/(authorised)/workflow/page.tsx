@@ -174,19 +174,19 @@ const Workflow = () => {
         <Link href={`/workflow/view/${data?.pipeline_id}`}>{val}</Link>
       ),
     },
-    {
-      title: "Description",
-      dataIndex: "pipeline_description",
-      key: "pipeline_description",
-      width: 200,
-      render: (val: any) => (
-        <Tooltip title={val}>
-          <Text ellipsis style={{ width: 200 }}>
-            {val || "--"}
-          </Text>
-        </Tooltip>
-      ),
-    },
+    // {
+    //   title: "Description",
+    //   dataIndex: "pipeline_description",
+    //   key: "pipeline_description",
+    //   width: 200,
+    //   render: (val: any) => (
+    //     <Tooltip title={val}>
+    //       <Text ellipsis style={{ width: 200 }}>
+    //         {val || "--"}
+    //       </Text>
+    //     </Tooltip>
+    //   ),
+    // },
     {
       title: "Status",
       dataIndex: "pipeline_state",
@@ -223,19 +223,6 @@ const Workflow = () => {
       ),
     },
     {
-      title: "Model Version",
-      dataIndex: "model_detail",
-      key: "model_version",
-      width: 150,
-      render: (val: any) => (
-        <Tooltip title={val?.model_version}>
-          <Text ellipsis style={{ width: 150 }}>
-            {val?.model_version || "--"}
-          </Text>
-        </Tooltip>
-      ),
-    },
-    {
       title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb_name",
@@ -248,6 +235,20 @@ const Workflow = () => {
         </Tooltip>
       ),
     },
+    {
+      title: "Model Version",
+      dataIndex: "model_detail",
+      key: "model_version",
+      width: 150,
+      render: (val: any) => (
+        <Tooltip title={val?.model_version}>
+          <Text ellipsis style={{ width: 150 }}>
+            {val?.model_version || "--"}
+          </Text>
+        </Tooltip>
+      ),
+    },
+
     // {
     //   title: "Knowledge base version",
     //   dataIndex: "kb",

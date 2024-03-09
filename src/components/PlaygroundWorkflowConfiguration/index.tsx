@@ -106,7 +106,9 @@ const PlaygroundWorkflowConfiguration = ({
 
       {selectedChatConfigDetails && (
         <>
-          <Divider orientation="left">Workflow Details</Divider>
+          <Divider orientationMargin="0" orientation="left">
+            Details
+          </Divider>
           <DescriptionList
             columns={WorkflowDetailColumns}
             data={selectedChatConfigDetails || {}}
