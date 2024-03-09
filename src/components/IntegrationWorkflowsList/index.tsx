@@ -42,7 +42,7 @@ const IntegrationWorkflowsList = () => {
   });
 
   useEffect(() => {
-    router.prefetch(`/workspace`);
+    router.prefetch(`/workflow`);
     router.prefetch(`/integration/workflow/[workflowId]`);
   }, []);
 
@@ -183,11 +183,11 @@ const IntegrationWorkflowsList = () => {
     return (
       <Result
         status={403}
-        title="No deployed models available"
+        title="No published workflows available"
         extra={
-          <Link href={`/workspace`}>
+          <Link href={`/workflow`}>
             <Button type="primary" icon={<DeployIcon />}>
-              Deploy Models
+              Create Workflows
             </Button>
           </Link>
         }

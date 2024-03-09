@@ -183,7 +183,7 @@ const IntegrationAgentsList = () => {
         extra={
           <Link href={`/agents`}>
             <Button type="primary" icon={<DeployIcon />}>
-              Publish models
+              Create Agents
             </Button>
           </Link>
         }

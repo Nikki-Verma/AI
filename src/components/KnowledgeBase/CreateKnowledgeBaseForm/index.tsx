@@ -21,7 +21,7 @@ import {
   Space,
   Typography,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { embeddingModelsOptions, vectorDbOptions } from "./constant";
 import {
   CustomFieldsContainer,
@@ -49,6 +49,7 @@ interface CreateKnowledgeBaseFormProps {
   type?: createTypeEnum;
   mode?: PageModeEnum;
   kbDetails?: UnknownObject;
+  inputref?: any;
 }
 
 export enum createTypeEnum {
@@ -69,9 +70,13 @@ const CreateKnowledgeBaseForm = ({
   type = KnowledgeBaseCreateType.ADD_AND_UPDATE,
   mode = PAGE_MODE.CREATE,
   kbDetails = {},
+  inputref,
 }: CreateKnowledgeBaseFormProps) => {
+  const knowledgebaseInputRef = useRef<any>();
+
   const [formUpdated, setFormUpdated] = useState(false);
   const kbSetting = Form.useWatch("kb_setting", form);
+
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
       console.log("knowledgee base details", kbDetails);
@@ -122,6 +127,10 @@ const CreateKnowledgeBaseForm = ({
     }
   }, [mode, kbSetting]);
 
+  useEffect(() => {
+    knowledgebaseInputRef?.current?.focus?.();
+  }, []);
+
   return (
     <Form
       form={form}
@@ -152,7 +161,10 @@ const CreateKnowledgeBaseForm = ({
               },
             ]}
           >
-            <Input placeholder="Enter knowledge base name" />
+            <Input
+              ref={knowledgebaseInputRef}
+              placeholder="Enter knowledge base name"
+            />
           </Form.Item>
         </Col>
         <Col span={24} md={12}>

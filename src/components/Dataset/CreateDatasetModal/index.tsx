@@ -2,6 +2,7 @@
 
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { useRef } from "react";
 
 interface CreateDatasetModalProps {
   open: boolean;
@@ -19,6 +20,7 @@ const CreateDatasetModal = ({
   createDatasetHandler,
 }: CreateDatasetModalProps) => {
   const [form] = useForm();
+  const datasetInputRef = useRef<any>();
 
   return (
     <Modal
@@ -34,6 +36,7 @@ const CreateDatasetModal = ({
       maskClosable={false}
       destroyOnClose
       closable
+      afterOpenChange={(open) => open && datasetInputRef?.current?.focus?.()}
       footer={
         <Row justify="space-between">
           <Col>
@@ -77,7 +80,7 @@ const CreateDatasetModal = ({
             },
           ]}
         >
-          <Input placeholder="Enter dataset name" />
+          <Input ref={datasetInputRef} placeholder="Enter dataset name" />
         </Form.Item>
         <Form.Item name="dataset_description" label="Dataset description">
           <Input placeholder="A short description of data collection set (Optional)" />

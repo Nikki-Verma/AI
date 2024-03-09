@@ -4,7 +4,7 @@ import { PAGE_MODE } from "@/utils/constants";
 import { PageModeEnum } from "@/utils/types";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CreateAgentflowModalProps {
   open: boolean;
@@ -27,8 +27,9 @@ const CreateAgentModal = ({
   const [form] = useForm();
   const [formUpdated, setFormUpdated] = useState(false);
 
+  const agentInputRef = useRef<any>();
+
   const agentName = Form.useWatch("agent_name", form);
-  console.log("🚀 ~ agentName:", agentName);
 
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
@@ -48,8 +49,6 @@ const CreateAgentModal = ({
     }
     setFormUpdated((prev: boolean) => !prev);
   }, [mode, open]);
-
-  console.log("agent form details", form.getFieldsValue());
 
   return (
     <Modal
@@ -101,6 +100,7 @@ const CreateAgentModal = ({
           </Col>
         </Row>
       }
+      afterOpenChange={(open) => open && agentInputRef?.current?.focus?.()}
     >
       <Form
         form={form}
@@ -118,7 +118,7 @@ const CreateAgentModal = ({
             },
           ]}
         >
-          <Input placeholder="Enter agent name" />
+          <Input ref={agentInputRef} placeholder="Enter agent name" />
         </Form.Item>
         <Form.Item name="agent_description" label="Agent description">
           <Input.TextArea

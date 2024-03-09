@@ -4,7 +4,7 @@ import { PAGE_MODE } from "@/utils/constants";
 import { PageModeEnum } from "@/utils/types";
 import { Button, Col, Form, Input, Modal, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface CreateWorkflowModalProps {
   open: boolean;
@@ -25,7 +25,7 @@ const CreateWorkflowModal = ({
 }: CreateWorkflowModalProps) => {
   console.log("🚀 ~ workflowDetails:", workflowDetails);
   const [form] = useForm();
-
+  const workflowInputRef = useRef<any>();
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
       form.setFields([
@@ -63,6 +63,7 @@ const CreateWorkflowModal = ({
       maskClosable={false}
       destroyOnClose
       closable
+      afterOpenChange={(open) => open && workflowInputRef?.current?.focus?.()}
       footer={
         <Row justify="space-between">
           <Col>
@@ -111,7 +112,7 @@ const CreateWorkflowModal = ({
             },
           ]}
         >
-          <Input placeholder="Enter workflow name" />
+          <Input ref={workflowInputRef} placeholder="Enter workflow name" />
         </Form.Item>
         <Form.Item name="pipeline_description" label="Workflow description">
           <Input.TextArea
