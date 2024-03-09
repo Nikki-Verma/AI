@@ -104,7 +104,9 @@ const PlaygroundAgentConfiguration = ({
 
       {selectedChatConfigDetails && (
         <>
-          <Divider orientation="left">Workflow Details</Divider>
+          <Divider orientationMargin="0" orientation="left">
+            Details
+          </Divider>
           <DescriptionList
             columns={AgentDetailColumns}
             data={selectedChatConfigDetails || {}}
