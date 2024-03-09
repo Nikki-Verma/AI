@@ -66,9 +66,6 @@ export const authOptions: AuthOptions = {
           const response = await _unauthHttp.get(
             config.identity.createSession,
             {
-              params: {
-                isSessionRefreshBufferAvailable: true,
-              },
               headers: {
                 "Refresh-Token": token?.refreshToken,
                 "Grant-Type": "REFRESH_TOKEN",
