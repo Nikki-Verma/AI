@@ -44,6 +44,17 @@ const PlaygroundAgentConfiguration = ({
   );
 
   console.log("🚀 ~ data:", data);
+
+  useEffect(() => {
+    if (data && !selectedChatConfigId) {
+      const newSelectedWorkflow = data?.result?.[0] ?? undefined;
+      if (newSelectedWorkflow) {
+        setSelectedChatConfigDetails(newSelectedWorkflow);
+        setSelectedChatConfigId(newSelectedWorkflow?.agent_id);
+      }
+    }
+  }, [data, selectedChatConfigId]);
+
   useEffect(() => {
     if (!!selectedChatConfigId && !selectedChatConfigDetails) {
       const selectedAgent = data?.result?.find(

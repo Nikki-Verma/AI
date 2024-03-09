@@ -47,6 +47,16 @@ const PlaygroundWorkflowConfiguration = ({
   );
 
   useEffect(() => {
+    if (data && !selectedChatConfigId) {
+      const newSelectedWorkflow = data?.result?.[0] ?? undefined;
+      if (newSelectedWorkflow) {
+        setSelectedChatConfigDetails(newSelectedWorkflow);
+        setSelectedChatConfigId(newSelectedWorkflow?.pipeline_id);
+      }
+    }
+  }, [data, selectedChatConfigId]);
+
+  useEffect(() => {
     if (!!selectedChatConfigId && !selectedChatConfigDetails) {
       const selectedWorkflow = data?.result?.find(
         (workflow: any) => workflow?.pipeline_id === selectedChatConfigId,
