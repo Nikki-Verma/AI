@@ -28,7 +28,7 @@ import InviteUser from "./inviteUser";
 import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
 import { useNotify } from "@/providers/notificationProvider";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
-import { getFilters } from "@/utils/helperFunction";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
@@ -133,7 +133,7 @@ const ManageUsers = () => {
     } catch (error) {
       notification.error({
         message: "Error while changing status",
-        //description: getErrorFromApi(error),
+        description: getErrorFromApi(error),
       });
       console.log(error);
     } finally {
@@ -189,7 +189,7 @@ const ManageUsers = () => {
 
         return (
           <>
-            <span onClick={changeStatusHandler}>
+            <span onClick={changeStatusHandler} style={{cursor: "pointer"}}>
               <Tags tag={tags ? "Active" : "Deactivated"} />
             </span>
             <Dropdown menu={{ items: actionsItems }} placement="bottomLeft">
