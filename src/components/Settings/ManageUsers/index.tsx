@@ -8,6 +8,7 @@ import {
   Row,
   Space,
   Table,
+  TablePaginationConfig,
   TableProps,
   Tag,
 } from "antd";
@@ -26,6 +27,8 @@ import Tags from "@/components/Tags";
 import InviteUser from "./inviteUser";
 import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
 import { useNotify } from "@/providers/notificationProvider";
+import { FilterValue, SorterResult } from "antd/es/table/interface";
+import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
@@ -130,7 +133,7 @@ const ManageUsers = () => {
     } catch (error) {
       notification.error({
         message: "Error while changing status",
-        //description: getErrorFromApi(error),
+        description: getErrorFromApi(error),
       });
       console.log(error);
     } finally {
@@ -186,7 +189,7 @@ const ManageUsers = () => {
 
         return (
           <>
-            <span onClick={changeStatusHandler}>
+            <span onClick={changeStatusHandler} style={{cursor: "pointer"}}>
               <Tags tag={tags ? "Active" : "Deactivated"} />
             </span>
             <Dropdown menu={{ items: actionsItems }} placement="bottomLeft">
@@ -215,6 +218,29 @@ const ManageUsers = () => {
     },
   ];
 
+  const tableChangeHandler = (
+    pagination: TablePaginationConfig,
+    Filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<any> | SorterResult<any>[],
+    extra: any,
+  ) => {
+    if (pagination?.current === +filters.page + 1) {
+      setFilters((prevFilters: any) => ({
+        ...prevFilters,
+        ...getFilters(Filters),
+        page: DEFAULT_PAGE,
+        size: pagination?.pageSize,
+      }));
+    } else {
+      setFilters((state: any) => ({
+        ...state,
+        ...getFilters(Filters),
+        page: (pagination?.current ?? 1) - 1,
+        size: pagination?.pageSize,
+      }));
+    }
+  };
+
   return (
     <>
       <PageContainer>
@@ -235,25 +261,29 @@ const ManageUsers = () => {
         {!isError && (isLoading || !data?.result?.length) && (
           <Table
             pagination={{
+              hideOnSinglePage: true,
               current: filters?.page + 1,
               pageSize: filters?.size,
+              showSizeChanger: false,
             }}
             columns={columns}
             loading={isLoading}
             scroll={{
               x: "max-content",
-              y: data?.result?.length > 0 ? 600 : undefined,
+              y: data?.result?.users?.length > 0 ? 600 : undefined,
             }}
             dataSource={data?.result?.users || []}
+            onChange={tableChangeHandler}
           ></Table>
         )}
       </PageContainer>
-      {console.log(intiveDataUser, "intiveDataUserintiveDataUser")}
+      {/* {console.log(intiveDataUser, "intiveDataUserintiveDataUser")} */}
       {intiveDataUser && (
         <InviteUser
           open={intiveDataUser}
           inviteDataUser={inviteDataUser}
           onClose={toggleAddFileModal}
+          refetchUser={refetch}
         ></InviteUser>
       )}
       <CreateDatasetModal

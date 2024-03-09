@@ -13,7 +13,10 @@ import {
   GetProp,
   CheckboxProps,
   CollapseProps,
+  InputNumber,
+  Typography,
 } from "antd";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import React from "react";
 import {
@@ -30,15 +33,21 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
 import { useNotify } from "@/providers/notificationProvider";
+import { generateEncryptedPassword, getErrorFromApi } from "@/utils/helperFunction";
+import JSEncrypt from "jsencrypt";
+import _unauthHttp from "@/services/_unauthHttp";
+import InfoIconTooltip from "@/components/InfoIconTooltip";
+import { passwordPattern } from "@/utils/regex";
+const { Text } = Typography;
 
 type InviteUserProps = {
   open: boolean;
   onClose: () => void;
   inviteDataUser?: any;
+  refetchUser: () => void;
 };
 
-const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
-  // const [formUpdated, setformUpdated] = useState<Boolean>(false);
+const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserProps) => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
 
@@ -52,6 +61,7 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
   };
   const [form] = useForm();
   const [formUpdated, setformUpdated] = useState(false);
+  // const [DataInviteUser, SetInviteUser] = useState(false);
 
   const { data, isError, error, isLoading, refetch } = useFetchData(
     config.identity.userPermissionRole,
@@ -60,9 +70,8 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
     !!form.getFieldValue("role_name")
   );
 
-  console.log("data", data);
-
-  console.log(inviteDataUser, "inviteDataUserinviteDataUser");
+  // console.log("data", data);
+  // console.log(inviteDataUser, "inviteDataUserinviteDataUser");
 
   const roleDefine = (value: string, label: any) => {
     console.log(value, "value", label);
@@ -81,12 +90,29 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
   };
 
   const inviteUserFormHandler = async (values: any) => {
+    // console.log(values);
     try {
+      const encryptedPass = await generateEncryptedPassword(
+        values.password
+      );
       setCreateDatasetLoading(true);
       const payload = {
-        ...values,
+        //...values,
         tenant_id: DUMMY_TENANT_ID,
+        user_type: "CORE_USER",
+        parent_id: session?.user?.details?.userId,
         user_group_id: session?.user?.details?.userGroup,
+        user_info: {
+          first_name: values.user_full_name?.split(' ')[0] ? values.user_full_name?.split(' ')[0] : values.user_full_name,
+          last_name: values.user_full_name?.split(' ')[1]  ? values.user_full_name?.split(' ')[1] : ',',
+          country_code: "+91",
+          mobile_no: values.phone,
+          email: values.email,
+        },
+        user_creds: {
+          password:
+          encryptedPass
+        },
         user_profiles: [
           {
             vertical_name: "Warehouse 1",
@@ -107,18 +133,19 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
 
       console.log(datasetResponse, "datasetResponse");
 
-      if (datasetResponse?.status === 200) {
+      if (datasetResponse?.status === 200 || datasetResponse?.status === 201) {
         setCreateDatasetOpen(false);
         notification.success({
           message: "User Invited Successfully",
         });
-        refetch();
+        refetchUser();
         onClose();
       }
     } catch (error) {
+      console.log(getErrorFromApi(error));
       notification.error({
         message: "Error while invited user",
-        //description: getErrorFromApi(error),
+        description: getErrorFromApi(error),
       });
       console.log(error);
     } finally {
@@ -162,13 +189,40 @@ const InviteUser = ({ open, onClose, inviteDataUser }: InviteUserProps) => {
             <Input placeholder="Please enter user full name" />
           </Form.Item>
           <Form.Item
+            name="phone"
+            label="Phone Number"
+            rules={[{ required: true, message: "Please enter phone number" }]}
+          >
+            <InputNumber
+              style={{ width: "100%", appearance: "textfield" }}
+              placeholder="Please enter phone number"
+            />
+          </Form.Item>
+          <Form.Item
             name="email"
             label="Email"
             rules={[{ required: true, message: "Please enter email" }]}
           >
             <Input placeholder="Please enter email" />
           </Form.Item>
-          <Form.Item name="role_name" label="Select user role">
+          <Form.Item
+            name="password"
+            label={
+              <Space>
+              <Text>Password</Text>
+              <InfoIconTooltip title="The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character from !@#$%^&*." />
+            </Space>
+            }
+            rules={[{ required: true, message: "Please enter password" },
+            {
+              pattern: passwordPattern,
+              message: "The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character from !@#$%^&*.",
+            }
+          ]}
+          >
+            <Input.Password placeholder="Please enter password"  />
+          </Form.Item>
+          <Form.Item name="role_name" label="Select user role" rules={[{ required: true, message: "Please select user role" }]}>
             <Select
               // key={roleName?.name}
               //   defaultValue={{ value: 'Please select user role', label: 'Lucy (101)' }}
