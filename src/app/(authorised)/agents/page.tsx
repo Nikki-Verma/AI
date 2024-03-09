@@ -6,9 +6,9 @@ import {
   AgentStatusType,
 } from "@/app/(authorisedHeaderLayout)/agents/constants";
 import CreateAgentModal from "@/components/CreateAgentModal";
-import EmptyUpload from "@/components/EmptyUpload";
 import PageHeading from "@/components/PageHeading";
 import SaDate from "@/components/SaDate/Index";
+import TableEmptyData from "@/components/TableEmptyData";
 import Tags from "@/components/Tags";
 import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
@@ -70,11 +70,8 @@ const Agents = () => {
     useState<boolean>(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   console.log("🚀 ~ Workflow ~ filters:", filters);
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.agents.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(config.agents.list, { ...filters }, {});
 
   useEffect(() => {
     updatePageConfig({
@@ -469,20 +466,29 @@ const Agents = () => {
           </Col>
         </Row>
       )}
-      {!isError && !data?.result?.length && !isLoading && (
-        <EmptyUpload
-          buttonText="Create agent"
-          message="You do not have any agents yet"
-          onClick={toggleCreateAgentHandler}
-        />
-      )}
-      {!isError && (isLoading || !!data?.result?.length) && (
+      {!isError && (
         <>
           <Table
+            locale={{
+              emptyText() {
+                return (
+                  <TableEmptyData
+                    message="You do not have any agents yet"
+                    showEmpty={
+                      !!(
+                        data?.result?.length < 1 &&
+                        !isLoading &&
+                        !isRefetching
+                      )
+                    }
+                  />
+                );
+              },
+            }}
             columns={columns}
             dataSource={data?.result || []}
             rowKey={(data: any) => data?.pipeline_id}
-            loading={isLoading}
+            loading={isLoading || isRefetching}
             scroll={{
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,

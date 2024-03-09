@@ -6,10 +6,10 @@ import {
   addFileToKnowledgeBaseApi,
   createKnowledgeBaseApi,
 } from "@/api/knowledgebase";
-import EmptyUpload from "@/components/EmptyUpload";
 import FileIcon from "@/components/Icons/FileIcon";
 import AddFilesToKnowledgeBaseModal from "@/components/KnowledgeBase/AddFilesToKnowledgebaseModal";
 import SaDate from "@/components/SaDate/Index";
+import TableEmptyData from "@/components/TableEmptyData";
 import {
   PageAbout,
   PageTitle,
@@ -87,11 +87,12 @@ const DatasetDetails = (props: any) => {
   const [addFilesToKnowledgebaseLoading, setAddFilesToKnowledgebaseLoading] =
     useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.dataset.files,
-    { ...filters, dataset_id: datasetId },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(
+      config.dataset.files,
+      { ...filters, dataset_id: datasetId },
+      {},
+    );
   const {
     data: datasetConfig,
     isLoading: datasetLoading,
@@ -454,29 +455,10 @@ const DatasetDetails = (props: any) => {
           <PageAbout>{datasetConfig?.result?.[0]?.description}</PageAbout>
         </Col>
       </Row>
-      {isError && (
-        <Row justify="center">
-          <Col>
-            <Result
-              status="500"
-              title={getErrorFromApi(error)}
-              subTitle="Please refresh or comeback in sometime"
-            />
-          </Col>
-        </Row>
-      )}
-      {!data?.result?.length && !isLoading && !isError && (
-        <EmptyUpload
-          buttonText="Upload File"
-          message="The dataset is empty"
-          onClick={toggleAddFileModal}
-        />
-      )}
-      {!isError && (isLoading || !!data?.result?.length) && (
-        <>
-          <Row justify="space-between" align="middle">
-            <Col span={24} sm={6} md={4}>
-              {/* <Input
+
+      <Row justify="space-between" align="middle">
+        <Col span={24} sm={6} md={4}>
+          {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
                 value={searchValue}
@@ -488,50 +470,81 @@ const DatasetDetails = (props: any) => {
                   console.log("enter pressed")
                 }
               /> */}
-            </Col>
-            <Col>
-              <Space size="middle" align="center">
-                {selectedRowKeys?.length > 0 && (
-                  <Button
-                    size="middle"
-                    type="default"
-                    icon={<PlusOutlined />}
-                    onClick={toggleAddFilesToKnowledgebaseModal}
-                  >
-                    Add files to knowledgebase
-                  </Button>
-                )}
-                <Button
-                  size="middle"
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={toggleAddFileModal}
-                >
-                  Add File
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-          <Table
-            columns={columns}
-            dataSource={data?.result || []}
-            rowSelection={rowSelection}
-            rowKey={(data: any) => data?.id}
-            loading={isLoading}
-            scroll={{
-              x: "max-content",
-              y: data?.result?.length > 0 ? 600 : undefined,
-            }}
-            pagination={{
-              hideOnSinglePage: true,
-              current: +filters?.page + 1,
-              pageSize: +filters?.size,
-              total: data?.totalElements,
-              showSizeChanger: true,
-            }}
-            onChange={tableChangeHandler}
-          />
-        </>
+        </Col>
+        <Col>
+          <Space size="middle" align="center">
+            {selectedRowKeys?.length > 0 && (
+              <Button
+                size="middle"
+                type="default"
+                icon={<PlusOutlined />}
+                onClick={toggleAddFilesToKnowledgebaseModal}
+              >
+                Add files to knowledgebase
+              </Button>
+            )}
+            <Button
+              size="middle"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={toggleAddFileModal}
+            >
+              Add File
+            </Button>
+          </Space>
+        </Col>
+      </Row>
+      {isError && (
+        <Row justify="center">
+          <Col>
+            <Result
+              status="500"
+              title={getErrorFromApi(error)}
+              subTitle="Please refresh or comeback in sometime"
+            />
+          </Col>
+        </Row>
+      )}
+      {!isError && (
+        <Row>
+          <Col span={24}>
+            <Table
+              locale={{
+                emptyText() {
+                  return (
+                    <TableEmptyData
+                      message="The dataset is empty"
+                      showEmpty={
+                        !!(
+                          data?.result?.length < 1 &&
+                          !isLoading &&
+                          !isRefetching
+                        )
+                      }
+                    />
+                  );
+                },
+              }}
+              columns={columns}
+              dataSource={data?.result || []}
+              rowSelection={rowSelection}
+              rowKey={(data: any) => data?.id}
+              loading={isLoading}
+              scroll={{
+                x: "max-content",
+                y: data?.result?.length > 0 ? 600 : undefined,
+              }}
+              pagination={{
+                hideOnSinglePage: true,
+                current: +filters?.page + 1,
+                pageSize: +filters?.size,
+                total: data?.totalElements,
+                showSizeChanger: true,
+              }}
+              onChange={tableChangeHandler}
+            />
+          </Col>
+        </Row>
       )}
       <DatasetAddFileModal
         open={addFileModalOpen}

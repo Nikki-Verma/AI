@@ -1,7 +1,7 @@
 "use client";
 
 import { createDatasetApi, deleteDatasetApi } from "@/api/dataset";
-import EmptyUpload from "@/components/EmptyUpload";
+import TableEmptyData from "@/components/TableEmptyData";
 import { useFetchData, usePostData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
@@ -73,11 +73,8 @@ const DatasetList = () => {
   const { mutate } = usePostData(["createDataset"]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.dataset.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(config.dataset.list, { ...filters }, {});
 
   useEffect(() => {
     router.prefetch(`/dataset/[datasetId]`);
@@ -331,74 +328,88 @@ const DatasetList = () => {
 
   return (
     <DatasetListContainer>
-      {isError && (
-        <Result
-          status="500"
-          title="Something went wrong"
-          subTitle={getErrorFromApi(error)}
-        />
-      )}
-      {!data?.result?.length && !isError && !isLoading && (
-        <EmptyUpload
-          buttonText="Create your dataset"
-          message="It seems like you have not created dataset yet."
-          onClick={showDatasetModal}
-        />
-      )}
-      {!isError && (!!data?.result?.length || isLoading) && (
-        <>
-          <Row justify="space-between" align="middle">
-            <Col span={24} sm={6} md={4}>
-              {/* <Input
+      <Row justify="space-between" align="middle">
+        <Col span={24} sm={6} md={4}>
+          {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by Dataset name, file name"
               /> */}
-            </Col>
-            <Col>
-              <Space size="middle" align="center">
-                {selectedRowKeys?.length > 0 && (
-                  <Button
-                    size="middle"
-                    type="default"
-                    disabled
-                    icon={<PlusOutlined />}
-                    onClick={addToKnowledgebaseHandler}
-                  >
-                    Add to knowledgebase
-                  </Button>
-                )}
-                <Button
-                  size="middle"
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={showDatasetModal}
-                >
-                  Create Dataset
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-
-          <Table
-            columns={columns}
-            dataSource={data?.result || []}
-            rowSelection={rowSelection}
-            loading={isLoading}
-            rowKey={(data: any) => data?.id}
-            scroll={{
-              x: "max-content",
-              y: data?.result?.length > 0 ? 600 : undefined,
-            }}
-            pagination={{
-              hideOnSinglePage: true,
-              current: +filters?.page + 1,
-              pageSize: +filters?.size,
-              total: data?.totalElements,
-              showSizeChanger: true,
-            }}
-            onChange={tableChangeHandler}
-          />
-        </>
+        </Col>
+        <Col>
+          <Space size="middle" align="center">
+            {selectedRowKeys?.length > 0 && (
+              <Button
+                size="middle"
+                type="default"
+                disabled
+                icon={<PlusOutlined />}
+                onClick={addToKnowledgebaseHandler}
+              >
+                Add to knowledgebase
+              </Button>
+            )}
+            <Button
+              size="middle"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={showDatasetModal}
+            >
+              Create Dataset
+            </Button>
+          </Space>
+        </Col>
+      </Row>
+      {isError && (
+        <Row>
+          <Col span={24}>
+            <Result
+              status="500"
+              title="Something went wrong"
+              subTitle={getErrorFromApi(error)}
+            />
+          </Col>
+        </Row>
+      )}
+      {!isError && (
+        <Row>
+          <Col span={24}>
+            <Table
+              locale={{
+                emptyText() {
+                  return (
+                    <TableEmptyData
+                      message="It seems like you have not created dataset yet."
+                      showEmpty={
+                        !!(
+                          data?.result?.length < 1 &&
+                          !isLoading &&
+                          !isRefetching
+                        )
+                      }
+                    />
+                  );
+                },
+              }}
+              columns={columns}
+              dataSource={data?.result || []}
+              rowSelection={rowSelection}
+              loading={isLoading || isRefetching}
+              rowKey={(data: any) => data?.id}
+              scroll={{
+                x: "max-content",
+                y: data?.result?.length > 0 ? 600 : undefined,
+              }}
+              pagination={{
+                hideOnSinglePage: true,
+                current: +filters?.page + 1,
+                pageSize: +filters?.size,
+                total: data?.totalElements,
+                showSizeChanger: true,
+              }}
+              onChange={tableChangeHandler}
+            />
+          </Col>
+        </Row>
       )}
       <CreateDatasetModal
         open={createDatasetOpen}
