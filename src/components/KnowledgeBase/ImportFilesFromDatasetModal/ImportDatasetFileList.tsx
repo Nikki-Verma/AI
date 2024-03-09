@@ -87,7 +87,7 @@ const ImportDatasetFileList = ({
       setSelectedRowKeys(newSelectedRowKeys);
       setSelectedRowDetails(selectedRows);
     },
-    columnWidth : 40
+    columnWidth: 40,
   };
 
   const columns: TableProps<any>["columns"] = [
@@ -126,11 +126,8 @@ const ImportDatasetFileList = ({
       title: "File Size",
       dataIndex: "size",
       key: "size",
-      render : (val) => {
-        return(
-          val ? formatSizeUnits(val) : '-'
-
-        )
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
       },
     },
   ];

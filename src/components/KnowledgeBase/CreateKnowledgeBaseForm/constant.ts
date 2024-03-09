@@ -12,6 +12,6 @@ export const vectorDbOptions = [
 export const embeddingModelsOptions = [
   {
     value: "BAAI/bge-small-en",
-    label: "MilBAAI/bge-small-envus",
+    label: "BAAI/bge-small-en",
   },
 ];

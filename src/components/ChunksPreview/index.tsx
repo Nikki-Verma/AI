@@ -70,7 +70,7 @@ const ChunksPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
         </Row>
       )}
       <Modal
-        title="Basic Modal"
+        title="Chunk Preview"
         open={isModalOpen}
         onCancel={() => {
           setSelectedChunk("");

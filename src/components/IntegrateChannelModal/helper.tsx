@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import SlackIcon from "../Icons/SlackIcon";
 import TelegramIcon from "../Icons/Telegram";
+import WhatsappIcon from "../Icons/WhatsApp";
 import { AvailableChannelType, ChannelType } from "./constant";
 
 export const Integration_Available_Channels: AvailableChannelType[] = [
@@ -15,6 +16,12 @@ export const Integration_Available_Channels: AvailableChannelType[] = [
     name: "telegram",
     displayName: "Telegram",
     imageUrl: <TelegramIcon />,
+  },
+  {
+    channelType: ChannelType.KALEYRAWHATSAPP,
+    name: "whatsapp",
+    displayName: "WhatsApp",
+    imageUrl: <WhatsappIcon />,
   },
 ];
 
@@ -31,5 +38,9 @@ export const ChannelTableDetails: {
   [ChannelType.TELEGRAM]: {
     text: "Telegram",
     icon: <TelegramIcon style={{ height: "24px", width: "24px" }} />,
+  },
+  [ChannelType.KALEYRAWHATSAPP]: {
+    text: "WhatsApp",
+    icon: <WhatsappIcon style={{ height: "24px", width: "24px" }} />,
   },
 };

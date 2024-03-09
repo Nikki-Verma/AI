@@ -4,7 +4,7 @@ const __IDENTITY_BASE_URL__ = process.env.NEXT_PUBLIC_IDENTITY_BASE_URL;
 const __MODEL_BASE_URL__ = process.env.NEXT_PUBLIC_MODEL_BASE_URL;
 const __DATA_BASE_URL__ = process.env.NEXT_PUBLIC_DATA_BASE_URL;
 const __RAG_BASE_URL__ = process.env.NEXT_PUBLIC_RAG_BASE_URL;
-const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTRACT_BASE_URL;
+const __INTRACT_BASE_URL__ = process.env.NEXT_PUBLIC_INTERACT_BASE_URL;
 const __CHANNEL_AGGREGATOR_BASE_URL__ =
   process.env.NEXT_PUBLIC_CHANNEL_AGGREGATOR_BASE_URL;
 const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL;
@@ -16,7 +16,7 @@ export const BASE_URLS = {
   rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
   agent: __AGENT_BASE_URL__,
-  intract: __INTRACT_BASE_URL__,
+  intract: `${__EDGE_URL__}${__INTRACT_BASE_URL__}`,
 };
 
 const config = {
@@ -55,7 +55,9 @@ const config = {
     models: `${BASE_URLS.model}/api/v1/user/model`,
     addToWorkspace: `${BASE_URLS.model}/api/v1/user/model`,
     deploy: `${BASE_URLS.model}/api/v1/user/model/deploy`,
+    remove: `${BASE_URLS.model}/api/v1/user/model`,
     connect: `${BASE_URLS.channelAggregator}/api/v1/model/close-model`,
+    markIdle: `${BASE_URLS.model}/api/v1/user/model/mark-idle`,
   },
   workflow: {
     list: `${BASE_URLS.channelAggregator}/api/v1/model-pipeline`,

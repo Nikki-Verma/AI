@@ -1,4 +1,5 @@
 import { PERMISSION_TYPE } from "@/utils/constants";
+import { PERMISSION } from "@/utils/permissions";
 import { Permissions_Types } from "@/utils/types";
 import { Typography } from "antd";
 import { cloneDeep } from "lodash";
@@ -13,6 +14,7 @@ import KnowledgeBaseIcon from "../Icons/KnowledgeBaseIcon";
 import ModelsIcon from "../Icons/ModelsIcon";
 import PlaygroundIcon from "../Icons/PlaygroundIcon";
 import SettingsIcon from "../Icons/Settings";
+import WorkspaceIcon from "../Icons/WorkspaceIcon";
 const { Text } = Typography;
 interface NavItem {
   id: number;
@@ -84,7 +86,7 @@ export const items: any = [
     key: "home",
     keyPath: ["home"],
     url: "/home",
-    permissions: [],
+    permissions: [PERMISSION.HOME_VIEW],
     permissionType: PERMISSION_TYPE.OR,
   },
   {
@@ -98,6 +100,8 @@ export const items: any = [
     keyPath: ["playground"],
     url: "/playground",
     icon: <PlaygroundIcon />,
+    permissions: [PERMISSION.PLAYGROUND_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -110,6 +114,8 @@ export const items: any = [
     keyPath: ["agents"],
     url: "/agents",
     icon: <AgentsIcon />,
+    permissions: [PERMISSION.AGENTS_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -122,6 +128,8 @@ export const items: any = [
     keyPath: ["workflow"],
     url: "/workflow",
     icon: <PipelineIcon />,
+    permissions: [PERMISSION.WORKFLOWS_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -133,7 +141,9 @@ export const items: any = [
     key: "workspace",
     keyPath: ["workspace"],
     url: "/workspace",
-    icon: <AgentsIcon />,
+    icon: <WorkspaceIcon />,
+    permissions: [PERMISSION.WORKSPACE_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -146,6 +156,8 @@ export const items: any = [
     keyPath: ["models"],
     url: "/models",
     icon: <ModelsIcon />,
+    permissions: [PERMISSION.MODELS_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -158,6 +170,8 @@ export const items: any = [
     keyPath: ["dataset"],
     url: "/dataset",
     icon: <DatasetIcon />,
+    permissions: [PERMISSION.DATASET_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -170,6 +184,8 @@ export const items: any = [
     keyPath: ["knowledge-base"],
     url: "/knowledge-base",
     icon: <KnowledgeBaseIcon />,
+    permissions: [PERMISSION.KNOWLEDGEBASE_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -182,6 +198,8 @@ export const items: any = [
     keyPath: ["integration"],
     url: "/integration",
     icon: <IntegrationIcon />,
+    permissions: [PERMISSION.INTEGRATION_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -194,6 +212,8 @@ export const items: any = [
     keyPath: ["billing"],
     url: "/billing",
     icon: <BillingIcon />,
+    permissions: [PERMISSION.BILLING_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
   {
     id: 100,
@@ -206,6 +226,8 @@ export const items: any = [
     keyPath: ["settings"],
     url: "/settings",
     icon: <SettingsIcon />,
+    permissions: [PERMISSION.SETTINGS_VIEW],
+    permissionType: PERMISSION_TYPE.OR,
   },
 ];
 

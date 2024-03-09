@@ -1,5 +1,13 @@
 import { initiateConversationApi } from "@/api/intract";
-import { X_SELLER_ID, X_SELLER_PROFILE_ID, X_USER_ID } from "@/utils/constants";
+import {
+  PIM_SID,
+  X_CLIENT_ID,
+  X_DEVICE_ID,
+  X_SELLER_ID,
+  X_SELLER_PROFILE_ID,
+  X_TENANT_ID,
+  X_USER_ID,
+} from "@/utils/constants";
 import { decodeStreamToJson, getChatDetails, getStream } from "@/utils/stream";
 import { UnknownObject } from "@/utils/types";
 import { useSession } from "next-auth/react";
@@ -77,6 +85,7 @@ const useChatStream = (input: UseChatStreamInput) => {
   };
 
   let streamRef = useRef<any>();
+  let stopStreamRef = useRef<boolean>(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
@@ -137,16 +146,24 @@ const useChatStream = (input: UseChatStreamInput) => {
         [X_USER_ID]: data?.user?.details?.id,
         [X_SELLER_ID]: data?.user?.details?.id,
         [X_SELLER_PROFILE_ID]: data?.user?.details?.id,
+        [X_TENANT_ID]: data?.user?.details?.tenantId,
+        [PIM_SID]: data?.accessToken,
+        [X_DEVICE_ID]: "armaze-web",
+        [X_CLIENT_ID]: data?.user?.details?.id,
       });
       if (!stream) throw new Error();
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
-        console.log("🚀 ~ forawait ~ message:", message);
+        if (stopStreamRef.current) {
+          stopStreamRef.current = false;
+          setIsLoading(false);
+          break;
+        }
         if (message === "refetch") {
           setTimeout(() => {
             fetchAndUpdateAIResponse(messageID, conversationID);
-          }, 2000);
+          }, 50);
           break;
         }
         setIsLoading(false);
@@ -155,7 +172,6 @@ const useChatStream = (input: UseChatStreamInput) => {
     } catch (error: any) {
       appendMessageToChat(SimplAi_ERROR_MESSAGE);
       setIsLoading(false);
-    } finally {
     }
   };
 
@@ -164,6 +180,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     if (!streamRef?.current) {
       return null;
     } else {
+      stopStreamRef.current = true;
       await streamRef?.current?.cancel();
       streamRef.current = undefined;
     }
@@ -177,6 +194,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     setIsLoading(true);
     addMessageToChat(newMessage ?? message);
     setMessage("");
+    stopStreamRef.current = false;
 
     try {
       addMessageToChat("", "SimplAi");

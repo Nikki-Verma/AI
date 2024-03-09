@@ -29,7 +29,7 @@ function Message({ message, loading }: Props) {
             gap: "10px",
           }}
         >
-          <span
+          {/* <span
             style={{
               color: "#000",
               opacity: "0.6",
@@ -38,7 +38,7 @@ function Message({ message, loading }: Props) {
             }}
           >
             You
-          </span>
+          </span> */}
           <IconContainer>
             {userCredentialsFromName(session?.user?.details?.name)}
           </IconContainer>

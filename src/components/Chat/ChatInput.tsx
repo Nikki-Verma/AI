@@ -4,13 +4,8 @@ import { Input } from "antd";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
 import SendIcon from "../Icons/SendIcon";
-import {
-  BottomControls,
-  BottonLeftControl,
-  BottonRightControl,
-  ChatInputContainer,
-  RightControls,
-} from "./style";
+import StopIcon from "../Icons/StopIcon";
+import { ChatInputContainer, RightControls } from "./style";
 
 const { TextArea } = Input;
 
@@ -52,12 +47,16 @@ function ChatInput({
           }
         }}
       />
-      <RightControls>
-        <SendIcon
-          onClick={() => submitHandler({})}
-          style={{ cursor: "pointer" }}
-        />
-      </RightControls>
+      {loading ? (
+        <StopIcon onClick={stopStream} style={{ cursor: "pointer" }} />
+      ) : (
+        <RightControls>
+          <SendIcon
+            onClick={() => submitHandler({})}
+            style={{ cursor: "pointer", color: "#c7c7c7" }}
+          />
+        </RightControls>
+      )}
       {/* <BottomControls>
         <BottonLeftControl>
           <ActionContainer>

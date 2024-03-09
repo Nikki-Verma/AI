@@ -6,9 +6,9 @@ import {
   AgentStatusType,
 } from "@/app/(authorisedHeaderLayout)/agents/constants";
 import CreateAgentModal from "@/components/CreateAgentModal";
-import EmptyUpload from "@/components/EmptyUpload";
 import PageHeading from "@/components/PageHeading";
 import SaDate from "@/components/SaDate/Index";
+import TableEmptyData from "@/components/TableEmptyData";
 import Tags from "@/components/Tags";
 import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
@@ -70,17 +70,17 @@ const Agents = () => {
     useState<boolean>(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   console.log("🚀 ~ Workflow ~ filters:", filters);
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.agents.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(config.agents.list, { ...filters }, {});
 
   useEffect(() => {
     updatePageConfig({
       pageTitle: "Agent",
       pageDescription: "Models are your AI powered automations & skills",
     });
+    router.prefetch(`/agents/view/[agentId]`);
+    router.prefetch(`/agents/edit/[agentId]`);
+    router.prefetch(`/integration/agents/[agentId]`);
   }, []);
 
   const toggleCreateAgentHandler = () => {
@@ -165,15 +165,13 @@ const Agents = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Agent name",
+      title: "Agent Name",
       dataIndex: "agent_name",
       key: "agent_name",
       width: 200,
       render: (val: any, data: any) => (
         <LinkContainer>
-          <Link prefetch href={`/agents/view/${data?.pipeline_id}`}>
-            {val}
-          </Link>
+          <Link href={`/agents/view/${data?.pipeline_id}`}>{val}</Link>
         </LinkContainer>
       ),
     },
@@ -211,7 +209,7 @@ const Agents = () => {
         ),
     },
     {
-      title: "Model name",
+      title: "Model Name",
       dataIndex: "model_detail",
       key: "model_name",
       width: 200,
@@ -222,7 +220,7 @@ const Agents = () => {
       ),
     },
     {
-      title: "Model version",
+      title: "Model Version",
       dataIndex: "model_detail",
       key: "model_version",
       width: 200,
@@ -233,7 +231,7 @@ const Agents = () => {
       ),
     },
     {
-      title: "Knowledge base",
+      title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb_name",
       width: 200,
@@ -282,7 +280,7 @@ const Agents = () => {
           {
             key: "edit",
             label: (
-              <Link prefetch href={`/agents/edit/${agentData?.pipeline_id}`}>
+              <Link href={`/agents/edit/${agentData?.pipeline_id}`}>
                 <Button
                   style={{ color: "#000000b3" }}
                   type="text"
@@ -296,7 +294,7 @@ const Agents = () => {
           {
             key: "view",
             label: (
-              <Link prefetch href={`/agents/view/${agentData?.pipeline_id}`}>
+              <Link href={`/agents/view/${agentData?.pipeline_id}`}>
                 <Button
                   style={{ color: "#000000b3" }}
                   type="text"
@@ -351,10 +349,7 @@ const Agents = () => {
                 }}
               >
                 <Col span={20}>
-                  <Link
-                    prefetch
-                    href={`/integration/agents/${agentData?.pipeline_id}`}
-                  >
+                  <Link href={`/integration/agents/${agentData?.pipeline_id}`}>
                     <Button
                       style={{ ...fullWidth }}
                       block
@@ -394,10 +389,7 @@ const Agents = () => {
                 }}
               >
                 <Col span={20}>
-                  <Link
-                    prefetch
-                    href={`/agents/edit/${agentData?.pipeline_id}`}
-                  >
+                  <Link href={`/agents/edit/${agentData?.pipeline_id}`}>
                     <Button
                       style={{ ...fullWidth }}
                       block
@@ -441,7 +433,6 @@ const Agents = () => {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: "24px",
         }}
       >
         <PageHeading
@@ -475,20 +466,29 @@ const Agents = () => {
           </Col>
         </Row>
       )}
-      {!isError && !data?.result?.length && !isLoading && (
-        <EmptyUpload
-          buttonText="Create agent"
-          message="You do not have any agents yet"
-          onClick={toggleCreateAgentHandler}
-        />
-      )}
-      {!isError && (isLoading || !!data?.result?.length) && (
+      {!isError && (
         <>
           <Table
+            locale={{
+              emptyText() {
+                return (
+                  <TableEmptyData
+                    message="You do not have any agents yet"
+                    showEmpty={
+                      !!(
+                        data?.result?.length < 1 &&
+                        !isLoading &&
+                        !isRefetching
+                      )
+                    }
+                  />
+                );
+              },
+            }}
             columns={columns}
             dataSource={data?.result || []}
             rowKey={(data: any) => data?.pipeline_id}
-            loading={isLoading}
+            loading={isLoading || isRefetching}
             scroll={{
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,

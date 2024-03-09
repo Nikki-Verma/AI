@@ -4,12 +4,12 @@ import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
+import { EyeFilled } from "@ant-design/icons";
 import {
   Button,
   Col,
   Result,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
@@ -17,9 +17,9 @@ import {
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
-import { EyeFilled } from "@ant-design/icons";
 
 const { Text } = Typography;
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
@@ -30,6 +30,7 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const IntegrationWorkflowsList = () => {
+  const router = useRouter();
   const [filters, setFilters] = useState(initialFilters());
   const {
     data: deployedWorkflows,
@@ -39,6 +40,11 @@ const IntegrationWorkflowsList = () => {
   } = useFetchData(config.workflow.list, {
     ...filters,
   });
+
+  useEffect(() => {
+    router.prefetch(`/workspace`);
+    router.prefetch(`/integration/workflow/[workflowId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -67,7 +73,7 @@ const IntegrationWorkflowsList = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Workflow name",
+      title: "Workflow Name",
       dataIndex: "pipeline_name",
       key: "pipeline_name",
       width: 250,
@@ -106,7 +112,7 @@ const IntegrationWorkflowsList = () => {
         ),
     },
     {
-      title: "Knowledge base",
+      title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb",
       width: 200,
@@ -120,7 +126,7 @@ const IntegrationWorkflowsList = () => {
         ),
     },
     {
-      title: "Integrated channels",
+      title: "Integrated Channels",
       dataIndex: "channels",
       key: "channels",
       width: 200,
@@ -136,16 +142,26 @@ const IntegrationWorkflowsList = () => {
       render: (_: any, dataset: UnknownObject) => {
         return (
           // <Space>
-          <Row gutter={[0,0]} style={{alignItems : 'center',justifyContent : 'space-between'}}>
-                <Col span={20}>
-            <Link
-              prefetch
-              href={`/integration/workflow/${dataset?.pipeline_id}`}
-            >
-              <Button style={{width : '100%'}} block type="default" icon={<EyeFilled />}>View </Button>
-            </Link>
+          <Row
+            gutter={[0, 0]}
+            style={{ alignItems: "center", justifyContent: "space-between" }}
+          >
+            <Col span={20}>
+              <Link
+                prefetch
+                href={`/integration/workflow/${dataset?.pipeline_id}`}
+              >
+                <Button
+                  style={{ width: "100%" }}
+                  block
+                  type="default"
+                  icon={<EyeFilled />}
+                >
+                  View{" "}
+                </Button>
+              </Link>
             </Col>
-            </Row>
+          </Row>
           // </Space>
         );
       },
@@ -169,7 +185,7 @@ const IntegrationWorkflowsList = () => {
         status={403}
         title="No deployed models available"
         extra={
-          <Link prefetch href={`/workspace`}>
+          <Link href={`/workspace`}>
             <Button type="primary" icon={<DeployIcon />}>
               Deploy Models
             </Button>

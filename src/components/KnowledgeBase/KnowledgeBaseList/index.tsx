@@ -4,7 +4,7 @@ import {
   createKnowledgeBaseApi,
   deleteKnowledgebaseApi,
 } from "@/api/knowledgebase";
-import EmptyUpload from "@/components/EmptyUpload";
+import TableEmptyData from "@/components/TableEmptyData";
 import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
@@ -16,7 +16,11 @@ import {
   DEFAULT_PAGE_SIZE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import {
+  formatSizeUnits,
+  getErrorFromApi,
+  getFilters,
+} from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
   DatabaseFilled,
@@ -76,11 +80,8 @@ const KnowledgeBaseList = () => {
     useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.knowledgebase.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(config.knowledgebase.list, { ...filters }, {});
 
   useEffect(() => {
     router.prefetch(`/knowledge-base/[knowledgebaseId]`);
@@ -184,6 +185,15 @@ const KnowledgeBaseList = () => {
         </Space>
       ),
     },
+    {
+      title: "File Size",
+      dataIndex: "size",
+      key: "size",
+      width: 200,
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
+      },
+    },
     // {
     //   title: "File Size",
     //   dataIndex: "size",
@@ -197,7 +207,7 @@ const KnowledgeBaseList = () => {
     //   },
     // },
     {
-      title: "KB setting",
+      title: "KB Setting",
       dataIndex: "kb_setting",
       key: "kb_setting",
       width: 200,
@@ -206,7 +216,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Embedding model",
+      title: "Embedding Model",
       dataIndex: "embed_model_name",
       key: "embed_model_name",
       width: 250,
@@ -233,7 +243,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Similarities percentage",
+      title: "Similarities Percentage",
       dataIndex: "similarities_percentage",
       key: "similarities_percentage",
       width: 250,
@@ -257,7 +267,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Created by",
+      title: "Created By",
       dataIndex: "username",
       key: "username",
       width: 250,
@@ -266,7 +276,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Last updated At",
+      title: "Last Updated At",
       dataIndex: "updated_at",
       key: "updated_at",
       width: 250,
@@ -281,7 +291,7 @@ const KnowledgeBaseList = () => {
       },
     },
     {
-      title: "Last updated by",
+      title: "Last Updated by",
       dataIndex: "updated_by_name",
       key: "updated_by_name",
       width: 250,
@@ -321,7 +331,7 @@ const KnowledgeBaseList = () => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <Link prefetch href={`/knowledge-base/${knowledgebase?.id}`}>
+              <Link href={`/knowledge-base/${knowledgebase?.id}`}>
                 <Button
                   style={{ width: "100%" }}
                   icon={<EyeFilled />}
@@ -407,63 +417,78 @@ const KnowledgeBaseList = () => {
           </div>
         </div>
       </ProgressBar> */}
-      {isError && (
-        <Result
-          status="500"
-          title="Something went wrong"
-          subTitle={getErrorFromApi(error)}
-        />
-      )}
-      {!data?.result?.length && !isError && !isLoading && (
-        <EmptyUpload
-          buttonText="Create your knowledge base"
-          message="It seems like you have not created knowledge base yet."
-          onClick={showKnowledgeBaseModal}
-        />
-      )}
-      {!isError && (!!data?.result?.length || isLoading) && (
-        <>
-          <Row justify="space-between" align="middle">
-            <Col span={24} sm={6} md={4}>
-              {/* <Input
+
+      <Row justify="space-between" align="middle">
+        <Col span={24} sm={6} md={4}>
+          {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by file name"
               /> */}
-            </Col>
-            <Col>
-              <Space size="middle" align="center">
-                <Button
-                  size="middle"
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={showKnowledgeBaseModal}
-                >
-                  Create Knowledge Base
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-
-          <Table
-            columns={columns}
-            dataSource={data?.result || []}
-            rowSelection={rowSelection}
-            rowKey={(data: any) => data?.id}
-            loading={isLoading}
-            scroll={{
-              x: "max-content",
-              y: data?.result?.length > 0 ? 600 : undefined,
-            }}
-            pagination={{
-              hideOnSinglePage: true,
-              current: +filters?.page + 1,
-              pageSize: +filters?.size,
-              total: data?.totalElements,
-              showSizeChanger: true,
-            }}
-            onChange={tableChangeHandler}
-          />
-        </>
+        </Col>
+        <Col>
+          <Space size="middle" align="center">
+            <Button
+              size="middle"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={showKnowledgeBaseModal}
+            >
+              Create Knowledge Base
+            </Button>
+          </Space>
+        </Col>
+      </Row>
+      {isError && (
+        <Row justify="center">
+          <Col>
+            <Result
+              status="500"
+              title="Something went wrong"
+              subTitle={getErrorFromApi(error)}
+            />
+          </Col>
+        </Row>
+      )}
+      {!isError && (
+        <Row>
+          <Col span={24}>
+            <Table
+              locale={{
+                emptyText() {
+                  return (
+                    <TableEmptyData
+                      message="It seems like you have not created knowledge base yet."
+                      showEmpty={
+                        !!(
+                          data?.result?.length < 1 &&
+                          !isLoading &&
+                          !isRefetching
+                        )
+                      }
+                    />
+                  );
+                },
+              }}
+              columns={columns}
+              dataSource={data?.result || []}
+              rowSelection={rowSelection}
+              rowKey={(data: any) => data?.id}
+              loading={isLoading || isRefetching}
+              scroll={{
+                x: "max-content",
+                y: data?.result?.length > 0 ? 600 : undefined,
+              }}
+              pagination={{
+                hideOnSinglePage: true,
+                current: +filters?.page + 1,
+                pageSize: +filters?.size,
+                total: data?.totalElements,
+                showSizeChanger: true,
+              }}
+              onChange={tableChangeHandler}
+            />
+          </Col>
+        </Row>
       )}
       <CreateKnowledgeBaseModal
         title="Create Knowledge Base"

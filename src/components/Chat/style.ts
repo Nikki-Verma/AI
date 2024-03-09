@@ -11,16 +11,17 @@ export const ChatContainer = styled.div`
 export const ChatInputContainer = styled.div`
   display: flex;
   width: 100%;
-  align-items : flex-end;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
   border: 1px solid var(--Text-Color-200, #c7c7c7);
   background: var(--Text-Color-50, #fff);
-  padding : 6px 6px;
+  padding: 16px 16px;
   .ant-input {
     border: 0px !important;
     border-radius: 10px;
     box-shadow: none !important;
-    margin-right : 50px;
+    margin-right: 50px;
   }
 `;
 
@@ -171,8 +172,8 @@ export const WelcomeText = styled.div`
 
 export const GetStartedText = styled.div`
   display: flex;
-  position : relative;
-  color:  #1414148f;
+  position: relative;
+  color: #1414148f;
   text-align: center;
   font-size: 18px;
   font-style: normal;
@@ -181,5 +182,5 @@ export const GetStartedText = styled.div`
 `;
 
 export const RightControls = styled.div`
-  padding : 0px 5px 5px 5px;
-`
+  padding: 5px 5px 0px 0px;
+`;

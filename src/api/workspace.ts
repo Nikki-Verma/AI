@@ -13,8 +13,18 @@ export const deployModelApi = ({ payload = {}, headers = {} }: any) => {
   });
 };
 
-export const connectClosedModel = ({payload = {},headers = {}} : any) => {
+export const connectClosedModel = ({ payload = {}, headers = {} }: any) => {
   return _authHttp.post(config.workspace.connect, payload, {
     headers,
   });
-}
+};
+
+export const markModelIdleApi = ({ payload = {}, headers = {} }: any) => {
+  return _authHttp.post(config.workspace.markIdle, payload, {
+    headers,
+  });
+};
+
+export const removeFromWorkspaceApi = ({ params = {}, headers = {} }: any) => {
+  return _authHttp.delete(config.workspace.remove, { params, headers });
+};

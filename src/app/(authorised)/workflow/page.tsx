@@ -6,9 +6,9 @@ import {
   WorkflowStatusType,
 } from "@/app/(authorisedHeaderLayout)/workflow/constant";
 import CreateWorkflowModal from "@/components/CreateWorkflowModal";
-import EmptyUpload from "@/components/EmptyUpload";
 import PageHeading from "@/components/PageHeading";
 import SaDate from "@/components/SaDate/Index";
+import TableEmptyData from "@/components/TableEmptyData";
 import Tags from "@/components/Tags";
 import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
@@ -70,17 +70,18 @@ const Workflow = () => {
   const [createWorkflowLoading, setCreateWorkflowLoading] = useState(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
 
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.workflow.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    useFetchData(config.workflow.list, { ...filters }, {});
 
   useEffect(() => {
     updatePageConfig({
       pageTitle: "Workspace",
       pageDescription: "Models are your AI powered automations & skills",
     });
+    router.prefetch(`/workflow/view/[workflowId]`);
+    router.prefetch(`/integration/workflow/[workflowId]`);
+    router.prefetch(`/workflow/playground/[workflowId]`);
+    router.prefetch(`/workflow/edit/[workflowId]`);
   }, []);
 
   const toggleCreateWorkflowHandler = () => {
@@ -165,14 +166,12 @@ const Workflow = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Workflow name",
+      title: "Workflow Name",
       dataIndex: "pipeline_name",
       key: "pipeline_name",
       width: 200,
       render: (val: any, data: any) => (
-        <Link prefetch href={`/workflow/view/${data?.pipeline_id}`}>
-          {val}
-        </Link>
+        <Link href={`/workflow/view/${data?.pipeline_id}`}>{val}</Link>
       ),
     },
     {
@@ -211,7 +210,7 @@ const Workflow = () => {
         ),
     },
     {
-      title: "Model name",
+      title: "Model Name",
       dataIndex: "model_detail",
       key: "model_name",
       width: 150,
@@ -224,7 +223,7 @@ const Workflow = () => {
       ),
     },
     {
-      title: "Model version",
+      title: "Model Version",
       dataIndex: "model_detail",
       key: "model_version",
       width: 150,
@@ -237,7 +236,7 @@ const Workflow = () => {
       ),
     },
     {
-      title: "Knowledge base",
+      title: "Knowledge Base",
       dataIndex: "kb",
       key: "kb_name",
       width: 150,
@@ -289,10 +288,7 @@ const Workflow = () => {
           {
             key: "integration",
             label: (
-              <Link
-                prefetch
-                href={`/integration/workflow/${workflowData?.pipeline_id}`}
-              >
+              <Link href={`/integration/workflow/${workflowData?.pipeline_id}`}>
                 <Button
                   style={{ color: "#000000b3" }}
                   type="text"
@@ -349,7 +345,6 @@ const Workflow = () => {
               >
                 <Col span={20}>
                   <Link
-                    prefetch
                     href={`/workflow/playground/${workflowData?.pipeline_id}`}
                   >
                     <Button
@@ -391,10 +386,7 @@ const Workflow = () => {
                 }}
               >
                 <Col span={20}>
-                  <Link
-                    prefetch
-                    href={`/workflow/edit/${workflowData?.pipeline_id}`}
-                  >
+                  <Link href={`/workflow/edit/${workflowData?.pipeline_id}`}>
                     <Button
                       style={{ ...fullWidth }}
                       block
@@ -471,20 +463,29 @@ const Workflow = () => {
           </Col>
         </Row>
       )}
-      {!isError && !data?.result?.length && !isLoading && (
-        <EmptyUpload
-          buttonText="Create Workflow"
-          message="You do not have any workflows yet"
-          onClick={toggleCreateWorkflowHandler}
-        />
-      )}
-      {!isError && (isLoading || !!data?.result?.length) && (
+      {!isError && (
         <>
           <Table
+            locale={{
+              emptyText() {
+                return (
+                  <TableEmptyData
+                    message="You do not have any workflows yet"
+                    showEmpty={
+                      !!(
+                        data?.result?.length < 1 &&
+                        !isLoading &&
+                        !isRefetching
+                      )
+                    }
+                  />
+                );
+              },
+            }}
             columns={columns}
             dataSource={data?.result || []}
             rowKey={(data: any) => data?.pipeline_id}
-            loading={isLoading}
+            loading={isLoading || isRefetching}
             scroll={{
               x: "max-content",
               y: data?.result?.length > 0 ? 600 : undefined,

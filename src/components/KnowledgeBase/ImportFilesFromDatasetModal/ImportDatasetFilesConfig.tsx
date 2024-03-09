@@ -1,5 +1,6 @@
 import { getFileChunksApi } from "@/api/knowledgebase";
 import ChunksPreview from "@/components/ChunksPreview";
+import KbCustomIcon from "@/components/Icons/KbCustomIcon";
 import KbDefaultIcon from "@/components/Icons/KbDefaultIcon";
 import { nonZeroPositiveInteger } from "@/utils/regex";
 import { UnknownObject } from "@/utils/types";
@@ -9,10 +10,10 @@ import {
   Flex,
   Form,
   FormInstance,
-  Input,
   InputNumber,
   Radio,
   Row,
+  Select,
   Typography,
 } from "antd";
 import { useSession } from "next-auth/react";
@@ -22,6 +23,7 @@ import {
   KbSettingsRadioDescription,
   KbSettingsRadioTitle,
 } from "../CreateKnowledgeBaseForm/style";
+import { SegmentIdentifierOptions } from "./constant";
 
 import { PreviewSection, PreviewTitle, RadioOptionContainer } from "./style";
 
@@ -46,6 +48,7 @@ const ImportDatasetFilesConfig = ({
 }: ImportDatasetFilesConfigProps) => {
   console.log("🚀 ~ selectedRowKeys:", selectedRowKeys);
   console.log("🚀 ~ setSelectedRowDetails:", selectedRowDetails);
+
   const { data: session }: any = useSession();
   const [formUpdated, setFormUpdated] = useState(false);
   const [chunkLoading, setChunkLoading] = useState(false);
@@ -112,6 +115,7 @@ const ImportDatasetFilesConfig = ({
           onFinish={addFilesToDataset}
           layout="vertical"
           disabled={chunkLoading}
+          initialValues={{ chunk_setting: "AUTOMATIC" }}
           onValuesChange={() => setFormUpdated((prev: boolean) => !prev)}
         >
           <Row gutter={[20, 0]} justify="end">
@@ -193,7 +197,7 @@ const ImportDatasetFilesConfig = ({
                         <Flex gap="24px" align="center" justify="space-between">
                           <Flex align="center" gap="12px">
                             <KbSettingsIconsContainer>
-                              <KbDefaultIcon />
+                              <KbCustomIcon />
                             </KbSettingsIconsContainer>
                             <Flex gap="2px" vertical>
                               <KbSettingsRadioTitle>
@@ -229,7 +233,12 @@ const ImportDatasetFilesConfig = ({
                       },
                     ]}
                   >
-                    <Input placeholder="Enter segment identifier"></Input>
+                    <Select
+                      placeholder="Select segment identifier"
+                      showSearch
+                      optionFilterProp="label"
+                      options={SegmentIdentifierOptions}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={24} md={12}>
@@ -249,7 +258,7 @@ const ImportDatasetFilesConfig = ({
                         validator(_, value) {
                           if (value < 128) {
                             return Promise.reject(
-                              "Value should be greated than 128",
+                              "Value should be greater than 128",
                             );
                           }
                           return Promise.resolve();
@@ -277,6 +286,16 @@ const ImportDatasetFilesConfig = ({
                         pattern: nonZeroPositiveInteger,
                         message: "Please enter positive value",
                       },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (value < 20) {
+                            return Promise.reject(
+                              "Value should be greater than 20",
+                            );
+                          }
+                          return Promise.resolve();
+                        },
+                      }),
                     ]}
                   >
                     <InputNumber

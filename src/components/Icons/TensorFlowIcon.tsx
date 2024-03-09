@@ -12,7 +12,7 @@ const TensorFlowLogo = () => (
     viewBox="0 0 534.01 508.99"
   >
     <defs>
-      <clipPath id="clip-path" transform="translate(23.09 1.92)">
+      <clipPath id="clipPath" transform="translate(23.09 1.92)">
         <polygon points="452.23 123.16 235.73 0 235.73 506.11 322.33 456.07 322.33 313.67 387.76 351.2 386.8 254.02 322.33 216.49 322.33 159.72 452.23 235.73 452.23 123.16"></polygon>
       </clipPath>
       <linearGradient
@@ -24,10 +24,10 @@ const TensorFlowLogo = () => (
         gradientTransform="matrix(1, 0, 0, -1, 0, 204.21)"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0" stop-color="#ff6f00"></stop>
-        <stop offset="1" stop-color="#ffa800"></stop>
+        <stop offset="0" stopColor="#ff6f00"></stop>
+        <stop offset="1" stopColor="#ffa800"></stop>
       </linearGradient>
-      <clipPath id="clip-path-2" transform="translate(23.09 1.92)">
+      <clipPath id="clipPath-2" transform="translate(23.09 1.92)">
         <polygon points="0 123.16 216.49 0 216.49 506.11 129.89 456.07 129.89 159.72 0 235.73 0 123.16"></polygon>
       </clipPath>
       <linearGradient

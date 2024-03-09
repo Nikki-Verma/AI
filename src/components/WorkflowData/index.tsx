@@ -69,7 +69,12 @@ const WorkflowData = ({ workflowId }: WorkflowDataParams) => {
         >
           {data?.result?.pipeline_state === WorkflowStatus.COMPLETED ? (
             <Space>
-              <Button type="default">Integration</Button>
+              <Link
+                prefetch
+                href={`/integration/workflow/${data?.result?.pipeline_id}`}
+              >
+                <Button type="default">Integrate</Button>
+              </Link>
               <Link
                 prefetch
                 href={`/workflow/playground/${data?.result?.pipeline_id}`}

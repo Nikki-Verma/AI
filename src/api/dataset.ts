@@ -7,18 +7,6 @@ export const createDatasetApi = ({ payload = {}, headers = {} }: any) => {
   });
 };
 
-export const inviteUserApi = ({ payload = {}, headers = {} }: any) => {
-  return _authHttp.post(config.identity.inviteUser, payload, {
-    headers,
-  });
-};
-
-export const changeStatusApi = ({ payload = {}, headers = {} }: any) => {
-  return _authHttp.post(config.identity.changeStatus, payload, {
-    headers,
-  });
-};
-
 export const uploadFileToDatasetApi = ({ payload = {}, headers = {} }: any) => {
   return _authHttp.post(config.dataset.uploadFile, payload, {
     headers,

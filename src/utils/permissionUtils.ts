@@ -2,10 +2,11 @@ import { PERMISSION_TYPE } from "./constants";
 import { Permissions_Types } from "./types";
 
 export const validatePermission = (
-  reqPermissions: string[] = [],
+  reqPermissions: undefined | null | string | string[] = [],
   userPermissions: string[] = [],
   permissionType: Permissions_Types,
 ): boolean => {
+  console.log("🚀 ~ userPermissions:", userPermissions);
   if (userPermissions?.includes("SUPER_ADMIN")) {
     return true;
   }

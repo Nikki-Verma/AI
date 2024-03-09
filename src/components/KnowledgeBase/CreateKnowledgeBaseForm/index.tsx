@@ -2,7 +2,9 @@
 
 import KbCustomIcon from "@/components/Icons/KbCustomIcon";
 import KbDefaultIcon from "@/components/Icons/KbDefaultIcon";
+import InfoIconTooltip from "@/components/InfoIconTooltip";
 import { PAGE_MODE } from "@/utils/constants";
+import { alphanumericWithUnderscore } from "@/utils/regex";
 import { PageModeEnum, UnknownObject } from "@/utils/types";
 import {
   Col,
@@ -14,6 +16,9 @@ import {
   Radio,
   Row,
   Select,
+  Slider,
+  SliderSingleProps,
+  Space,
   Typography,
 } from "antd";
 import { useEffect, useState } from "react";
@@ -28,6 +33,16 @@ import {
 } from "./style";
 
 const { Text, Paragraph } = Typography;
+
+const marks: SliderSingleProps["marks"] = {
+  0.5: "0.5",
+  1: "1",
+};
+
+const topKMarks: SliderSingleProps["marks"] = {
+  1: "1",
+  10: "10",
+};
 interface CreateKnowledgeBaseFormProps {
   createKnowledgeBaseHandler: (values: { [key: string]: any }) => void;
   form: FormInstance;
@@ -120,11 +135,20 @@ const CreateKnowledgeBaseForm = ({
         <Col span={24} md={12}>
           <Form.Item
             name="name"
-            label="Knowledge base name"
+            label={
+              <Space>
+                <Text>Knowledge base name</Text>
+                <InfoIconTooltip title="Knowledge base can only contain _(underscore) and no other special characters" />
+              </Space>
+            }
             rules={[
               {
                 required: true,
                 message: "Knowledge base name is required",
+              },
+              {
+                pattern: alphanumericWithUnderscore,
+                message: "Enter valid knowledge base name",
               },
             ]}
           >
@@ -269,6 +293,54 @@ const CreateKnowledgeBaseForm = ({
                     />
                   </Form.Item>
                 </Col>
+
+                <Col span={12}>
+                  <Row gutter={12}>
+                    <Col flex={1}>
+                      <Form.Item name="threshold" label="Similarity Threshold">
+                        <Slider
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          marks={marks}
+                          style={{ margin: "11px 5px 30px 10px" }}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col>
+                      <Form.Item name="threshold" label="">
+                        <InputNumber
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          style={{ marginTop: "30px" }}
+                          placeholder="Similarity Threshold"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={12}>
+                  <Row gutter={[12, 12]}>
+                    <Col flex={1}>
+                      <Form.Item name="topK" label="Tok K Results">
+                        <Slider min={1} max={10} step={1} marks={topKMarks} />
+                      </Form.Item>
+                    </Col>
+                    <Col>
+                      <Form.Item name="topK">
+                        <InputNumber
+                          step={1}
+                          min={0}
+                          max={10}
+                          style={{ marginTop: "30px" }}
+                          placeholder="Top K Results"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Col>
+
                 {/* <Col span={24} md={12}>
                   <Form.Item name="index_key" label="Index Key">
                     <Input placeholder="Enter index key" />

@@ -14,9 +14,14 @@ const EmptyUpload = (props: any) => {
       />
       <EmptyMessage>{props?.message}</EmptyMessage>
 
-      <Button onClick={() => props?.onClick()} icon={<PlusOutlined />}>
-        {props?.buttonText}
-      </Button>
+      {props?.buttonText && (
+        <Button
+          onClick={() => (props?.onClick ? props?.onClick() : null)}
+          icon={<PlusOutlined />}
+        >
+          {props?.buttonText}
+        </Button>
+      )}
     </EmptyUploadContainer>
   );
 };

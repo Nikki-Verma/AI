@@ -3,7 +3,9 @@
 import DatasetList from "@/components/Dataset/DatasetList";
 import PageHeading from "@/components/PageHeading";
 import { PageContainer } from "@/components/UIComponents/UIComponents.style";
+import AuthorizedHOC from "@/HOC/AuthorizedHoc";
 import { useAppStore } from "@/store";
+import { PERMISSION } from "@/utils/permissions";
 import { Typography } from "antd";
 import { useEffect } from "react";
 
@@ -32,4 +34,4 @@ const datset = () => {
   );
 };
 
-export default datset;
+export default AuthorizedHOC([PERMISSION.DATASET_VIEW])(datset);

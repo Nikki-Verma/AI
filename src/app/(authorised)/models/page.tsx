@@ -107,6 +107,7 @@ const Models = () => {
   const { updatePageConfig } = useAppStore();
   const { data: session }: any = useSession();
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
+  console.log("🚀 ~ Models ~ filters:", filters);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const { data, isLoading, isError, error } = useFetchData(
@@ -132,7 +133,11 @@ const Models = () => {
     pageNumber,
     pageSize,
   ) => {
-    setFilters((prev: any) => ({ ...prev, page: pageNumber, size: pageSize }));
+    setFilters((prev: any) => ({
+      ...prev,
+      page: pageNumber - 1,
+      size: pageSize,
+    }));
   };
 
   const updateFilters = (updateState: { [key: string]: any } = {}) =>
@@ -285,7 +290,7 @@ const Models = () => {
         <Col>
           <Pagination
             pageSize={+filters?.size}
-            current={+filters?.page - 1}
+            current={+filters?.page + 1}
             total={data?.totalElements}
             showSizeChanger={false}
             hideOnSinglePage

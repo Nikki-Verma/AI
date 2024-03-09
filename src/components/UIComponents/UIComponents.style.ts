@@ -1,4 +1,4 @@
-import { Radio } from "antd";
+import { Button, Radio } from "antd";
 import { styled } from "styled-components";
 
 export const FlexBox = styled.div`
@@ -77,5 +77,14 @@ export const MediumRadioGroup = styled(Radio.Group)`
   }
   .ant-radio-button-wrapper:not(:first-child)::before {
     width: 0px !important;
+  }
+`;
+
+export const RemoveButton = styled(Button)`
+  color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  &:hover {
+    background-color: #ff0000 !important;
+    color: #fff !important;
   }
 `;

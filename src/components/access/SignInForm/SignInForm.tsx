@@ -3,15 +3,14 @@
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button, Col, Form, Input, notification, Row, Space } from "antd";
+import { Button, Col, Form, Input, notification, Row } from "antd";
 import useToken from "antd/es/theme/useToken";
 import { signIn, useSession } from "next-auth/react";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import uiStyles from "../../UIComponents/ui.module.scss";
+import { useEffect, useState } from "react";
+// import uiStyles from "../../UIComponents/ui.module.scss";
 import styles from "../access.module.scss";
 const { Item } = Form;
 
@@ -24,6 +23,11 @@ const SignInForm = () => {
   const [resetForm] = Form.useForm();
   const [theme, token] = useToken();
   const { status, data } = useSession();
+
+  useEffect(() => {
+    router.prefetch(`/home`);
+  }, []);
+
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
@@ -82,7 +86,10 @@ const SignInForm = () => {
                   },
                 ]}
               >
-                <Input style ={{height : '40px'}} placeholder="Enter work email address" />
+                <Input
+                  style={{ height: "40px" }}
+                  placeholder="Enter work email address"
+                />
               </Item>
             </Col>
             <Col span={24}>
@@ -96,32 +103,36 @@ const SignInForm = () => {
                   },
                 ]}
               >
-                <Input style ={{height : '40px'}} type="password" placeholder="Enter password" />
+                <Input
+                  style={{ height: "40px" }}
+                  type="password"
+                  placeholder="Enter password"
+                />
               </Item>
             </Col>
           </Row>
-          <div
+          {/* <div
             className={styles.forgot_password_container}
             onClick={() => {
               setShowResetPassword(true);
             }}
           >
             Forgot your password?
-          </div>
+          </div> */}
           <Item noStyle>
             <Button
               type="primary"
-              style={{ width: "100%", margin: "28px 0px", height : '45px' }}
+              style={{ width: "100%", margin: "12px 0", height: "45px" }}
               htmlType="submit"
               loading={loading}
             >
               Log in
             </Button>
           </Item>
-
+          {/* 
           <Button
             type="default"
-            style={{ width: "100%", marginBottom: "16px", height : '45px'  }}
+            style={{ width: "100%", marginBottom: "16px", height: "45px" }}
           >
             <Space align="center">
               <div
@@ -151,7 +162,7 @@ const SignInForm = () => {
             >
               Sign up
             </Link>
-          </div>
+          </div> */}
         </Form>
       ) : (
         <Form
@@ -203,7 +214,10 @@ const SignInForm = () => {
                       },
                     ]}
                   >
-                    <Input style ={{height : '40px'}} placeholder="Enter work email address" />
+                    <Input
+                      style={{ height: "40px" }}
+                      placeholder="Enter work email address"
+                    />
                   </Item>
                 </Col>
               </Row>
@@ -212,7 +226,7 @@ const SignInForm = () => {
                 onClick={() => {
                   setPasswordSent(true);
                 }}
-                style={{ width: "100%", margin: "28px 0px", height : '45px'  }}
+                style={{ width: "100%", margin: "28px 0px", height: "45px" }}
               >
                 Continue
               </Button>

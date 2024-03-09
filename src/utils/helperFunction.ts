@@ -26,9 +26,16 @@ export const getErrorFromApi = (
     return res;
   }
   if (res?.response) {
-    const error = res?.response?.data?.message
-      ? res?.response?.data?.message
-      : res?.response?.data?.error?.message;
+    const error =
+      res?.response?.data?.detail &&
+      typeof res?.response?.data?.detail === "string"
+        ? res?.response?.data?.detail
+        : res?.response?.data?.detail?.[0]?.msg &&
+            typeof res?.response?.data?.detail?.[0]?.msg === "string"
+          ? res?.response?.data?.detail?.[0]?.msg
+          : res?.response?.data?.message
+            ? res?.response?.data?.message
+            : res?.response?.data?.error?.message;
     if (error) return error;
   }
 
@@ -36,6 +43,7 @@ export const getErrorFromApi = (
     const error = res?.data?.error?.message;
     if (error) return error;
   }
+
   return res?.message || defaultMessage;
 };
 
@@ -102,12 +110,19 @@ export const userCredentialsFromName = (name: string) => {
   );
 };
 
-export const formatSizeUnits = (val : any) => {
-    if      (val >= 1073741824) { val = (val / 1073741824).toFixed(2) + " GB"; }
-    else if (val >= 1048576)    { val = (val / 1048576).toFixed(2) + " MB"; }
-    else if (val >= 1024)       { val = (val / 1024).toFixed(2) + " KB"; }
-    else if (val > 1)           { val = val + " bytes"; }
-    else if (val == 1)          { val = val + " byte"; }
-    else                          { val = "0 bytes"; }
-    return val;
-}
+export const formatSizeUnits = (val: any) => {
+  if (val >= 1073741824) {
+    val = (val / 1073741824).toFixed(2) + " GB";
+  } else if (val >= 1048576) {
+    val = (val / 1048576).toFixed(2) + " MB";
+  } else if (val >= 1024) {
+    val = (val / 1024).toFixed(2) + " KB";
+  } else if (val > 1) {
+    val = val + " bytes";
+  } else if (val == 1) {
+    val = val + " byte";
+  } else {
+    val = "0 bytes";
+  }
+  return val;
+};

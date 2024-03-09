@@ -1,10 +1,11 @@
 "use client";
 
 import { createDatasetApi, deleteDatasetApi } from "@/api/dataset";
-import EmptyUpload from "@/components/EmptyUpload";
+import TableEmptyData from "@/components/TableEmptyData";
 import { useFetchData, usePostData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import { useNotify } from "@/providers/notificationProvider";
+import { useAppStore } from "@/store";
 import config from "@/utils/apiEndoints";
 import {
   dateTimeFormatWithMilliseconds,
@@ -40,7 +41,8 @@ import {
 } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import FolderIcon from "../../Icons/FolderIcon";
 import SaDate from "../../SaDate/Index";
 import CreateDatasetModal from "../CreateDatasetModal";
@@ -61,6 +63,8 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
 });
 
 const DatasetList = () => {
+  const { updatePageConfig } = useAppStore();
+  const router = useRouter();
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
@@ -69,11 +73,12 @@ const DatasetList = () => {
   const { mutate } = usePostData(["createDataset"]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
-  const { data, isLoading, isError, error, refetch } = useFetchData(
-    config.dataset.list,
-    { ...filters },
-    {},
-  );
+  const { data, isLoading, isRefetching, isError, error, refetch } =
+    useFetchData(config.dataset.list, { ...filters }, {});
+
+  useEffect(() => {
+    router.prefetch(`/dataset/[datasetId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -124,13 +129,17 @@ const DatasetList = () => {
       };
 
       const datasetResponse = await createDatasetApi({ payload });
+      console.log(
+        "🚀 ~ createDatasetHandler ~ datasetResponse:",
+        datasetResponse,
+      );
 
       if (datasetResponse?.status === 200) {
         setCreateDatasetOpen(false);
         notification.success({
           message: "Dataset created successfully",
         });
-        refetch();
+        router.push(`/dataset/${datasetResponse?.data?.result?.id}`);
       }
     } catch (error) {
       notification.error({
@@ -172,7 +181,7 @@ const DatasetList = () => {
 
   const columns: TableProps<DataType>["columns"] = [
     {
-      title: "File name",
+      title: "File Name",
       dataIndex: "name",
       key: "name",
       width: 300,
@@ -183,7 +192,7 @@ const DatasetList = () => {
       ),
     },
     {
-      title: "File size",
+      title: "File Size",
       dataIndex: "size",
       key: "size",
       width: 200,
@@ -192,7 +201,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "File count",
+      title: "File Count",
       dataIndex: "files_count",
       key: "files_count",
       width: 200,
@@ -201,7 +210,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Created at",
+      title: "Created At",
       dataIndex: "created_at",
       key: "createdAt",
       width: 250,
@@ -216,7 +225,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Created by",
+      title: "Created By",
       dataIndex: "username",
       key: "username",
       width: 250,
@@ -225,7 +234,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Last updated At",
+      title: "Last Updated At",
       dataIndex: "updated_at",
       key: "updated_at",
       width: 250,
@@ -240,7 +249,7 @@ const DatasetList = () => {
       },
     },
     {
-      title: "Last updated by",
+      title: "Last Updated By",
       dataIndex: "updated_by_name",
       key: "updated_by_name",
       width: 250,
@@ -280,7 +289,7 @@ const DatasetList = () => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <Link prefetch href={`/dataset/${dataset?.id}`}>
+              <Link href={`/dataset/${dataset?.id}`}>
                 <Button
                   style={{ width: "100%" }}
                   icon={<EyeFilled />}
@@ -319,74 +328,88 @@ const DatasetList = () => {
 
   return (
     <DatasetListContainer>
-      {isError && (
-        <Result
-          status="500"
-          title="Something went wrong"
-          subTitle={getErrorFromApi(error)}
-        />
-      )}
-      {!data?.result?.length && !isError && !isLoading && (
-        <EmptyUpload
-          buttonText="Create your dataset"
-          message="It seems like you have not created dataset yet."
-          onClick={showDatasetModal}
-        />
-      )}
-      {!isError && (!!data?.result?.length || isLoading) && (
-        <>
-          <Row justify="space-between" align="middle">
-            <Col span={24} sm={6} md={4}>
-              {/* <Input
+      <Row justify="space-between" align="middle">
+        <Col span={24} sm={6} md={4}>
+          {/* <Input
                 prefix={<SearchIcon style={{ marginRight: "6px" }} />}
                 placeholder="Search by Dataset name, file name"
               /> */}
-            </Col>
-            <Col>
-              <Space size="middle" align="center">
-                {selectedRowKeys?.length > 0 && (
-                  <Button
-                    size="middle"
-                    type="default"
-                    disabled
-                    icon={<PlusOutlined />}
-                    onClick={addToKnowledgebaseHandler}
-                  >
-                    Add to knowledgebase
-                  </Button>
-                )}
-                <Button
-                  size="middle"
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={showDatasetModal}
-                >
-                  Create Dataset
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-
-          <Table
-            columns={columns}
-            dataSource={data?.result || []}
-            rowSelection={rowSelection}
-            loading={isLoading}
-            rowKey={(data: any) => data?.id}
-            scroll={{
-              x: "max-content",
-              y: data?.result?.length > 0 ? 600 : undefined,
-            }}
-            pagination={{
-              hideOnSinglePage: true,
-              current: +filters?.page + 1,
-              pageSize: +filters?.size,
-              total: data?.totalElements,
-              showSizeChanger: true,
-            }}
-            onChange={tableChangeHandler}
-          />
-        </>
+        </Col>
+        <Col>
+          <Space size="middle" align="center">
+            {selectedRowKeys?.length > 0 && (
+              <Button
+                size="middle"
+                type="default"
+                disabled
+                icon={<PlusOutlined />}
+                onClick={addToKnowledgebaseHandler}
+              >
+                Add to knowledgebase
+              </Button>
+            )}
+            <Button
+              size="middle"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={showDatasetModal}
+            >
+              Create Dataset
+            </Button>
+          </Space>
+        </Col>
+      </Row>
+      {isError && (
+        <Row>
+          <Col span={24}>
+            <Result
+              status="500"
+              title="Something went wrong"
+              subTitle={getErrorFromApi(error)}
+            />
+          </Col>
+        </Row>
+      )}
+      {!isError && (
+        <Row>
+          <Col span={24}>
+            <Table
+              locale={{
+                emptyText() {
+                  return (
+                    <TableEmptyData
+                      message="It seems like you have not created dataset yet."
+                      showEmpty={
+                        !!(
+                          data?.result?.length < 1 &&
+                          !isLoading &&
+                          !isRefetching
+                        )
+                      }
+                    />
+                  );
+                },
+              }}
+              columns={columns}
+              dataSource={data?.result || []}
+              rowSelection={rowSelection}
+              loading={isLoading || isRefetching}
+              rowKey={(data: any) => data?.id}
+              scroll={{
+                x: "max-content",
+                y: data?.result?.length > 0 ? 600 : undefined,
+              }}
+              pagination={{
+                hideOnSinglePage: true,
+                current: +filters?.page + 1,
+                pageSize: +filters?.size,
+                total: data?.totalElements,
+                showSizeChanger: true,
+              }}
+              onChange={tableChangeHandler}
+            />
+          </Col>
+        </Row>
       )}
       <CreateDatasetModal
         open={createDatasetOpen}

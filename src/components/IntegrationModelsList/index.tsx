@@ -19,7 +19,8 @@ import {
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import DeployIcon from "../Icons/DeployIcon";
 
 const { Text } = Typography;
@@ -40,6 +41,12 @@ const IntegrationModelsList = () => {
   } = useFetchData(config.workspace.models, {
     ...filters,
   });
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch(`/workspace`);
+    router.prefetch(`/integration/model/[modelId]/[userModelId]`);
+  }, []);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -68,7 +75,7 @@ const IntegrationModelsList = () => {
 
   const columns: TableProps<any>["columns"] = [
     {
-      title: "Model name",
+      title: "Model Name",
       dataIndex: "name",
       key: "name",
       width: 250,
@@ -127,7 +134,7 @@ const IntegrationModelsList = () => {
         ),
     },
     {
-      title: "Integrated channels",
+      title: "Integrated Channels",
       dataIndex: "channels",
       key: "channels",
       width: 200,
@@ -149,7 +156,6 @@ const IntegrationModelsList = () => {
           >
             <Col span={20}>
               <Link
-                prefetch
                 href={`/integration/model/${dataset?.model_id}/${dataset?.id}`}
               >
                 <Button
@@ -186,7 +192,7 @@ const IntegrationModelsList = () => {
         status={403}
         title="No deployed models available"
         extra={
-          <Link prefetch href={`/workspace`}>
+          <Link href={`/workspace`}>
             <Button type="primary" icon={<DeployIcon />}>
               Deploy Models
             </Button>
