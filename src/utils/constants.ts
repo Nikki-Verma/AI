@@ -27,7 +27,6 @@ export const PIM_SID = "PIM-SID";
 // Dummy data constants
 export const DUMMY_SELLER_ID = "1";
 export const DUMMY_SELLER_PROFILE_ID = "11";
-export const DUMMY_TENANT_ID = "1";
 
 // pagination constants
 export const DEFAULT_PAGE = 0;

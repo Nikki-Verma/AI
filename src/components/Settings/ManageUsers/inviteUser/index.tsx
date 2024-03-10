@@ -2,42 +2,31 @@
 
 import {
   Button,
+  Collapse,
   Drawer,
   Form,
   Input,
+  InputNumber,
   Select,
   Space,
   Switch,
-  Collapse,
-  Checkbox,
-  GetProp,
-  CheckboxProps,
-  CollapseProps,
-  InputNumber,
   Typography,
 } from "antd";
-import CredentialsProvider from "next-auth/providers/credentials";
 
-import React from "react";
-import {
-  dateTimeFormatWithMilliseconds,
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_SIZE,
-  DUMMY_TENANT_ID,
-} from "@/utils/constants";
 import { inviteUserApi } from "@/api/userManagement";
-import { useForm } from "antd/es/form/Form";
-import config from "@/utils/apiEndoints";
-import { useFetchData } from "@/Hooks/useApi";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
 import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
-import { useNotify } from "@/providers/notificationProvider";
-import { generateEncryptedPassword, getErrorFromApi } from "@/utils/helperFunction";
-import JSEncrypt from "jsencrypt";
-import _unauthHttp from "@/services/_unauthHttp";
 import InfoIconTooltip from "@/components/InfoIconTooltip";
+import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
+import config from "@/utils/apiEndoints";
+import {
+  generateEncryptedPassword,
+  getErrorFromApi,
+} from "@/utils/helperFunction";
 import { passwordPattern } from "@/utils/regex";
+import { useForm } from "antd/es/form/Form";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 const { Text } = Typography;
 
 type InviteUserProps = {
@@ -47,7 +36,12 @@ type InviteUserProps = {
   refetchUser: () => void;
 };
 
-const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserProps) => {
+const InviteUser = ({
+  open,
+  onClose,
+  inviteDataUser,
+  refetchUser,
+}: InviteUserProps) => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
 
@@ -67,7 +61,7 @@ const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserPr
     config.identity.userPermissionRole,
     { roles: form.getFieldValue("role_id") },
     {},
-    !!form.getFieldValue("role_name")
+    !!form.getFieldValue("role_name"),
   );
 
   // console.log("data", data);
@@ -92,26 +86,27 @@ const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserPr
   const inviteUserFormHandler = async (values: any) => {
     // console.log(values);
     try {
-      const encryptedPass = await generateEncryptedPassword(
-        values.password
-      );
+      const encryptedPass = await generateEncryptedPassword(values.password);
       setCreateDatasetLoading(true);
       const payload = {
         //...values,
-        tenant_id: DUMMY_TENANT_ID,
+        tenant_id: session?.user?.details?.tenantId,
         user_type: "CORE_USER",
         parent_id: session?.user?.details?.userId,
         user_group_id: session?.user?.details?.userGroup,
         user_info: {
-          first_name: values.user_full_name?.split(' ')[0] ? values.user_full_name?.split(' ')[0] : values.user_full_name,
-          last_name: values.user_full_name?.split(' ')[1]  ? values.user_full_name?.split(' ')[1] : ',',
+          first_name: values.user_full_name?.split(" ")[0]
+            ? values.user_full_name?.split(" ")[0]
+            : values.user_full_name,
+          last_name: values.user_full_name?.split(" ")[1]
+            ? values.user_full_name?.split(" ")[1]
+            : ",",
           country_code: "+91",
           mobile_no: values.phone,
           email: values.email,
         },
         user_creds: {
-          password:
-          encryptedPass
+          password: encryptedPass,
         },
         user_profiles: [
           {
@@ -209,20 +204,26 @@ const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserPr
             name="password"
             label={
               <Space>
-              <Text>Password</Text>
-              <InfoIconTooltip title="The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character from !@#$%^&*." />
-            </Space>
+                <Text>Password</Text>
+                <InfoIconTooltip title="The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character from !@#$%^&*." />
+              </Space>
             }
-            rules={[{ required: true, message: "Please enter password" },
-            {
-              pattern: passwordPattern,
-              message: "The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character from !@#$%^&*.",
-            }
-          ]}
+            rules={[
+              { required: true, message: "Please enter password" },
+              {
+                pattern: passwordPattern,
+                message:
+                  "The password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character from !@#$%^&*.",
+              },
+            ]}
           >
-            <Input.Password placeholder="Please enter password"  />
+            <Input.Password placeholder="Please enter password" />
           </Form.Item>
-          <Form.Item name="role_name" label="Select user role" rules={[{ required: true, message: "Please select user role" }]}>
+          <Form.Item
+            name="role_name"
+            label="Select user role"
+            rules={[{ required: true, message: "Please select user role" }]}
+          >
             <Select
               // key={roleName?.name}
               //   defaultValue={{ value: 'Please select user role', label: 'Lucy (101)' }}
@@ -261,7 +262,7 @@ const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserPr
                         name: any;
                         is_active_for_user: boolean;
                       },
-                      index: any
+                      index: any,
                     ) => {
                       return (
                         <Panel
@@ -293,7 +294,7 @@ const InviteUser = ({ open, onClose, inviteDataUser, refetchUser }: InviteUserPr
                           key={permissionList?.id}
                         ></Panel>
                       );
-                    }
+                    },
                   );
                 })}
               </Collapse>

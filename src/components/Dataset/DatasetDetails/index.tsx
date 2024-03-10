@@ -22,7 +22,6 @@ import {
   dateTimeFormatWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
-  DUMMY_TENANT_ID,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
@@ -228,7 +227,7 @@ const DatasetDetails = (props: any) => {
 
       // Payload to add to knowledgebase
       const payload = {
-        tenant_id: DUMMY_TENANT_ID,
+        tenant_id: session?.user?.details?.tenantId,
         user_id: session?.user?.details?.id,
         document_id: selectedRowKeys,
         knowlede_base_id: values?.id,
@@ -274,7 +273,7 @@ const DatasetDetails = (props: any) => {
         // Payload to add to knowledgebase
 
         const payload = {
-          tenant_id: DUMMY_TENANT_ID,
+          tenant_id: session?.user?.details?.tenantId,
           user_id: session?.user?.details?.id,
           document_id: selectedRowKeys,
           knowlede_base_id: createKnowledgeBaseResponse?.data?.result?.id,

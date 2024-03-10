@@ -14,7 +14,6 @@ import {
 import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
-import { DUMMY_TENANT_ID } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import {
   ApiOutlined,
@@ -98,7 +97,7 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
     try {
       setAddToWrokspaceLoading(true);
       const payload = {
-        tenant_id: DUMMY_TENANT_ID,
+        tenant_id: session?.user?.details?.tenantId,
         user_id: session?.user?.details?.id,
         username: session?.user?.details?.name,
         model_id: data?.result?.id,
