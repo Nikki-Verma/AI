@@ -67,6 +67,14 @@ function ChatPage() {
           app_id: selectedChatConfigDetails?.pipeline_id,
           model_id: selectedChatConfigDetails?.pipeline_id,
         });
+      } else if (selectedTab === PlaygroundConfigurationOptionType.AGENT) {
+        setChatConfig({
+          model: selectedChatConfigDetails?.agent_name,
+          language_code: "EN",
+          source: "APP",
+          app_id: selectedChatConfigDetails?.agent_id,
+          model_id: selectedChatConfigDetails?.agent_id,
+        });
       }
     }
   }, [selectedChatConfigId]);
