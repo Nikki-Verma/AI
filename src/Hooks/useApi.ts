@@ -57,6 +57,7 @@ export const useFetchData = (
     ],
     queryFn: () => fetcher(url, params, { ...headers }),
     enabled: enabled,
+    retry: 0,
   };
 
   return useQuery(queryOptions);
