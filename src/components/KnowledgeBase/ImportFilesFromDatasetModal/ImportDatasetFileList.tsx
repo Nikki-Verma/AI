@@ -124,8 +124,8 @@ const ImportDatasetFileList = ({
     },
     {
       title: "File Size",
-      dataIndex: "size",
-      key: "size",
+      dataIndex: "file_size",
+      key: "file_size",
       render: (val) => {
         return val ? formatSizeUnits(val) : "-";
       },

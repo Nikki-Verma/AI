@@ -6,34 +6,31 @@ import {
   Dropdown,
   MenuProps,
   Row,
-  Space,
   Table,
   TablePaginationConfig,
   TableProps,
-  Tag,
 } from "antd";
 
 import { changeStatusApi } from "@/api/userManagement";
+import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
+import PageHeading from "@/components/PageHeading";
+import Tags from "@/components/Tags";
+import { PageContainer } from "@/components/UIComponents/UIComponents.style";
 import { useFetchData } from "@/Hooks/useApi";
+import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
-import { Key, useState } from "react";
-import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
-import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
-import { PageContainer } from "@/components/UIComponents/UIComponents.style";
-import PageHeading from "@/components/PageHeading";
-import { useSession } from "next-auth/react";
-import Tags from "@/components/Tags";
-import InviteUser from "./inviteUser";
-import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
-import { useNotify } from "@/providers/notificationProvider";
-import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
+import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
+import { FilterValue, SorterResult } from "antd/es/table/interface";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import InviteUser from "./inviteUser";
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page: DEFAULT_PAGE,
   size: DEFAULT_PAGE_SIZE,
-  tenant_id: 1,
   ...dynamicState,
 });
 
@@ -41,13 +38,15 @@ const ManageUsers = () => {
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [intiveDataUser, intiveSetUser] = useState(false);
-  const [filters, setFilters] = usePersistedQueryParams(initialFilters());
+  const [filters, setFilters] = usePersistedQueryParams(
+    initialFilters({ tenant_id: session?.user?.details?.tenantId }),
+  );
   const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
   const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
 
   let { data, isError, error, isLoading, refetch } = useFetchData(
     `${config.identity.getUsers}?`,
-    filters
+    filters,
   );
 
   let {
@@ -189,7 +188,7 @@ const ManageUsers = () => {
 
         return (
           <>
-            <span onClick={changeStatusHandler} style={{cursor: "pointer"}}>
+            <span onClick={changeStatusHandler} style={{ cursor: "pointer" }}>
               <Tags tag={tags ? "Active" : "Deactivated"} />
             </span>
             <Dropdown menu={{ items: actionsItems }} placement="bottomLeft">
