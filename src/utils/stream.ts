@@ -4,6 +4,7 @@ import {
   UseChatStreamOptions,
 } from "@/Hooks/useChatStream";
 import _authHttp from "@/services/_http";
+import { signOut } from "next-auth/react";
 import { v4 } from "uuid";
 import config from "./apiEndoints";
 
@@ -44,6 +45,7 @@ export const getStream = async (
     },
   });
 
+  if (response.status === 511) return signOut({ redirect: false });
   if (response.status === 102) return getStream(cId, mId, headers);
 
   if (!response.ok) throw new Error(response.statusText);
