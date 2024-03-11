@@ -5,6 +5,7 @@ import {
   UploadSubTextContainer,
   UploadTextContainer,
 } from "@/components/UploadTraingingData/style";
+import { formatSizeUnits } from "@/utils/helperFunction";
 
 import { Form } from "antd";
 import Dragger from "antd/es/upload/Dragger";
@@ -47,7 +48,9 @@ const UploadManualFile = ({
             <DocumentIcon />
             <div style={{ display: "flex", flexDirection: "column" }}>
               <FileName>{file?.name}</FileName>
-              <FileSize>{file?.size ? `${file?.size} bytes` : ""}</FileSize>
+              <FileSize>
+                {file?.size ? `${formatSizeUnits(file?.size)}` : ""}
+              </FileSize>
             </div>
           </FileItemDetails>
           <RemoveIcon

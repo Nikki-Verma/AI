@@ -97,6 +97,10 @@ export const FileName = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const FileSize = styled.div`
