@@ -35,6 +35,7 @@ import {
   Col,
   Dropdown,
   MenuProps,
+  Popconfirm,
   Result,
   Row,
   Table,
@@ -309,15 +310,24 @@ const Workflow = () => {
           {
             key: "delete",
             label: (
-              <Button
-                onClick={() => deleteWorkflowHandler(workflowData)}
-                style={{ color: "#FF0000" }}
-                type="text"
-                loading={workflowDeleteLoading === workflowData?.pipeline_id}
+              <Popconfirm
+                title="Delete Workflow"
+                description="Are you sure to delete this workflow?"
+                onConfirm={() => deleteWorkflowHandler(workflowData)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!workflowDeleteLoading}
               >
-                Delete
-              </Button>
+                <Button
+                  style={{ color: "#FF0000" }}
+                  type="text"
+                  loading={workflowDeleteLoading === workflowData?.pipeline_id}
+                  disabled={!!workflowDeleteLoading}
+                  onClick={(e) => e?.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             ),
           },
         ];
@@ -326,15 +336,24 @@ const Workflow = () => {
           {
             key: "delete",
             label: (
-              <Button
-                onClick={() => deleteWorkflowHandler(workflowData)}
-                style={{ color: "#FF0000" }}
-                type="text"
-                loading={workflowDeleteLoading === workflowData?.pipeline_id}
+              <Popconfirm
+                title="Delete Workflow"
+                description="Are you sure to delete this workflow?"
+                onConfirm={() => deleteWorkflowHandler(workflowData)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!workflowDeleteLoading}
               >
-                Delete
-              </Button>
+                <Button
+                  style={{ color: "#FF0000" }}
+                  type="text"
+                  loading={workflowDeleteLoading === workflowData?.pipeline_id}
+                  disabled={!!workflowDeleteLoading}
+                  onClick={(e) => e?.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             ),
           },
         ];
@@ -372,6 +391,7 @@ const Workflow = () => {
                   <Dropdown
                     menu={{ items: completedItems }}
                     placement="bottomLeft"
+                    trigger={["click"]}
                   >
                     <MoreOutlined
                       style={{
@@ -412,6 +432,7 @@ const Workflow = () => {
                   <Dropdown
                     menu={{ items: progressItems }}
                     placement="bottomLeft"
+                    trigger={["click"]}
                   >
                     <MoreOutlined
                       style={{

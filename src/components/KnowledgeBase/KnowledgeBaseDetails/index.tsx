@@ -32,6 +32,7 @@ import {
   Button,
   Card,
   Col,
+  Popconfirm,
   Result,
   Row,
   Skeleton,
@@ -304,14 +305,24 @@ const KnowledgeBaseDetails = (props: any) => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <DeleteDatasetFileButton
-                onClick={() => deleteKnowledgebaseFilesHandler(knowledgebase)}
-                type="default"
-                loading={knowledgebaseFilesDeleteLoading === knowledgebase?.id}
+              <Popconfirm
+                title="Delete Knowledge Base File"
+                description="Are you sure to delete this knowledge base file?"
+                onConfirm={() => deleteKnowledgebaseFilesHandler(knowledgebase)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!knowledgebaseFilesDeleteLoading}
               >
-                Delete
-              </DeleteDatasetFileButton>
+                <DeleteDatasetFileButton
+                  type="default"
+                  loading={
+                    knowledgebaseFilesDeleteLoading === knowledgebase?.id
+                  }
+                  disabled={!!knowledgebaseFilesDeleteLoading}
+                >
+                  Delete
+                </DeleteDatasetFileButton>
+              </Popconfirm>
             </Col>
           </Row>
         );

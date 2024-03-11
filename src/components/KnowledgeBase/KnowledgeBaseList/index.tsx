@@ -33,6 +33,7 @@ import {
   Col,
   Dropdown,
   MenuProps,
+  Popconfirm,
   Result,
   Row,
   Space,
@@ -312,15 +313,24 @@ const KnowledgeBaseList = () => {
           {
             key: "delete",
             label: (
-              <Button
-                onClick={() => knowledgebaseDatasetHandler(knowledgebase)}
-                style={{ color: "#FF0000" }}
-                type="text"
-                loading={knowledgebaseDeleteLoading === knowledgebase?.id}
+              <Popconfirm
+                title="Delete Knowledge Base"
+                description="Are you sure to delete this knowledge base?"
+                onConfirm={() => knowledgebaseDatasetHandler(knowledgebase)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!knowledgebaseDeleteLoading}
               >
-                Delete
-              </Button>
+                <Button
+                  style={{ color: "#FF0000" }}
+                  type="text"
+                  loading={knowledgebaseDeleteLoading === knowledgebase?.id}
+                  disabled={!!knowledgebaseDeleteLoading}
+                  onClick={(e) => e?.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             ),
           },
         ];
@@ -342,7 +352,11 @@ const KnowledgeBaseList = () => {
               </Link>
             </Col>
             <Col span={3} style={{ display: "flex", justifyContent: "center" }}>
-              <Dropdown menu={{ items: extraItems }} placement="bottomLeft">
+              <Dropdown
+                menu={{ items: extraItems }}
+                placement="bottomLeft"
+                trigger={["click"]}
+              >
                 <MoreOutlined
                   style={{
                     fontSize: "21px",

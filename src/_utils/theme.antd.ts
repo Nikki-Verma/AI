@@ -148,11 +148,6 @@ const theme = {
       colorIconHover: TERTIARY_COLOR,
       controlItemBgActive: LINK_COLOR,
     },
-    Popover: {
-      colorBgElevated: PRIMARY_ACTIVE_BRAND_COLOR,
-      colorText: TEXT_PRIMARY_COLOR,
-      colorTextHeading: TEXT_PRIMARY_DIM_COLOR,
-    },
     Segmented: {
       trackBg: TEXT_HOVER_BG_COLOR,
       itemSelectedBg: LINK_COLOR,
@@ -216,9 +211,9 @@ const theme = {
       width: 400,
       boxShadow: "2px 4px 4px 0px rgba(54, 54, 54, 0.25)",
     },
-    Popconfirm: {
-      colorWarning: WHITE_BG_COLOR,
-    },
+    // Popconfirm: {
+    //   colorWarning: WHITE_BG_COLOR,
+    // },
     Progress: {
       defaultColor: LINK_COLOR,
     },

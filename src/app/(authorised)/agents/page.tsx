@@ -35,6 +35,7 @@ import {
   Col,
   Dropdown,
   MenuProps,
+  Popconfirm,
   Result,
   Row,
   Table,
@@ -314,15 +315,24 @@ const Agents = () => {
           {
             key: "delete",
             label: (
-              <Button
-                onClick={() => deleteAgentHandler(agentData)}
-                style={{ color: "#FF0000" }}
-                type="text"
-                loading={agentDeleteLoading === agentData?.agent_id}
+              <Popconfirm
+                title="Delete Agent"
+                description="Are you sure to delete this agent?"
+                onConfirm={() => deleteAgentHandler(agentData)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!agentDeleteLoading}
               >
-                Delete
-              </Button>
+                <Button
+                  style={{ color: "#FF0000" }}
+                  type="text"
+                  loading={agentDeleteLoading === agentData?.agent_id}
+                  disabled={!!agentDeleteLoading}
+                  onClick={(e) => e?.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             ),
           },
         ];
@@ -331,15 +341,24 @@ const Agents = () => {
           {
             key: "delete",
             label: (
-              <Button
-                onClick={() => deleteAgentHandler(agentData)}
-                style={{ color: "#FF0000" }}
-                type="text"
-                loading={agentDeleteLoading === agentData?.agent_id}
+              <Popconfirm
+                title="Delete Agent"
+                description="Are you sure to delete this agent?"
+                onConfirm={() => deleteAgentHandler(agentData)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!agentDeleteLoading}
               >
-                Delete
-              </Button>
+                <Button
+                  style={{ color: "#FF0000" }}
+                  type="text"
+                  loading={agentDeleteLoading === agentData?.agent_id}
+                  disabled={!!agentDeleteLoading}
+                  onClick={(e) => e?.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             ),
           },
         ];
@@ -374,6 +393,7 @@ const Agents = () => {
                   <Dropdown
                     menu={{ items: completedItems }}
                     placement="bottomLeft"
+                    trigger={["click"]}
                   >
                     <MoreOutlined
                       style={{
@@ -414,6 +434,7 @@ const Agents = () => {
                   <Dropdown
                     menu={{ items: progressItems }}
                     placement="bottomLeft"
+                    trigger={["click"]}
                   >
                     <MoreOutlined
                       style={{

@@ -36,6 +36,7 @@ import {
   Button,
   Card,
   Col,
+  Popconfirm,
   Result,
   Row,
   Skeleton,
@@ -400,14 +401,22 @@ const DatasetDetails = (props: any) => {
             style={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <Col span={20}>
-              <DeleteDatasetFileButton
-                onClick={() => deleteDatasetFilesHandler(dataset)}
-                type="default"
-                loading={datasetFilesDeleteLoading === dataset?.id}
+              <Popconfirm
+                title="Delete Dataset File"
+                description="Are you sure to delete this dataset file?"
+                onConfirm={() => deleteDatasetFilesHandler(dataset)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!datasetFilesDeleteLoading}
               >
-                Delete
-              </DeleteDatasetFileButton>
+                <DeleteDatasetFileButton
+                  type="default"
+                  loading={datasetFilesDeleteLoading === dataset?.id}
+                  disabled={!!datasetFilesDeleteLoading}
+                >
+                  Delete
+                </DeleteDatasetFileButton>
+              </Popconfirm>
             </Col>
           </Row>
         );

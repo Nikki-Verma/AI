@@ -4,6 +4,7 @@ import useAuthorization from "@/Hooks/useAuthorization";
 import { useAppStore } from "@/store";
 import { Layout, Menu, Typography } from "antd";
 import useToken from "antd/es/theme/useToken";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import CollapseSiderIcon from "../Icons/CollapseSiderIcon";
 import ExpandSiderIcon from "../Icons/ExpandSiderIcon";
@@ -22,9 +23,13 @@ const { Header, Sider, Content } = Layout;
 const MasterLayout = ({ children }: { children: React.ReactNode }) => {
   const { userConfig, updateUserConfig } = useAppStore();
   const [collapsed, setCollapsed] = useState(true);
+  const { data: session } = useSession();
 
   const [isAuthorized] = useAuthorization();
-  const menuItems = useMemo(() => getMenuItems(isAuthorized), [isAuthorized]);
+  const menuItems = useMemo(
+    () => getMenuItems(isAuthorized),
+    [isAuthorized, session],
+  );
   const pathname = usePathname();
   const [theme, token] = useToken();
   const [currentItemKey, setCurrentItemKey] = useState(["overview"]);

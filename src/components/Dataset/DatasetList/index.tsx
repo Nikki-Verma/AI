@@ -25,6 +25,7 @@ import {
   Col,
   Dropdown,
   MenuProps,
+  Popconfirm,
   Result,
   Row,
   Space,
@@ -264,20 +265,28 @@ const DatasetList = () => {
       width: 160,
       fixed: "right",
       render: (_: any, dataset: UnknownObject) => {
-        console.log("🚀 ~ DatasetList ~ dataset:", dataset);
         const extraItems: MenuProps["items"] = [
           {
             key: "delete",
             label: (
-              <Button
-                onClick={() => deleteDatasetHandler(dataset)}
-                style={{ color: "#FF0000" }}
-                type="text"
-                loading={datasetDeleteLoading === dataset?.id}
+              <Popconfirm
+                title="Delete Dataset"
+                description="Are you sure to delete this dataset?"
+                onConfirm={() => deleteDatasetHandler(dataset)}
+                okText="Yes"
+                cancelText="No"
                 disabled={!!datasetDeleteLoading}
               >
-                Delete
-              </Button>
+                <Button
+                  style={{ color: "#FF0000" }}
+                  type="text"
+                  loading={datasetDeleteLoading === dataset?.id}
+                  disabled={!!datasetDeleteLoading}
+                  onClick={(e) => e?.stopPropagation()}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             ),
           },
         ];
@@ -299,7 +308,11 @@ const DatasetList = () => {
               </Link>
             </Col>
             <Col span={3} style={{ display: "flex", justifyContent: "center" }}>
-              <Dropdown menu={{ items: extraItems }} placement="bottomLeft">
+              <Dropdown
+                menu={{ items: extraItems }}
+                placement="bottomLeft"
+                trigger={["click"]}
+              >
                 <MoreOutlined
                   style={{
                     fontSize: "21px",
