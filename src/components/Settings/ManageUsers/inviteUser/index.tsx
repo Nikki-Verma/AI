@@ -14,7 +14,6 @@ import {
 } from "antd";
 
 import { inviteUserApi } from "@/api/userManagement";
-import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
 import InfoIconTooltip from "@/components/InfoIconTooltip";
 import { useFetchData } from "@/Hooks/useApi";
 import { useNotify } from "@/providers/notificationProvider";
@@ -45,9 +44,6 @@ const InviteUser = ({
   const { data: session }: any = useSession();
   const { notification } = useNotify();
 
-  const [createDatasetOpen, setCreateDatasetOpen] = useState(false);
-  const [createDatasetLoading, setCreateDatasetLoading] = useState(false);
-
   const { Panel } = Collapse;
 
   const closeDrawer = () => {
@@ -55,7 +51,6 @@ const InviteUser = ({
   };
   const [form] = useForm();
   const [formUpdated, setformUpdated] = useState(false);
-  // const [DataInviteUser, SetInviteUser] = useState(false);
 
   const { data, isError, error, isLoading, refetch } = useFetchData(
     config.identity.userPermissionRole,
@@ -63,9 +58,6 @@ const InviteUser = ({
     {},
     !!form.getFieldValue("role_name"),
   );
-
-  // console.log("data", data);
-  // console.log(inviteDataUser, "inviteDataUserinviteDataUser");
 
   const roleDefine = (value: string, label: any) => {
     console.log(value, "value", label);
@@ -79,15 +71,11 @@ const InviteUser = ({
     ]);
   };
 
-  const closeDatasetModel = () => {
-    setCreateDatasetOpen(false);
-  };
-
   const inviteUserFormHandler = async (values: any) => {
     // console.log(values);
     try {
       const encryptedPass = await generateEncryptedPassword(values.password);
-      setCreateDatasetLoading(true);
+
       const payload = {
         //...values,
         tenant_id: session?.user?.details?.tenantId,
@@ -129,7 +117,6 @@ const InviteUser = ({
       console.log(datasetResponse, "datasetResponse");
 
       if (datasetResponse?.status === 200 || datasetResponse?.status === 201) {
-        setCreateDatasetOpen(false);
         notification.success({
           message: "User Invited Successfully",
         });
@@ -144,7 +131,6 @@ const InviteUser = ({
       });
       console.log(error);
     } finally {
-      setCreateDatasetLoading(false);
     }
   };
 
@@ -300,12 +286,10 @@ const InviteUser = ({
               </Collapse>
             </Form.Item>
           )}
-          {/* )} */}
 
           <Form.Item
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            {/* <Button size="large">Save</Button> */}
             <Button
               type="primary"
               size="large"
@@ -316,13 +300,6 @@ const InviteUser = ({
             </Button>
           </Form.Item>
         </Form>
-        <CreateDatasetModal
-          open={createDatasetOpen}
-          loading={createDatasetLoading}
-          onClose={closeDatasetModel}
-          createDatasetHandler={inviteUserFormHandler}
-          title="Create your data collection set"
-        />
       </Drawer>
     </>
   );
