@@ -40,7 +40,8 @@ export const MessageContainer = styled.div`
         return "flex-end !important";
     }
   }};
-  max-width: 90%;
+  max-width: 70vw ;
+  width:70vw;
   margin-left: ${(props: any) => {
     switch (props.role) {
       case "SimplAi":
@@ -86,6 +87,7 @@ export const PromptContainer = styled.div`
   gap: 12px;
   flex-direction : column;
   border-radius: 10px;
+  max-width:90%;
   // text-wrap:wrap;
   // white-space: pre;
   background: ${(props: any) => {

@@ -99,7 +99,6 @@ function Message({ message, loading }: Props) {
         </div>
       ) : (
         <PromptContainer role={message?.role}>
-          <span>
             {message?.content ? (
               <>
                 <MarkdownComponent markdown={message?.content} />
@@ -107,7 +106,6 @@ function Message({ message, loading }: Props) {
             ) : (
               ""
             )}
-          </span>
           {message?.role === "SimplAi" &&
           <FlexEndContainer style={{width : '100%'}}>
             {showCopied ? 
