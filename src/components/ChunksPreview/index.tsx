@@ -8,20 +8,25 @@ import {
   Row,
   Skeleton,
   Space,
+  Tooltip,
   Typography,
 } from "antd";
 import { useState } from "react";
 import MarkdownComponent from "../Markdown";
 import { ChunkCount, ChunkPreview, ChunkPreviewContainer } from "./style";
+import Image from "next/image";
+import { FileNameWithoutTimestamp } from "@/utils/helperFunction";
+import {DatabaseFilled} from "@ant-design/icons";
 
 const { Paragraph, Text } = Typography;
 
 type ChunkPreviewProps = {
   chunks: string[];
   loading?: boolean;
+  chunkFileName?: string;
 };
 
-const ChunksPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
+const ChunksPreview = ({ chunks, loading = false, chunkFileName }: ChunkPreviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChunk, setSelectedChunk] = useState("");
 
@@ -50,7 +55,23 @@ const ChunksPreview = ({ chunks, loading = false }: ChunkPreviewProps) => {
               }}
             >
               <Paragraph ellipsis={{ rows: 2 }}>{chunk}</Paragraph>
-              <Flex justify="flex-end">
+              <Flex justify="space-between" align="center">
+                {chunkFileName &&
+                  <div style={{alignItems : 'flex-start',lineHeight : 'normal'}}>
+                  <Image
+                    src="/assets/Images/pdfImage.png"
+                    alt="pdf"
+                    width={16}
+                    height={16}
+                    style={{marginRight : '4px'}}
+                  />
+                  <Tooltip title = {FileNameWithoutTimestamp(chunkFileName)} placement="topLeft">
+                  <Text ellipsis style={{ width: "250px" }}>
+                    {FileNameWithoutTimestamp(chunkFileName)}
+                  </Text>
+                  </Tooltip>
+                </div>
+                }
                 <ChunkCount
                   disabled
                 >{`${chunk?.length} characters`}</ChunkCount>

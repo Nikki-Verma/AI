@@ -41,6 +41,7 @@ import {
   Table,
   TablePaginationConfig,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -177,9 +178,11 @@ const Agents = () => {
       key: "agent_name",
       width: 200,
       render: (val: any, data: any) => (
+        <Tooltip title={val} placement="topLeft">
         <LinkContainer>
           <Link href={`/agents/view/${data?.pipeline_id}`}>{val}</Link>
         </LinkContainer>
+        </Tooltip>
       ),
     },
     {
@@ -188,9 +191,11 @@ const Agents = () => {
       key: "agent_description",
       width: 200,
       render: (val: any) => (
+        <Tooltip title={val} placement="topLeft">
         <Text ellipsis style={{ width: 200 }}>
           {val || "--"}
         </Text>
+        </Tooltip>
       ),
     },
     {
@@ -221,9 +226,11 @@ const Agents = () => {
       key: "model_name",
       width: 200,
       render: (val: any) => (
+        <Tooltip title={val?.model_name} placement="topLeft">
         <Text ellipsis style={{ width: 200 }}>
           {val?.model_name || "--"}
         </Text>
+        </Tooltip>
       ),
     },
     {

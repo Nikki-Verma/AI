@@ -1,12 +1,15 @@
 "use client";
 
-import { userCredentialsFromName } from "@/utils/helperFunction";
-import { Typography } from "antd";
+import { handleCopy, userCredentialsFromName } from "@/utils/helperFunction";
+import { Tooltip, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import ChatLoadingIcon from "../Icons/ChatLoadingIcon";
 import MarkdownComponent from "../Markdown";
 import { IconContainer, MessageContainer, PromptContainer } from "./style";
+import { FlexEndContainer } from "../UIComponents/UIComponents.style";
+import { CopyOutlined,CheckOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
 const { Paragraph } = Typography;
 
@@ -18,6 +21,8 @@ type Props = {
 function Message({ message, loading }: Props) {
   const isUser = message?.role === "user";
   const { data: session, status }: any = useSession();
+  const[showCopied, setShowCopied]= useState<boolean>(false)
+
   return (
     <MessageContainer role={message?.role}>
       {isUser ? (
@@ -103,6 +108,27 @@ function Message({ message, loading }: Props) {
               ""
             )}
           </span>
+          {message?.role === "SimplAi" &&
+          <FlexEndContainer style={{width : '100%'}}>
+            {showCopied ? 
+            <Tooltip title = 'Copied' placement="top">
+            <CheckOutlined />
+            </Tooltip>
+            :
+            <Tooltip title = 'Copy' placement="top">
+            <CopyOutlined 
+            onClick={()=>{
+              handleCopy(message?.content)
+              setShowCopied(true)
+              setTimeout(() => {
+                setShowCopied(false)
+              }, 700);
+            }} 
+            style={{cursor : 'pointer'}} />
+            </Tooltip>
+            }
+          </FlexEndContainer>
+          }
         </PromptContainer>
       )}
     </MessageContainer>

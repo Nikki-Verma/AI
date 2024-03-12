@@ -13,6 +13,7 @@ import {
   Table,
   TablePaginationConfig,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -85,9 +86,11 @@ const IntegrationAgentsList = () => {
       key: "agent_name",
       width: 250,
       render: (val) => (
+        <Tooltip title={val} placement="topLeft">
         <Text ellipsis style={{ width: 200 }}>
           {val}
         </Text>
+        </Tooltip>
       ),
     },
     {
@@ -97,9 +100,11 @@ const IntegrationAgentsList = () => {
       width: 400,
       render: (val: any) =>
         val ? (
+          <Tooltip title={val} placement="topLeft">
           <Text ellipsis style={{ width: 400 }}>
             {val}
           </Text>
+          </Tooltip>
         ) : (
           "--"
         ),
@@ -111,9 +116,11 @@ const IntegrationAgentsList = () => {
       width: 200,
       render: (val: any) =>
         val ? (
+          <Tooltip title={val?.model_name} placement="topLeft">
           <Text ellipsis style={{ width: 200 }}>
             {val?.model_name}
           </Text>
+          </Tooltip>
         ) : (
           "--"
         ),
@@ -125,9 +132,11 @@ const IntegrationAgentsList = () => {
       width: 200,
       render: (val: any) =>
         val ? (
+          <Tooltip title={val?.kb_name} placement="topLeft">
           <Text ellipsis style={{ width: 200 }}>
             {val?.kb_name}
           </Text>
+          </Tooltip>
         ) : (
           "--"
         ),

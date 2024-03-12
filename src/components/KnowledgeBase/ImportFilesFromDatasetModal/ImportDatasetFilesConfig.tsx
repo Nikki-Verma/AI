@@ -53,6 +53,7 @@ const ImportDatasetFilesConfig = ({
   const [formUpdated, setFormUpdated] = useState(false);
   const [chunkLoading, setChunkLoading] = useState(false);
   const [chunks, setChunks] = useState<string[]>([]);
+  const [chunkFileName, setChunkFileName] = useState<string>('');
   const chunkSetting = Form.useWatch("chunk_setting", form);
   useEffect(() => {
     if (chunkSetting === "AUTOMATIC") getChunksDetails();
@@ -95,12 +96,18 @@ const ImportDatasetFilesConfig = ({
       const chunkResponse = await getFileChunksApi({ payload });
       console.log("🚀 ~ getChunksDetails ~ chunkResponse:", chunkResponse);
       if (chunkResponse?.data?.chunks) {
-        setChunks([...(chunkResponse?.data?.chunks || [])]);
+        setChunks([...(chunkResponse?.data?.chunks?.filter((chunkString : string) => chunkString?.length) || [])]);
       } else {
         setChunks([]);
       }
+      if (chunkResponse?.data?.object_name){
+        setChunkFileName(chunkResponse?.data?.object_name)
+      }else{
+        setChunkFileName('')
+      }
     } catch (error) {
       setChunks([]);
+      setChunkFileName('')
     } finally {
       setChunkLoading(false);
     }
@@ -322,7 +329,7 @@ const ImportDatasetFilesConfig = ({
       <Col span={24} md={14}>
         <PreviewSection>
           <PreviewTitle strong>Chunk Preview</PreviewTitle>
-          <ChunksPreview chunks={chunks} loading={chunkLoading} />
+          <ChunksPreview chunks={chunks} loading={chunkLoading} chunkFileName = {chunkFileName}/>
         </PreviewSection>
       </Col>
     </Row>

@@ -84,6 +84,7 @@ export const PromptContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 12px;
+  flex-direction : column;
   border-radius: 10px;
   // text-wrap:wrap;
   // white-space: pre;

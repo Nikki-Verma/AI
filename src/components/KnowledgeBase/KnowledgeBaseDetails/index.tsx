@@ -22,6 +22,7 @@ import {
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
+  FileNameWithoutTimestamp,
   formatSizeUnits,
   getErrorFromApi,
   getFilters,
@@ -40,6 +41,7 @@ import {
   Table,
   TablePaginationConfig,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import {
@@ -223,12 +225,14 @@ const KnowledgeBaseDetails = (props: any) => {
       key: "file_name",
       width: 400,
       render: (val) => (
+        <Tooltip title={FileNameWithoutTimestamp(val)} placement="top">
         <Space size="small">
           <FileIcon />{" "}
           <Text ellipsis style={{ width: 350 }}>
-            {val}
+            {FileNameWithoutTimestamp(val)}
           </Text>
         </Space>
+        </Tooltip>
       ),
     },
     {
@@ -298,6 +302,7 @@ const KnowledgeBaseDetails = (props: any) => {
       align: "center",
       key: "actions",
       width: 100,
+      fixed : 'right',
       render: (_: any, knowledgebase: UnknownObject) => {
         return (
           <Row

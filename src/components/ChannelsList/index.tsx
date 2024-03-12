@@ -17,6 +17,7 @@ import {
   Table,
   TablePaginationConfig,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
@@ -124,9 +125,11 @@ const ChannelsList = ({
       key: "bot_name",
       width: 250,
       render: (val) => (
+        <Tooltip title={val} placement="topLeft">
         <Text ellipsis style={{ width: 200 }}>
           {val}
         </Text>
+        </Tooltip>
       ),
     },
     {
@@ -136,6 +139,10 @@ const ChannelsList = ({
       width: 200,
       render: (val: any) =>
         val ? (
+          <Tooltip 
+          title={ChannelTableDetails?.[
+            val?.toUpperCase() as keyof typeof ChannelTableDetails
+          ]?.text ?? val} placement="topLeft">
           <Flex align="center" gap="12px">
             {ChannelTableDetails?.[
               val?.toUpperCase() as keyof typeof ChannelTableDetails
@@ -149,6 +156,7 @@ const ChannelsList = ({
               ]?.text ?? val}
             </Text>
           </Flex>
+          </Tooltip>
         ) : (
           "--"
         ),
