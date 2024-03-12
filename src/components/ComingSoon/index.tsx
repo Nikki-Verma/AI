@@ -19,7 +19,7 @@ const ComingSoon = ({description} : ComingSoonProps) => {
         This page is coming soon
         </ComingSoonHeading>
         <ComingSoonDescription>
-        Our team is hard at work crafting an innovative Billing & Usages page just for you!  Stay tuned for an intuitive platform where you can effortlessly monitor, analyze, and optimize your usage data.
+        Our team is diligently developing a new Billing & Usages page tailored specifically for you! Keep an eye out for a user-friendly platform designed to help you easily track, analyze, and enhance your usage data.
         </ComingSoonDescription>
       
     </ComingSoonContainer>

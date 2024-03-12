@@ -39,6 +39,7 @@ import {
   Space,
   Table,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import {
@@ -181,9 +182,11 @@ const KnowledgeBaseList = () => {
       key: "name",
       width: 400,
       render: (val) => (
+        <Tooltip title={val} placement="top">
         <Space size={2}>
           <DatabaseFilled /> {val}
         </Space>
+        </Tooltip>
       ),
     },
     {
@@ -222,7 +225,7 @@ const KnowledgeBaseList = () => {
       key: "embed_model_name",
       width: 250,
       render: (val) => {
-        return val ?? "-";
+        return <Tooltip title={val} placement="top">{val ?? "-"}</Tooltip>
       },
     },
     {

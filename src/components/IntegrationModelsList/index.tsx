@@ -15,6 +15,7 @@ import {
   TablePaginationConfig,
   TableProps,
   Typography,
+  Tooltip,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import Image from "next/image";
@@ -80,6 +81,7 @@ const IntegrationModelsList = () => {
       key: "name",
       width: 250,
       render: (val, data) => (
+        <Tooltip title={val} placement="top">
         <Space size="small" align="center">
           {data?.model_params?.weights_file_s3_url ? (
             <AntImage
@@ -103,6 +105,7 @@ const IntegrationModelsList = () => {
             {val}
           </Text>
         </Space>
+        </Tooltip>
       ),
     },
     {
@@ -126,9 +129,11 @@ const IntegrationModelsList = () => {
       width: 400,
       render: (val: any) =>
         val ? (
+          <Tooltip title={val} placement="top">
           <Text ellipsis style={{ width: 400 }}>
             {val}
           </Text>
+          </Tooltip>
         ) : (
           "--"
         ),

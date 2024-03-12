@@ -25,6 +25,7 @@ import {
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
+  FileNameWithoutTimestamp,
   formatSizeUnits,
   getErrorFromApi,
   getFilters,
@@ -44,6 +45,7 @@ import {
   Table,
   TablePaginationConfig,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import {
@@ -344,12 +346,14 @@ const DatasetDetails = (props: any) => {
       key: "file_name",
       width: 400,
       render: (val) => (
+        <Tooltip title={FileNameWithoutTimestamp(val)} placement="top">
         <Space size="small">
           <FileIcon />{" "}
           <Text ellipsis style={{ width: 350 }}>
-            {val}
+            {FileNameWithoutTimestamp(val)}
           </Text>
         </Space>
+        </Tooltip>
       ),
     },
     {
@@ -393,6 +397,7 @@ const DatasetDetails = (props: any) => {
       align: "center",
       key: "actions",
       width: 100,
+      fixed: "right",
       render: (_: any, dataset: UnknownObject) => {
         console.log("🚀 ~ DatasetDetails ~ dataset:", dataset);
         return (

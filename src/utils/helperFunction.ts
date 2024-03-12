@@ -126,3 +126,12 @@ export const formatSizeUnits = (val: any) => {
   }
   return val;
 };
+
+export const FileNameWithoutTimestamp = (fileName : string) => {
+  const fileNameWithoutTimestamp = fileName.replace(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}-/, '');
+  return fileNameWithoutTimestamp;
+}
+
+export const handleCopy = (liveUrl : any) => {
+  navigator.clipboard.writeText(liveUrl);
+}

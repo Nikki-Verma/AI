@@ -8,7 +8,7 @@ import {
   DEFAULT_PAGE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { formatSizeUnits, getFilters } from "@/utils/helperFunction";
+import { FileNameWithoutTimestamp, formatSizeUnits, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
   Form,
@@ -100,7 +100,7 @@ const ImportDatasetFileList = ({
         <Space size="small">
           <FileIcon />{" "}
           <Text ellipsis style={{ width: 350 }}>
-            {val}
+            {FileNameWithoutTimestamp(val)}
           </Text>
         </Space>
       ),

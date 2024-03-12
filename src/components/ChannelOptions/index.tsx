@@ -17,11 +17,11 @@ const ChannelOptions = ({
 }: ChannelOptionsProps) => {
   return (
     <ChannelOptionsContainer>
-      <ChannelOptionsDescription>
+      {/* <ChannelOptionsDescription>
         We'll create a data table that can be added to any tool or agent.
         Knowledge is used to provide context to the large language model.
-      </ChannelOptionsDescription>
-      <Flex gap={20} wrap="wrap" justify="flex-start" align="center">
+      </ChannelOptionsDescription> */}
+      <Flex gap={20} wrap="wrap" justify="center" align="center">
         {availableOptions.map((channel: AvailableChannelType) => {
           return (
             <ChannelCard

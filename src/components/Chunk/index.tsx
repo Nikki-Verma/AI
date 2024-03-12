@@ -9,6 +9,7 @@ import {
   ChunkMetadata,
   ChunkMetedataDivider,
 } from "./style";
+import { FileNameWithoutTimestamp } from "@/utils/helperFunction";
 const { Paragraph, Text } = Typography;
 
 type ChunkProps = {
@@ -43,7 +44,7 @@ const Chunk = ({ chunk }: ChunkProps) => {
                   height={16}
                 />
                 <Text ellipsis style={{ width: "250px" }}>
-                  {chunk?.metadata?.file_name ?? ""}
+                  {FileNameWithoutTimestamp(chunk?.metadata?.file_name) ?? ""}
                 </Text>
               </Space>
             </Col>

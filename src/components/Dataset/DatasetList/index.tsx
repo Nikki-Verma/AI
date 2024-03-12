@@ -31,6 +31,7 @@ import {
   Space,
   Table,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import {
@@ -186,9 +187,11 @@ const DatasetList = () => {
       key: "name",
       width: 300,
       render: (val) => (
+        <Tooltip title={val} placement="top">
         <Space size="small">
           <FolderIcon /> {val}
         </Space>
+        </Tooltip>
       ),
     },
     {
