@@ -218,7 +218,7 @@ export const items: any = [
   {
     id: 100,
     label: (
-      <Link prefetch href="/settings">
+      <Link prefetch href="/settings/manage-users">
         <Text style={{ color: "inherit" }}>Settings</Text>
       </Link>
     ),
