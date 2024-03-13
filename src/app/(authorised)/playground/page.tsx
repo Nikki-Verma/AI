@@ -111,7 +111,6 @@ function ChatPage() {
             isLoading={isLoading}
             stopStream={stopStream}
             WelcomeMessage=""
-            // Welcome to the Playground! Here, you can experiment with your deployed models and workflows, tweaking parameters and observing the outcomes in real-time. Dive in to fine-tune your AI's performance and discover the best configurations for your applications.
           />
         ) : (
           <NoChatConatiner>
@@ -136,3 +135,5 @@ function ChatPage() {
     </PlaygroundContainer>
   );
 }
+
+export default ChatPage;
