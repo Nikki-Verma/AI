@@ -10,7 +10,14 @@ import {
 import dayjs from "@/utils/date";
 import { formatSizeUnits, getFilters } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { Button, Space, Table, TablePaginationConfig, TableProps } from "antd";
+import {
+  Button,
+  Space,
+  Table,
+  TablePaginationConfig,
+  TableProps,
+  Tooltip,
+} from "antd";
 import { FilterValue } from "antd/es/table/interface";
 import { useState } from "react";
 
@@ -64,9 +71,11 @@ const ImportDatasetFolderList = ({
       key: "name",
       width: 200,
       render: (val) => (
-        <Space size="small">
-          <FolderIcon /> {val}
-        </Space>
+        <Tooltip title={val} placement="top">
+          <Space size="small">
+            <FolderIcon /> {val}
+          </Space>
+        </Tooltip>
       ),
     },
     {
@@ -88,11 +97,8 @@ const ImportDatasetFolderList = ({
       title: "File Size",
       dataIndex: "size",
       key: "size",
-      render : (val) => {
-        return(
-          val ? formatSizeUnits(val) : '-'
-
-        )
+      render: (val) => {
+        return val ? formatSizeUnits(val) : "-";
       },
     },
     {

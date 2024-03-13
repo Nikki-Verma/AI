@@ -8,7 +8,11 @@ import {
   DEFAULT_PAGE,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
-import { FileNameWithoutTimestamp, formatSizeUnits, getFilters } from "@/utils/helperFunction";
+import {
+  FileNameWithoutTimestamp,
+  formatSizeUnits,
+  getFilters,
+} from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import {
   Form,
@@ -17,6 +21,7 @@ import {
   Table,
   TablePaginationConfig,
   TableProps,
+  Tooltip,
   Typography,
 } from "antd";
 import { FilterValue, TableRowSelection } from "antd/es/table/interface";
@@ -97,12 +102,14 @@ const ImportDatasetFileList = ({
       key: "file_name",
       width: 400,
       render: (val) => (
-        <Space size="small">
-          <FileIcon />{" "}
-          <Text ellipsis style={{ width: 350 }}>
-            {FileNameWithoutTimestamp(val)}
-          </Text>
-        </Space>
+        <Tooltip title={FileNameWithoutTimestamp(val)} placement="top">
+          <Space size="small">
+            <FileIcon />{" "}
+            <Text ellipsis style={{ width: 350 }}>
+              {FileNameWithoutTimestamp(val)}
+            </Text>
+          </Space>
+        </Tooltip>
       ),
     },
     {
