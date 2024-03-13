@@ -1,6 +1,6 @@
 import _unauthHttp from "@/services/_unauthHttp";
 import config from "@/utils/apiEndoints";
-import { tokenDateFormat, X_DEVICE_ID } from "@/utils/constants";
+import { tokenDateFormat, X_DEVICE_ID, X_TENANT_ID } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import {
   generateEncryptedPassword,
@@ -46,6 +46,10 @@ export const authOptions: AuthOptions = {
         dayjs().format(tokenDateFormat) <
           dayjs(token.expiresAt).format(tokenDateFormat),
       );
+      console.log(
+        "🚀 ~ jwt ~ token?.user?.details?.tenantId:",
+        token?.user?.details?.tenantId,
+      );
       if (user) {
         return {
           user: { permissions: user?.permissions, details: user?.details },
@@ -72,6 +76,7 @@ export const authOptions: AuthOptions = {
               headers: {
                 "Refresh-Token": token?.refreshToken,
                 "Grant-Type": "REFRESH_TOKEN",
+                [X_TENANT_ID]: token?.user?.details?.tenantId,
               },
             },
           );
