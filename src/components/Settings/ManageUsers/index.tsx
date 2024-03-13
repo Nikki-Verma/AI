@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Col,
-  Dropdown,
-  MenuProps,
-  Row,
-  Table,
-  TablePaginationConfig,
-  TableProps,
-} from "antd";
+import { Col, Row, Table, TablePaginationConfig, TableProps } from "antd";
 
 import { changeStatusApi } from "@/api/userManagement";
 import CreateDatasetModal from "@/components/Dataset/CreateDatasetModal";
@@ -22,7 +13,6 @@ import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { getErrorFromApi, getFilters } from "@/utils/helperFunction";
-import { MoreOutlined, PlusOutlined } from "@ant-design/icons";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -139,32 +129,32 @@ const ManageUsers = () => {
         );
       },
     },
-    {
-      title: "Action",
-      dataIndex: "is_active",
-      key: "Status",
-      render: (tags: boolean) => {
-        const actionsItems: MenuProps["items"] = [
-          {
-            key: "integration",
-            label: "Dummy",
-          },
-        ];
+    // {
+    //   title: "Action",
+    //   dataIndex: "is_active",
+    //   key: "Status",
+    //   render: (tags: boolean) => {
+    //     const actionsItems: MenuProps["items"] = [
+    //       {
+    //         key: "integration",
+    //         label: "Dummy",
+    //       },
+    //     ];
 
-        return (
-          <>
-            <span onClick={changeStatusHandler} style={{ cursor: "pointer" }}>
-              <Tags tag={tags ? "Active" : "Deactivated"} />
-            </span>
-            <Dropdown menu={{ items: actionsItems }} placement="bottomLeft">
-              <MoreOutlined
-                style={{ fontSize: "18px", fontWeight: "bolder" }}
-              />
-            </Dropdown>
-          </>
-        );
-      },
-    },
+    //     return (
+    //       <>
+    //         <span onClick={changeStatusHandler} style={{ cursor: "pointer" }}>
+    //           <Tags tag={tags ? "Active" : "Deactivated"} />
+    //         </span>
+    //         <Dropdown menu={{ items: actionsItems }} placement="bottomLeft">
+    //           <MoreOutlined
+    //             style={{ fontSize: "18px", fontWeight: "bolder" }}
+    //           />
+    //         </Dropdown>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   const tableChangeHandler = (
@@ -197,7 +187,7 @@ const ManageUsers = () => {
           <Col flex={1}>
             <PageHeading title="Added Users" />
           </Col>
-          <Col>
+          {/* <Col>
             <Button
               type="primary"
               icon={<PlusOutlined />}
@@ -205,7 +195,7 @@ const ManageUsers = () => {
             >
               Invite User
             </Button>
-          </Col>
+          </Col> */}
         </Row>
         {!isError && (isLoading || !data?.result?.length) && (
           <Table
