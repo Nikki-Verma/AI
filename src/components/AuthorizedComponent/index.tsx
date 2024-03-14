@@ -15,9 +15,9 @@ export const Types = {
 };
 
 type AuthorizedComponentProps = {
-  permissions: undefined | null | string | string[];
-  permissionType: Permissions_Types;
-  type: string;
+  permissions?: undefined | null | string | string[];
+  permissionType?: Permissions_Types;
+  type?: string;
   children: ReactElement;
 };
 
