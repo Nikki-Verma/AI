@@ -60,8 +60,6 @@ const InviteUser = ({
   );
 
   const roleDefine = (value: string, label: any) => {
-    console.log(value, "value", label);
-    console.log(data, "datadata");
     form.setFields([
       {
         name: "role_id",
@@ -72,7 +70,6 @@ const InviteUser = ({
   };
 
   const inviteUserFormHandler = async (values: any) => {
-    // console.log(values);
     try {
       const encryptedPass = await generateEncryptedPassword(values.password);
 
@@ -114,8 +111,6 @@ const InviteUser = ({
 
       const datasetResponse = await inviteUserApi({ payload });
 
-      console.log(datasetResponse, "datasetResponse");
-
       if (datasetResponse?.status === 200 || datasetResponse?.status === 201) {
         notification.success({
           message: "User Invited Successfully",
@@ -124,12 +119,10 @@ const InviteUser = ({
         onClose();
       }
     } catch (error) {
-      console.log(getErrorFromApi(error));
       notification.error({
         message: "Error while invited user",
         description: getErrorFromApi(error),
       });
-      console.log(error);
     } finally {
     }
   };

@@ -25,8 +25,6 @@ const KbSettingsForm = ({
   const kbSetting = Form.useWatch("kb_setting", form);
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
-      console.log("knowledgee base details", kbDetails);
-
       form.setFields([
         {
           name: "name",

@@ -67,7 +67,6 @@ const ChannelsList = ({
   const [filters, setFilters] = useState(initialFilters());
 
   const { data: session }: any = useSession();
-  console.log("🚀 ~ session:", session?.user?.permissions);
 
   const {
     data: ChannelData,
@@ -126,9 +125,9 @@ const ChannelsList = ({
       width: 250,
       render: (val) => (
         <Tooltip title={val} placement="topLeft">
-        <Text ellipsis style={{ width: 200 }}>
-          {val}
-        </Text>
+          <Text ellipsis style={{ width: 200 }}>
+            {val}
+          </Text>
         </Tooltip>
       ),
     },
@@ -139,23 +138,27 @@ const ChannelsList = ({
       width: 200,
       render: (val: any) =>
         val ? (
-          <Tooltip 
-          title={ChannelTableDetails?.[
-            val?.toUpperCase() as keyof typeof ChannelTableDetails
-          ]?.text ?? val} placement="topLeft">
-          <Flex align="center" gap="12px">
-            {ChannelTableDetails?.[
-              val?.toUpperCase() as keyof typeof ChannelTableDetails
-            ] &&
+          <Tooltip
+            title={
               ChannelTableDetails?.[
                 val?.toUpperCase() as keyof typeof ChannelTableDetails
-              ]?.icon}
-            <Text ellipsis style={{ width: 200 }}>
+              ]?.text ?? val
+            }
+            placement="topLeft"
+          >
+            <Flex align="center" gap="12px">
               {ChannelTableDetails?.[
                 val?.toUpperCase() as keyof typeof ChannelTableDetails
-              ]?.text ?? val}
-            </Text>
-          </Flex>
+              ] &&
+                ChannelTableDetails?.[
+                  val?.toUpperCase() as keyof typeof ChannelTableDetails
+                ]?.icon}
+              <Text ellipsis style={{ width: 200 }}>
+                {ChannelTableDetails?.[
+                  val?.toUpperCase() as keyof typeof ChannelTableDetails
+                ]?.text ?? val}
+              </Text>
+            </Flex>
           </Tooltip>
         ) : (
           "--"

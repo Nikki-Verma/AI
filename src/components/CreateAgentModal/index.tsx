@@ -23,7 +23,6 @@ const CreateAgentModal = ({
   mode = PAGE_MODE.CREATE,
   agentFlowDetails,
 }: CreateAgentflowModalProps) => {
-  console.log("🚀 ~ agentFlowDetails:", agentFlowDetails);
   const [form] = useForm();
   const [formUpdated, setFormUpdated] = useState(false);
 
@@ -33,7 +32,6 @@ const CreateAgentModal = ({
 
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
-      console.log("🚀 ~ agentFlowDetails useeffect:", agentFlowDetails);
       form.setFields([
         {
           name: "agent_name",

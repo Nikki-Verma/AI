@@ -50,8 +50,6 @@ const PlaygroundConfig = ({
   changeConfigHandler,
   savePlaygroundConfig,
 }: PlaygroundConfigProps) => {
-  console.log("🚀 ~ details:", details);
-  console.log("🚀 ~ playgroundConfigDetails:", playgroundConfigDetails);
   useEffect(() => {
     form.setFields([
       {

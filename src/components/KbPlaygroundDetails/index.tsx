@@ -85,16 +85,12 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
     {},
   );
 
-  console.log(
-    "🚀 ~ KbPlaygroundDetails ~ knowledgebaseConfig:",
-    knowledgebaseConfig,
-  );
   const [form] = useForm();
   const { data: session }: any = useSession();
   const { notification } = useNotify();
   const [chunks, setChunks] = useState<UnknownObject[]>([]);
   const [chunkNotFound, setChunkNotFound] = useState(false);
-  console.log("🚀 ~ KbPlaygroundDetails ~ chunks:", chunks);
+
   const [chunkLoading, setChunkLoading] = useState(false);
 
   useEffect(() => {
@@ -147,12 +143,7 @@ const KbPlaygroundDetails = ({ knowledgebaseId }: KbPlaygroundDetailsProps) => {
         setChunkNotFound(true);
         setChunks([]);
       }
-      console.log(
-        "🚀 ~ getChunks ~ KbPlaygroundResponse:",
-        KbPlaygroundResponse,
-      );
     } catch (error) {
-      console.log("🚀 ~ getChunks ~ error:", error);
       setChunks([]);
       setChunkNotFound(true);
       notification.error({

@@ -8,40 +8,43 @@ import { Container } from "./style";
 type ChatBotProps = {
   messages: ChatMessage[];
   isLoading: boolean;
+  chatStreaming: boolean;
   changeConversationLoading: boolean;
   handleSubmit: (val: any) => void;
   handleInputChange: (val: any) => void;
   input: string;
   setInput: (val: string) => void;
   stopStream: () => void;
-  WelcomeMessage : string;
+  WelcomeMessage: string;
 };
 
 const ChatBot = ({
   messages,
   isLoading,
+  chatStreaming,
   changeConversationLoading,
   handleSubmit,
   handleInputChange,
   input,
   setInput,
   stopStream,
-  WelcomeMessage
+  WelcomeMessage,
 }: ChatBotProps) => {
   return (
     <Container>
       <Chat
         messages={messages}
         loading={isLoading}
+        chatStreaming={chatStreaming}
         chatLoading={changeConversationLoading}
-        WelcomeMessage = {WelcomeMessage}
+        WelcomeMessage={WelcomeMessage}
       />
       <ChatInput
         submitHandler={handleSubmit}
         handleInputChange={handleInputChange}
         input={input}
         setInput={setInput}
-        loading={isLoading}
+        loading={isLoading || chatStreaming}
         stopStream={stopStream}
       />
     </Container>

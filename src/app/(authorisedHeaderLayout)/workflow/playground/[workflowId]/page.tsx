@@ -29,6 +29,7 @@ const WorkflowPlayground = () => {
     handleInputChange,
     handleSubmit,
     isLoading,
+    chatStreaming,
     setInput,
     changeConversationLoading,
     setChatConfig,
@@ -94,6 +95,7 @@ const WorkflowPlayground = () => {
         setInput={setInput}
         stopStream={stopStream}
         isLoading={isLoading}
+        chatStreaming={chatStreaming}
         WelcomeMessage="Welcome to the Playground! Here, you can experiment with your workflows, tweaking parameters and observing the outcomes in real-time. Dive in to fine-tune your AI's performance and discover the best configurations for your applications."
       />
     </WorkflowPlaygroundContainer>

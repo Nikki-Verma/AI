@@ -24,7 +24,6 @@ const CardModel = ({
   imageUrl,
   index,
 }: CardModelProps) => {
-  console.log("🚀 ~ modelData:", modelData);
   return (
     <Link prefetch href={redirectUrl}>
       <ModelCardContainer>

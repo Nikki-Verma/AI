@@ -5,20 +5,25 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 
 import { Col, Row, Skeleton } from "antd";
-import Image from "next/image";
-import Link from "next/link";
 
 import Message from "./Message";
-import { ChatContainer, GetStartedText, WelcomeText } from "./style";
+import { ChatContainer, GetStartedText } from "./style";
 
 type Props = {
   messages: ChatMessage[];
   loading: boolean;
   chatLoading: boolean;
-  WelcomeMessage :string
+  WelcomeMessage: string;
+  chatStreaming: boolean;
 };
 
-function Chat({ messages, loading, chatLoading,WelcomeMessage }: Props) {
+function Chat({
+  messages,
+  loading,
+  chatLoading,
+  WelcomeMessage,
+  chatStreaming,
+}: Props) {
   const { data: session } = useSession();
   const messageEndRef = useRef<null | HTMLDivElement>(null);
 
@@ -41,9 +46,7 @@ function Chat({ messages, loading, chatLoading,WelcomeMessage }: Props) {
                 alignItems: "center",
               }}
             >
-              <GetStartedText>
-               {WelcomeMessage}
-              </GetStartedText>
+              <GetStartedText>{WelcomeMessage}</GetStartedText>
             </Col>
           </Row>
         </Skeleton>
@@ -57,6 +60,7 @@ function Chat({ messages, loading, chatLoading,WelcomeMessage }: Props) {
             loading &&
             message?.role !== "user"
           }
+          chatStreaming={chatStreaming}
         />
       ))}
       <div ref={messageEndRef} />

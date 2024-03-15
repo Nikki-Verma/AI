@@ -23,7 +23,6 @@ const CreateWorkflowModal = ({
   mode = PAGE_MODE.CREATE,
   workflowDetails,
 }: CreateWorkflowModalProps) => {
-  console.log("🚀 ~ workflowDetails:", workflowDetails);
   const [form] = useForm();
   const workflowInputRef = useRef<any>();
   useEffect(() => {

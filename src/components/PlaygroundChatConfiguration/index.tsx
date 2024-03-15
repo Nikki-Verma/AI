@@ -1,14 +1,9 @@
 "use client";
 
-import { useFetchData } from "@/Hooks/useApi";
-import config from "@/utils/apiEndoints";
-import {
-  DEFAULT_PAGE,
-  DEFAULT_PAGE_SIZE,
-  X_SELLER_ID,
-  X_SELLER_PROFILE_ID,
-} from "@/utils/constants";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { UnknownObject } from "@/utils/types";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import PlaygroundAgentConfiguration from "../PlaygroundAgentConfiguration";
@@ -29,6 +24,7 @@ type PlaygroundChatConfigurationProps = {
   setSelectedChatConfigDetails: (
     chatConfigDetails: UnknownObject | undefined,
   ) => void;
+  changeConversation: (val: string | undefined) => void;
 };
 
 const initialFilters = (dynamicState: any = {}) => ({
@@ -44,20 +40,12 @@ const PlaygroundChatConfiguration = ({
   setSelectedChatConfigDetails,
   selectedTab,
   setSelectedTab,
+  changeConversation,
 }: PlaygroundChatConfigurationProps) => {
   const { data: session, status }: any = useSession();
 
   const [filters, setFilters] = useState({ ...initialFilters() });
   const [prompt, setPrompt] = useState("");
-
-  const { data, error, isLoading, isError } = useFetchData(
-    config.intract.chatHistoryList,
-    { ...filters, userId: session?.user?.details?.id },
-    {
-      [X_SELLER_ID]: session?.user?.details?.id,
-      [X_SELLER_PROFILE_ID]: session?.user?.details?.id,
-    },
-  );
 
   const getSelectedTabChildren = () => {
     switch (selectedTab) {
@@ -94,6 +82,14 @@ const PlaygroundChatConfiguration = ({
   return (
     <PlaygroundConfigurationContainer
       tabList={PlaygroundConfigurationOptions}
+      tabBarExtraContent={
+        <Button
+          icon={<PlusOutlined />}
+          onClick={() => changeConversation(undefined)}
+        >
+          New Chat
+        </Button>
+      }
       activeTabKey={selectedTab}
       onTabChange={(key: any) => setSelectedTab(key)}
     >

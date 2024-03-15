@@ -21,7 +21,7 @@ function ChatPage() {
   const [selectedChatConfigDetails, setSelectedChatConfigDetails] = useState<
     UnknownObject | undefined
   >();
-  const [conversationId, setConversationId] = useState<string | undefined>();
+
   const [selectedChatConfigId, setSelectedChatConfigId] = useState<
     undefined | string
   >();
@@ -35,6 +35,7 @@ function ChatPage() {
     handleInputChange,
     handleSubmit,
     isLoading,
+    chatStreaming,
     setInput,
     changeConversation,
     changeConversationLoading,
@@ -49,13 +50,7 @@ function ChatPage() {
       app_id: "",
       model_id: "",
     },
-    convId: conversationId,
   });
-  console.log("🚀 ~ ChatPage ~ chatConfig:", chatConfig);
-
-  useEffect(() => {
-    changeConversation(conversationId);
-  }, [conversationId]);
 
   useEffect(() => {
     if (selectedChatConfigId) {
@@ -109,8 +104,9 @@ function ChatPage() {
             input={input}
             setInput={setInput}
             isLoading={isLoading}
+            chatStreaming={chatStreaming}
             stopStream={stopStream}
-            WelcomeMessage="Welcome to the Playground! Here, you can experiment with your deployed models and workflows, tweaking parameters and observing the outcomes in real-time. Dive in to fine-tune your AI's performance and discover the best configurations for your applications."
+            WelcomeMessage=""
           />
         ) : (
           <NoChatConatiner>
@@ -130,6 +126,7 @@ function ChatPage() {
           setSelectedTab={setSelectedTab}
           selectedChatConfigDetails={selectedChatConfigDetails}
           setSelectedChatConfigDetails={setSelectedChatConfigDetails}
+          changeConversation={changeConversation}
         />
       </div>
     </PlaygroundContainer>

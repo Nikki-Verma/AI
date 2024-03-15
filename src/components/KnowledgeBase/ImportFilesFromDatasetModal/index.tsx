@@ -35,7 +35,6 @@ const ImportFilesFromDatasetModal = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
   const [selectedRowDetails, setSelectedRowDetails] = useState<any>([]);
-  console.log("🚀 ~ selectedRowDetails:", selectedRowDetails);
 
   const [selectedDataset, setSelectedDataset] = useState<
     undefined | UnknownObject

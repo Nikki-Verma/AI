@@ -71,7 +71,7 @@ const Agents = () => {
   const [isCreateAgentModalVisible, setIsCreateAgentModalVisible] =
     useState<boolean>(false);
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
-  console.log("🚀 ~ Workflow ~ filters:", filters);
+
   const { data, isLoading, isRefetching, isError, error, refetch } =
     useFetchData(
       session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
@@ -104,7 +104,6 @@ const Agents = () => {
       };
 
       const createAgentResponse = await createAgentApi({ payload });
-      console.log(`agent creation response`, createAgentResponse);
 
       if (createAgentResponse?.status == 200) {
         notification.success({ message: "Agent created successfully" });
@@ -179,9 +178,9 @@ const Agents = () => {
       width: 200,
       render: (val: any, data: any) => (
         <Tooltip title={val} placement="topLeft">
-        <LinkContainer>
-          <Link href={`/agents/view/${data?.pipeline_id}`}>{val}</Link>
-        </LinkContainer>
+          <LinkContainer>
+            <Link href={`/agents/view/${data?.pipeline_id}`}>{val}</Link>
+          </LinkContainer>
         </Tooltip>
       ),
     },
@@ -192,9 +191,9 @@ const Agents = () => {
       width: 200,
       render: (val: any) => (
         <Tooltip title={val} placement="topLeft">
-        <Text ellipsis style={{ width: 200 }}>
-          {val || "--"}
-        </Text>
+          <Text ellipsis style={{ width: 200 }}>
+            {val || "--"}
+          </Text>
         </Tooltip>
       ),
     },
@@ -227,9 +226,9 @@ const Agents = () => {
       width: 200,
       render: (val: any) => (
         <Tooltip title={val?.model_name} placement="topLeft">
-        <Text ellipsis style={{ width: 200 }}>
-          {val?.model_name || "--"}
-        </Text>
+          <Text ellipsis style={{ width: 200 }}>
+            {val?.model_name || "--"}
+          </Text>
         </Tooltip>
       ),
     },
