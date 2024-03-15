@@ -4,9 +4,18 @@ import {
   UseChatStreamOptions,
 } from "@/Hooks/useChatStream";
 import _authHttp from "@/services/_http";
-import { signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { v4 } from "uuid";
 import config from "./apiEndoints";
+import {
+  PIM_SID,
+  X_CLIENT_ID,
+  X_DEVICE_ID,
+  X_SELLER_ID,
+  X_SELLER_PROFILE_ID,
+  X_TENANT_ID,
+  X_USER_ID,
+} from "./constants";
 
 const mergeInputInOptions = (
   input: string,
@@ -45,7 +54,19 @@ export const getStream = async (
     },
   });
 
-  if (response.status === 511) return signOut({ redirect: false });
+  if (response.status === 511) {
+    const session: any = await getSession();
+    return getStream(cId, mId, {
+      ...headers,
+      [X_USER_ID]: session?.user?.details?.id,
+      [X_SELLER_ID]: session?.user?.details?.id,
+      [X_SELLER_PROFILE_ID]: session?.user?.details?.id,
+      [X_TENANT_ID]: session?.user?.details?.tenantId,
+      [PIM_SID]: session?.accessToken,
+      [X_DEVICE_ID]: "armaze-web",
+      [X_CLIENT_ID]: session?.user?.details?.id,
+    });
+  }
   if (response.status === 102) return getStream(cId, mId, headers);
 
   if (!response.ok) throw new Error(response.statusText);
