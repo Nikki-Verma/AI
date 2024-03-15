@@ -117,7 +117,11 @@ function Message({ message, loading, chatStreaming }: Props) {
                 <Tooltip title="Copy" placement="top">
                   <CopyOutlined
                     onClick={() => {
-                      handleCopy(message?.content);
+                      const copyContent = message?.content?.replace(
+                        /\\n/g,
+                        "  \n",
+                      );
+                      handleCopy(copyContent);
                       setShowCopied(true);
                       setTimeout(() => {
                         setShowCopied(false);
