@@ -24,7 +24,6 @@ const KbPlayground = () => {
     { knowledgeBaseId: knowledgebaseId },
     {},
   );
-  console.log("🚀 ~ KbPlayground ~ knowledgebaseConfig:", knowledgebaseConfig);
 
   if (knowledgebaseHasError) {
     return (

@@ -9,7 +9,6 @@ type ToolsDetailsProps = {
 };
 
 const ToolsDetails = ({ toolDetails }: ToolsDetailsProps) => {
-  console.log("🚀 ~ ToolsDetails ~ toolDetails:", toolDetails);
   const { data, isLoading, isError, error } = useFetchData(
     `${config.tools.details}/${toolDetails?.[0]}`,
     {},

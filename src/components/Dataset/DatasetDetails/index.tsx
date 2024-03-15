@@ -347,12 +347,12 @@ const DatasetDetails = (props: any) => {
       width: 400,
       render: (val) => (
         <Tooltip title={FileNameWithoutTimestamp(val)} placement="top">
-        <Space size="small">
-          <FileIcon />{" "}
-          <Text ellipsis style={{ width: 350 }}>
-            {FileNameWithoutTimestamp(val)}
-          </Text>
-        </Space>
+          <Space size="small">
+            <FileIcon />{" "}
+            <Text ellipsis style={{ width: 350 }}>
+              {FileNameWithoutTimestamp(val)}
+            </Text>
+          </Space>
         </Tooltip>
       ),
     },
@@ -399,7 +399,6 @@ const DatasetDetails = (props: any) => {
       width: 100,
       fixed: "right",
       render: (_: any, dataset: UnknownObject) => {
-        console.log("🚀 ~ DatasetDetails ~ dataset:", dataset);
         return (
           <Row
             gutter={[0, 0]}

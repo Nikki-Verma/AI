@@ -37,7 +37,6 @@ const PlaygroundAgentConfiguration = ({
   selectedChatConfigDetails,
   setSelectedChatConfigDetails,
 }: PlaygroundAgentConfigurationProps) => {
-  console.log("🚀 ~ selectedChatConfigDetails:", selectedChatConfigDetails);
   const { data: session }: any = useSession();
   const { data, isLoading, isError, error, refetch } = useFetchData(
     session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
@@ -46,8 +45,6 @@ const PlaygroundAgentConfiguration = ({
     { page: DEFAULT_PAGE, size: ALL_DATA_PAGE_SIZE },
     {},
   );
-
-  console.log("🚀 ~ data:", data);
 
   useEffect(() => {
     if (data && !selectedChatConfigId) {
@@ -94,7 +91,6 @@ const PlaygroundAgentConfiguration = ({
     );
   }
 
-  console.log("🚀 ~ data:", data);
   return (
     <PlaygroundAgentConfigurationContainer>
       <AgentSelect

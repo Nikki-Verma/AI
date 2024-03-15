@@ -107,7 +107,6 @@ const Models = () => {
   const { updatePageConfig } = useAppStore();
   const { data: session }: any = useSession();
   const [filters, setFilters] = usePersistedQueryParams(initialFilters());
-  console.log("🚀 ~ Models ~ filters:", filters);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const { data, isLoading, isError, error } = useFetchData(
@@ -265,7 +264,6 @@ const Models = () => {
               model: { name: string; desc: "string"; [key: string]: any },
               index: number,
             ) => {
-              console.log("🚀 ~ Models ~ model:", model);
               return (
                 <Col
                   key={model?.id}

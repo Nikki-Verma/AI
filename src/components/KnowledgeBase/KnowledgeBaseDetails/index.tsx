@@ -173,7 +173,6 @@ const KnowledgeBaseDetails = (props: any) => {
   const deleteKnowledgebaseFilesHandler = async (
     knowledgebase: UnknownObject,
   ) => {
-    console.log("🚀 ~ KnowledgeBaseDetails ~ knowledgebase:", knowledgebase);
     try {
       setKnowledgebaseFilesDeleteLoading(knowledgebase?.id);
 
@@ -212,11 +211,6 @@ const KnowledgeBaseDetails = (props: any) => {
       (document: UnknownObject) => document?.injestion_status === "COMPLETED",
     ) ?? true
   );
-  console.log("files data", data);
-  console.log(
-    "🚀 ~ KnowledgeBaseDetails ~ retrievalDisabled:",
-    retrievalDisabled,
-  );
 
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -226,12 +220,12 @@ const KnowledgeBaseDetails = (props: any) => {
       width: 400,
       render: (val) => (
         <Tooltip title={FileNameWithoutTimestamp(val)} placement="top">
-        <Space size="small">
-          <FileIcon />{" "}
-          <Text ellipsis style={{ width: 350 }}>
-            {FileNameWithoutTimestamp(val)}
-          </Text>
-        </Space>
+          <Space size="small">
+            <FileIcon />{" "}
+            <Text ellipsis style={{ width: 350 }}>
+              {FileNameWithoutTimestamp(val)}
+            </Text>
+          </Space>
         </Tooltip>
       ),
     },
@@ -283,8 +277,6 @@ const KnowledgeBaseDetails = (props: any) => {
       key: "createdAt",
       width: 250,
       render: (val: any, row: any) => {
-        console.log("🚀 ~ KnowledgeBaseDetails ~ row:", row);
-        console.log("🚀 ~ KnowledgeBaseDetails ~ val:", val);
         return val ? (
           <SaDate
             date={dayjs(val, dateTimeFormatWithMilliseconds)}
@@ -302,7 +294,7 @@ const KnowledgeBaseDetails = (props: any) => {
       align: "center",
       key: "actions",
       width: 100,
-      fixed : 'right',
+      fixed: "right",
       render: (_: any, knowledgebase: UnknownObject) => {
         return (
           <Row

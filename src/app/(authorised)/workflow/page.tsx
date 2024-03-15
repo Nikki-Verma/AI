@@ -149,7 +149,6 @@ const Workflow = () => {
   };
 
   const deleteWorkflowHandler = async (workflow: UnknownObject) => {
-    console.log("🚀 ~ deleteWorkflowHandler ~ workflow:", workflow);
     try {
       setWorkflowDeleteLoading(workflow?.pipeline_id);
 
@@ -291,7 +290,6 @@ const Workflow = () => {
       width: 160,
       fixed: "right",
       render: (_: any, workflowData: UnknownObject) => {
-        console.log("🚀 ~ Workflow ~ workflowData:", workflowData);
         const completedItems: MenuProps["items"] = [
           {
             key: "integration",

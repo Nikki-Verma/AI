@@ -82,7 +82,6 @@ const WorkflowInfo = ({
 
   const updateWorkflowDetails = async (values: any) => {
     try {
-      console.log("🚀 ~ updateAgentDetails ~ values:", values);
       setUpdateDetailsLoading(true);
 
       const payload = {
@@ -188,7 +187,6 @@ const WorkflowInfo = ({
                   </>
                 )}
                 optionRender={(option: any) => {
-                  console.log("🚀 ~ option:", option);
                   return (
                     <div
                       style={{

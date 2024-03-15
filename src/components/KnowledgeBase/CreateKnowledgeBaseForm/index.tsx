@@ -79,8 +79,6 @@ const CreateKnowledgeBaseForm = ({
 
   useEffect(() => {
     if (mode === PAGE_MODE.EDIT) {
-      console.log("knowledgee base details", kbDetails);
-
       form.setFields([
         {
           name: "name",

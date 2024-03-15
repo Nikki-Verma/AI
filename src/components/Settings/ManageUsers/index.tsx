@@ -50,13 +50,10 @@ const ManageUsers = () => {
     user_group_id: session?.user?.details?.userGroup,
   });
 
-  console.log("inviteDataUser", inviteDataUser);
-
   // data = data?.result?.users;
 
   const toggleAddFileModal = () => {
     intiveSetUser((val: boolean) => !val);
-    console.log("sdfsd");
   };
 
   const showDatasetModal = () => {
@@ -89,7 +86,6 @@ const ManageUsers = () => {
         message: "Error while changing status",
         description: getErrorFromApi(error),
       });
-      console.log(error);
     } finally {
       setCreateDatasetLoading(false);
     }

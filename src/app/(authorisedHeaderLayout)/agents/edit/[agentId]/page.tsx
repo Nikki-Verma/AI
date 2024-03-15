@@ -51,6 +51,7 @@ const AgentEdit = () => {
     handleInputChange,
     handleSubmit,
     isLoading: isChatLoading,
+    chatStreaming,
     setInput,
     changeConversationLoading,
     setChatConfig,
@@ -235,6 +236,7 @@ const AgentEdit = () => {
                   isLoading={isChatLoading}
                   stopStream={stopStream}
                   WelcomeMessage="Welcome to the Playground! Here, you can experiment with your agent, tweaking parameters and observing the outcomes in real-time. Dive in to fine-tune your AI's performance and discover the best configurations for your applications."
+                  chatStreaming={chatStreaming}
                 />
               </div>
             </div>

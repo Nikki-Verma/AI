@@ -183,9 +183,9 @@ const KnowledgeBaseList = () => {
       width: 400,
       render: (val) => (
         <Tooltip title={val} placement="top">
-        <Space size={2}>
-          <DatabaseFilled /> {val}
-        </Space>
+          <Space size={2}>
+            <DatabaseFilled /> {val}
+          </Space>
         </Tooltip>
       ),
     },
@@ -225,7 +225,11 @@ const KnowledgeBaseList = () => {
       key: "embed_model_name",
       width: 250,
       render: (val) => {
-        return <Tooltip title={val} placement="top">{val ?? "-"}</Tooltip>
+        return (
+          <Tooltip title={val} placement="top">
+            {val ?? "-"}
+          </Tooltip>
+        );
       },
     },
     {
@@ -311,7 +315,6 @@ const KnowledgeBaseList = () => {
       fixed: "right",
       width: 160,
       render: (_: any, knowledgebase: UnknownObject) => {
-        console.log("🚀 ~ DatasetList ~ dataset:", knowledgebase);
         const extraItems: MenuProps["items"] = [
           {
             key: "delete",

@@ -46,14 +46,11 @@ const ImportDatasetFilesConfig = ({
   selectedRowDetails,
   knowledgebaseId,
 }: ImportDatasetFilesConfigProps) => {
-  console.log("🚀 ~ selectedRowKeys:", selectedRowKeys);
-  console.log("🚀 ~ setSelectedRowDetails:", selectedRowDetails);
-
   const { data: session }: any = useSession();
   const [formUpdated, setFormUpdated] = useState(false);
   const [chunkLoading, setChunkLoading] = useState(false);
   const [chunks, setChunks] = useState<string[]>([]);
-  const [chunkFileName, setChunkFileName] = useState<string>('');
+  const [chunkFileName, setChunkFileName] = useState<string>("");
   const chunkSetting = Form.useWatch("chunk_setting", form);
   useEffect(() => {
     if (chunkSetting === "AUTOMATIC") getChunksDetails();
@@ -71,7 +68,7 @@ const ImportDatasetFilesConfig = ({
 
       setChunkLoading(true);
       const bucketname = selectedRowDetails?.[0]?.s3_url?.split("/")?.[2];
-      console.log("🚀 ~ getChunksDetails ~ bucketname:", bucketname);
+
       const payload = {
         bucket_name: bucketname,
         object_name: selectedRowDetails?.[0]?.file_name,
@@ -94,20 +91,24 @@ const ImportDatasetFilesConfig = ({
         knowledgebase_id: knowledgebaseId ? +knowledgebaseId : undefined,
       };
       const chunkResponse = await getFileChunksApi({ payload });
-      console.log("🚀 ~ getChunksDetails ~ chunkResponse:", chunkResponse);
+
       if (chunkResponse?.data?.chunks) {
-        setChunks([...(chunkResponse?.data?.chunks?.filter((chunkString : string) => chunkString?.length) || [])]);
+        setChunks([
+          ...(chunkResponse?.data?.chunks?.filter(
+            (chunkString: string) => chunkString?.length,
+          ) || []),
+        ]);
       } else {
         setChunks([]);
       }
-      if (chunkResponse?.data?.object_name){
-        setChunkFileName(chunkResponse?.data?.object_name)
-      }else{
-        setChunkFileName('')
+      if (chunkResponse?.data?.object_name) {
+        setChunkFileName(chunkResponse?.data?.object_name);
+      } else {
+        setChunkFileName("");
       }
     } catch (error) {
       setChunks([]);
-      setChunkFileName('')
+      setChunkFileName("");
     } finally {
       setChunkLoading(false);
     }
@@ -329,7 +330,11 @@ const ImportDatasetFilesConfig = ({
       <Col span={24} md={14}>
         <PreviewSection>
           <PreviewTitle strong>Chunk Preview</PreviewTitle>
-          <ChunksPreview chunks={chunks} loading={chunkLoading} chunkFileName = {chunkFileName}/>
+          <ChunksPreview
+            chunks={chunks}
+            loading={chunkLoading}
+            chunkFileName={chunkFileName}
+          />
         </PreviewSection>
       </Col>
     </Row>

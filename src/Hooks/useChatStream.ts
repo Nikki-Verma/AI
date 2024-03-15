@@ -60,6 +60,7 @@ const useChatStream = (input: UseChatStreamInput) => {
   );
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [chatStreaming, setChatStreaming] = useState(false);
   const [conversationId, setConversationId] = useState(input?.convId);
   const [changeConversationLoading, setChangeConversationLoading] =
     useState(false);
@@ -136,13 +137,22 @@ const useChatStream = (input: UseChatStreamInput) => {
     });
   };
 
+  const replaceMessageToChat = (message: string) => {
+    setMessages((messages) => {
+      const latestMessage = messages[messages.length - 1];
+      return [...messages.slice(0, -1), { ...latestMessage, content: message }];
+    });
+  };
+
   const fetchAndUpdateAIResponse = async (
     messageID: string,
     conversationID: string,
+    loadingState: boolean = true,
   ) => {
     try {
-      setIsLoading(true);
-      const stream = await getStream(conversationID, messageID, {
+      if (loadingState) setIsLoading(true);
+      setChatStreaming(true);
+      const { headers, stream } = await getStream(conversationID, messageID, {
         [X_USER_ID]: data?.user?.details?.id,
         [X_SELLER_ID]: data?.user?.details?.id,
         [X_SELLER_PROFILE_ID]: data?.user?.details?.id,
@@ -151,12 +161,15 @@ const useChatStream = (input: UseChatStreamInput) => {
         [X_DEVICE_ID]: "armaze-web",
         [X_CLIENT_ID]: data?.user?.details?.id,
       });
+
       if (!stream) throw new Error();
 
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
         if (stopStreamRef.current) {
+          console.log("stop streaming called");
           stopStreamRef.current = false;
+          setChatStreaming(false);
           setIsLoading(false);
           break;
         }
@@ -167,19 +180,25 @@ const useChatStream = (input: UseChatStreamInput) => {
           break;
         }
         setIsLoading(false);
-        appendMessageToChat(message);
+        replaceMessageToChat(message);
+        if (headers?.get("Message_Status") != 2) {
+          fetchAndUpdateAIResponse(messageID, conversationID, false);
+        } else {
+          setChatStreaming(false);
+        }
       }
     } catch (error: any) {
       appendMessageToChat(SimplAi_ERROR_MESSAGE);
+      setChatStreaming(false);
       setIsLoading(false);
     }
   };
 
   const stopStream = async () => {
-    console.log("🚀 ~ stopStream ~ streamRef.current:", streamRef.current);
     if (!streamRef?.current) {
       return null;
     } else {
+      console.log("🚀 ~ stopStream ~ stopStream triggered:");
       stopStreamRef.current = true;
       await streamRef?.current?.cancel();
       streamRef.current = undefined;
@@ -192,6 +211,7 @@ const useChatStream = (input: UseChatStreamInput) => {
   ) => {
     if (isLoading || (!message && !newMessage)) return null;
     setIsLoading(true);
+    setChatStreaming(true);
     addMessageToChat(newMessage ?? message);
     setMessage("");
     stopStreamRef.current = false;
@@ -232,6 +252,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     } catch {
       appendMessageToChat(SimplAi_ERROR_MESSAGE);
       setIsLoading(false);
+      setChatStreaming(false);
     } finally {
       streamRef.current = undefined;
     }
@@ -247,6 +268,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     handleInputChange,
     handleSubmit,
     isLoading,
+    chatStreaming,
     stopStream,
     chatConfig,
     setChatConfig,

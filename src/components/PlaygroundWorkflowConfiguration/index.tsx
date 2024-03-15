@@ -42,7 +42,6 @@ const PlaygroundWorkflowConfiguration = ({
 }: PlaygroundWorkflowConfigurationProps) => {
   const { data: session }: any = useSession();
 
-  console.log("🚀 ~ selectedChatConfigDetails:", selectedChatConfigDetails);
   const { data, isLoading, isError, error, refetch } = useFetchData(
     session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
       ? config.workflow.listAll
@@ -96,7 +95,6 @@ const PlaygroundWorkflowConfiguration = ({
     );
   }
 
-  console.log("🚀 ~ data:", data);
   return (
     <PlaygroundWorkflowConfigurationContainer>
       <WorkflowSelect

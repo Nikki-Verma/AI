@@ -54,8 +54,6 @@ const ModelData = ({ page, modelId, workspaceId }: ModelDataParams) => {
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useFetchData(config.models.detail, { id: modelId }, {});
 
-  console.log("data", data);
-
   const [addToWrokspaceLoading, setAddToWrokspaceLoading] = useState(false);
   const [deploymentLoading, setDeploymentLoading] = useState(false);
   const [connectModelVisible, setConnectModelVisible] = useState(false);

@@ -70,7 +70,6 @@ const PipelineInfo = ({
   agentId,
   refetch,
 }: AgentInfoProps) => {
-  console.log("🚀 ~ details:", details);
   const router = useRouter();
   const { notification } = useNotify();
   const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
@@ -99,7 +98,6 @@ const PipelineInfo = ({
       size: ALL_DATA_PAGE_SIZE,
     });
 
-  console.log("🚀 ~ knowledgeBaseData:", knowledgeBaseData);
   const { data: toolsData, isLoading: toolsLoading } = useFetchData(
     config.tools.list,
     {
@@ -107,7 +105,7 @@ const PipelineInfo = ({
       size: ALL_DATA_PAGE_SIZE,
     },
   );
-  console.log(toolsData, "toolsdata");
+
   const toggleAdvanceOptions = () => {
     setAdvancedOptionsOpen((prev: boolean) => !prev);
   };
@@ -127,7 +125,6 @@ const PipelineInfo = ({
 
   const updateAgentDetails = async (values: any) => {
     try {
-      console.log("🚀 ~ updateAgentDetails ~ values:", values);
       setUpdateDetailsLoading(true);
 
       const payload = {
@@ -136,12 +133,7 @@ const PipelineInfo = ({
         pipeline_id: agentId,
       };
 
-      console.log("🚀 ~ updateAgentDetails ~ payload:", payload);
       const updateAgentResponse = await updateAgentApi({ payload });
-      console.log(
-        "🚀 ~ updateAgentDetails ~ updateAgentResponse:",
-        updateAgentResponse,
-      );
 
       if (updateAgentResponse?.status === 200) {
         toggleEditDetailsModal();
@@ -260,7 +252,6 @@ const PipelineInfo = ({
                   </>
                 )}
                 optionRender={(option: any) => {
-                  console.log("🚀 ~ option:", option);
                   return (
                     <div
                       style={{
@@ -301,7 +292,6 @@ const PipelineInfo = ({
                   );
                 }}
                 onChange={(val: any, option: any) => {
-                  console.log(`dropdown options`, option);
                   form.setFields([
                     {
                       name: ["model_detail", "model_id"],
@@ -511,8 +501,6 @@ const PipelineInfo = ({
                   </SelectOptionDetail>
                 )}
                 onChange={(val: any, option: any) => {
-                  console.log("🚀 ~ option:", option);
-                  console.log("🚀 ~ val:", val);
                   form.setFields([
                     {
                       name: ["kb", "kb_id"],

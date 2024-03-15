@@ -130,10 +130,6 @@ const DatasetList = () => {
       };
 
       const datasetResponse = await createDatasetApi({ payload });
-      console.log(
-        "🚀 ~ createDatasetHandler ~ datasetResponse:",
-        datasetResponse,
-      );
 
       if (datasetResponse?.status === 200) {
         setCreateDatasetOpen(false);
@@ -188,9 +184,9 @@ const DatasetList = () => {
       width: 300,
       render: (val) => (
         <Tooltip title={val} placement="top">
-        <Space size="small">
-          <FolderIcon /> {val}
-        </Space>
+          <Space size="small">
+            <FolderIcon /> {val}
+          </Space>
         </Tooltip>
       ),
     },

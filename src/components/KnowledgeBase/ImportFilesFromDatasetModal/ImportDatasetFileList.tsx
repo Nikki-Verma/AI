@@ -88,7 +88,6 @@ const ImportDatasetFileList = ({
     preserveSelectedRowKeys: true,
     selectedRowKeys,
     onChange: (newSelectedRowKeys: any, selectedRows: any) => {
-      console.log("🚀 ~ selectedRows:", selectedRows);
       setSelectedRowKeys(newSelectedRowKeys);
       setSelectedRowDetails(selectedRows);
     },

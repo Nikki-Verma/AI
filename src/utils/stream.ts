@@ -50,7 +50,7 @@ export const getStream = async (
 
   if (!response.ok) throw new Error(response.statusText);
 
-  return response.body;
+  return { headers: response.headers, stream: response.body };
 };
 
 export const getChatDetails = async (

@@ -13,13 +13,6 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
     const queryParams = new URLSearchParams();
 
     for (const [key, value] of searchParams?.entries()) {
-      console.log(
-        "🚀 ~ useLayoutEffect ~ value existing filter change key:",
-        key,
-        ", value:",
-        value,
-      );
-
       if (value != "undefined" && value != "null") {
         queryParams.set(key, value);
       } else {
@@ -28,13 +21,6 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
     }
 
     if (key) {
-      console.log(
-        "🚀 ~ useLayoutEffect ~ key filter change key:",
-        key,
-        ", value:",
-        filters,
-      );
-
       if (filters != undefined && filters != null) {
         queryParams.set(key, filters);
       } else {
@@ -49,14 +35,6 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
         }
       });
     }
-    for (const [key, value] of searchParams?.entries()) {
-      console.log(
-        "🚀 ~ useLayoutEffect ~ value before route change key:",
-        key,
-        " , value:",
-        value,
-      );
-    }
 
     router.replace(
       pathname + (queryParams.toString() ? `?${queryParams.toString()}` : ""),
@@ -67,12 +45,6 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
   useLayoutEffect(() => {
     if (key) {
       const currentFilterParam = searchParams?.get(key);
-      console.log(
-        "🚀 ~ useLayoutEffect ~ key param change key:",
-        key,
-        ", value:",
-        currentFilterParam,
-      );
 
       if (
         currentFilterParam != "undefined" &&
@@ -85,12 +57,6 @@ const usePersistedQueryParams = (initialFilters: any, key?: string) => {
       const newFilters: any = {};
 
       for (const [key, value] of searchParams?.entries()) {
-        console.log(
-          "🚀 ~ useLayoutEffect ~ param change key:",
-          key,
-          "value :",
-          value,
-        );
         if (value != "undefined" && value != "null") {
           newFilters[key] = value;
         } else {
