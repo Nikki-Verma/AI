@@ -209,7 +209,7 @@ const useChatStream = (input: UseChatStreamInput) => {
     e?: FormEvent<HTMLFormElement>,
     newMessage?: string,
   ) => {
-    if (isLoading || (!message && !newMessage)) return null;
+    if (isLoading || chatStreaming || (!message && !newMessage)) return null;
     setIsLoading(true);
     setChatStreaming(true);
     addMessageToChat(newMessage ?? message);
