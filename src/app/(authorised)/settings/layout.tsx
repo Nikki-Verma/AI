@@ -1,6 +1,5 @@
 "use client";
 
-import { AuthHoc } from "@/HOC/AuthHoc";
 import useAuthorization from "@/Hooks/useAuthorization";
 import { Tabs } from "antd";
 import { useSession } from "next-auth/react";
@@ -13,7 +12,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const AuthLayout = ({ children }: Props) => {
+const SettingsLayout = ({ children }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session }: any = useSession();
@@ -49,4 +48,4 @@ const AuthLayout = ({ children }: Props) => {
   );
 };
 
-export default AuthHoc(AuthLayout);
+export default SettingsLayout;

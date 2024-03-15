@@ -13,15 +13,19 @@ export const tabItems: any = [
         <Text style={{ color: "inherit" }}>Manage Users</Text>
       </Link>
     ),
-    url: "/settings/manage-users",
+    url: ["/settings/manage-users"],
   },
   {
-    key: "/settings/billing-and-plans",
-    url: "/settings/billing-and-plans",
+    key: "/settings/billing-and-plans/overview",
+    url: [
+      "/settings/billing-and-plans/overview",
+      "/settings/billing-and-plans/payment-methods",
+      "/settings/billing-and-plans/pricing-plans",
+    ],
     label: (
       <Link
         prefetch
-        href="/settings/billing-and-plans"
+        href="/settings/billing-and-plans/overview"
         style={{ color: "inherit" }}
       >
         <Text style={{ color: "inherit" }}>Billings & Plans</Text>
@@ -59,10 +63,10 @@ export const getSettingsItemByKey = (
 ) => {
   for (const item of items) {
     if (flag === "url") {
-      const itemUrl = item["url"];
+      const itemUrls = item["url"];
       const currentUrl = value;
 
-      if (currentUrl === itemUrl) {
+      if (itemUrls.includes(currentUrl)) {
         return item;
       }
     } else {

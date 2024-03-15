@@ -33,6 +33,9 @@ export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 20;
 export const ALL_DATA_PAGE_SIZE = 2000;
 
+// symbols
+export const DollarSymbol = "$";
+
 // Page mode
 export const PAGE_MODE = {
   CREATE: PageModeEnum.CREATE,

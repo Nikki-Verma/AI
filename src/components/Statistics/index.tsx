@@ -13,7 +13,7 @@ type StatisticsProps = {
 const Statistics = ({ stats }: StatisticsProps) => {
   return (
     <StatisticsContainer>
-      <DotIcon style={{ color: "red" }} />
+      <DotIcon style={{ color: "grey", marginTop: "3px" }} />
       <StatisticsDetails>
         <StatisticsValue>{stats?.value}</StatisticsValue>
         <StatisticsLabel>{stats?.label}</StatisticsLabel>
