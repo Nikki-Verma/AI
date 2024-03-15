@@ -56,7 +56,7 @@ export const getStream = async (
 
   if (response.status === 511) {
     const session: any = await getSession();
-    return getStream(cId, mId, {
+    return await getStream(cId, mId, {
       ...headers,
       [X_USER_ID]: session?.user?.details?.id,
       [X_SELLER_ID]: session?.user?.details?.id,
@@ -67,7 +67,7 @@ export const getStream = async (
       [X_CLIENT_ID]: session?.user?.details?.id,
     });
   }
-  if (response.status === 102) return getStream(cId, mId, headers);
+  if (response.status === 102) return await getStream(cId, mId, headers);
 
   if (!response.ok) throw new Error(response.statusText);
 
