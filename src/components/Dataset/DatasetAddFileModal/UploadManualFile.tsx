@@ -35,7 +35,7 @@ const UploadManualFile = ({
   addFilesHandler,
   maxCount = undefined,
   multiple = true,
-  accept = ".pdf,.html,.docx,.txt",
+  accept = "",
   loading = false,
 }: any) => {
   const uploadProps = {
