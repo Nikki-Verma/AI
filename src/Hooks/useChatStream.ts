@@ -221,7 +221,7 @@ const useChatStream = (input: UseChatStreamInput) => {
       const res = await initiateConversationApi({
         payload: {
           ...chatConfig,
-          cust_atrr: custAtrr,
+          cust_attr: custAtrr,
           action: conversationId ? "START_SCREEN" : "START_SCREEN",
           query: {
             message: newMessage ?? message,
