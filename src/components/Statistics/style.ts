@@ -7,8 +7,8 @@ export const StatisticsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 `;
 
 export const StatisticsDetails = styled.div`

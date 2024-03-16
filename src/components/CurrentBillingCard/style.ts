@@ -1,4 +1,5 @@
 import { Card, Typography } from "antd";
+import Link from "next/link";
 import { styled } from "styled-components";
 
 const { Text, Title } = Typography;
@@ -34,4 +35,12 @@ export const BillingStats = styled.div`
   gap: 40px !important;
 `;
 
-
+export const BillingDetailsLink = styled(Link)`
+  color: #602edf;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px; /* 157.143% */
+  text-decoration-line: underline;
+`;
