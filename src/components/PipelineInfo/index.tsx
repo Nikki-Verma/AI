@@ -54,7 +54,6 @@ type AgentInfoProps = {
   onFininsh: (values: any) => void;
   setCustAtrr: (values: any) => void;
   isChatLoading: boolean;
-  setFormValues?: (values: any) => void;
   refetch: () => void;
   agentId: string | string[];
 };
@@ -66,7 +65,6 @@ const PipelineInfo = ({
   setCustAtrr,
   onFininsh,
   isChatLoading,
-  setFormValues,
   agentId,
   refetch,
 }: AgentInfoProps) => {
@@ -80,17 +78,6 @@ const PipelineInfo = ({
   });
   const [showEditDetails, setShowEditDetails] = useState(false);
   const [updateDetailsLoading, setUpdateDetailsLoading] = useState(false);
-
-  const handleValueChange = (
-    values: UnknownObject,
-    formValues: UnknownObject,
-  ) => {
-    // set custom attribute on runtime to set data in chatbot without saving config
-    // setCustAtrr(formValues)
-    if (setFormValues) {
-      setFormValues(formValues);
-    }
-  };
 
   const { data: knowledgeBaseData, isLoading: knowledgeBaseLoading } =
     useFetchData(config.knowledgebase.list, {
@@ -112,6 +99,7 @@ const PipelineInfo = ({
 
   useEffect(() => {
     if (details?.result) {
+      console.log("🚀 ~ useEffect ~ details?.result:", details?.result);
       form.setFieldsValue({
         ...details?.result,
       });
@@ -155,7 +143,6 @@ const PipelineInfo = ({
       layout="vertical"
       form={form}
       onFinish={onFininsh}
-      onValuesChange={handleValueChange}
       disabled={isChatLoading}
     >
       <Row
@@ -501,6 +488,7 @@ const PipelineInfo = ({
                   </SelectOptionDetail>
                 )}
                 onChange={(val: any, option: any) => {
+                  console.log("🚀 ~ option:", option);
                   form.setFields([
                     {
                       name: ["kb", "kb_id"],

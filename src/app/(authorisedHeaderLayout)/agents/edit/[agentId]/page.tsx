@@ -36,7 +36,6 @@ const AgentEdit = () => {
   const { agentId } = useParams();
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [agentPublishing, setAgentPublishing] = useState(false);
-  const [formValues, setFormValues] = useState();
   const [filters, setFilters] = useState(initialFilters());
   const [current, setCurrent] = useState(-1);
   const [integrateAgentModalOpen, setIntegrateAgentModalOpen] = useState(false);
@@ -114,6 +113,7 @@ const AgentEdit = () => {
   }, []);
 
   const updateAgent = async (values: any, type: AgentStatusType) => {
+    console.log("🚀 ~ updateAgent ~ values:", values);
     try {
       if (type === AgentStatus.COMPLETED) {
         setAgentPublishing(true);
@@ -131,6 +131,7 @@ const AgentEdit = () => {
         agent_state: type,
         pipeline_id: agentId,
       };
+      console.log("🚀 ~ updateAgent ~ payload:", payload);
 
       const updateAgentResponse = await updateAgentApi({ payload });
 
@@ -199,7 +200,6 @@ const AgentEdit = () => {
             onFininsh={(values) => updateAgent(values, AgentStatus.MODEL_ADDED)}
             setCustAtrr={setCustAtrr}
             isChatLoading={isChatLoading}
-            setFormValues={setFormValues}
             agentId={agentId}
             refetch={refetch}
           />
@@ -215,6 +215,8 @@ const AgentEdit = () => {
                   <Button
                     type="primary"
                     onClick={() => {
+                      const formValues = form.getFieldsValue();
+
                       updateAgent(formValues, AgentStatus.COMPLETED);
                     }}
                     loading={agentPublishing}
