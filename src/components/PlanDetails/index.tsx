@@ -41,12 +41,12 @@ const PlanDetails = ({ type }: PlanDetailsProps) => {
           </Col>
         </Row>
         <PlanName type={type}>Team</PlanName>
-        <PlanPrice type={type}>
-          $50 <PlanDuration type={type}>/month</PlanDuration>
-        </PlanPrice>
         <PlanDescription type={type}>
           For most businesses that want to otpimize web queries
         </PlanDescription>
+        <PlanPrice type={type}>
+          $50 <PlanDuration type={type}>/month</PlanDuration>
+        </PlanPrice>
       </PricingMainDetails>
       <PlanFeatures>
         {PlanFetaure?.map((feature: any) => {
@@ -66,12 +66,12 @@ const PlanDetails = ({ type }: PlanDetailsProps) => {
     <BasicPlanConatiner>
       <PricingMainDetails>
         <PlanName type={type}>Team</PlanName>
-        <PlanPrice type={type}>
-          $50 <PlanDuration type={type}>/month</PlanDuration>
-        </PlanPrice>
         <PlanDescription type={type}>
           For most businesses that want to otpimize web queries
         </PlanDescription>
+        <PlanPrice type={type}>
+          $50 <PlanDuration type={type}>/month</PlanDuration>
+        </PlanPrice>
       </PricingMainDetails>
       <PlanFeatures>
         {PlanFetaure?.map((feature: any) => {

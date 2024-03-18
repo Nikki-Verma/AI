@@ -2,6 +2,7 @@ import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import config from "@/utils/apiEndoints";
 import {
+  dateFormatYDM,
   dateTimeFormatWithMillisecondsWithoutTimeZone,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
@@ -20,25 +21,33 @@ import {
   Typography,
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
+import BillingModuleNavigations from "../BillingModuleNavigations";
 import CurrentBillingCard from "../CurrentBillingCard";
 import SaDate from "../SaDate/Index";
 import TableEmptyData from "../TableEmptyData";
 import Tags from "../Tags";
 import { BillingHistoryStatuses, BillingHistoryType } from "./constant";
-import { BillingHistoryTitle, BillingOverviewContainer } from "./style";
+import {
+  BillingHistoryContainer,
+  BillingHistoryTitle,
+  BillingOverviewContainer,
+} from "./style";
 
 const { Text } = Typography;
 
 const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
-  page: DEFAULT_PAGE,
-  size: DEFAULT_PAGE_SIZE,
+  page_number: DEFAULT_PAGE,
+  page_limit: DEFAULT_PAGE_SIZE,
+  service: "TENANT",
+  start_date: dayjs().startOf("day").subtract(1, "month").format(dateFormatYDM),
+  end_date: dayjs().endOf("day").format(dateFormatYDM),
   ...dynamicState,
 });
 
 const BillingOverview = () => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   const { data, isLoading, isError, error, refetch, isRefetching } =
-    useFetchData(config.workflow.listAll, { ...filters }, {});
+    useFetchData(config.billing.invoices, { ...filters }, {});
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
@@ -46,21 +55,21 @@ const BillingOverview = () => {
     sorter: SorterResult<any> | SorterResult<any>[],
     extra: any,
   ) => {
-    if (pagination?.current === +filters.page + 1) {
+    if (pagination?.current === +filters.page_number + 1) {
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
         ...getFilters(Filters),
-        page: DEFAULT_PAGE,
-        size: pagination?.pageSize,
+        page_number: DEFAULT_PAGE,
+        page_limit: pagination?.pageSize,
       }));
     } else {
       // set filters along with page change
       setFilters((state: any) => ({
         ...state,
         ...getFilters(Filters),
-        page: (pagination?.current ?? 1) - 1,
-        size: pagination?.pageSize,
+        page_number: (pagination?.current ?? 1) - 1,
+        page_limit: pagination?.pageSize,
       }));
     }
   };
@@ -163,45 +172,48 @@ const BillingOverview = () => {
   return (
     <BillingOverviewContainer>
       <CurrentBillingCard />
-      <BillingHistoryTitle level={3}>Billing History</BillingHistoryTitle>
-      <Row>
-        <Col span={24}>
-          <Table
-            locale={{
-              emptyText() {
-                return (
-                  <TableEmptyData
-                    message="You do not have any workflows yet"
-                    showEmpty={
-                      !!(
-                        data?.result?.length < 1 &&
-                        !isLoading &&
-                        !isRefetching
-                      )
-                    }
-                  />
-                );
-              },
-            }}
-            columns={columns}
-            dataSource={data?.result || []}
-            rowKey={(data: any) => data?.pipeline_id}
-            loading={isLoading || isRefetching}
-            scroll={{
-              x: "max-content",
-              y: data?.result?.length > 0 ? 300 : undefined,
-            }}
-            pagination={{
-              hideOnSinglePage: true,
-              current: +filters?.page + 1,
-              pageSize: +filters?.size,
-              total: data?.totalElements,
-              showSizeChanger: false,
-            }}
-            onChange={tableChangeHandler}
-          />
-        </Col>
-      </Row>
+      <BillingHistoryContainer>
+        <BillingHistoryTitle level={3}>Billing History</BillingHistoryTitle>
+        <Row>
+          <Col span={24}>
+            <Table
+              locale={{
+                emptyText() {
+                  return (
+                    <TableEmptyData
+                      message="You do not have any workflows yet"
+                      showEmpty={
+                        !!(
+                          data?.result?.length < 1 &&
+                          !isLoading &&
+                          !isRefetching
+                        )
+                      }
+                    />
+                  );
+                },
+              }}
+              columns={columns}
+              dataSource={data?.result || []}
+              rowKey={(data: any) => data?.pipeline_id}
+              loading={isLoading || isRefetching}
+              scroll={{
+                x: "max-content",
+                y: data?.result?.length > 0 ? 300 : undefined,
+              }}
+              pagination={{
+                hideOnSinglePage: true,
+                current: +filters?.page_number + 1,
+                pageSize: +filters?.page_limit,
+                total: data?.totalElements,
+                showSizeChanger: false,
+              }}
+              onChange={tableChangeHandler}
+            />
+          </Col>
+        </Row>
+        <BillingModuleNavigations />
+      </BillingHistoryContainer>
     </BillingOverviewContainer>
   );
 };

@@ -16,19 +16,19 @@ export const BillingOptions: any = [
     value: "/settings/billing-and-plans/overview",
     url: "/settings/billing-and-plans/overview",
   },
-  {
-    label: (
-      <Link
-        prefetch
-        href="/settings/billing-and-plans/payment-methods"
-        style={{ color: "inherit" }}
-      >
-        <Text style={{ color: "inherit" }}>Payment Methods</Text>
-      </Link>
-    ),
-    value: "/settings/billing-and-plans/payment-methods",
-    url: "/settings/billing-and-plans/payment-methods",
-  },
+  // {
+  //   label: (
+  //     <Link
+  //       prefetch
+  //       href="/settings/billing-and-plans/payment-methods"
+  //       style={{ color: "inherit" }}
+  //     >
+  //       <Text style={{ color: "inherit" }}>Payment Methods</Text>
+  //     </Link>
+  //   ),
+  //   value: "/settings/billing-and-plans/payment-methods",
+  //   url: "/settings/billing-and-plans/payment-methods",
+  // },
   {
     label: (
       <Link

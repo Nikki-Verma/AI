@@ -37,15 +37,7 @@ const BillingLayout = ({ children }: Props) => {
         buttonStyle="solid"
         optionType="button"
         options={BillingOptions}
-      >
-        {/* <RadioButton value={BillingTab.OVERVIEW}>Overview</RadioButton>
-        <RadioButton value={BillingTab.PAYMENT_METHODS}>
-          Payment Methods
-        </RadioButton>
-        <RadioButton value={BillingTab.PRICING_PLANS}>
-          Pricing Plans
-        </RadioButton> */}
-      </MediumRadioGroup>
+      />
       {children}
     </BillingContainer>
   );

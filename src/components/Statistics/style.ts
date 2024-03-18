@@ -21,10 +21,10 @@ export const StatisticsDetails = styled.div`
 
 export const StatisticsValue = styled(Text)`
   color: var(--Text-Color-850, #222);
-  font-size: 16px !important;
+  font-size: 18px !important;
   font-style: normal !important;
   font-weight: 700 !important;
-  line-height: 16px !important;
+  line-height: normal !important;
 `;
 
 export const StatisticsLabel = styled(Text)`

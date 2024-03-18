@@ -9,6 +9,7 @@ export const PERMISSION_TYPE = {
 // date format constants
 export const tokenDateFormat = "YYYY-MM-DDThh:mm:ss.ssssss";
 export const dateFormatForFrontend = "DD-MMM-YYYY";
+export const dateFormatYDM = "YYYY-DD-MM";
 export const timeFormatForFrontend = "HH:mm";
 export const dateTimeFormatWithMilliseconds = "DD-MM-YYYY hh:mm:ss A";
 export const dateTimeFormatWithMillisecondsWithoutTimeZone =

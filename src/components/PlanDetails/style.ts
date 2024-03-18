@@ -5,17 +5,16 @@ const { Text, Title } = Typography;
 
 export const SuggestedPlanConatiner = styled.div`
   position: relative;
-  top: -80px !important;
+  top: -60px !important;
   border-radius: 26px;
   background: linear-gradient(180deg, #8640a2 0%, #602edf 100%);
   box-shadow: 0px 22px 34px 0px rgba(82, 67, 194, 0.3);
   width: 292px;
-
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 36px;
   padding: 14px 14px 28px;
+  height: 100%;
 `;
 
 export const PopularTag = styled(Tag)`
@@ -102,8 +101,8 @@ export const PlanDescription = styled(Text)<any>`
 `;
 
 export const PlanFeatures = styled.div`
-  height: 300px !important;
-  max-height: 400px !important;
+  height: 350px !important;
+  max-height: 350px !important;
   overflow: auto !important;
   display: flex;
   flex-direction: column;
