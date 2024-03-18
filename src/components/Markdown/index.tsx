@@ -17,28 +17,39 @@ const MarkdownComponent: React.FC<{ markdown: string }> = ({ markdown }) => {
   markdown = markdown?.replace(/\\n/g, "  \n");
   return (
     <MarkdownBody className="markdown-body light">
-      <Markdown remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins}   components={{
-        pre: ({ children, ...rest }) => {
-          return <pre
-            style={{
-              color: "grey",
-              backgroundColor: "#f9fafb",
-              overflowX: "auto",
-              fontWeight: 400,
-              fontSize: ".875em",
-              lineHeight: "1.7142857",
-              borderRadius: ".375rem",
-              padding: ".2em .2em"
-            }}
-          >
-            {children}
-          </pre>
-
-
-        }, 
-
-
-      }}>
+      <Markdown
+        remarkPlugins={remarkPlugins}
+        rehypePlugins={rehypePlugins}
+        components={{
+          pre: ({ children, ...rest }) => {
+            return (
+              <pre
+                style={{
+                  color: "grey",
+                  backgroundColor: "#f9fafb",
+                  overflowX: "auto",
+                  fontWeight: 400,
+                  fontSize: ".875em",
+                  lineHeight: "1.7142857",
+                  borderRadius: ".375rem",
+                  padding: ".2em .2em",
+                }}
+              >
+                {children}
+              </pre>
+            );
+          },
+          a: ({ children, ...rest }) => {
+            console.log("🚀 ~ rest:", rest);
+            console.log("link appeared", children);
+            return (
+              <a {...rest} target="_blank">
+                {children}
+              </a>
+            );
+          },
+        }}
+      >
         {markdown}
       </Markdown>
     </MarkdownBody>
