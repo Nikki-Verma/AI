@@ -37,6 +37,8 @@ const BuyCreditsModal = ({
       }}
       width="40vw"
       footer={false}
+      destroyOnClose
+      centered
     >
       <Row gutter={[16, 24]}>
         <Col span={24} md={{ span: 18 }}>
