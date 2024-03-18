@@ -91,3 +91,11 @@ export const PlanUpgradeButtonText = styled(Text)`
   line-height: 22px !important; /* 157.143% */
   box-sizing: border-box !important;
 `;
+
+export const FeatureItem = styled(Text)`
+  color: var(--Text-Color-900, #171717) !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: normal !important;
+`;

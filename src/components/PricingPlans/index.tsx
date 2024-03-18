@@ -1,12 +1,24 @@
-import { DollarSymbol } from "@/utils/constants";
+import { useFetchData } from "@/Hooks/useApi";
+import config from "@/utils/apiEndoints";
+import {
+  dateFormatForFrontend,
+  DollarSymbol,
+  tokenDateFormat,
+} from "@/utils/constants";
+import dayjs from "@/utils/date";
 import { UnknownObject } from "@/utils/types";
-import { Flex, FlexProps } from "antd";
+import { Flex, FlexProps, Skeleton, Space } from "antd";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import {
   DescriptionItemType,
   LayoutOption,
   LayoutType,
 } from "../DescriptionList";
+import TickIcon from "../Icons/TickIcon";
+import UpgradePlanModal from "../UpgradePlanModal";
 import {
+  FeatureItem,
   PlanUpgradeButton,
   PlanUpgradeButtonText,
   PricingDetailsCard,
@@ -61,27 +73,55 @@ const PricingDetailsDescription = ({
 };
 
 const PricingPlans = () => {
+  const { data: session }: any = useSession();
+  const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    useFetchData(config.subscription.currentPlan, {
+      tenant_id: session?.user?.details?.tenantId,
+      additional_fields: "feature,pricing",
+    });
+
+  console.log("🚀 ~ PricingPlans ~ data:", data);
+
+  const toggleUpgradeModal = () => {
+    setDisplayUpgradeModal((prev: boolean) => !prev);
+  };
+
   const PricingDetailColumns: DescriptionItemType[] = [
     {
       label: "Plan",
-      key: "plan",
+      key: "plan_name",
       width: "100%",
     },
     {
       label: "Payments",
-      key: "payment",
+      key: "tenant_plan_price",
       width: "100%",
-      render: (payment: any) => (payment ? `${DollarSymbol}${payment}` : "--"),
+      render: (payment: any) => `${DollarSymbol}${payment}`,
     },
     {
       label: "Plan Valid Till",
       key: "expiry_at",
       width: "100%",
+      render: (expiry_at: any) => {
+        return expiry_at
+          ? dayjs(data?.result?.expiry_at, tokenDateFormat).format(
+              dateFormatForFrontend,
+            )
+          : "--";
+      },
     },
     {
       label: "Users",
-      key: "users",
+      key: "features",
       width: "100%",
+      render: (features: any) => {
+        return `${
+          features?.find(
+            (feature: UnknownObject) => feature?.name === "User accounts",
+          )?.max_limit ?? 0
+        } users`;
+      },
     },
   ];
 
@@ -89,18 +129,33 @@ const PricingPlans = () => {
     <PricingPlansContainer>
       <PricingPlansTitle>Your plan details</PricingPlansTitle>
       <PricingDetailsCard>
-        <Flex wrap="wrap" justify="space-between" align="center">
-          <PricingDetailsDescription
-            columns={PricingDetailColumns}
-            data={{}}
-            gapBetweenItems={62}
-          />
-          <PlanUpgradeButton type="primary">
-            <PlanUpgradeButtonText>Upgrade Plan</PlanUpgradeButtonText>
-          </PlanUpgradeButton>
-        </Flex>
-        <PricingDetailsDivider />
+        <Skeleton active loading={isLoading} paragraph={{ rows: 4 }}>
+          <Flex wrap="wrap" justify="space-between" align="center">
+            <PricingDetailsDescription
+              columns={PricingDetailColumns}
+              data={data?.result || {}}
+              gapBetweenItems={62}
+            />
+            <PlanUpgradeButton type="primary">
+              <PlanUpgradeButtonText onClick={toggleUpgradeModal}>
+                Upgrade Plan
+              </PlanUpgradeButtonText>
+            </PlanUpgradeButton>
+          </Flex>
+          <PricingDetailsDivider />
+          <Flex gap="24px" wrap="wrap">
+            {data?.result?.features?.map((feature: any) => (
+              <Space size={6} align="start" key={feature?.id}>
+                <TickIcon /> <FeatureItem>{feature?.name}</FeatureItem>
+              </Space>
+            ))}
+          </Flex>
+        </Skeleton>
       </PricingDetailsCard>
+      <UpgradePlanModal
+        open={displayUpgradeModal}
+        onClose={toggleUpgradeModal}
+      />
     </PricingPlansContainer>
   );
 };
