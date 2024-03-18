@@ -40,8 +40,7 @@ export const MessageContainer = styled.div`
         return "flex-end !important";
     }
   }};
-  max-width: 60vw;
-  width: 60vw;
+  width: 100%;
   margin-left: ${(props: any) => {
     switch (props.role) {
       case "SimplAi":

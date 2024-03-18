@@ -94,7 +94,7 @@ function ChatPage() {
 
   return (
     <PlaygroundContainer>
-      <div style={{ height: "100%", flex: 1 }}>
+      <div style={{ height: "100%", width: "70vw" }}>
         {selectedChatConfigId ? (
           <ChatBot
             messages={messages}
@@ -118,7 +118,7 @@ function ChatPage() {
           </NoChatConatiner>
         )}
       </div>
-      <div style={{ height: "100%", width: "30%" }}>
+      <div style={{ height: "100%", width: "25vw" }}>
         <PlaygroundChatConfiguration
           selectedChatConfigId={selectedChatConfigId}
           setSelectedChatConfigId={setSelectedChatConfigId}
