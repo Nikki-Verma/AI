@@ -124,7 +124,7 @@ const BuyCreditsModal = ({
           </CreditsBreakdownContainer>
         </Col>
         <Col span={24}>
-          <BuyCreditActionButton block type="primary">
+          <BuyCreditActionButton block type="primary" onClick={form.submit}>
             Buy Credits
           </BuyCreditActionButton>
         </Col>

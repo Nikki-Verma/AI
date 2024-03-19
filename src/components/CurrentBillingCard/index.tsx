@@ -1,8 +1,11 @@
+import { createPaymentOrderApi, verifyPaymentStatusApi } from "@/api/payment";
 import { useFetchData } from "@/Hooks/useApi";
+import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { dateFormatForFrontend, tokenDateFormat } from "@/utils/constants";
 import dayjs from "@/utils/date";
 import { UnknownObject } from "@/utils/types";
+import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { Col, Flex, Row, Skeleton, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -12,6 +15,7 @@ import CustomWalletIcon from "../Icons/CustomWalletIcon";
 import UserIcon from "../Icons/UserIcon";
 import Statistics from "../Statistics";
 import UpgradePlanModal from "../UpgradePlanModal";
+
 import {
   BillingActionHeading,
   BillingDetailsAndActions,
@@ -26,7 +30,7 @@ const { Text } = Typography;
 const CurrentBillingCard = () => {
   const [displayUpgradeModal, setDisplayUpgradeModal] = useState(false);
   const [displayCreditsModal, setDisplayCreditsModal] = useState(false);
-
+  const { notification } = useNotify();
   const { data: session }: any = useSession();
 
   const { data, isLoading, isError, error, refetch, isRefetching } =
@@ -94,6 +98,85 @@ const CurrentBillingCard = () => {
     setDisplayUpgradeModal((prev: boolean) => !prev);
   };
 
+  const creditsTopupHandler = async (values: any) => {
+    console.log("values", values);
+
+    const orderResponse = await createPaymentOrderApi({
+      payload: {
+        amount: values?.credits,
+        seller_id: "63ef82566b815b16b65b52cb",
+        currency: "INR",
+        shop_platform: "SHOPIFY",
+        customer: {
+          id: "6a289d78-c558-11ec-9d64-0242ac120012",
+        },
+        payment_platform: "Razorpay",
+        source: "wallet",
+      },
+    });
+
+    console.log("orderResponse", orderResponse);
+
+    if (orderResponse.status === 200) {
+      const options = {
+        key: "rzp_live_dfHYOIhEO8Ok8v", // Enter the Key ID generated from the Dashboard
+        amount: values?.credits * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "SimplAI", //your business name
+        description: "Simplifing your AI journey",
+        image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
+        redirect: false,
+        order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+        callback_url:
+          "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
+        // prefill: {
+        //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+        //   name: "Dinesh Kumar", //your customer's name
+        //   email: "gaurav.kumar@example.com",
+        //   contact: "8800757087", //Provide the customer's phone number for better conversion rates
+        // },
+        notes: {
+          // address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: PRIMARY_BRAND_COLOR,
+        },
+        handler: async (response: any) => {
+          console.log("🚀 ~ creditsTopupHandler ~ options.response:", response);
+
+          const verificationResponse = await verifyPaymentStatusApi({
+            txn_id: orderResponse?.data?.data?.txn_id,
+          });
+
+          console.log("verificationResponse", verificationResponse);
+
+          if (verificationResponse.status === 200) {
+            if (verificationResponse?.data?.data?.txn_status === "Success") {
+              toggleCreditsModal();
+              notification.success({ message: "Credits added successfully" });
+            } else {
+              notification.error({
+                message: verificationResponse?.data?.data?.failure_reason,
+              });
+            }
+          }
+        },
+      };
+      if (!!window) {
+        //
+        var rzp1: any = new (window as any).Razorpay(options);
+        rzp1.open();
+        rzp1.on("payment.failed", (response: any) => {
+          console.log("response", response);
+          notification.error({
+            message: response.error.reason,
+            description: response.error.description,
+          });
+        });
+      }
+    }
+  };
+
   return (
     <Row gutter={[20, 20]}>
       <Col span={24} md={{ span: 16 }}>
@@ -157,6 +240,7 @@ const CurrentBillingCard = () => {
       <BuyCreditsModal
         open={displayCreditsModal}
         onClose={toggleCreditsModal}
+        creditsTopupHandler={creditsTopupHandler}
       />
     </Row>
   );
