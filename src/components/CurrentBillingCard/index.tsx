@@ -101,182 +101,196 @@ const CurrentBillingCard = () => {
   };
 
   const creditsTopupHandler = async (values: any) => {
-    console.log("values", values);
-    setCreditsLoading(true);
+    try {
+      console.log("values", values);
+      setCreditsLoading(true);
 
-    const orderResponse = await createPaymentOrderApi({
-      payload: {
-        amount: values?.total_amount,
-        seller_id: "63ef82566b815b16b65b52cb",
-        currency: "INR",
-        shop_platform: "SHOPIFY",
-        customer: {
-          id: "6a289d78-c558-11ec-9d64-0242ac120012",
+      const orderResponse = await createPaymentOrderApi({
+        payload: {
+          amount: values?.total_amount,
+          seller_id: "63ef82566b815b16b65b52cb",
+          currency: "INR",
+          shop_platform: "SHOPIFY",
+          customer: {
+            id: "6a289d78-c558-11ec-9d64-0242ac120012",
+          },
+          payment_platform: "Razorpay",
+          source: "wallet",
         },
-        payment_platform: "Razorpay",
-        source: "wallet",
-      },
-    });
+      });
 
-    console.log("orderResponse", orderResponse);
+      console.log("orderResponse", orderResponse);
 
-    if (orderResponse.status === 200) {
-      const options = {
-        key: "rzp_live_dfHYOIhEO8Ok8v", // Enter the Key ID generated from the Dashboard
-        amount: values?.total_amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        currency: "INR",
-        name: "SimplAI", //your business name
-        description: "Simplifing your AI journey",
-        image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
-        redirect: false,
-        order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
-        callback_url:
-          "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
-        // prefill: {
-        //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-        //   name: "Dinesh Kumar", //your customer's name
-        //   email: "gaurav.kumar@example.com",
-        //   contact: "8800757087", //Provide the customer's phone number for better conversion rates
-        // },
-        notes: {
-          // address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: PRIMARY_BRAND_COLOR,
-        },
-        modal: {
-          ondismiss: function () {
-            console.log("Checkout form closed");
+      if (orderResponse.status === 200) {
+        const options = {
+          key: "rzp_live_dfHYOIhEO8Ok8v", // Enter the Key ID generated from the Dashboard
+          amount: values?.total_amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: "INR",
+          name: "SimplAI", //your business name
+          description: "Simplifing your AI journey",
+          image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
+          redirect: false,
+          order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+          callback_url:
+            "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
+          // prefill: {
+          //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+          //   name: "Dinesh Kumar", //your customer's name
+          //   email: "gaurav.kumar@example.com",
+          //   contact: "8800757087", //Provide the customer's phone number for better conversion rates
+          // },
+          notes: {
+            // address: "Razorpay Corporate Office",
+          },
+          theme: {
+            color: PRIMARY_BRAND_COLOR,
+          },
+          modal: {
+            ondismiss: function () {
+              console.log("Checkout form closed");
+              setCreditsLoading(false);
+            },
+          },
+          handler: async (response: any) => {
+            console.log(
+              "🚀 ~ creditsTopupHandler ~ options.response:",
+              response,
+            );
+
+            const verificationResponse = await verifyPaymentStatusApi({
+              txn_id: orderResponse?.data?.data?.txn_id,
+            });
+
+            console.log("verificationResponse", verificationResponse);
+
+            if (verificationResponse.status === 200) {
+              if (verificationResponse?.data?.data?.txn_status === "Success") {
+                toggleCreditsModal();
+                notification.success({ message: "Credits added successfully" });
+              } else {
+                notification.error({
+                  message: verificationResponse?.data?.data?.failure_reason,
+                });
+              }
+            }
             setCreditsLoading(false);
           },
-        },
-        handler: async (response: any) => {
-          console.log("🚀 ~ creditsTopupHandler ~ options.response:", response);
-
-          const verificationResponse = await verifyPaymentStatusApi({
-            txn_id: orderResponse?.data?.data?.txn_id,
+        };
+        if (!!window) {
+          //
+          var rzp1: any = new (window as any).Razorpay(options);
+          rzp1.open();
+          rzp1.on("payment.failed", (response: any) => {
+            console.log("response", response);
+            notification.error({
+              message: response.error.reason,
+              description: response.error.description,
+            });
           });
-
-          console.log("verificationResponse", verificationResponse);
-
-          if (verificationResponse.status === 200) {
-            if (verificationResponse?.data?.data?.txn_status === "Success") {
-              toggleCreditsModal();
-              notification.success({ message: "Credits added successfully" });
-            } else {
-              notification.error({
-                message: verificationResponse?.data?.data?.failure_reason,
-              });
-            }
-          }
-          setCreditsLoading(false);
-        },
-      };
-      if (!!window) {
-        //
-        var rzp1: any = new (window as any).Razorpay(options);
-        rzp1.open();
-        rzp1.on("payment.failed", (response: any) => {
-          console.log("response", response);
-          notification.error({
-            message: response.error.reason,
-            description: response.error.description,
-          });
-        });
+        }
+      } else {
+        setCreditsLoading(false);
       }
-    } else {
+    } catch (error) {
       setCreditsLoading(false);
     }
   };
 
   const upgradePlanHandler = async (values: any) => {
-    setPaymentLoading(true);
-    console.log("values", values);
+    try {
+      setPaymentLoading(true);
+      console.log("values", values);
 
-    const orderResponse = await createPaymentOrderApi({
-      payload: {
-        amount: values?.amount,
-        seller_id: "63ef82566b815b16b65b52cb",
-        currency: "INR",
-        shop_platform: "SHOPIFY",
-        customer: {
-          id: "6a289d78-c558-11ec-9d64-0242ac120012",
+      const orderResponse = await createPaymentOrderApi({
+        payload: {
+          amount: values?.amount,
+          seller_id: "63ef82566b815b16b65b52cb",
+          currency: "INR",
+          shop_platform: "SHOPIFY",
+          customer: {
+            id: "6a289d78-c558-11ec-9d64-0242ac120012",
+          },
+          payment_platform: "Razorpay",
+          source: "wallet",
         },
-        payment_platform: "Razorpay",
-        source: "wallet",
-      },
-    });
+      });
 
-    console.log("orderResponse", orderResponse);
+      console.log("orderResponse", orderResponse);
 
-    if (orderResponse.status === 200) {
-      const options = {
-        key: "rzp_live_dfHYOIhEO8Ok8v", // Enter the Key ID generated from the Dashboard
-        amount: values?.amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        currency: "INR",
-        name: "SimplAI", //your business name
-        description: "Simplifing your AI journey",
-        image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
-        redirect: false,
-        order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
-        callback_url:
-          "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
-        // prefill: {
-        //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-        //   name: "Dinesh Kumar", //your customer's name
-        //   email: "gaurav.kumar@example.com",
-        //   contact: "8800757087", //Provide the customer's phone number for better conversion rates
-        // },
-        notes: {
-          // address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: PRIMARY_BRAND_COLOR,
-        },
-        modal: {
-          ondismiss: function () {
-            console.log("Checkout form closed");
+      if (orderResponse.status === 200) {
+        const options = {
+          key: "rzp_live_dfHYOIhEO8Ok8v", // Enter the Key ID generated from the Dashboard
+          amount: values?.amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: "INR",
+          name: "SimplAI", //your business name
+          description: "Simplifing your AI journey",
+          image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
+          redirect: false,
+          order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+          callback_url:
+            "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
+          // prefill: {
+          //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+          //   name: "Dinesh Kumar", //your customer's name
+          //   email: "gaurav.kumar@example.com",
+          //   contact: "8800757087", //Provide the customer's phone number for better conversion rates
+          // },
+          notes: {
+            // address: "Razorpay Corporate Office",
+          },
+          theme: {
+            color: PRIMARY_BRAND_COLOR,
+          },
+          modal: {
+            ondismiss: function () {
+              console.log("Checkout form closed");
+              setPaymentLoading(false);
+            },
+          },
+          handler: async (response: any) => {
+            console.log(
+              "🚀 ~ creditsTopupHandler ~ options.response:",
+              response,
+            );
+
+            const verificationResponse = await verifyPaymentStatusApi({
+              txn_id: orderResponse?.data?.data?.txn_id,
+            });
+
+            console.log("verificationResponse", verificationResponse);
+
+            if (verificationResponse.status === 200) {
+              if (verificationResponse?.data?.data?.txn_status === "Success") {
+                toggleUpgradeModal();
+                notification.success({ message: "Plan upgraded successfully" });
+              } else {
+                notification.error({
+                  message: verificationResponse?.data?.data?.failure_reason,
+                });
+              }
+            }
             setPaymentLoading(false);
           },
-        },
-        handler: async (response: any) => {
-          console.log("🚀 ~ creditsTopupHandler ~ options.response:", response);
-
-          const verificationResponse = await verifyPaymentStatusApi({
-            txn_id: orderResponse?.data?.data?.txn_id,
+        };
+        if (!!window) {
+          var rzp1: any = new (window as any).Razorpay(options);
+          rzp1.open();
+          rzp1.on("payment.failed", (response: any) => {
+            console.log("response", response);
+            notification.error({
+              message: response.error.reason,
+              description: response.error.description,
+            });
           });
-
-          console.log("verificationResponse", verificationResponse);
-
-          if (verificationResponse.status === 200) {
-            if (verificationResponse?.data?.data?.txn_status === "Success") {
-              toggleUpgradeModal();
-              notification.success({ message: "Plan upgraded successfully" });
-            } else {
-              notification.error({
-                message: verificationResponse?.data?.data?.failure_reason,
-              });
-            }
-          }
-          setPaymentLoading(false);
-        },
-      };
-      if (!!window) {
-        var rzp1: any = new (window as any).Razorpay(options);
-        rzp1.open();
-        rzp1.on("payment.failed", (response: any) => {
-          console.log("response", response);
+        } else {
           notification.error({
-            message: response.error.reason,
-            description: response.error.description,
+            message: "Browser does not support third party payment",
           });
-        });
+        }
       } else {
-        notification.error({
-          message: "Browser does not support third party payment",
-        });
+        setPaymentLoading(false);
       }
-    } else {
+    } catch (error) {
       setPaymentLoading(false);
     }
   };
