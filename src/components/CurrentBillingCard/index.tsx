@@ -319,7 +319,12 @@ const CurrentBillingCard = () => {
             <BillingDetailsAndActions>
               <Flex gap="16px" align="baseline" flex={1}>
                 <BillingActionHeading>{`Current Plan- ${data?.result?.plan_name}`}</BillingActionHeading>
-                <BillingDetailsLink href="/">View details</BillingDetailsLink>
+                <BillingDetailsLink
+                  prefetch
+                  href="/settings/billing-and-plans/pricing-plans"
+                >
+                  View details
+                </BillingDetailsLink>
               </Flex>
               <Flex justify="space-between">
                 <BillingStats>
