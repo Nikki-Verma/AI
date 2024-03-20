@@ -12,7 +12,7 @@ export const SuggestedPlanConatiner = styled.div`
   width: 292px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 30px;
   padding: 14px 14px 28px;
   height: 100%;
 `;
@@ -36,28 +36,42 @@ export const PopularTagText = styled(Text)`
 export const PlanName = styled(Text)<any>`
   color: ${(props: any) => {
     switch (props.type) {
-      case "Suggested":
+      case true:
         return "#fff !important;";
       default:
-        return "#000 !important;";
+        return "var(--Text-Color-850, #222) !important;";
     }
   }};
-  font-size: 32px !important;
+  font-size: 26.167px !important;
   font-style: normal !important;
   font-weight: 700 !important;
   line-height: normal !important;
 `;
 
-export const PlanPrice = styled(Text)<any>`
+export const PlanPriceContainer = styled(Text)<any>`
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
   color: ${(props: any) => {
     switch (props.type) {
-      case "Suggested":
+      case true:
         return "var(--Text-Color-50, #fff) !important;";
       default:
         return "var(--Text-Color-50, #000) !important;";
     }
   }};
-  font-size: 26px !important;
+`;
+
+export const PlanPrice = styled(Text)<any>`
+  color: ${(props: any) => {
+    switch (props.type) {
+      case true:
+        return "var(--Text-Color-50, #fff) !important;";
+      default:
+        return "var(--Text-Color-850, #222) !important;";
+    }
+  }};
+  font-size: 24.298px !important;
   font-style: normal !important;
   font-weight: 500 !important;
   line-height: normal !important;
@@ -66,10 +80,10 @@ export const PlanPrice = styled(Text)<any>`
 export const PlanDuration = styled(Text)<any>`
   color: ${(props: any) => {
     switch (props.type) {
-      case "Suggested":
+      case true:
         return "var(--Text-Color-50, #fff) !important;";
       default:
-        return "var(--Text-Color-50, #000) !important;";
+        return "var(--Text-Color-600, #5B5B5B) !important;";
     }
   }};
   font-size: 17px !important;
@@ -87,22 +101,23 @@ export const PricingMainDetails = styled.div`
 export const PlanDescription = styled(Text)<any>`
   color: ${(props: any) => {
     switch (props.type) {
-      case "Suggested":
+      case true:
         return "var(--Text-Color-50, #fff) !important;";
       default:
-        return "var(--Text-Color-50, #000) !important;";
+        return "#231d4f !important;";
     }
   }};
-  font-size: 14px !important;
+
+  margin-right: 18px !important;
+  font-size: 13.083px !important;
   font-style: normal !important;
   font-weight: 400 !important;
   line-height: normal !important;
-  margin-right: 18px !important;
 `;
 
 export const PlanFeatures = styled.div`
-  height: 350px !important;
-  max-height: 350px !important;
+  height: 300px !important;
+  max-height: 300px !important;
   overflow: auto !important;
   display: flex;
   flex-direction: column;
@@ -113,13 +128,14 @@ export const PlanFeatures = styled.div`
 export const FeatureDescription = styled(Text)<any>`
   color: ${(props: any) => {
     switch (props.type) {
-      case "Suggested":
+      case true:
         return "var(--Text-Color-50, #fff) !important;";
       default:
-        return "var(--Text-Color-50, #000) !important;";
+        return "var(--Text-Color-900, #171717) !important;";
     }
   }};
-  font-size: 14px !important;
+
+  font-size: 13.083px !important;
   font-style: normal !important;
   font-weight: 400 !important;
   line-height: normal !important;
@@ -144,6 +160,6 @@ export const BasicPlanConatiner = styled.div`
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 36px;
-  padding: 14px 14px 28px;
+  gap: 30px;
+  padding: 14px;
 `;

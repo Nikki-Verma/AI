@@ -4,7 +4,7 @@ export const PlansContainer = styled.div`
   border-radius: 26px;
   border: 1px solid var(--Stroke, #a6bcda);
   background: #fff;
-  padding: 24px;
+  padding: 24px 12px;
   margin-top: 48px !important;
   display: flex;
   flex-wrap: wrap;

@@ -48,6 +48,7 @@ const BillingOverview = () => {
   const [filters, setFilters] = usePersistedQueryParams(initialFilters({}));
   const { data, isLoading, isError, error, refetch, isRefetching } =
     useFetchData(config.billing.invoices, { ...filters }, {});
+  console.log("🚀 ~ BillingOverview ~ data:", data);
 
   const tableChangeHandler = (
     pagination: TablePaginationConfig,
