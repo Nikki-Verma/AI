@@ -35,7 +35,7 @@ const UpgradePlanModal = ({
       onCancel={() => {
         onClose();
       }}
-      width="70vw"
+      width="90vw"
       footer={false}
     >
       <Spin spinning={loading}>
