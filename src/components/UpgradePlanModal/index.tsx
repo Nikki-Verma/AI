@@ -45,7 +45,7 @@ const UpgradePlanModal = ({
               <Col>
                 <Result
                   icon={null}
-                  title="Error loadingPlans"
+                  title="Error Loading Plans"
                   subTitle={getErrorFromApi(error)}
                 />
               </Col>
