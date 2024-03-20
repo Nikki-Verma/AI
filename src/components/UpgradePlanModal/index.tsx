@@ -3,6 +3,7 @@ import config from "@/utils/apiEndoints";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { Col, Modal, Result, Row, Skeleton, Spin } from "antd";
+import { useSession } from "next-auth/react";
 import PlanDetails from "../PlanDetails";
 import { PlanDivider, PlansContainer } from "./style";
 
@@ -19,6 +20,12 @@ const UpgradePlanModal = ({
   upgradePlanHandler,
   loading,
 }: UpgradePlanModalProps) => {
+  const { data: session }: any = useSession();
+  const { data: currentPlanDetails, isLoading: currentPlanLoading } =
+    useFetchData(config.subscription.currentPlan, {
+      tenant_id: session?.user?.details?.tenantId,
+      additional_fields: "feature,pricing",
+    });
   const { data, isLoading, isError, error, isRefetching } = useFetchData(
     config.subscription.allPlans,
     {
@@ -59,6 +66,7 @@ const UpgradePlanModal = ({
                   <PlanDetails
                     plan={plan}
                     upgradePlanHandler={upgradePlanHandler}
+                    currentPlan={currentPlanDetails}
                   />
                   {index != data?.result?.length - 1 && <PlanDivider />}
                 </>

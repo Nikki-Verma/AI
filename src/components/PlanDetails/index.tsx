@@ -22,10 +22,15 @@ const { Text } = Typography;
 
 type PlanDetailsProps = {
   plan: UnknownObject;
+  currentPlan: UnknownObject;
   upgradePlanHandler: (values: UnknownObject) => void;
 };
 
-const PlanDetails = ({ plan, upgradePlanHandler }: PlanDetailsProps) => {
+const PlanDetails = ({
+  plan,
+  upgradePlanHandler,
+  currentPlan,
+}: PlanDetailsProps) => {
   console.log("🚀 ~ PlanDetails ~ type:", plan);
   const PlanFetaure = [
     "400,000 credits/month",
@@ -87,8 +92,11 @@ const PlanDetails = ({ plan, upgradePlanHandler }: PlanDetailsProps) => {
               amount: PlanPricing,
             })
           }
+          disabled={currentPlan?.result?.plan_name === plan?.plan_name}
         >
-          Upgrade Plan
+          {currentPlan?.result?.plan_name === plan?.plan_name
+            ? "Selected Plan"
+            : "Upgrade Plan"}
         </UpgradeButton>
       </Flex>
     </SuggestedPlanConatiner>
@@ -128,8 +136,11 @@ const PlanDetails = ({ plan, upgradePlanHandler }: PlanDetailsProps) => {
               amount: PlanPricing,
             })
           }
+          disabled={currentPlan?.result?.plan_name === plan?.plan_name}
         >
-          Upgrade Plan
+          {currentPlan?.result?.plan_name === plan?.plan_name
+            ? "Selected Plan"
+            : "Upgrade Plan"}
         </UpgradeButton>
       </Flex>
     </BasicPlanConatiner>
