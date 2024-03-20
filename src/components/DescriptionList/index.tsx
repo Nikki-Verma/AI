@@ -5,12 +5,12 @@ import { DescriptionItemLabel, DescriptionItemValue } from "./style";
 
 const { Text } = Typography;
 
-enum LayoutType {
+export enum LayoutType {
   "vertical" = "vertical",
   "horizontal" = "horizontal",
 }
 
-const LayoutOption = {
+export const LayoutOption = {
   vertical: LayoutType.vertical,
   horizontal: LayoutType.horizontal,
 };

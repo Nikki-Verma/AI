@@ -9,6 +9,7 @@ export const PERMISSION_TYPE = {
 // date format constants
 export const tokenDateFormat = "YYYY-MM-DDThh:mm:ss.ssssss";
 export const dateFormatForFrontend = "DD-MMM-YYYY";
+export const dateFormatYDM = "YYYY-DD-MM";
 export const timeFormatForFrontend = "HH:mm";
 export const dateTimeFormatWithMilliseconds = "DD-MM-YYYY hh:mm:ss A";
 export const dateTimeFormatWithMillisecondsWithoutTimeZone =
@@ -32,6 +33,9 @@ export const DUMMY_SELLER_PROFILE_ID = "11";
 export const DEFAULT_PAGE = 0;
 export const DEFAULT_PAGE_SIZE = 20;
 export const ALL_DATA_PAGE_SIZE = 2000;
+
+// symbols
+export const DollarSymbol = "$";
 
 // Page mode
 export const PAGE_MODE = {
