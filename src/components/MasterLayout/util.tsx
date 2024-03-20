@@ -6,7 +6,6 @@ import { cloneDeep } from "lodash";
 import Link from "next/link";
 import PipelineIcon from "../Icons/AgentPipelineIcon";
 import AgentsIcon from "../Icons/AgentsIcon";
-import BillingIcon from "../Icons/BillingIcon";
 import DatasetIcon from "../Icons/DatasetIcon";
 import HomeIcon from "../Icons/HomeIcon";
 import IntegrationIcon from "../Icons/IntegrationIcon";
@@ -199,20 +198,6 @@ export const items: any = [
     url: "/integration",
     icon: <IntegrationIcon />,
     permissions: [PERMISSION.INTEGRATION_VIEW],
-    permissionType: PERMISSION_TYPE.OR,
-  },
-  {
-    id: 100,
-    label: (
-      <Link prefetch href="/billing">
-        <Text style={{ color: "inherit" }}>Billing & Usage</Text>
-      </Link>
-    ),
-    key: "billing",
-    keyPath: ["billing"],
-    url: "/billing",
-    icon: <BillingIcon />,
-    permissions: [PERMISSION.BILLING_VIEW],
     permissionType: PERMISSION_TYPE.OR,
   },
   {
