@@ -8,6 +8,7 @@ import {
   tokenDateFormat,
 } from "@/utils/constants";
 import dayjs from "@/utils/date";
+import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { Flex, FlexProps, Skeleton, Space } from "antd";
@@ -184,6 +185,10 @@ const PricingPlans = () => {
       }
     } catch (error) {
       setPaymentLoading(false);
+      notification.error({
+        message: "Error while upgrading plans",
+        description: getErrorFromApi(error),
+      });
     }
   };
 

@@ -4,6 +4,7 @@ import { useNotify } from "@/providers/notificationProvider";
 import config from "@/utils/apiEndoints";
 import { dateFormatForFrontend, tokenDateFormat } from "@/utils/constants";
 import dayjs from "@/utils/date";
+import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
 import { PRIMARY_BRAND_COLOR } from "@/_utils/theme.antd";
 import { Col, Flex, Row, Skeleton, Typography } from "antd";
@@ -193,6 +194,10 @@ const CurrentBillingCard = () => {
       }
     } catch (error) {
       setCreditsLoading(false);
+      notification.error({
+        message: "Error while buying credits",
+        description: getErrorFromApi(error),
+      });
     }
   };
 
@@ -292,6 +297,10 @@ const CurrentBillingCard = () => {
       }
     } catch (error) {
       setPaymentLoading(false);
+      notification.error({
+        message: "Error while upgrading plans",
+        description: getErrorFromApi(error),
+      });
     }
   };
 
