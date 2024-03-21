@@ -49,7 +49,6 @@ const CurrentBillingCard = () => {
     isLoading: walletDataLoading,
     error: walletDataError,
   } = useFetchData(config.wallet.details);
-  console.log("🚀 ~ CurrentBillingCard ~ walletData:", walletData);
 
   const [billingBasicStats, setBillingBasicStats] = useState([
     {
@@ -144,13 +143,14 @@ const CurrentBillingCard = () => {
 
   const creditsTopupHandler = async (values: any) => {
     try {
-      console.log("values", values);
       setCreditsLoading(true);
 
       const orderResponse = await createPaymentOrderApi({
         payload: {
           amount: values?.total_amount,
           seller_id: session?.user?.details?.id,
+          seller_name: session?.user?.details?.name,
+          user_name: session?.user?.details?.name,
           tenant_id: session?.user?.details?.tenantId,
           currency: "INR",
           shop_platform: "SHOPIFY",
@@ -159,8 +159,6 @@ const CurrentBillingCard = () => {
           segment_code: "DEFAULT",
         },
       });
-
-      console.log("orderResponse", orderResponse);
 
       if (orderResponse.status === 200) {
         const options = {
@@ -187,21 +185,13 @@ const CurrentBillingCard = () => {
           },
           modal: {
             ondismiss: function () {
-              console.log("Checkout form closed");
               setCreditsLoading(false);
             },
           },
           handler: async (response: any) => {
-            console.log(
-              "🚀 ~ creditsTopupHandler ~ options.response:",
-              response,
-            );
-
             const verificationResponse = await verifyPaymentStatusApi({
               txn_id: orderResponse?.data?.result?.order_id,
             });
-
-            console.log("verificationResponse", verificationResponse);
 
             if (verificationResponse.status === 200) {
               if (verificationResponse?.data?.result?.status === "SUCCESS") {
@@ -223,7 +213,6 @@ const CurrentBillingCard = () => {
           var rzp1: any = new (window as any).Razorpay(options);
           rzp1.open();
           rzp1.on("payment.failed", (response: any) => {
-            console.log("response", response);
             notification.error({
               message: response.error.reason,
               description: response.error.description,
@@ -245,12 +234,13 @@ const CurrentBillingCard = () => {
   const upgradePlanHandler = async (values: any) => {
     try {
       setPaymentLoading(true);
-      console.log("values", values);
 
       const orderResponse = await createPaymentOrderApi({
         payload: {
           amount: values?.amount,
           seller_id: session?.user?.details?.id,
+          seller_name: session?.user?.details?.name,
+          user_name: session?.user?.details?.name,
           tenant_id: session?.user?.details?.tenantId,
           currency: "INR",
           shop_platform: "SHOPIFY",
@@ -259,8 +249,6 @@ const CurrentBillingCard = () => {
           segment_code: "DEFAULT",
         },
       });
-
-      console.log("orderResponse", orderResponse);
 
       if (orderResponse.status === 200) {
         const options = {
@@ -287,21 +275,13 @@ const CurrentBillingCard = () => {
           },
           modal: {
             ondismiss: function () {
-              console.log("Checkout form closed");
               setPaymentLoading(false);
             },
           },
           handler: async (response: any) => {
-            console.log(
-              "🚀 ~ creditsTopupHandler ~ options.response:",
-              response,
-            );
-
             const verificationResponse = await verifyPaymentStatusApi({
               txn_id: orderResponse?.data?.result?.order_id,
             });
-
-            console.log("verificationResponse", verificationResponse);
 
             if (verificationResponse.status === 200) {
               if (verificationResponse?.data?.result?.status === "SUCCESS") {
@@ -322,7 +302,6 @@ const CurrentBillingCard = () => {
           var rzp1: any = new (window as any).Razorpay(options);
           rzp1.open();
           rzp1.on("payment.failed", (response: any) => {
-            console.log("response", response);
             notification.error({
               message: response.error.reason,
               description: response.error.description,

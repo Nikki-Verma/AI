@@ -31,7 +31,6 @@ const PlanDetails = ({
   upgradePlanHandler,
   currentPlan,
 }: PlanDetailsProps) => {
-  console.log("🚀 ~ PlanDetails ~ type:", plan);
   const PlanFetaure = [
     "400,000 credits/month",
     "Basic ingestion integrations like databases",

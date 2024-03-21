@@ -21,7 +21,6 @@ const BillingLayout = ({ children }: Props) => {
       "url",
       BillingOptions,
     );
-    console.log("🚀 ~ useEffect ~ navSettingsItem:", navSettingsItem);
     if (navSettingsItem?.value) {
       setIntegrationTab(navSettingsItem?.value);
     }

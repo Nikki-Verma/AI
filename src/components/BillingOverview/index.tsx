@@ -2,8 +2,8 @@ import { useFetchData } from "@/Hooks/useApi";
 import usePersistedQueryParams from "@/Hooks/usePersistedQueryParams";
 import config from "@/utils/apiEndoints";
 import {
-  dateFormatYDM,
-  dateTimeFormatWithMillisecondsWithoutTimeZone,
+  dateFormatYMD,
+  dateTimeFormatYMDWithMilliseconds,
   DEFAULT_PAGE,
   DEFAULT_PAGE_SIZE,
   DollarSymbol,
@@ -39,8 +39,9 @@ const initialFilters = (dynamicState: { [key: string]: any } = {}) => ({
   page_number: DEFAULT_PAGE,
   page_limit: DEFAULT_PAGE_SIZE,
   service: "TENANT",
-  start_date: dayjs().startOf("day").subtract(1, "month").format(dateFormatYDM),
-  end_date: dayjs().endOf("day").format(dateFormatYDM),
+  start_date: dayjs().startOf("day").subtract(1, "month").format(dateFormatYMD),
+  end_date: dayjs().endOf("day").format(dateFormatYMD),
+  sort_by: "created_at",
   ...dynamicState,
 });
 
@@ -78,8 +79,8 @@ const BillingOverview = () => {
   const columns: TableProps<any>["columns"] = [
     {
       title: "Invoice",
-      dataIndex: "invoice",
-      key: "invoice",
+      dataIndex: "bill_type",
+      key: "bill_type",
       width: 400,
       render: (val: any, data: any) => (
         <Tooltip title={val}>
@@ -145,7 +146,7 @@ const BillingOverview = () => {
       render: (val: any) =>
         val ? (
           <SaDate
-            date={dayjs(val, dateTimeFormatWithMillisecondsWithoutTimeZone)}
+            date={dayjs(val, dateTimeFormatYMDWithMilliseconds)}
             inline
             time
           />
@@ -182,7 +183,7 @@ const BillingOverview = () => {
                 emptyText() {
                   return (
                     <TableEmptyData
-                      message="You do not have any workflows yet"
+                      message="You do not have any billing hostory"
                       showEmpty={
                         !!(
                           data?.result?.length < 1 &&

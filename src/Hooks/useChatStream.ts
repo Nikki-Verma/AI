@@ -167,7 +167,6 @@ const useChatStream = (input: UseChatStreamInput) => {
       streamRef.current = stream.getReader();
       for await (const message of decodeStreamToJson(streamRef.current)) {
         if (stopStreamRef.current) {
-          console.log("stop streaming called");
           stopStreamRef.current = false;
           setChatStreaming(false);
           setIsLoading(false);
@@ -198,7 +197,6 @@ const useChatStream = (input: UseChatStreamInput) => {
     if (!streamRef?.current) {
       return null;
     } else {
-      console.log("🚀 ~ stopStream ~ stopStream triggered:");
       stopStreamRef.current = true;
       await streamRef?.current?.cancel();
       streamRef.current = undefined;

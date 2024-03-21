@@ -40,8 +40,6 @@ const MarkdownComponent: React.FC<{ markdown: string }> = ({ markdown }) => {
             );
           },
           a: ({ children, ...rest }) => {
-            console.log("🚀 ~ rest:", rest);
-            console.log("link appeared", children);
             return (
               <a {...rest} target="_blank">
                 {children}

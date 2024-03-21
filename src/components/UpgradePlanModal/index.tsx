@@ -32,8 +32,6 @@ const UpgradePlanModal = ({
       additional_fields: "feature",
     },
   );
-  console.log("🚀 ~ data:", data);
-  console.log("plans length", data?.result - 1);
 
   return (
     <Modal

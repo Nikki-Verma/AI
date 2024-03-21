@@ -87,20 +87,19 @@ const PricingPlans = () => {
       additional_fields: "feature,pricing",
     });
 
-  console.log("🚀 ~ PricingPlans ~ data:", data);
-
   const toggleUpgradeModal = () => {
     setDisplayUpgradeModal((prev: boolean) => !prev);
   };
 
   const upgradePlanHandler = async (values: any) => {
     try {
-      console.log("values", values);
       setPaymentLoading(true);
       const orderResponse = await createPaymentOrderApi({
         payload: {
           amount: values?.amount,
           seller_id: session?.user?.details?.id,
+          seller_name: session?.user?.details?.name,
+          user_name: session?.user?.details?.name,
           tenant_id: session?.user?.details?.tenantId,
           currency: "INR",
           shop_platform: "SHOPIFY",
@@ -109,8 +108,6 @@ const PricingPlans = () => {
           segment_code: "DEFAULT",
         },
       });
-
-      console.log("orderResponse", orderResponse);
 
       if (orderResponse.status === 200) {
         const options = {
@@ -137,21 +134,13 @@ const PricingPlans = () => {
           },
           modal: {
             ondismiss: function () {
-              console.log("Checkout form closed");
               setPaymentLoading(false);
             },
           },
           handler: async (response: any) => {
-            console.log(
-              "🚀 ~ creditsTopupHandler ~ options.response:",
-              response,
-            );
-
             const verificationResponse = await verifyPaymentStatusApi({
               txn_id: orderResponse?.data?.result?.order_id,
             });
-
-            console.log("verificationResponse", verificationResponse);
 
             if (verificationResponse.status === 200) {
               if (verificationResponse?.data?.result?.status === "SUCCESS") {
@@ -173,7 +162,6 @@ const PricingPlans = () => {
           var rzp1: any = new (window as any).Razorpay(options);
           rzp1.open();
           rzp1.on("payment.failed", (response: any) => {
-            console.log("response", response);
             notification.error({
               message: response.error.reason,
               description: response.error.description,

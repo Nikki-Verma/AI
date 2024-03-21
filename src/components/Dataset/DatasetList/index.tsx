@@ -87,10 +87,7 @@ const DatasetList = () => {
     sorter: SorterResult<DataType> | SorterResult<any>[],
     extra: any,
   ) => {
-    console.log("🚀 ~ DatasetList ~ pagination:", pagination);
-    console.log("🚀 ~ DatasetList ~ filters:", filters);
     if (pagination?.current === +filters.page + 1) {
-      console.log("hello"); //
       // reset page as with new filters there might not be any data at the current page
       setFilters((prevFilters: any) => ({
         ...prevFilters,
@@ -99,7 +96,6 @@ const DatasetList = () => {
         size: pagination?.pageSize,
       }));
     } else {
-      console.log("hello 2"); //
       // set filters along with page change
       setFilters((state: any) => ({
         ...state,

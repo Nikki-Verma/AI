@@ -113,7 +113,6 @@ const AgentEdit = () => {
   }, []);
 
   const updateAgent = async (values: any, type: AgentStatusType) => {
-    console.log("🚀 ~ updateAgent ~ values:", values);
     try {
       if (type === AgentStatus.COMPLETED) {
         setAgentPublishing(true);
@@ -131,7 +130,6 @@ const AgentEdit = () => {
         agent_state: type,
         pipeline_id: agentId,
       };
-      console.log("🚀 ~ updateAgent ~ payload:", payload);
 
       const updateAgentResponse = await updateAgentApi({ payload });
 

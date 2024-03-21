@@ -99,7 +99,6 @@ const PipelineInfo = ({
 
   useEffect(() => {
     if (details?.result) {
-      console.log("🚀 ~ useEffect ~ details?.result:", details?.result);
       form.setFieldsValue({
         ...details?.result,
       });
@@ -488,7 +487,6 @@ const PipelineInfo = ({
                   </SelectOptionDetail>
                 )}
                 onChange={(val: any, option: any) => {
-                  console.log("🚀 ~ option:", option);
                   form.setFields([
                     {
                       name: ["kb", "kb_id"],
