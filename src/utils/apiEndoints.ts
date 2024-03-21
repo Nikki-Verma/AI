@@ -11,6 +11,8 @@ const __AGENT_BASE_URL__ = process.env.NEXT_PUBLIC_AGENT_SERVICE_BASE_URL;
 const __BILLING_BASE_URL__ = process.env.NEXT_PUBLIC_BILLING_BASE_URL;
 const __SUBSCRIPTION_BASE_URL__ = process.env.NEXT_PUBLIC_SUBSCRIPTION_BASE_URL;
 const __PAYMENT_BASE_URL__ = process.env.NEXT_PUBLIC_PAYMENT_BASE_URL;
+const __WALLET_BASE_URL__ = process.env.NEXT_PUBLIC_WALLET_BASE_URL;
+
 export const BASE_URLS = {
   identity: `${__EDGE_URL__}${__IDENTITY_BASE_URL__}`,
   model: `${__EDGE_URL__}${__MODEL_BASE_URL__}`,
@@ -18,7 +20,7 @@ export const BASE_URLS = {
   rag: `${__EDGE_URL__}${__RAG_BASE_URL__}`,
   channelAggregator: `${__EDGE_URL__}${__CHANNEL_AGGREGATOR_BASE_URL__}`,
   billing: `${__EDGE_URL__}${__BILLING_BASE_URL__}`,
-  payment: `${__EDGE_URL__}${__PAYMENT_BASE_URL__}`,
+  wallet: `${__EDGE_URL__}${__WALLET_BASE_URL__}`,
   subscription: `${__EDGE_URL__}${__SUBSCRIPTION_BASE_URL__}`,
   agent: __AGENT_BASE_URL__,
   intract: `${__EDGE_URL__}${__INTRACT_BASE_URL__}`,
@@ -113,9 +115,10 @@ const config = {
     allChannels: `${BASE_URLS.channelAggregator}/api/v1/chat-channel/all`,
     create: `${BASE_URLS.channelAggregator}/api/v1/chat-channel`,
   },
-  payment: {
-    createOrder: `${BASE_URLS.payment}/api/ve1/payment-aggregator/transaction/initiate`,
-    verifyPaymentStatus: `${BASE_URLS.payment}/api/ve1/payment-aggregator/transaction/status`,
+  wallet: {
+    details: `${BASE_URLS.wallet}/api/v1/wallet`,
+    createOrder: `${BASE_URLS.wallet}/api/v1/wallet/recharge/initiate`,
+    verifyPaymentStatus: `${BASE_URLS.wallet}/api/v1/wallet/recharge/status`,
   },
   billing: {
     invoices: `${BASE_URLS.billing}/api/v1/bill/details`,

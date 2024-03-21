@@ -36,13 +36,20 @@ const CurrentBillingCard = () => {
   const { notification } = useNotify();
   const { data: session }: any = useSession();
 
-  const { data, isLoading, isError, error, refetch, isRefetching } =
-    useFetchData(config.subscription.currentPlan, {
+  const { data, isLoading, error } = useFetchData(
+    config.subscription.currentPlan,
+    {
       tenant_id: session?.user?.details?.tenantId,
       additional_fields: "feature,pricing",
-    });
-  console.log("🚀 ~ CurrentBillingCard ~ data:", data);
-  console.log("🚀 ~ CurrentBillingCard ~ error:", error);
+    },
+  );
+
+  const {
+    data: walletData,
+    isLoading: walletDataLoading,
+    error: walletDataError,
+  } = useFetchData(config.wallet.details);
+  console.log("🚀 ~ CurrentBillingCard ~ walletData:", walletData);
 
   const [billingBasicStats, setBillingBasicStats] = useState([
     {
@@ -58,7 +65,7 @@ const CurrentBillingCard = () => {
     },
   ]);
   const [billingAdvanceStats, setBillingAdvanceStats] = useState([
-    { label: "Available Credits", value: "1000", icon: <CustomWalletIcon /> },
+    { label: "Available Credits", value: 0, icon: <CustomWalletIcon /> },
   ]);
 
   useEffect(() => {
@@ -90,8 +97,42 @@ const CurrentBillingCard = () => {
           icon: <UserIcon />,
         },
       ]);
+    } else {
+      setBillingBasicStats([
+        {
+          label: "Credits",
+          value: 0,
+          icon: <CustomWalletIcon />,
+        },
+        { label: "Trail Ends", value: "--", icon: <CalendarIcon /> },
+        {
+          label: "users",
+          value: "--",
+          icon: <UserIcon />,
+        },
+      ]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (walletData) {
+      setBillingAdvanceStats([
+        {
+          label: "Available Credits",
+          value: walletData?.result?.usable_balance ?? 0,
+          icon: <CustomWalletIcon />,
+        },
+      ]);
+    } else {
+      setBillingAdvanceStats([
+        {
+          label: "Available Credits",
+          value: walletData?.result?.usable_balance ?? 0,
+          icon: <CustomWalletIcon />,
+        },
+      ]);
+    }
+  }, [walletData]);
 
   const toggleCreditsModal = () => {
     setDisplayCreditsModal((prev: boolean) => !prev);
@@ -109,14 +150,13 @@ const CurrentBillingCard = () => {
       const orderResponse = await createPaymentOrderApi({
         payload: {
           amount: values?.total_amount,
-          seller_id: "63ef82566b815b16b65b52cb",
+          seller_id: session?.user?.details?.id,
+          tenant_id: session?.user?.details?.tenantId,
           currency: "INR",
           shop_platform: "SHOPIFY",
-          customer: {
-            id: "6a289d78-c558-11ec-9d64-0242ac120012",
-          },
           payment_platform: "Razorpay",
           source: "wallet",
+          segment_code: "DEFAULT",
         },
       });
 
@@ -131,9 +171,8 @@ const CurrentBillingCard = () => {
           description: "Simplifing your AI journey",
           image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
           redirect: false,
-          order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
-          callback_url:
-            "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
+          order_id: orderResponse?.data?.result?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+          callback_url: `https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId=${orderResponse?.data?.result?.gateway_order_id}`,
           // prefill: {
           //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
           //   name: "Dinesh Kumar", //your customer's name
@@ -159,18 +198,20 @@ const CurrentBillingCard = () => {
             );
 
             const verificationResponse = await verifyPaymentStatusApi({
-              txn_id: orderResponse?.data?.data?.txn_id,
+              txn_id: orderResponse?.data?.result?.order_id,
             });
 
             console.log("verificationResponse", verificationResponse);
 
             if (verificationResponse.status === 200) {
-              if (verificationResponse?.data?.data?.txn_status === "Success") {
+              if (verificationResponse?.data?.result?.status === "SUCCESS") {
                 toggleCreditsModal();
                 notification.success({ message: "Credits added successfully" });
               } else {
                 notification.error({
-                  message: verificationResponse?.data?.data?.failure_reason,
+                  message:
+                    verificationResponse?.data?.result?.reason ||
+                    "Something went wrong",
                 });
               }
             }
@@ -209,14 +250,13 @@ const CurrentBillingCard = () => {
       const orderResponse = await createPaymentOrderApi({
         payload: {
           amount: values?.amount,
-          seller_id: "63ef82566b815b16b65b52cb",
+          seller_id: session?.user?.details?.id,
+          tenant_id: session?.user?.details?.tenantId,
           currency: "INR",
           shop_platform: "SHOPIFY",
-          customer: {
-            id: "6a289d78-c558-11ec-9d64-0242ac120012",
-          },
           payment_platform: "Razorpay",
           source: "wallet",
+          segment_code: "DEFAULT",
         },
       });
 
@@ -231,9 +271,8 @@ const CurrentBillingCard = () => {
           description: "Simplifing your AI journey",
           image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
           redirect: false,
-          order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
-          callback_url:
-            "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
+          order_id: orderResponse?.data?.result?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+          callback_url: `https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId=${orderResponse?.data?.result?.gateway_order_id}`,
           // prefill: {
           //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
           //   name: "Dinesh Kumar", //your customer's name
@@ -259,18 +298,20 @@ const CurrentBillingCard = () => {
             );
 
             const verificationResponse = await verifyPaymentStatusApi({
-              txn_id: orderResponse?.data?.data?.txn_id,
+              txn_id: orderResponse?.data?.result?.order_id,
             });
 
             console.log("verificationResponse", verificationResponse);
 
             if (verificationResponse.status === 200) {
-              if (verificationResponse?.data?.data?.txn_status === "Success") {
+              if (verificationResponse?.data?.result?.status === "SUCCESS") {
                 toggleUpgradeModal();
                 notification.success({ message: "Plan upgraded successfully" });
               } else {
                 notification.error({
-                  message: verificationResponse?.data?.data?.failure_reason,
+                  message:
+                    verificationResponse?.data?.result?.reason ||
+                    "Something went wrong",
                 });
               }
             }
@@ -348,7 +389,7 @@ const CurrentBillingCard = () => {
             },
           }}
         >
-          <Skeleton paragraph={{ rows: 3 }} active loading={false}>
+          <Skeleton paragraph={{ rows: 1 }} active loading={walletDataLoading}>
             <BillingDetailsAndActions>
               <BillingActionHeading>Credit Metrics</BillingActionHeading>
               <Flex justify="space-between">

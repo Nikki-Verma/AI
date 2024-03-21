@@ -100,14 +100,13 @@ const PricingPlans = () => {
       const orderResponse = await createPaymentOrderApi({
         payload: {
           amount: values?.amount,
-          seller_id: "63ef82566b815b16b65b52cb",
+          seller_id: session?.user?.details?.id,
+          tenant_id: session?.user?.details?.tenantId,
           currency: "INR",
           shop_platform: "SHOPIFY",
-          customer: {
-            id: "6a289d78-c558-11ec-9d64-0242ac120012",
-          },
           payment_platform: "Razorpay",
           source: "wallet",
+          segment_code: "DEFAULT",
         },
       });
 
@@ -122,9 +121,8 @@ const PricingPlans = () => {
           description: "Simplifing your AI journey",
           image: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/Logos/simplaiLogo.svg`,
           redirect: false,
-          order_id: orderResponse?.data?.data?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
-          callback_url:
-            "https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId",
+          order_id: orderResponse?.data?.result?.gateway_order_id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+          callback_url: `https://payment-handler.simplai.ai/payment/callback/razorpay/?pgOrderId=${orderResponse?.data?.result?.gateway_order_id}`,
           // prefill: {
           //   //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
           //   name: "Dinesh Kumar", //your customer's name
@@ -150,18 +148,20 @@ const PricingPlans = () => {
             );
 
             const verificationResponse = await verifyPaymentStatusApi({
-              txn_id: orderResponse?.data?.data?.txn_id,
+              txn_id: orderResponse?.data?.result?.order_id,
             });
 
             console.log("verificationResponse", verificationResponse);
 
             if (verificationResponse.status === 200) {
-              if (verificationResponse?.data?.data?.txn_status === "Success") {
+              if (verificationResponse?.data?.result?.status === "SUCCESS") {
                 toggleUpgradeModal();
                 notification.success({ message: "Plan upgraded successfully" });
               } else {
                 notification.error({
-                  message: verificationResponse?.data?.data?.failure_reason,
+                  message:
+                    verificationResponse?.data?.result?.reason ||
+                    "Something went wrong",
                 });
               }
             }
