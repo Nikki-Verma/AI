@@ -92,7 +92,7 @@ const CurrentBillingCard = () => {
         { label: "Trail Ends", value: planEndDate, icon: <CalendarIcon /> },
         {
           label: "users",
-          value: `${planUserLimit} users`,
+          value: `${planUserLimit} ${planUserLimit > 1 ? "users" : "user"}`,
           icon: <UserIcon />,
         },
       ]);
@@ -370,7 +370,7 @@ const CurrentBillingCard = () => {
         >
           <Skeleton paragraph={{ rows: 1 }} active loading={walletDataLoading}>
             <BillingDetailsAndActions>
-              <BillingActionHeading>Credit Metrics</BillingActionHeading>
+              <BillingActionHeading>Credits</BillingActionHeading>
               <Flex justify="space-between">
                 <BillingStats>
                   {billingAdvanceStats?.map((billingStat: any) => {

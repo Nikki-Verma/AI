@@ -187,7 +187,7 @@ const PricingPlans = () => {
       width: "100%",
     },
     {
-      label: "Payments",
+      label: "Cost",
       key: "tenant_plan_price",
       width: "100%",
       render: (payment: any) => `${DollarSymbol}${payment}`,
@@ -213,7 +213,13 @@ const PricingPlans = () => {
           features?.find(
             (feature: UnknownObject) => feature?.name === "User accounts",
           )?.max_limit ?? 0
-        } users`;
+        } ${
+          (features?.find(
+            (feature: UnknownObject) => feature?.name === "User accounts",
+          )?.max_limit ?? 0) > 1
+            ? "users"
+            : "user"
+        }`;
       },
     },
   ];

@@ -3,13 +3,19 @@ import { styled } from "styled-components";
 
 const { Text, Title } = Typography;
 
-export const SuggestedPlanConatiner = styled.div`
+export const SuggestedPlanWrapper = styled.div`
   position: relative;
-  top: -60px !important;
+  width: 292px;
+  margin: 14px;
+`;
+
+export const SuggestedPlanConatiner = styled.div`
+  position: absolute;
+  top: -90px !important;
   border-radius: 26px;
   background: linear-gradient(180deg, #8640a2 0%, #602edf 100%);
   box-shadow: 0px 22px 34px 0px rgba(82, 67, 194, 0.3);
-  width: 292px;
+
   display: flex;
   flex-direction: column;
   gap: 30px;

@@ -11,8 +11,8 @@ import {
 const BillingModuleNavigations = () => {
   const BillingNavigations = [
     {
-      title: "Pricing plans",
-      description: "View pricing and FAQs",
+      title: "Current Plan",
+      description: "View you current plan details.",
       icon: <PricingPlansIcon />,
       url: "/settings/billing-and-plans/pricing-plans",
     },

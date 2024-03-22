@@ -66,8 +66,8 @@ const BuyCreditsModal = ({
         <Row gutter={[16, 24]}>
           <Col span={24} md={{ span: 18 }}>
             <TopUpCreditDescription>
-              Transparent pricing, just for your needs. Use the slider to select
-              your monthly creation volume.
+              {/* Transparent pricing, just for your needs. Use the slider to select
+              your monthly creation volume. */}
             </TopUpCreditDescription>
           </Col>
           <Col span={24}>

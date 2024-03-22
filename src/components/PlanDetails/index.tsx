@@ -15,6 +15,7 @@ import {
   PopularTagText,
   PricingMainDetails,
   SuggestedPlanConatiner,
+  SuggestedPlanWrapper,
   UpgradeButton,
 } from "./style";
 
@@ -47,58 +48,60 @@ const PlanDetails = ({
       ?.total_price || 0;
 
   return plan?.suggested ? (
-    <SuggestedPlanConatiner>
-      <PricingMainDetails>
-        <div>
-          <Row justify="end">
-            <Col>
-              <PopularTag>
-                <PopularTagText>Most Popular</PopularTagText>
-              </PopularTag>
-            </Col>
-          </Row>
-          <PlanName type={plan?.suggested}>{plan?.plan_name}</PlanName>
-        </div>
-        <PlanDescription type={plan?.suggested}>
-          {plan?.description}
-        </PlanDescription>
-        <PlanPriceContainer type={plan?.suggested}>
-          <PlanPrice type={plan?.suggested}>
-            {DollarSymbol}
-            {PlanPricing}
-          </PlanPrice>
-          <PlanDuration type={plan?.suggested}>/month</PlanDuration>
-        </PlanPriceContainer>
-      </PricingMainDetails>
-      <PlanFeatures>
-        {plan?.features?.map?.((feature: any) => {
-          return (
-            <Flex justify="flex-start" gap="10px">
-              <FeatureIcon />
-              <FeatureDescription type={plan?.suggested}>
-                {feature?.name}
-              </FeatureDescription>
-            </Flex>
-          );
-        })}
-      </PlanFeatures>
-      <Flex justify="center">
-        <UpgradeButton
-          type="default"
-          onClick={() =>
-            upgradePlanHandler({
-              type: plan?.suggested,
-              amount: PlanPricing,
-            })
-          }
-          disabled={currentPlan?.result?.plan_name === plan?.plan_name}
-        >
-          {currentPlan?.result?.plan_name === plan?.plan_name
-            ? "Selected Plan"
-            : "Upgrade Plan"}
-        </UpgradeButton>
-      </Flex>
-    </SuggestedPlanConatiner>
+    <SuggestedPlanWrapper>
+      <SuggestedPlanConatiner>
+        <PricingMainDetails>
+          <div>
+            <Row justify="end">
+              <Col>
+                <PopularTag>
+                  <PopularTagText>Most Popular</PopularTagText>
+                </PopularTag>
+              </Col>
+            </Row>
+            <PlanName type={plan?.suggested}>{plan?.plan_name}</PlanName>
+          </div>
+          <PlanDescription type={plan?.suggested}>
+            {plan?.description}
+          </PlanDescription>
+          <PlanPriceContainer type={plan?.suggested}>
+            <PlanPrice type={plan?.suggested}>
+              {DollarSymbol}
+              {PlanPricing}
+            </PlanPrice>
+            <PlanDuration type={plan?.suggested}>/month</PlanDuration>
+          </PlanPriceContainer>
+        </PricingMainDetails>
+        <PlanFeatures>
+          {plan?.features?.map?.((feature: any) => {
+            return (
+              <Flex justify="flex-start" gap="10px">
+                <FeatureIcon />
+                <FeatureDescription type={plan?.suggested}>
+                  {feature?.description}
+                </FeatureDescription>
+              </Flex>
+            );
+          })}
+        </PlanFeatures>
+        <Flex justify="center">
+          <UpgradeButton
+            type="default"
+            onClick={() =>
+              upgradePlanHandler({
+                type: plan?.suggested,
+                amount: PlanPricing,
+              })
+            }
+            disabled={currentPlan?.result?.plan_name === plan?.plan_name}
+          >
+            {currentPlan?.result?.plan_name === plan?.plan_name
+              ? "Selected Plan"
+              : "Upgrade Plan"}
+          </UpgradeButton>
+        </Flex>
+      </SuggestedPlanConatiner>
+    </SuggestedPlanWrapper>
   ) : (
     <BasicPlanConatiner>
       <PricingMainDetails>
@@ -120,7 +123,7 @@ const PlanDetails = ({
             <Flex justify="flex-start" gap="10px">
               <FeatureIcon />
               <FeatureDescription type={plan?.suggested}>
-                {feature?.name}
+                {feature?.description}
               </FeatureDescription>
             </Flex>
           );

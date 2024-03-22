@@ -183,7 +183,7 @@ const BillingOverview = () => {
                 emptyText() {
                   return (
                     <TableEmptyData
-                      message="You do not have any billing hostory"
+                      message="You do not have any billing history"
                       showEmpty={
                         !!(
                           data?.result?.length < 1 &&

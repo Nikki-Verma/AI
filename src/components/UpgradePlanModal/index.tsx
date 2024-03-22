@@ -40,7 +40,7 @@ const UpgradePlanModal = ({
       onCancel={() => {
         onClose();
       }}
-      width="90vw"
+      width="95vw"
       footer={false}
     >
       <Spin spinning={loading}>
@@ -55,7 +55,7 @@ const UpgradePlanModal = ({
                 />
               </Col>
             </Row>
-          ) : isLoading || isRefetching ? (
+          ) : isLoading ? (
             <Skeleton active paragraph={{ rows: 12 }} />
           ) : (
             data?.result?.map((plan: UnknownObject, index: number) => {

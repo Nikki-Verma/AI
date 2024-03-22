@@ -36,7 +36,7 @@ export const BillingOptions: any = [
         href="/settings/billing-and-plans/pricing-plans"
         style={{ color: "inherit" }}
       >
-        <Text style={{ color: "inherit" }}>Pricing Plans</Text>
+        <Text style={{ color: "inherit" }}>Current Plan</Text>
       </Link>
     ),
     value: "/settings/billing-and-plans/pricing-plans",
