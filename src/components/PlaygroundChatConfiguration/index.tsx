@@ -24,9 +24,6 @@ import {
 import SelectCarotIcon from "../Icons/SelectCarotIcon";
 import SelectPayGroundIcon from "../Icons/SelectPayGroundIcon";
 
-selectedTab: PlaygroundConfigurationOptionType;
-// setSelectedTab: (value: PlaygroundConfigurationOptionType) => void;
-
 type PlaygroundChatConfigurationProps = {
   setSelectedChatConfigId: (chatConfigId: string | undefined) => void;
   selectedChatConfigId: string | undefined;
