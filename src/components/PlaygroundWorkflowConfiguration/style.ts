@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select} from "antd";
 import { styled } from "styled-components";
 
 export const PlaygroundWorkflowConfigurationContainer = styled.div`
@@ -23,3 +23,22 @@ export const WorkflowSelect = styled(Select)`
     margin-top: 0;
   }
 `;
+
+export const WorkflowListContainer = styled.div`
+  max-height: 30vh;
+  overflow:auto;
+  background: #F8FAFC;
+  border:1px solid #CFD7DF;
+  min-width: 120px;
+  padding: 12px;
+  border-radius: 4px;
+  :where(.css-dev-only-do-not-override-1lvqh2o).ant-list-split .ant-list-item{
+    border:none;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18.23px;
+    text-align: left;
+    cursor: pointer;
+  }
+`
