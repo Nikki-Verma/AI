@@ -76,11 +76,11 @@ function ChatPage() {
       }
     }
   }, [selectedChatConfigId]);
-
-  useEffect(() => {
-    setSelectedChatConfigId(undefined);
-    setSelectedChatConfigDetails(undefined);
-  }, [selectedTab]);
+// please check carefully it
+  // useEffect(() => {
+  //   setSelectedChatConfigId(undefined);
+  //   setSelectedChatConfigDetails(undefined);
+  // }, [selectedTab]);
 
   useEffect(() => {
     return () => {

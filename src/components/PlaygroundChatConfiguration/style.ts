@@ -61,4 +61,10 @@ export const PlaygroundTypeListHeading = styled(Text)`
   text-align: left;
 `
 
+export const SubMenuContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right:-206px;
+  minWidth: 196px; 
+`
 

@@ -1,13 +1,15 @@
 "use client";
 
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/utils/constants";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE, ALL_DATA_PAGE_SIZE } from "@/utils/constants";
 import { UnknownObject } from "@/utils/types";
 import { PlusOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, List, Select } from "antd";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlaygroundAgentConfiguration from "../PlaygroundAgentConfiguration";
 import PlaygroundWorkflowConfiguration from "../PlaygroundWorkflowConfiguration";
+import config from "@/utils/apiEndoints";
+
 import {
   PlaygroundConfigurationOptions,
   PlaygroundConfigurationOptionType,
@@ -20,9 +22,11 @@ import {
   ModalSelectContainer,
   PlaygroundTypeListContainer,
   PlaygroundTypeListHeading,
+  SubMenuContainer
 } from "./style";
 import SelectCarotIcon from "../Icons/SelectCarotIcon";
 import SelectPayGroundIcon from "../Icons/SelectPayGroundIcon";
+import { useFetchData } from "@/Hooks/useApi";
 
 type PlaygroundChatConfigurationProps = {
   setSelectedChatConfigId: (chatConfigId: string | undefined) => void;
@@ -56,6 +60,9 @@ const PlaygroundChatConfiguration = ({
   const [filters, setFilters] = useState({ ...initialFilters() });
   const [prompt, setPrompt] = useState("");
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [isNewAgentConfig, setIsNewAgentConfig] = useState<boolean>(false);
+
+
 
   const getSelectedTabChildren = (selectedTab:string) => {
     switch (selectedTab) {
@@ -104,14 +111,47 @@ const PlaygroundChatConfiguration = ({
     },
   ];
 
+  const { data, isLoading, isError, error, refetch } = useFetchData(
+    session?.user?.permissions?.includes?.("ALL_LIST_VIEW")
+      ? config.workflow.listAll
+      : config.workflow.list,
+    { page: DEFAULT_PAGE, size: ALL_DATA_PAGE_SIZE },
+    {},
+  );
+
+  useEffect(() => {
+    if (data) {
+      const newSelectedWorkflow = data?.result?.[0] ?? undefined;
+      if (newSelectedWorkflow) {
+        setSelectedChatConfigDetails(newSelectedWorkflow);
+        setSelectedChatConfigId(newSelectedWorkflow?.pipeline_id);
+      }
+    }
+  }, [data]);
+
+  let selectedHeading;
+  let modalName;
+  if(
+    selectedTab === "WORKFLOW" && 
+    (selectedChatConfigDetails?.pipeline_name || selectedChatConfigDetails?.pipeline_id)
+  ){
+    selectedHeading = selectedTab
+    modalName = selectedChatConfigDetails?.pipeline_name;
+  }else if(selectedTab === "AGENT" && 
+  (selectedChatConfigDetails?.agent_name || selectedChatConfigDetails?.agent_id)){
+    selectedHeading = selectedTab;
+    modalName = selectedChatConfigDetails?.agent_name;
+  }
+  
+
   return (
     <div>
       <div>
         <div>
-          <SelectedModalHeading>{selectedTab}</SelectedModalHeading>
+          <SelectedModalHeading>{selectedHeading}</SelectedModalHeading>
           <SelectCarotIcon onClick = {() => setShowMenu(!showMenu)}/>
         </div>
-        <SelectedModal>{selectedChatConfigDetails?.label}</SelectedModal>
+        <SelectedModal>{modalName}</SelectedModal>
         {showMenu && 
           <ModalSelectContainer
             onMouseLeave = {() => setShowMenu(false)}
@@ -123,8 +163,6 @@ const PlaygroundChatConfiguration = ({
                 <List.Item 
                   style={{display:'flex', position:'relative'}}
                   onClick = {() => handleClick(itemData.key)}
-                  // onMouseOver = {() => setShowMenu(false)}
-                  
                 >
                   <PlaygroundTypeListContainer 
                     key={index}
@@ -144,38 +182,27 @@ const PlaygroundChatConfiguration = ({
                       </PlaygroundTypeListHeading>
                     </div>
                   </PlaygroundTypeListContainer>
-                  {/* {getSelectedTabChildren(selectedTab)} */}
-
                    {(selectedTab === 'WORKFLOW' && index === 0) &&(
-                    <div style={{
-                      position: 'absolute',
-                      top: 0,
-                      right:'-206px',
-                      minWidth: 196
-                    }}>
+                    <SubMenuContainer>
                       <PlaygroundWorkflowConfiguration
                         selectedChatConfigId={selectedChatConfigId}
                         setSelectedChatConfigId={setSelectedChatConfigId}
                         selectedChatConfigDetails={selectedChatConfigDetails}
                         setSelectedChatConfigDetails={setSelectedChatConfigDetails}
                       />
-                    </div>
+                    </SubMenuContainer>
                   )} 
-
                   {(selectedTab === 'AGENT' && index === 1) &&(
-                      <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        right:'-206px',
-                        minWidth: 196
-                      }}>
-                      <PlaygroundAgentConfiguration
-                        selectedChatConfigId={selectedChatConfigId}
-                        setSelectedChatConfigId={setSelectedChatConfigId}
-                        selectedChatConfigDetails={selectedChatConfigDetails}
-                        setSelectedChatConfigDetails={setSelectedChatConfigDetails}
-                      />
-                      </div>
+                      <SubMenuContainer>
+                        <PlaygroundAgentConfiguration
+                          selectedChatConfigId={selectedChatConfigId}
+                          setSelectedChatConfigId={setSelectedChatConfigId}
+                          selectedChatConfigDetails={selectedChatConfigDetails}
+                          setSelectedChatConfigDetails={setSelectedChatConfigDetails}
+                          isNewAgentConfig = {isNewAgentConfig}
+                          setIsNewAgentConfig = {setIsNewAgentConfig}
+                        />
+                      </SubMenuContainer>
                   )} 
                 </List.Item>
               )}

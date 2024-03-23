@@ -14,6 +14,8 @@ type PlaygroundAgentConfigurationProps = {
   selectedChatConfigId: string | undefined;
   selectedChatConfigDetails: UnknownObject | undefined;
   setSelectedChatConfigDetails: (chatConfig: UnknownObject | undefined) => void;
+  isNewAgentConfig?:boolean;
+  setIsNewAgentConfig?: any
 };
 
 const AgentDetailColumns: DescriptionItemType[] = [
@@ -36,6 +38,8 @@ const PlaygroundAgentConfiguration = ({
   setSelectedChatConfigId,
   selectedChatConfigDetails,
   setSelectedChatConfigDetails,
+  isNewAgentConfig, 
+  setIsNewAgentConfig
 }: PlaygroundAgentConfigurationProps) => {
   const { data: session }: any = useSession();
   const { data, isLoading, isError, error, refetch } = useFetchData(
@@ -47,7 +51,8 @@ const PlaygroundAgentConfiguration = ({
   );
 
   useEffect(() => {
-    if (data && !selectedChatConfigId) {
+    if ((data && !selectedChatConfigId) || (data && !isNewAgentConfig)) {
+      setIsNewAgentConfig(true)
       const newSelectedWorkflow = data?.result?.[0] ?? undefined;
       if (newSelectedWorkflow) {
         setSelectedChatConfigDetails(newSelectedWorkflow);
