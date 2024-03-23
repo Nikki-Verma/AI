@@ -9,6 +9,7 @@ import { UnknownObject } from "@/utils/types";
 import { Result } from "antd";
 import { useEffect, useState } from "react";
 import { NoChatConatiner, PlaygroundContainer } from "./style";
+import ChatHistory from "@/components/ChatHistory";
 
 type Props = {
   params: {
@@ -42,6 +43,8 @@ function ChatPage() {
     stopStream,
     setChatConfig,
     chatConfig,
+    conversationId, 
+    setConversationId
   } = useChatStream({
     chatConfig: {
       model: "",
@@ -73,11 +76,11 @@ function ChatPage() {
       }
     }
   }, [selectedChatConfigId]);
-
-  useEffect(() => {
-    setSelectedChatConfigId(undefined);
-    setSelectedChatConfigDetails(undefined);
-  }, [selectedTab]);
+// please check carefully it
+  // useEffect(() => {
+  //   setSelectedChatConfigId(undefined);
+  //   setSelectedChatConfigDetails(undefined);
+  // }, [selectedTab]);
 
   useEffect(() => {
     return () => {
@@ -94,20 +97,41 @@ function ChatPage() {
 
   return (
     <PlaygroundContainer>
+       <div style={{ height: "100%", width: "25vw"}}>
+          <ChatHistory 
+            setConversationId = {setConversationId}
+            conversationId = {conversationId}
+            changeConversation={changeConversation}
+          />        
+      </div>
       <div style={{ height: "100%", width: "70vw" }}>
+         <div style={{ height: "25%", width: "25vw" }}>
+            <PlaygroundChatConfiguration
+              selectedChatConfigId={selectedChatConfigId}
+              setSelectedChatConfigId={setSelectedChatConfigId}
+              selectedTab={selectedTab}
+              setSelectedTab={setSelectedTab}
+              selectedChatConfigDetails={selectedChatConfigDetails}
+              setSelectedChatConfigDetails={setSelectedChatConfigDetails}
+              changeConversation={changeConversation}
+            />
+          </div>
+
         {selectedChatConfigId ? (
-          <ChatBot
-            messages={messages}
-            changeConversationLoading={changeConversationLoading}
-            handleSubmit={handleSubmit}
-            handleInputChange={handleInputChange}
-            input={input}
-            setInput={setInput}
-            isLoading={isLoading}
-            chatStreaming={chatStreaming}
-            stopStream={stopStream}
-            WelcomeMessage=""
-          />
+          <div style={{ height: "75%", width: "70vw" }}>
+            <ChatBot
+              messages={messages}
+              changeConversationLoading={changeConversationLoading}
+              handleSubmit={handleSubmit}
+              handleInputChange={handleInputChange}
+              input={input}
+              setInput={setInput}
+              isLoading={isLoading}
+              chatStreaming={chatStreaming}
+              stopStream={stopStream}
+              WelcomeMessage=""
+            />
+          </div>
         ) : (
           <NoChatConatiner>
             <Result
@@ -118,17 +142,7 @@ function ChatPage() {
           </NoChatConatiner>
         )}
       </div>
-      <div style={{ height: "100%", width: "25vw" }}>
-        <PlaygroundChatConfiguration
-          selectedChatConfigId={selectedChatConfigId}
-          setSelectedChatConfigId={setSelectedChatConfigId}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-          selectedChatConfigDetails={selectedChatConfigDetails}
-          setSelectedChatConfigDetails={setSelectedChatConfigDetails}
-          changeConversation={changeConversation}
-        />
-      </div>
+     
     </PlaygroundContainer>
   );
 }

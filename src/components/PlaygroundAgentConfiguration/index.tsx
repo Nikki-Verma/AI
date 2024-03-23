@@ -3,17 +3,19 @@ import config from "@/utils/apiEndoints";
 import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { Col, Divider, Result, Row } from "antd";
+import { Col, Divider, List, Result, Row } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import DescriptionList, { DescriptionItemType } from "../DescriptionList";
-import { AgentSelect, PlaygroundAgentConfigurationContainer } from "./style";
+import { AgentSelect, PlaygroundAgentConfigurationContainer, AgentSelectListContainer } from "./style";
 
 type PlaygroundAgentConfigurationProps = {
   setSelectedChatConfigId: (chatConfigId: string | undefined) => void;
   selectedChatConfigId: string | undefined;
   selectedChatConfigDetails: UnknownObject | undefined;
   setSelectedChatConfigDetails: (chatConfig: UnknownObject | undefined) => void;
+  isNewAgentConfig?:boolean;
+  setIsNewAgentConfig?: any
 };
 
 const AgentDetailColumns: DescriptionItemType[] = [
@@ -36,6 +38,8 @@ const PlaygroundAgentConfiguration = ({
   setSelectedChatConfigId,
   selectedChatConfigDetails,
   setSelectedChatConfigDetails,
+  isNewAgentConfig, 
+  setIsNewAgentConfig
 }: PlaygroundAgentConfigurationProps) => {
   const { data: session }: any = useSession();
   const { data, isLoading, isError, error, refetch } = useFetchData(
@@ -47,7 +51,8 @@ const PlaygroundAgentConfiguration = ({
   );
 
   useEffect(() => {
-    if (data && !selectedChatConfigId) {
+    if ((data && !selectedChatConfigId) || (data && !isNewAgentConfig)) {
+      setIsNewAgentConfig(true)
       const newSelectedWorkflow = data?.result?.[0] ?? undefined;
       if (newSelectedWorkflow) {
         setSelectedChatConfigDetails(newSelectedWorkflow);
@@ -91,9 +96,42 @@ const PlaygroundAgentConfiguration = ({
     );
   }
 
+  const ItemData =  data?.result?.map((agent: any) => ({
+    ...agent,
+    value: agent?.agent_id,
+    label: agent?.agent_name,
+    key: agent?.agent_id,
+  })) || []
+
   return (
     <PlaygroundAgentConfigurationContainer>
-      <AgentSelect
+      <AgentSelectListContainer>
+      <List
+          itemLayout="horizontal"
+          dataSource={ItemData}
+          loading={isLoading}
+          renderItem={(itemData:any, index:number) => (
+            <List.Item>
+              <div 
+                key = {index}
+                style={{
+                  color: (selectedChatConfigId === itemData.key) 
+                  ? '#602EDF' 
+                  : '#222222'
+                }}
+                onClick = {() => {
+                  setSelectedChatConfigId(itemData.value)
+                  setSelectedChatConfigDetails(itemData);
+                }}
+              >
+                {itemData.label}
+              </div> 
+            </List.Item>
+          )}
+      />
+
+      </AgentSelectListContainer>
+      {/* <AgentSelect
         showSearch
         placeholder="Select a agent"
         optionFilterProp="label"
@@ -125,7 +163,7 @@ const PlaygroundAgentConfiguration = ({
             vertical
           />
         </>
-      )}
+      )} */}
     </PlaygroundAgentConfigurationContainer>
   );
 };

@@ -3,13 +3,14 @@ import config from "@/utils/apiEndoints";
 import { ALL_DATA_PAGE_SIZE, DEFAULT_PAGE } from "@/utils/constants";
 import { getErrorFromApi } from "@/utils/helperFunction";
 import { UnknownObject } from "@/utils/types";
-import { Col, Divider, Result, Row } from "antd";
+import { Col, Divider, List, Result, Row } from "antd";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import DescriptionList, { DescriptionItemType } from "../DescriptionList";
 import {
   PlaygroundWorkflowConfigurationContainer,
   WorkflowSelect,
+  WorkflowListContainer
 } from "./style";
 
 type PlaygroundWorkflowConfigurationProps = {
@@ -95,17 +96,52 @@ const PlaygroundWorkflowConfiguration = ({
     );
   }
 
+  const ItemData =  data?.result?.map((workflow: any) => ({
+    ...workflow,
+    value: workflow?.pipeline_id,
+    label: workflow?.pipeline_name,
+    key: workflow?.pipeline_id,
+  })) || []
+
+
   return (
     <PlaygroundWorkflowConfigurationContainer>
-      <WorkflowSelect
-        showSearch
-        placeholder="Select a workflow"
+      <WorkflowListContainer>
+        <List
+          itemLayout="horizontal"
+          dataSource={ItemData}
+          loading={isLoading}
+          renderItem={(itemData:any, index:number) => (
+            <List.Item>
+              <div 
+                key = {index}
+                style={{
+                  color: (selectedChatConfigId === itemData.key) 
+                  ? '#602EDF' 
+                  : '#222222'
+                }}
+                onClick = {() => {
+                  setSelectedChatConfigId(itemData.key)
+                  setSelectedChatConfigDetails(itemData);
+                }}
+              >
+                {itemData.label}
+              </div> 
+            </List.Item>
+          )}
+      />
+    </WorkflowListContainer>
+
+
+      {/* <WorkflowSelect
+        // showSearch
+        // placeholder="Select a workflow"
         optionFilterProp="label"
-        loading={isLoading}
+        // loading={isLoading}
         onChange={(value: any, option: any) => {
           setSelectedChatConfigId(value);
           setSelectedChatConfigDetails(option);
-        }}
+        }}  
         value={selectedChatConfigId}
         options={
           data?.result?.map((workflow: any) => ({
@@ -115,9 +151,9 @@ const PlaygroundWorkflowConfiguration = ({
             key: workflow?.pipeline_id,
           })) || []
         }
-      />
+      /> */}
 
-      {selectedChatConfigDetails && (
+      {/* {selectedChatConfigDetails && (
         <>
           <Divider orientationMargin="0" orientation="left">
             Details
@@ -129,7 +165,7 @@ const PlaygroundWorkflowConfiguration = ({
             vertical
           />
         </>
-      )}
+      )} */}
     </PlaygroundWorkflowConfigurationContainer>
   );
 };
